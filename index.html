@@ -28,6 +28,8 @@
     @media (hover: none) { body { cursor: auto; } .cursor-dot, .cursor-ring { display: none !important; } }
 
     /* ============================================================ NOISE */
+    .site-wrapper { overflow-x: hidden; width: 100%; position: relative; }
+
     .noise { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9990; opacity: .04; }
 
     /* ============================================================ CURSOR */
@@ -773,6 +775,8 @@
 </head>
 <body>
 
+  <div class="site-wrapper">
+
   <svg class="noise" xmlns="http://www.w3.org/2000/svg"><filter id="nf"><feTurbulence type="fractalNoise" baseFrequency=".68" numOctaves="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#nf)"/></svg>
 
   <div class="cursor-dot"  id="cDot"></div>
@@ -1003,12 +1007,12 @@
         <a href="https://www.agenciamodelle.com.mx/" target="_blank" rel="noopener" class="port-card ht">
           <div class="port-card-img-wrap">
             <img src="images/portafolio/modelle-screenshot.webp" alt="Modelle" class="port-card-img">
-            <div class="port-card-badge">Ver Proyecto →</div>
+            <div class="port-card-badge"><span data-i18n="port-badge">Ver Proyecto →</span></div>
           </div>
           <div class="port-card-info">
-            <span class="port-card-cat">Agencia · Modelos & Producción BTL</span>
+            <span class="port-card-cat" id="port-c1">Agencia · Modelos & Producción BTL</span>
             <div class="port-card-name">Modelle</div>
-            <p class="port-card-desc">Plataforma digital para agencia de modelos, edecanes y producción de eventos corporativos.</p>
+            <p class="port-card-desc" id="port-d1">Plataforma digital para agencia de modelos, edecanes y producción de eventos corporativos.</p>
           </div>
         </a>
 
@@ -1016,12 +1020,12 @@
         <a href="https://www.impresiones2m.com" target="_blank" rel="noopener" class="port-card ht">
           <div class="port-card-img-wrap">
             <img src="images/portafolio/impresiones2m-screenshot.webp" alt="Impresiones 2M" class="port-card-img">
-            <div class="port-card-badge">Ver Proyecto →</div>
+            <div class="port-card-badge"><span data-i18n="port-badge">Ver Proyecto →</span></div>
           </div>
           <div class="port-card-info">
-            <span class="port-card-cat">Imprenta · Cotizaciones en línea</span>
+            <span class="port-card-cat" id="port-c2">Imprenta · Cotizaciones en línea</span>
             <div class="port-card-name">Impresiones 2M</div>
-            <p class="port-card-desc">Sitio corporativo para imprenta offset con cotizador de productos integrado.</p>
+            <p class="port-card-desc" id="port-d2">Sitio corporativo para imprenta offset con cotizador de productos integrado.</p>
           </div>
         </a>
 
@@ -1029,12 +1033,12 @@
         <a href="https://seminuevoscoapa.com.mx" target="_blank" rel="noopener" class="port-card ht">
           <div class="port-card-img-wrap">
             <img src="images/portafolio/seminuevoscoapa-screenshot.webp" alt="Seminuevos Coapa" class="port-card-img">
-            <div class="port-card-badge">Ver Proyecto →</div>
+            <div class="port-card-badge"><span data-i18n="port-badge">Ver Proyecto →</span></div>
           </div>
           <div class="port-card-info">
-            <span class="port-card-cat">Automotriz · Inventario en línea</span>
+            <span class="port-card-cat" id="port-c3">Automotriz · Inventario en línea</span>
             <div class="port-card-name">Seminuevos Coapa</div>
-            <p class="port-card-desc">Catálogo digital de vehículos con buscador avanzado y fichas técnicas detalladas.</p>
+            <p class="port-card-desc" id="port-d3">Catálogo digital de vehículos con buscador avanzado y fichas técnicas detalladas.</p>
           </div>
         </a>
 
@@ -1042,12 +1046,12 @@
         <a href="https://www.edecanespachuca.com.mx/" target="_blank" rel="noopener" class="port-card ht">
           <div class="port-card-img-wrap">
             <img src="images/portafolio/edecanespachuca-screenshot.webp" alt="Edecanes Pachuca" class="port-card-img">
-            <div class="port-card-badge">Ver Proyecto →</div>
+            <div class="port-card-badge"><span data-i18n="port-badge">Ver Proyecto →</span></div>
           </div>
           <div class="port-card-info">
-            <span class="port-card-cat">Agencia · Talento & Activaciones BTL</span>
+            <span class="port-card-cat" id="port-c4">Agencia · Talento & Activaciones BTL</span>
             <div class="port-card-name">Edecanes Pachuca</div>
-            <p class="port-card-desc">Sitio para agencia de talento profesional con activaciones BTL e infraestructura para eventos.</p>
+            <p class="port-card-desc" id="port-d4">Sitio para agencia de talento profesional con activaciones BTL e infraestructura para eventos.</p>
           </div>
         </a>
 
@@ -1055,12 +1059,12 @@
         <a href="https://mainoflex.mx/" target="_blank" rel="noopener" class="port-card ht">
           <div class="port-card-img-wrap">
             <img src="images/portafolio/mainoflex-screenshot.webp" alt="Mainoflex" class="port-card-img">
-            <div class="port-card-badge">Ver Proyecto →</div>
+            <div class="port-card-badge"><span data-i18n="port-badge">Ver Proyecto →</span></div>
           </div>
           <div class="port-card-info">
-            <span class="port-card-cat">Industrial · Soluciones antivibratorias</span>
+            <span class="port-card-cat" id="port-c5">Industrial · Soluciones antivibratorias</span>
             <div class="port-card-name">Mainoflex</div>
-            <p class="port-card-desc">Catálogo y tienda online para distribuidora de productos de mantenimiento industrial.</p>
+            <p class="port-card-desc" id="port-d5">Catálogo y tienda online para distribuidora de productos de mantenimiento industrial.</p>
           </div>
         </a>
 
@@ -1068,12 +1072,12 @@
         <a href="https://mytmyr.com/" target="_blank" rel="noopener" class="port-card ht">
           <div class="port-card-img-wrap">
             <img src="images/portafolio/myr-screenshot.webp" alt="Molduras y Troqueles MYR" class="port-card-img">
-            <div class="port-card-badge">Ver Proyecto →</div>
+            <div class="port-card-badge"><span data-i18n="port-badge">Ver Proyecto →</span></div>
           </div>
           <div class="port-card-info">
-            <span class="port-card-cat">Manufactura · Estanterías y exhibidores</span>
+            <span class="port-card-cat" id="port-c6">Manufactura · Estanterías y exhibidores</span>
             <div class="port-card-name">Molduras y Troqueles MYR</div>
-            <p class="port-card-desc">Tienda multimarca con sistema de inventario en tiempo real y catálogo dinámico.</p>
+            <p class="port-card-desc" id="port-d6">Tienda multimarca con sistema de inventario en tiempo real y catálogo dinámico.</p>
           </div>
         </a>
 
@@ -1081,12 +1085,12 @@
         <a href="https://patitaspeludas.mx" target="_blank" rel="noopener" class="port-card ht">
           <div class="port-card-img-wrap">
             <img src="images/portafolio/patitaspeludas-screenshot.webp" alt="Patitas Peludas" class="port-card-img">
-            <div class="port-card-badge">Ver Proyecto →</div>
+            <div class="port-card-badge"><span data-i18n="port-badge">Ver Proyecto →</span></div>
           </div>
           <div class="port-card-info">
-            <span class="port-card-cat">Tienda online · Mascotas</span>
+            <span class="port-card-cat" id="port-c7">Tienda online · Mascotas</span>
             <div class="port-card-name">Patitas Peludas</div>
-            <p class="port-card-desc">Tienda online de alta calidad para el cuidado y bienestar de mascotas.</p>
+            <p class="port-card-desc" id="port-d7">Tienda online de alta calidad para el cuidado y bienestar de mascotas.</p>
           </div>
         </a>
 
@@ -1094,12 +1098,12 @@
         <a href="https://cicap.edu.mx" target="_blank" rel="noopener" class="port-card ht">
           <div class="port-card-img-wrap">
             <img src="images/portafolio/cicap-screenshot.webp" alt="CICAP" class="port-card-img">
-            <div class="port-card-badge">Ver Proyecto →</div>
+            <div class="port-card-badge"><span data-i18n="port-badge">Ver Proyecto →</span></div>
           </div>
           <div class="port-card-info">
-            <span class="port-card-cat">Educación · Inscripciones digitales</span>
+            <span class="port-card-cat" id="port-c8">Educación · Inscripciones digitales</span>
             <div class="port-card-name">CICAP</div>
-            <p class="port-card-desc">Portal institucional para centro de investigación con gestión editorial avanzada.</p>
+            <p class="port-card-desc" id="port-d8">Portal institucional para centro de investigación con gestión editorial avanzada.</p>
           </div>
         </a>
 
@@ -1107,12 +1111,12 @@
         <a href="https://imvec.mx/" target="_blank" rel="noopener" class="port-card ht">
           <div class="port-card-img-wrap">
             <img src="images/portafolio/imvec-screenshot.webp" alt="IMVEC" class="port-card-img">
-            <div class="port-card-badge">Ver Proyecto →</div>
+            <div class="port-card-badge"><span data-i18n="port-badge">Ver Proyecto →</span></div>
           </div>
           <div class="port-card-info">
-            <span class="port-card-cat">Industrial · Fabricación metálica</span>
+            <span class="port-card-cat" id="port-c9">Industrial · Fabricación metálica</span>
             <div class="port-card-name">IMVEC</div>
-            <p class="port-card-desc">Portal empresarial con presentación institucional y gestión de proyectos activos.</p>
+            <p class="port-card-desc" id="port-d9">Portal empresarial con presentación institucional y gestión de proyectos activos.</p>
           </div>
         </a>
 
@@ -1120,12 +1124,12 @@
         <a href="https://patitasfelinas.com" target="_blank" rel="noopener" class="port-card ht">
           <div class="port-card-img-wrap">
             <img src="images/portafolio/patitasfelinas-screenshot.webp" alt="Patitas Felinas" class="port-card-img">
-            <div class="port-card-badge">Ver Proyecto →</div>
+            <div class="port-card-badge"><span data-i18n="port-badge">Ver Proyecto →</span></div>
           </div>
           <div class="port-card-info">
-            <span class="port-card-cat">Tienda online · Gatos</span>
+            <span class="port-card-cat" id="port-c10">Tienda online · Gatos</span>
             <div class="port-card-name">Patitas Felinas</div>
-            <p class="port-card-desc">E-commerce especializado en productos y accesorios premium para gatos.</p>
+            <p class="port-card-desc" id="port-d10">E-commerce especializado en productos y accesorios premium para gatos.</p>
           </div>
         </a>
 
@@ -1133,12 +1137,12 @@
         <a href="https://respiraresvivir.com" target="_blank" rel="noopener" class="port-card ht">
           <div class="port-card-img-wrap">
             <img src="images/portafolio/respiraresvivir-screenshot.webp" alt="Dr. César Salas Mártir" class="port-card-img">
-            <div class="port-card-badge">Ver Proyecto →</div>
+            <div class="port-card-badge"><span data-i18n="port-badge">Ver Proyecto →</span></div>
           </div>
           <div class="port-card-info">
-            <span class="port-card-cat">Salud · Neumología</span>
+            <span class="port-card-cat" id="port-c11">Salud · Neumología</span>
             <div class="port-card-name">Dr. César Salas Mártir</div>
-            <p class="port-card-desc">Plataforma de salud respiratoria con recursos educativos y consultas en línea.</p>
+            <p class="port-card-desc" id="port-d11">Plataforma de salud respiratoria con recursos educativos y consultas en línea.</p>
           </div>
         </a>
 
@@ -1366,6 +1370,8 @@
       </div>
     </div>
   </footer>
+
+  </div><!-- /site-wrapper -->
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -2067,6 +2073,30 @@
         'port-cta-q':     { h: '¿Tu negocio<br>aquí?' },
         'port-cta-sub':   { t: 'Únete a +150 negocios exitosos' },
         'port-cta-btn':   { t: 'Iniciar Proyecto' },
+        'port-badge':     { t: 'Ver Proyecto →' },
+        'port-c1': { t: 'Agencia · Modelos & Producción BTL' },
+        'port-d1': { t: 'Plataforma digital para agencia de modelos, edecanes y producción de eventos corporativos.' },
+        'port-c2': { t: 'Imprenta · Cotizaciones en línea' },
+        'port-d2': { t: 'Sitio corporativo para imprenta offset con cotizador de productos integrado.' },
+        'port-c3': { t: 'Automotriz · Inventario en línea' },
+        'port-d3': { t: 'Catálogo digital de vehículos con buscador avanzado y fichas técnicas detalladas.' },
+        'port-c4': { t: 'Agencia · Talento & Activaciones BTL' },
+        'port-d4': { t: 'Sitio para agencia de talento profesional con activaciones BTL e infraestructura para eventos.' },
+        'port-c5': { t: 'Industrial · Soluciones antivibratorias' },
+        'port-d5': { t: 'Catálogo y tienda online para distribuidora de productos de mantenimiento industrial.' },
+        'port-c6': { t: 'Manufactura · Estanterías y exhibidores' },
+        'port-d6': { t: 'Tienda multimarca con sistema de inventario en tiempo real y catálogo dinámico.' },
+        'port-c7': { t: 'Tienda online · Mascotas' },
+        'port-d7': { t: 'Tienda online de alta calidad para el cuidado y bienestar de mascotas.' },
+        'port-c8': { t: 'Educación · Inscripciones digitales' },
+        'port-d8': { t: 'Portal institucional para centro de investigación con gestión editorial avanzada.' },
+        'port-c9': { t: 'Industrial · Fabricación metálica' },
+        'port-d9': { t: 'Portal empresarial con presentación institucional y gestión de proyectos activos.' },
+        'port-c10': { t: 'Tienda online · Gatos' },
+        'port-d10': { t: 'E-commerce especializado en productos y accesorios premium para gatos.' },
+        'port-c11': { t: 'Salud · Neumología' },
+        'port-d11': { t: 'Plataforma de salud respiratoria con recursos educativos y consultas en línea.' },
+
         /* ── NOSOTROS */
         'nos-eyebrow': { t: 'Nosotros' },
         'nos-title':   { h: 'La agencia detrás de tu crecimiento <span class="t-lime">digital</span>' },
@@ -2165,6 +2195,30 @@
         'port-cta-q':     { h: 'Your business<br>here?' },
         'port-cta-sub':   { t: 'Join +150 successful businesses' },
         'port-cta-btn':   { t: 'Start a Project' },
+        'port-badge':     { t: 'View Project →' },
+        'port-c1': { t: 'Agency · Models & BTL Production' },
+        'port-d1': { t: 'Digital platform for modeling agency, promotional staff and corporate event production.' },
+        'port-c2': { t: 'Print Shop · Online Quoting' },
+        'port-d2': { t: 'Corporate site for offset printing with integrated product quoter.' },
+        'port-c3': { t: 'Automotive · Online Inventory' },
+        'port-d3': { t: 'Digital vehicle catalog with advanced search and detailed technical specs.' },
+        'port-c4': { t: 'Agency · Talent & BTL Activations' },
+        'port-d4': { t: 'Site for professional talent agency with BTL activations and event infrastructure.' },
+        'port-c5': { t: 'Industrial · Anti-vibration Solutions' },
+        'port-d5': { t: 'Catalog and online store for industrial maintenance products distributor.' },
+        'port-c6': { t: 'Manufacturing · Racks & Displays' },
+        'port-d6': { t: 'Multi-brand store with real-time inventory system and dynamic catalog.' },
+        'port-c7': { t: 'Online Store · Pets' },
+        'port-d7': { t: 'High-quality online store for pet care and well-being.' },
+        'port-c8': { t: 'Education · Digital Enrollment' },
+        'port-d8': { t: 'Institutional portal for research center with advanced editorial management.' },
+        'port-c9': { t: 'Industrial · Metal Fabrication' },
+        'port-d9': { t: 'Business portal with institutional presentation and active project management.' },
+        'port-c10': { t: 'Online Store · Cats' },
+        'port-d10': { t: 'Specialized e-commerce for premium cat products and accessories.' },
+        'port-c11': { t: 'Health · Pulmonology' },
+        'port-d11': { t: 'Respiratory health platform with educational resources and online consultations.' },
+
         /* ── NOSOTROS */
         'nos-eyebrow': { t: 'About Us' },
         'nos-title':   { h: 'The agency behind your <span class="t-lime">digital</span> growth' },
