@@ -751,6 +751,14 @@
     #hero3,
     #heroG,
     #heroH { display: none !important; }
+
+    /* ============================================================ LANG TOGGLE */
+    .lang-btn { font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gt); border: 1px solid var(--gb); padding: 7px 14px; background: transparent; transition: color .2s, border-color .2s; cursor: pointer; font-family: var(--fb); }
+    .lang-btn:hover { color: var(--white); border-color: rgba(255,255,255,.4); }
+    .lang-btn.active-en { color: var(--lime); border-color: var(--lime); }
+    .lang-btn-mobile { font-size: 18px; font-weight: 700; letter-spacing: .2em; color: var(--gt); background: transparent; border: 1px solid var(--gb); padding: 12px 28px; margin-top: 12px; font-family: var(--fb); cursor: pointer; transition: color .2s; }
+    .lang-btn-mobile:hover { color: var(--lime); }
+
   </style>
 </head>
 <body>
@@ -767,23 +775,25 @@
   </div>
 
   <div id="mobileNav">
-    <a href="#servicios"  onclick="closeNav()">Servicios</a>
-    <a href="#portafolio" onclick="closeNav()">Portafolio</a>
-    <a href="#nosotros"   onclick="closeNav()">Nosotros</a>
-    <a href="#precios"    onclick="closeNav()">Precios</a>
-    <a href="#contacto"   onclick="closeNav()">Contacto</a>
+    <a href="#servicios"  onclick="closeNav()" id="mnav-servicios">Servicios</a>
+    <a href="#portafolio" onclick="closeNav()" id="mnav-portafolio">Portafolio</a>
+    <a href="#nosotros"   onclick="closeNav()" id="mnav-nosotros">Nosotros</a>
+    <a href="#precios"    onclick="closeNav()" id="mnav-precios">Precios</a>
+    <a href="#contacto"   onclick="closeNav()" id="mnav-contacto">Contacto</a>
+    <button id="mnav-lang" class="lang-btn-mobile ht" onclick="toggleLang();closeNav();">EN</button>
   </div>
 
   <nav id="navbar">
     <a href="#hero" class="ht"><img src="images/svg/Cero%20Studio%20AI%20Horizontal.svg" alt="Cero Studio" class="nav-logo"></a>
     <ul class="nav-links">
-      <li><a href="#servicios"  class="ht">Servicios</a></li>
-      <li><a href="#portafolio" class="ht">Portafolio</a></li>
-      <li><a href="#nosotros"   class="ht">Nosotros</a></li>
-      <li><a href="#precios"    class="ht">Precios</a></li>
-      <li><a href="#contacto"   class="ht">Contacto</a></li>
+      <li><a href="#servicios"  class="ht" id="nav-servicios">Servicios</a></li>
+      <li><a href="#portafolio" class="ht" id="nav-portafolio">Portafolio</a></li>
+      <li><a href="#nosotros"   class="ht" id="nav-nosotros">Nosotros</a></li>
+      <li><a href="#precios"    class="ht" id="nav-precios">Precios</a></li>
+      <li><a href="#contacto"   class="ht" id="nav-contacto">Contacto</a></li>
     </ul>
-    <a href="#contacto" class="nav-cta ht">Hablemos</a>
+    <button id="langToggle" class="lang-btn ht" onclick="toggleLang()">EN</button>
+    <a href="#contacto" class="nav-cta ht" id="nav-cta">Hablemos</a>
     <div class="nav-ham ht" id="navHam" onclick="toggleNav()"><span></span><span></span><span></span></div>
   </nav>
 
@@ -813,8 +823,8 @@
       </h1>
       <p class="hero-sub" id="heroSub">Desarrollamos sitios web y tiendas online para negocios hispanos en Estados Unidos. Diseño de nivel internacional, resultados reales.</p>
       <div class="hero-actions" id="heroActions">
-        <a href="#portafolio" class="btn-primary ht">Ver Portafolio</a>
-        <a href="#contacto"   class="btn-ghost   ht">Solicitar Cotización</a>
+        <a href="#portafolio" class="btn-primary ht" id="hero-btn-portfolio">Ver Portafolio</a>
+        <a href="#contacto"   class="btn-ghost   ht" id="hero-btn-quote">Solicitar Cotización</a>
       </div>
     </div>
     <div class="hero-scroll" id="heroScroll"><span>Scroll</span><div class="scroll-line"></div></div>
@@ -903,8 +913,8 @@
   <!-- MARQUEE -->
   <div class="marquee-strip">
     <div class="marquee-track">
-      <span>Diseño Web <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Desarrollo <em>·</em> Consultoría <em>·</em> Mantenimiento <em>·</em> Identidad Visual <em>·</em></span>
-      <span>Diseño Web <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Desarrollo <em>·</em> Consultoría <em>·</em> Mantenimiento <em>·</em> Identidad Visual <em>·</em></span>
+      <span id="marquee-1">Diseño Web <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Desarrollo <em>·</em> Consultoría <em>·</em> Mantenimiento <em>·</em> Identidad Visual <em>·</em></span>
+      <span id="marquee-2">Diseño Web <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Desarrollo <em>·</em> Consultoría <em>·</em> Mantenimiento <em>·</em> Identidad Visual <em>·</em></span>
     </div>
   </div>
 
@@ -947,18 +957,18 @@
     <div class="section-inner">
       <div class="srv-header">
         <div>
-          <p class="eyebrow sr">Servicios</p>
-          <h2 class="section-title sr">Todo lo que necesitas<br>para <span class="t-outline">crecer</span> en línea</h2>
+          <p class="eyebrow sr" id="srv-eyebrow">Servicios</p>
+          <h2 class="section-title sr" id="srv-title">Todo lo que necesitas<br>para <span class="t-outline">crecer</span> en línea</h2>
         </div>
-        <p class="srv-header-desc sr">Desde el diseño hasta el lanzamiento, cubrimos cada aspecto de tu presencia digital con estándares de nivel internacional.</p>
+        <p class="srv-header-desc sr" id="srv-desc">Desde el diseño hasta el lanzamiento, cubrimos cada aspecto de tu presencia digital con estándares de nivel internacional.</p>
       </div>
       <div class="srv-grid">
-        <div class="srv-card sr ht"><span class="srv-num">01</span><h3 class="srv-title">Desarrollo Web</h3><p class="srv-desc">Sitios rápidos, modernos y optimizados que generan confianza y convierten visitantes en clientes desde el primer clic.</p></div>
-        <div class="srv-card sr ht"><span class="srv-num">02</span><h3 class="srv-title">Tiendas eCommerce</h3><p class="srv-desc">Tu negocio abierto 24/7. Tiendas online completas con pasarelas de pago, inventario y experiencia de compra fluida.</p></div>
-        <div class="srv-card sr ht"><span class="srv-num">03</span><h3 class="srv-title">Branding Digital</h3><p class="srv-desc">Identidad visual profesional que diferencia tu marca y genera la confianza que tu audiencia necesita ver.</p></div>
-        <div class="srv-card sr ht"><span class="srv-num">04</span><h3 class="srv-title">SEO & Visibilidad</h3><p class="srv-desc">Posicionamiento en Google para que tus clientes te encuentren a ti, y no a la competencia.</p></div>
-        <div class="srv-card sr ht"><span class="srv-num">05</span><h3 class="srv-title">Mantenimiento</h3><p class="srv-desc">Soporte técnico continuo, actualizaciones de seguridad y optimización para que tu sitio funcione perfecto siempre.</p></div>
-        <div class="srv-card sr ht"><span class="srv-num">06</span><h3 class="srv-title">Consultoría Digital</h3><p class="srv-desc">Estrategia digital personalizada para escalar tu negocio. Tomamos las decisiones correctas antes de escribir código.</p></div>
+        <div class="srv-card sr ht"><span class="srv-num">01</span><h3 class="srv-title" id="srv-t1">Desarrollo Web</h3><p class="srv-desc" id="srv-d1">Sitios rápidos, modernos y optimizados que generan confianza y convierten visitantes en clientes desde el primer clic.</p></div>
+        <div class="srv-card sr ht"><span class="srv-num">02</span><h3 class="srv-title" id="srv-t2">Tiendas eCommerce</h3><p class="srv-desc" id="srv-d2">Tu negocio abierto 24/7. Tiendas online completas con pasarelas de pago, inventario y experiencia de compra fluida.</p></div>
+        <div class="srv-card sr ht"><span class="srv-num">03</span><h3 class="srv-title" id="srv-t3">Branding Digital</h3><p class="srv-desc" id="srv-d3">Identidad visual profesional que diferencia tu marca y genera la confianza que tu audiencia necesita ver.</p></div>
+        <div class="srv-card sr ht"><span class="srv-num">04</span><h3 class="srv-title" id="srv-t4">SEO &amp; Visibilidad</h3><p class="srv-desc" id="srv-d4">Posicionamiento en Google para que tus clientes te encuentren a ti, y no a la competencia.</p></div>
+        <div class="srv-card sr ht"><span class="srv-num">05</span><h3 class="srv-title" id="srv-t5">Mantenimiento</h3><p class="srv-desc" id="srv-d5">Soporte técnico continuo, actualizaciones de seguridad y optimización para que tu sitio funcione perfecto siempre.</p></div>
+        <div class="srv-card sr ht"><span class="srv-num">06</span><h3 class="srv-title" id="srv-t6">Consultoría Digital</h3><p class="srv-desc" id="srv-d6">Estrategia digital personalizada para escalar tu negocio. Tomamos las decisiones correctas antes de escribir código.</p></div>
       </div>
     </div>
   </section>
@@ -968,10 +978,10 @@
     <div class="section-inner">
       <div class="port-header">
         <div>
-          <p class="eyebrow sr">Portafolio</p>
-          <h2 class="section-title sr">Proyectos que hacen<br>la <span class="t-outline">diferencia</span></h2>
+          <p class="eyebrow sr" id="port-eyebrow">Portafolio</p>
+          <h2 class="section-title sr" id="port-title">Proyectos que hacen<br>la <span class="t-outline">diferencia</span></h2>
         </div>
-        <a href="#contacto" class="btn-ghost sr ht" style="white-space:nowrap;align-self:flex-end;">Iniciar Proyecto</a>
+        <a href="#contacto" class="btn-ghost sr ht" style="white-space:nowrap;align-self:flex-end;" id="port-start-btn">Iniciar Proyecto</a>
       </div>
 
       <!-- ── 4-column uniform grid ──
@@ -1126,9 +1136,9 @@
         <!-- 12 — CTA -->
         <a href="#contacto" class="port-card port-cta ht">
           <div class="port-cta-inner">
-            <div class="port-cta-q">¿Tu negocio<br>aquí?</div>
-            <div class="port-cta-sub">Únete a +150 negocios exitosos</div>
-            <span class="port-cta-btn">Iniciar Proyecto</span>
+            <div class="port-cta-q" id="port-cta-q">¿Tu negocio<br>aquí?</div>
+            <div class="port-cta-sub" id="port-cta-sub">Únete a +150 negocios exitosos</div>
+            <span class="port-cta-btn" id="port-cta-btn">Iniciar Proyecto</span>
           </div>
 
         </a>
@@ -1146,17 +1156,17 @@
           <div class="nos-frame"></div>
         </div>
         <div>
-          <p class="eyebrow sr">Nosotros</p>
-          <h2 class="section-title sr" style="margin-bottom:32px;">La agencia detrás de tu crecimiento <span class="t-lime">digital</span></h2>
-          <p class="nos-desc sr">Somos <strong>Cero Studio</strong>, una agencia digital fundada con una misión clara: ayudar a negocios hispanos en Estados Unidos a competir y ganar en el mundo digital.<br><br>Combinamos diseño de nivel internacional con una comprensión profunda de la cultura hispana. No hacemos sitios genéricos — construimos <strong>herramientas de negocio</strong> que trabajan mientras tú descansas.</p>
+          <p class="eyebrow sr" id="nos-eyebrow">Nosotros</p>
+          <h2 class="section-title sr" style="margin-bottom:32px;" id="nos-title">La agencia detrás de tu crecimiento <span class="t-lime">digital</span></h2>
+          <p class="nos-desc sr" id="nos-desc">Somos <strong>Cero Studio</strong>, una agencia digital fundada con una misión clara: ayudar a negocios hispanos en Estados Unidos a competir y ganar en el mundo digital.<br><br>Combinamos diseño de nivel internacional con una comprensión profunda de la cultura hispana. No hacemos sitios genéricos — construimos <strong>herramientas de negocio</strong> que trabajan mientras tú descansas.</p>
           <img src="images/firma.png" alt="Firma Carlos Luque" class="nos-firma sr">
           <div class="stats-grid sr">
-            <div class="stat-item"><div class="stat-num" data-target="150" data-suffix="+">0+</div><div class="stat-label">Clientes atendidos</div></div>
-            <div class="stat-item"><div class="stat-num" data-target="25"  data-suffix="">0</div><div class="stat-label">Años de experiencia</div></div>
-            <div class="stat-item"><div class="stat-num" data-target="50"  data-suffix="+">0+</div><div class="stat-label">Proyectos entregados</div></div>
-            <div class="stat-item"><div class="stat-num" data-target="100" data-suffix="%">0%</div><div class="stat-label">Satisfacción garantizada</div></div>
+            <div class="stat-item"><div class="stat-num" data-target="150" data-suffix="+">0+</div><div class="stat-label" id="stat-l1">Clientes atendidos</div></div>
+            <div class="stat-item"><div class="stat-num" data-target="25"  data-suffix="">0</div><div class="stat-label" id="stat-l2">Años de experiencia</div></div>
+            <div class="stat-item"><div class="stat-num" data-target="50"  data-suffix="+">0+</div><div class="stat-label" id="stat-l3">Proyectos entregados</div></div>
+            <div class="stat-item"><div class="stat-num" data-target="100" data-suffix="%">0%</div><div class="stat-label" id="stat-l4">Satisfacción garantizada</div></div>
           </div>
-          <div class="sr"><a href="#contacto" class="btn-primary ht">Trabajemos Juntos</a></div>
+          <div class="sr"><a href="#contacto" class="btn-primary ht" id="nos-btn">Trabajemos Juntos</a></div>
         </div>
       </div>
     </div>
@@ -1165,8 +1175,8 @@
   <!-- ═══════════════════════════════ PROCESO ═════════════════════════════════ -->
   <section id="proceso">
     <div class="section-inner">
-      <p class="eyebrow sr">Cómo Trabajamos</p>
-      <h2 class="proc-headline sr">
+      <p class="eyebrow sr" id="proc-eyebrow">Cómo Trabajamos</p>
+      <h2 class="proc-headline sr" id="proc-headline">
         Sin sorpresas,<br><span class="t-outline">sin rodeos.</span>
       </h2>
       <div class="proc-grid">
@@ -1176,8 +1186,8 @@
             <span class="proc-num">01</span>
             <span class="proc-dash"></span>
           </div>
-          <h3 class="proc-title">Diagnóstico</h3>
-          <p class="proc-desc">Analizamos tu negocio, tu competencia y tu mercado. Identificamos exactamente qué está funcionando, qué está fallando y por qué.</p>
+          <h3 class="proc-title" id="proc-t1">Diagnóstico</h3>
+          <p class="proc-desc" id="proc-d1">Analizamos tu negocio, tu competencia y tu mercado. Identificamos exactamente qué está funcionando, qué está fallando y por qué.</p>
         </div>
 
         <div class="proc-step sr ht">
@@ -1185,8 +1195,8 @@
             <span class="proc-num">02</span>
             <span class="proc-dash"></span>
           </div>
-          <h3 class="proc-title">Estrategia</h3>
-          <p class="proc-desc">Plan a medida: qué servicios necesitas, en qué orden y con qué presupuesto para maximizar el retorno desde el primer mes.</p>
+          <h3 class="proc-title" id="proc-t2">Estrategia</h3>
+          <p class="proc-desc" id="proc-d2">Plan a medida: qué servicios necesitas, en qué orden y con qué presupuesto para maximizar el retorno desde el primer mes.</p>
         </div>
 
         <div class="proc-step sr ht">
@@ -1194,8 +1204,8 @@
             <span class="proc-num">03</span>
             <span class="proc-dash"></span>
           </div>
-          <h3 class="proc-title">Ejecución</h3>
-          <p class="proc-desc">Diseño, desarrollo, SEO y lo que haga falta. Tú apruebas, nosotros entregamos en tiempo y forma. Sin cobros sorpresa.</p>
+          <h3 class="proc-title" id="proc-t3">Ejecución</h3>
+          <p class="proc-desc" id="proc-d3">Diseño, desarrollo, SEO y lo que haga falta. Tú apruebas, nosotros entregamos en tiempo y forma. Sin cobros sorpresa.</p>
         </div>
 
         <div class="proc-step sr ht">
@@ -1203,8 +1213,8 @@
             <span class="proc-num">04</span>
             <span class="proc-dash"></span>
           </div>
-          <h3 class="proc-title">Resultados</h3>
-          <p class="proc-desc">Reportes claros cada mes: visitas, leads generados, conversiones y ventas. Sin tecnicismos — solo los números que importan a tu negocio.</p>
+          <h3 class="proc-title" id="proc-t4">Resultados</h3>
+          <p class="proc-desc" id="proc-d4">Reportes claros cada mes: visitas, leads generados, conversiones y ventas. Sin tecnicismos — solo los números que importan a tu negocio.</p>
         </div>
 
       </div>
@@ -1297,9 +1307,9 @@
     <div class="section-inner">
       <div class="contacto-grid">
         <div>
-          <p class="eyebrow sr">Contacto</p>
-          <h2 class="section-title sr" style="margin-bottom:28px;">¿Listo para el<br><span class="t-outline">siguiente</span> nivel?</h2>
-          <p class="contacto-sub sr">Cuéntanos sobre tu proyecto. Respondemos en menos de 24 horas y la primera consulta es completamente gratis.</p>
+          <p class="eyebrow sr" id="contact-eyebrow">Contacto</p>
+          <h2 class="section-title sr" style="margin-bottom:28px;" id="contact-title">¿Listo para el<br><span class="t-outline">siguiente</span> nivel?</h2>
+          <p class="contacto-sub sr" id="contact-sub">Cuéntanos sobre tu proyecto. Respondemos en menos de 24 horas y la primera consulta es completamente gratis.</p>
           <div class="contact-links sr">
             <a href="mailto:hola@cerostudio.ai" class="contact-link-row ht"><div><span class="contact-link-label">Email</span><span class="contact-link-val">hola@cerostudio.ai</span></div><span class="contact-link-arrow">→</span></a>
             <a href="https://wa.me/15551234567" target="_blank" rel="noopener" class="contact-link-row ht"><div><span class="contact-link-label">WhatsApp</span><span class="contact-link-val">+1 (555) 123-4567</span></div><span class="contact-link-arrow">→</span></a>
@@ -1335,14 +1345,14 @@
   <footer>
     <div class="footer-inner">
       <div class="footer-top">
-        <div><img src="images/svg/Cero%20Studio%20AI%20Horizontal.svg" alt="Cero Studio" class="footer-logo-img"><p class="footer-tagline">Diseñamos el futuro digital de tu negocio hispano en Estados Unidos.</p></div>
-        <div><p class="footer-col-title">Navegación</p><ul class="footer-links"><li><a href="#servicios">Servicios</a></li><li><a href="#portafolio">Portafolio</a></li><li><a href="#nosotros">Nosotros</a></li><li><a href="#proceso">Proceso</a></li><li><a href="#contacto">Contacto</a></li></ul></div>
-        <div><p class="footer-col-title">Servicios</p><ul class="footer-links"><li><a href="#servicios">Desarrollo Web</a></li><li><a href="#servicios">Tiendas eCommerce</a></li><li><a href="#servicios">Branding Digital</a></li><li><a href="#servicios">SEO & Visibilidad</a></li><li><a href="#servicios">Mantenimiento</a></li></ul></div>
-        <div><p class="footer-col-title">Contacto</p><ul class="footer-links"><li><a href="mailto:hola@cerostudio.ai">hola@cerostudio.ai</a></li><li><a href="https://instagram.com/cerostudio.ai" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://linkedin.com/company/cerostudio" target="_blank" rel="noopener">LinkedIn</a></li></ul></div>
+        <div><img src="images/svg/Cero%20Studio%20AI%20Horizontal.svg" alt="Cero Studio" class="footer-logo-img"><p class="footer-tagline" id="footer-tagline">Diseñamos el futuro digital de tu negocio hispano en Estados Unidos.</p></div>
+        <div><p class="footer-col-title" id="fcol-nav-title">Navegación</p><ul class="footer-links" id="fcol-nav-links"><li><a href="#servicios" id="fnav-srv">Servicios</a></li><li><a href="#portafolio" id="fnav-port">Portafolio</a></li><li><a href="#nosotros" id="fnav-nos">Nosotros</a></li><li><a href="#proceso" id="fnav-proc">Proceso</a></li><li><a href="#contacto" id="fnav-contact">Contacto</a></li></ul></div>
+        <div><p class="footer-col-title" id="fcol-srv-title">Servicios</p><ul class="footer-links"><li><a href="#servicios" id="fsrv-1">Desarrollo Web</a></li><li><a href="#servicios" id="fsrv-2">Tiendas eCommerce</a></li><li><a href="#servicios" id="fsrv-3">Branding Digital</a></li><li><a href="#servicios" id="fsrv-4">SEO &amp; Visibilidad</a></li><li><a href="#servicios" id="fsrv-5">Mantenimiento</a></li></ul></div>
+        <div><p class="footer-col-title" id="fcol-contact-title">Contacto</p><ul class="footer-links"><li><a href="mailto:hola@cerostudio.ai">hola@cerostudio.ai</a></li><li><a href="https://instagram.com/cerostudio.ai" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://linkedin.com/company/cerostudio" target="_blank" rel="noopener">LinkedIn</a></li></ul></div>
       </div>
       <div class="footer-bottom">
-        <p class="footer-copy">© 2025 Cero Studio. Todos los derechos reservados.</p>
-        <p class="footer-credit">Hecho con <span>♥</span> para negocios hispanos en USA</p>
+        <p class="footer-copy" id="footer-copy">© 2026 Cero Studio. Todos los derechos reservados.</p>
+        <p class="footer-credit" id="footer-credit">Hecho con <span>♥</span> para negocios hispanos en USA</p>
       </div>
     </div>
   </footer>
@@ -1399,12 +1409,16 @@
       gsap.set('.hero-title', { opacity: 1 });   /* reveal container before scramble */
       gsap.to('#heroEyebrow', { opacity: 1, duration: .8, ease: 'power2.out' });
 
-      [
-        { el: document.getElementById('scrL1'),  text: 'PRESENCIA',    delay: 200 },
-        { el: document.getElementById('scrL2a'), text: 'DIGITAL\u00A0', delay: 380 },
-        { el: document.getElementById('scrL2b'), text: 'QUE',           delay: 420 },
-        { el: document.getElementById('scrL3'),  text: 'VENDE.',        delay: 660 },
-      ].forEach(({ el, text, delay }) => setTimeout(() => new TextScramble(el).run(text), delay));
+      var _heroT = (typeof CS_HERO_TEXTS !== 'undefined' && typeof CS_LANG !== 'undefined') ? CS_HERO_TEXTS[CS_LANG] : [
+        { el: 'scrL1',  text: 'PRESENCIA',     delay: 200 },
+        { el: 'scrL2a', text: 'DIGITAL\u00A0', delay: 380 },
+        { el: 'scrL2b', text: 'QUE',           delay: 420 },
+        { el: 'scrL3',  text: 'VENDE.',        delay: 660 },
+      ];
+      _heroT.forEach(({ el, text, delay }) => {
+        var node = typeof el === 'string' ? document.getElementById(el) : el;
+        if (node) setTimeout(() => new TextScramble(node).run(text), delay);
+      });
 
       setTimeout(() => {
         gsap.to('#heroSub',     { opacity: 1, duration: .85, ease: 'power3.out' });
@@ -1993,68 +2007,303 @@
     })();
 
 
-    /* ── DETECCIÓN DE IDIOMA Y CONTENIDO BILINGÜE ─────────────────
-       Detecta el idioma del navegador al cargar el DOM.
-       Si es inglés, reemplaza los textos de la sección de precios.
-       Si es español (o cualquier otro), se queda con los textos por defecto.
-    ────────────────────────────────────────────────────────────── */
-    window.addEventListener('DOMContentLoaded', function() {
-      var lang = navigator.language.startsWith('es') ? 'es' : 'en';
-      if (lang === 'en') {
-        var g = function(id){ return document.getElementById(id); };
+    /* ══════════════════════════════════════════════════════════════
+       SISTEMA BILINGÜE — ES / EN
+       setLang(lang) aplica todas las traducciones al DOM.
+       toggleLang()  alterna y persiste en localStorage.
+       Al cargar: lee localStorage, si no existe detecta navigator.language.
+    ══════════════════════════════════════════════════════════════ */
 
-        /* Encabezado */
-        g('precios-headline').innerHTML = 'Pricing<br><em>no hidden fees.</em>';
-        g('precios-urgency').textContent = 'Available for the first 5 clients in the US only';
-        g('precios-trust-text').innerHTML = 'One-time payment. No hidden subscriptions.<br>No surprises at the end.';
+    var CS_LANG = 'es'; /* estado activo */
 
-        /* Cero Launch */
-        g('launch-old-price').textContent = 'Regular price: $499 USD';
-        g('launch-delivery').textContent = 'one-time payment · delivered in 5 business days';
-        g('launch-features').innerHTML = [
-          '<li>1 to 3 professionally designed pages</li>',
-          '<li>Responsive design — phone and desktop</li>',
-          '<li>Basic SEO configured from day one</li>',
-          '<li>Contact form included</li>',
-          '<li>Content updates handled by Cero Studio</li>'
-        ].join('');
-        g('launch-note').textContent = 'Best for: restaurants, clinics, salons, local service businesses.';
-        g('launch-cta').textContent = 'Get started →';
-
-        /* Cero Pro */
-        g('pro-badge').textContent = 'Most popular';
-        g('pro-old-price').textContent = 'Regular price: $2,500 USD';
-        g('pro-delivery').textContent = 'one-time payment · delivered in 21 business days';
-        g('pro-features').innerHTML = [
-          '<li>4 to 6 pages with international-level design</li>',
-          '<li>You edit your content — no waiting on us</li>',
-          '<li>Blog included to position you as an expert</li>',
-          '<li>Premium animations and microinteractions</li>',
-          '<li>Advanced SEO + Google Search Console</li>',
-          '<li>Google Analytics + Tag Manager setup</li>',
-          '<li>WhatsApp button integrated</li>',
-          '<li>Responsive — phone, tablet, and desktop</li>',
-          '<li>Professional contact form</li>'
-        ].join('');
-        g('pro-note').textContent = 'Best for: established businesses, independent professionals, companies ready to grow in the US.';
-        g('pro-cta').textContent = 'I want Cero Pro →';
-
-        /* Cero Premium */
-        g('premium-price-display').textContent = 'From $1,800';
-        g('premium-old-price').textContent = 'Regular price: from $4,500 USD';
-        g('premium-delivery').textContent = 'custom quote · timeline to be agreed';
-        g('premium-features').innerHTML = [
-          '<li>Everything in Cero Pro</li>',
-          '<li>Online store or advanced features</li>',
-          '<li>Digital strategy included</li>',
-          '<li>Dedicated account manager</li>'
-        ].join('');
-        g('premium-note').textContent = 'Best for: online stores, product catalogs, businesses with multiple services.';
-        g('premium-cta').textContent = 'Request a quote →';
-
-        /* Condición */
-        g('precios-condition').textContent = 'Special launch pricing. Condition: Cero Studio may feature the project in its portfolio with the business name and real results.';
+    var CS_I18N = {
+      es: {
+        /* ── LOADER */
+        'ldLbl': { t: 'Cargando' },
+        /* ── NAV */
+        'nav-servicios':  { t: 'Servicios' },
+        'nav-portafolio': { t: 'Portafolio' },
+        'nav-nosotros':   { t: 'Nosotros' },
+        'nav-precios':    { t: 'Precios' },
+        'nav-contacto':   { t: 'Contacto' },
+        'nav-cta':        { t: 'Hablemos' },
+        'mnav-servicios': { t: 'Servicios' },
+        'mnav-portafolio':{ t: 'Portafolio' },
+        'mnav-nosotros':  { t: 'Nosotros' },
+        'mnav-precios':   { t: 'Precios' },
+        'mnav-contacto':  { t: 'Contacto' },
+        /* ── HERO */
+        'heroEyebrow':     { t: 'Agencia Digital Premium · cerostudio.ai' },
+        'heroSub':         { t: 'Desarrollamos sitios web y tiendas online para negocios hispanos en Estados Unidos. Diseño de nivel internacional, resultados reales.' },
+        'hero-btn-portfolio': { t: 'Ver Portafolio' },
+        'hero-btn-quote':     { t: 'Solicitar Cotización' },
+        /* ── MARQUEE */
+        'marquee-1': { h: 'Diseño Web <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Desarrollo <em>·</em> Consultoría <em>·</em> Mantenimiento <em>·</em> Identidad Visual <em>·</em>' },
+        'marquee-2': { h: 'Diseño Web <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Desarrollo <em>·</em> Consultoría <em>·</em> Mantenimiento <em>·</em> Identidad Visual <em>·</em>' },
+        /* ── SERVICIOS */
+        'srv-eyebrow': { t: 'Servicios' },
+        'srv-title':   { h: 'Todo lo que necesitas<br>para <span class="t-outline">crecer</span> en línea' },
+        'srv-desc':    { t: 'Desde el diseño hasta el lanzamiento, cubrimos cada aspecto de tu presencia digital con estándares de nivel internacional.' },
+        'srv-t1': { t: 'Desarrollo Web' },        'srv-d1': { t: 'Sitios rápidos, modernos y optimizados que generan confianza y convierten visitantes en clientes desde el primer clic.' },
+        'srv-t2': { t: 'Tiendas eCommerce' },     'srv-d2': { t: 'Tu negocio abierto 24/7. Tiendas online completas con pasarelas de pago, inventario y experiencia de compra fluida.' },
+        'srv-t3': { t: 'Branding Digital' },      'srv-d3': { t: 'Identidad visual profesional que diferencia tu marca y genera la confianza que tu audiencia necesita ver.' },
+        'srv-t4': { t: 'SEO & Visibilidad' },     'srv-d4': { t: 'Posicionamiento en Google para que tus clientes te encuentren a ti, y no a la competencia.' },
+        'srv-t5': { t: 'Mantenimiento' },          'srv-d5': { t: 'Soporte técnico continuo, actualizaciones de seguridad y optimización para que tu sitio funcione perfecto siempre.' },
+        'srv-t6': { t: 'Consultoría Digital' },   'srv-d6': { t: 'Estrategia digital personalizada para escalar tu negocio. Tomamos las decisiones correctas antes de escribir código.' },
+        /* ── PORTAFOLIO */
+        'port-eyebrow':   { t: 'Portafolio' },
+        'port-title':     { h: 'Proyectos que hacen<br>la <span class="t-outline">diferencia</span>' },
+        'port-start-btn': { t: 'Iniciar Proyecto' },
+        'port-cta-q':     { h: '¿Tu negocio<br>aquí?' },
+        'port-cta-sub':   { t: 'Únete a +150 negocios exitosos' },
+        'port-cta-btn':   { t: 'Iniciar Proyecto' },
+        /* ── NOSOTROS */
+        'nos-eyebrow': { t: 'Nosotros' },
+        'nos-title':   { h: 'La agencia detrás de tu crecimiento <span class="t-lime">digital</span>' },
+        'nos-desc':    { h: 'Somos <strong>Cero Studio</strong>, una agencia digital fundada con una misión clara: ayudar a negocios hispanos en Estados Unidos a competir y ganar en el mundo digital.<br><br>Combinamos diseño de nivel internacional con una comprensión profunda de la cultura hispana. No hacemos sitios genéricos — construimos <strong>herramientas de negocio</strong> que trabajan mientras tú descansas.' },
+        'stat-l1': { t: 'Clientes atendidos' },
+        'stat-l2': { t: 'Años de experiencia' },
+        'stat-l3': { t: 'Proyectos entregados' },
+        'stat-l4': { t: 'Satisfacción garantizada' },
+        'nos-btn': { t: 'Trabajemos Juntos' },
+        /* ── PROCESO */
+        'proc-eyebrow':  { t: 'Cómo Trabajamos' },
+        'proc-headline': { h: 'Sin sorpresas,<br><span class="t-outline">sin rodeos.</span>' },
+        'proc-t1': { t: 'Diagnóstico' },  'proc-d1': { t: 'Analizamos tu negocio, tu competencia y tu mercado. Identificamos exactamente qué está funcionando, qué está fallando y por qué.' },
+        'proc-t2': { t: 'Estrategia' },   'proc-d2': { t: 'Plan a medida: qué servicios necesitas, en qué orden y con qué presupuesto para maximizar el retorno desde el primer mes.' },
+        'proc-t3': { t: 'Ejecución' },    'proc-d3': { t: 'Diseño, desarrollo, SEO y lo que haga falta. Tú apruebas, nosotros entregamos en tiempo y forma. Sin cobros sorpresa.' },
+        'proc-t4': { t: 'Resultados' },   'proc-d4': { t: 'Reportes claros cada mes: visitas, leads generados, conversiones y ventas. Sin tecnicismos — solo los números que importan a tu negocio.' },
+        /* ── PRECIOS */
+        'precios-headline':   { h: 'Precios<br><em>sin letra chica.</em>' },
+        'precios-urgency':    { t: 'Solo disponible para los primeros 5 clientes en USA' },
+        'precios-trust-text': { h: 'Pago único. Sin mensualidades ocultas.<br>Sin sorpresas al final.' },
+        'launch-old-price':  { t: 'Precio regular: $499 USD' },
+        'launch-delivery':   { t: 'pago único · entrega 5 días hábiles' },
+        'launch-features':   { h: '<li>1 a 3 páginas diseñadas profesionalmente</li><li>Diseño responsive — celular y computadora</li><li>SEO básico configurado desde el inicio</li><li>Formulario de contacto incluido</li><li>Cambios de contenido a través de Cero Studio</li>' },
+        'launch-note':       { t: 'Ideal para: restaurantes, consultorios, salones, servicios locales.' },
+        'launch-cta':        { t: 'Quiero empezar →' },
+        'pro-badge':         { t: 'Más solicitado' },
+        'pro-old-price':     { t: 'Precio regular: $2,500 USD' },
+        'pro-delivery':      { t: 'pago único · entrega 21 días hábiles' },
+        'pro-features':      { h: '<li>4 a 6 páginas con diseño de nivel internacional</li><li>Tú editas el contenido — sin depender de nosotros</li><li>Blog incluido para posicionarte como experto</li><li>Animaciones y microinteracciones premium</li><li>SEO avanzado + Google Search Console</li><li>Google Analytics + Tag Manager configurados</li><li>Botón de WhatsApp integrado</li><li>Responsive — celular, tablet y escritorio</li><li>Formulario de contacto profesional</li>' },
+        'pro-note':          { t: 'Ideal para: negocios establecidos, profesionales independientes, empresas listas para crecer.' },
+        'pro-cta':           { t: 'Quiero el Cero Pro →' },
+        'premium-price-display': { t: 'Desde $1,800' },
+        'premium-old-price':     { t: 'Precio regular: desde $4,500 USD' },
+        'premium-delivery':      { t: 'cotización personalizada · entrega a convenir' },
+        'premium-features':      { h: '<li>Todo lo del plan Cero Pro</li><li>Tienda en línea o funciones avanzadas</li><li>Estrategia digital incluida</li><li>Account manager dedicado</li>' },
+        'premium-note':          { t: 'Ideal para: tiendas online, catálogos de productos, negocios con múltiples servicios.' },
+        'premium-cta':           { t: 'Pedir cotización →' },
+        'precios-condition':     { t: 'Precios especiales de lanzamiento. Condición: Cero Studio publica el proyecto en su portafolio con nombre del negocio y resultados reales.' },
+        /* ── CONTACTO */
+        'contact-eyebrow': { t: 'Contacto' },
+        'contact-title':   { h: '¿Listo para el<br><span class="t-outline">siguiente</span> nivel?' },
+        'contact-sub':     { t: 'Cuéntanos sobre tu proyecto. Respondemos en menos de 24 horas y la primera consulta es completamente gratis.' },
+        'submitBtn':       { t: 'Enviar Mensaje' },
+        /* ── FOOTER */
+        'footer-tagline':      { t: 'Diseñamos el futuro digital de tu negocio hispano en Estados Unidos.' },
+        'fcol-nav-title':      { t: 'Navegación' },
+        'fcol-srv-title':      { t: 'Servicios' },
+        'fcol-contact-title':  { t: 'Contacto' },
+        'fnav-srv':   { t: 'Servicios' },   'fnav-port':    { t: 'Portafolio' },
+        'fnav-nos':   { t: 'Nosotros' },    'fnav-proc':    { t: 'Proceso' },
+        'fnav-contact':{ t: 'Contacto' },
+        'fsrv-1': { t: 'Desarrollo Web' },  'fsrv-2': { t: 'Tiendas eCommerce' },
+        'fsrv-3': { t: 'Branding Digital' },'fsrv-4': { t: 'SEO & Visibilidad' },
+        'fsrv-5': { t: 'Mantenimiento' },
+        'footer-copy':   { t: '© 2026 Cero Studio. Todos los derechos reservados.' },
+        'footer-credit': { h: 'Hecho con <span>♥</span> para negocios hispanos en USA' },
+      },
+      en: {
+        /* ── LOADER */
+        'ldLbl': { t: 'Loading' },
+        /* ── NAV */
+        'nav-servicios':  { t: 'Services' },
+        'nav-portafolio': { t: 'Portfolio' },
+        'nav-nosotros':   { t: 'About' },
+        'nav-precios':    { t: 'Pricing' },
+        'nav-contacto':   { t: 'Contact' },
+        'nav-cta':        { t: "Let's Talk" },
+        'mnav-servicios': { t: 'Services' },
+        'mnav-portafolio':{ t: 'Portfolio' },
+        'mnav-nosotros':  { t: 'About' },
+        'mnav-precios':   { t: 'Pricing' },
+        'mnav-contacto':  { t: 'Contact' },
+        /* ── HERO */
+        'heroEyebrow':     { t: 'Premium Digital Agency · cerostudio.ai' },
+        'heroSub':         { t: 'We build websites and online stores for Hispanic businesses in the United States. International-level design, real results.' },
+        'hero-btn-portfolio': { t: 'View Portfolio' },
+        'hero-btn-quote':     { t: 'Request a Quote' },
+        /* ── MARQUEE */
+        'marquee-1': { h: 'Web Design <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Development <em>·</em> Consulting <em>·</em> Maintenance <em>·</em> Visual Identity <em>·</em>' },
+        'marquee-2': { h: 'Web Design <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Development <em>·</em> Consulting <em>·</em> Maintenance <em>·</em> Visual Identity <em>·</em>' },
+        /* ── SERVICIOS */
+        'srv-eyebrow': { t: 'Services' },
+        'srv-title':   { h: 'Everything you need<br>to <span class="t-outline">grow</span> online' },
+        'srv-desc':    { t: 'From design to launch, we cover every aspect of your digital presence to international standards.' },
+        'srv-t1': { t: 'Web Development' },       'srv-d1': { t: 'Fast, modern, optimized websites that build trust and convert visitors into customers from the first click.' },
+        'srv-t2': { t: 'eCommerce Stores' },      'srv-d2': { t: 'Your business open 24/7. Complete online stores with payment gateways, inventory, and seamless shopping experience.' },
+        'srv-t3': { t: 'Digital Branding' },      'srv-d3': { t: 'Professional visual identity that sets your brand apart and builds the trust your audience needs to see.' },
+        'srv-t4': { t: 'SEO & Visibility' },      'srv-d4': { t: 'Google ranking so your customers find you — not your competition.' },
+        'srv-t5': { t: 'Maintenance' },            'srv-d5': { t: 'Continuous technical support, security updates, and optimization so your site runs perfectly at all times.' },
+        'srv-t6': { t: 'Digital Consulting' },    'srv-d6': { t: 'Personalized digital strategy to scale your business. We make the right decisions before writing a single line of code.' },
+        /* ── PORTAFOLIO */
+        'port-eyebrow':   { t: 'Portfolio' },
+        'port-title':     { h: 'Projects that make<br>a <span class="t-outline">difference</span>' },
+        'port-start-btn': { t: 'Start a Project' },
+        'port-cta-q':     { h: 'Your business<br>here?' },
+        'port-cta-sub':   { t: 'Join +150 successful businesses' },
+        'port-cta-btn':   { t: 'Start a Project' },
+        /* ── NOSOTROS */
+        'nos-eyebrow': { t: 'About Us' },
+        'nos-title':   { h: 'The agency behind your <span class="t-lime">digital</span> growth' },
+        'nos-desc':    { h: 'We are <strong>Cero Studio</strong>, a digital agency founded with a clear mission: to help Hispanic businesses in the United States compete and win in the digital world.<br><br>We combine international-level design with a deep understanding of Hispanic culture. We don't build generic sites — we build <strong>business tools</strong> that work while you rest.' },
+        'stat-l1': { t: 'Clients served' },
+        'stat-l2': { t: 'Years of experience' },
+        'stat-l3': { t: 'Projects delivered' },
+        'stat-l4': { t: 'Satisfaction guaranteed' },
+        'nos-btn': { t: "Let's Work Together" },
+        /* ── PROCESO */
+        'proc-eyebrow':  { t: 'How We Work' },
+        'proc-headline': { h: 'No surprises,<br><span class="t-outline">no detours.</span>' },
+        'proc-t1': { t: 'Discovery' },    'proc-d1': { t: 'We analyze your business, competition, and market. We identify exactly what is working, what is not, and why.' },
+        'proc-t2': { t: 'Strategy' },     'proc-d2': { t: 'A custom plan: which services you need, in what order, and with what budget to maximize returns from month one.' },
+        'proc-t3': { t: 'Execution' },    'proc-d3': { t: 'Design, development, SEO — whatever it takes. You approve, we deliver on time. No surprise charges.' },
+        'proc-t4': { t: 'Results' },      'proc-d4': { t: 'Clear monthly reports: visits, leads generated, conversions, and sales. No jargon — just the numbers that matter to your business.' },
+        /* ── PRECIOS */
+        'precios-headline':   { h: 'Pricing<br><em>no hidden fees.</em>' },
+        'precios-urgency':    { t: 'Available for the first 5 clients in the US only' },
+        'precios-trust-text': { h: 'One-time payment. No hidden subscriptions.<br>No surprises at the end.' },
+        'launch-old-price':  { t: 'Regular price: $499 USD' },
+        'launch-delivery':   { t: 'one-time payment · delivered in 5 business days' },
+        'launch-features':   { h: '<li>1 to 3 professionally designed pages</li><li>Responsive design — phone and desktop</li><li>Basic SEO configured from day one</li><li>Contact form included</li><li>Content updates handled by Cero Studio</li>' },
+        'launch-note':       { t: 'Best for: restaurants, clinics, salons, local service businesses.' },
+        'launch-cta':        { t: 'Get started →' },
+        'pro-badge':         { t: 'Most popular' },
+        'pro-old-price':     { t: 'Regular price: $2,500 USD' },
+        'pro-delivery':      { t: 'one-time payment · delivered in 21 business days' },
+        'pro-features':      { h: '<li>4 to 6 pages with international-level design</li><li>You edit your content — no waiting on us</li><li>Blog included to position you as an expert</li><li>Premium animations and microinteractions</li><li>Advanced SEO + Google Search Console</li><li>Google Analytics + Tag Manager setup</li><li>WhatsApp button integrated</li><li>Responsive — phone, tablet, and desktop</li><li>Professional contact form</li>' },
+        'pro-note':          { t: 'Best for: established businesses, independent professionals, companies ready to grow in the US.' },
+        'pro-cta':           { t: 'I want Cero Pro →' },
+        'premium-price-display': { t: 'From $1,800' },
+        'premium-old-price':     { t: 'Regular price: from $4,500 USD' },
+        'premium-delivery':      { t: 'custom quote · timeline to be agreed' },
+        'premium-features':      { h: '<li>Everything in Cero Pro</li><li>Online store or advanced features</li><li>Digital strategy included</li><li>Dedicated account manager</li>' },
+        'premium-note':          { t: 'Best for: online stores, product catalogs, businesses with multiple services.' },
+        'premium-cta':           { t: 'Request a quote →' },
+        'precios-condition':     { t: 'Special launch pricing. Condition: Cero Studio may feature the project in its portfolio with the business name and real results.' },
+        /* ── CONTACTO */
+        'contact-eyebrow': { t: 'Contact' },
+        'contact-title':   { h: 'Ready for the<br><span class="t-outline">next</span> level?' },
+        'contact-sub':     { t: 'Tell us about your project. We respond in under 24 hours and the first consultation is completely free.' },
+        'submitBtn':       { t: 'Send Message' },
+        /* ── FOOTER */
+        'footer-tagline':      { t: 'We design the digital future of your Hispanic business in the United States.' },
+        'fcol-nav-title':      { t: 'Navigation' },
+        'fcol-srv-title':      { t: 'Services' },
+        'fcol-contact-title':  { t: 'Contact' },
+        'fnav-srv':   { t: 'Services' },    'fnav-port':    { t: 'Portfolio' },
+        'fnav-nos':   { t: 'About Us' },    'fnav-proc':    { t: 'Process' },
+        'fnav-contact':{ t: 'Contact' },
+        'fsrv-1': { t: 'Web Development' }, 'fsrv-2': { t: 'eCommerce Stores' },
+        'fsrv-3': { t: 'Digital Branding' },'fsrv-4': { t: 'SEO & Visibility' },
+        'fsrv-5': { t: 'Maintenance' },
+        'footer-copy':   { t: '© 2026 Cero Studio. All rights reserved.' },
+        'footer-credit': { h: 'Made with <span>♥</span> for Hispanic businesses in the US' },
       }
+    };
+
+    /* Hero scramble texts per language */
+    var CS_HERO_TEXTS = {
+      es: [
+        { el: 'scrL1',  text: 'PRESENCIA',     delay: 200 },
+        { el: 'scrL2a', text: 'DIGITAL ',  delay: 380 },
+        { el: 'scrL2b', text: 'QUE',            delay: 420 },
+        { el: 'scrL3',  text: 'VENDE.',         delay: 660 },
+      ],
+      en: [
+        { el: 'scrL1',  text: 'DIGITAL',        delay: 200 },
+        { el: 'scrL2a', text: 'PRESENCE ', delay: 380 },
+        { el: 'scrL2b', text: 'THAT',           delay: 420 },
+        { el: 'scrL3',  text: 'SELLS.',         delay: 660 },
+      ]
+    };
+
+    /* Form placeholders + select options per language */
+    var CS_FORM = {
+      es: {
+        nombre:  'Nombre *',
+        email:   'Email *',
+        empresa: 'Empresa / Negocio',
+        servicio: '¿Qué servicio necesitas?',
+        mensaje: 'Cuéntanos sobre tu proyecto *',
+        opts: ['Desarrollo Web','Tienda eCommerce','Branding Digital','SEO & Visibilidad','Mantenimiento','Consultoría Digital','Otro']
+      },
+      en: {
+        nombre:  'Name *',
+        email:   'Email *',
+        empresa: 'Company / Business',
+        servicio: 'What service do you need?',
+        mensaje: 'Tell us about your project *',
+        opts: ['Web Development','eCommerce Store','Digital Branding','SEO & Visibility','Maintenance','Digital Consulting','Other']
+      }
+    };
+
+    function setLang(lang) {
+      CS_LANG = lang;
+      var dict = CS_I18N[lang];
+      var g = function(id) { return document.getElementById(id); };
+
+      /* Apply all text/html translations */
+      Object.keys(dict).forEach(function(id) {
+        var el = g(id);
+        if (!el) return;
+        var val = dict[id];
+        if (val.h !== undefined) el.innerHTML = val.h;
+        else el.textContent = val.t;
+      });
+
+      /* Form placeholders */
+      var form = CS_FORM[lang];
+      var f = document.getElementById('contactForm');
+      if (f) {
+        f.querySelector('[name="nombre"]').placeholder  = form.nombre;
+        f.querySelector('[name="email"]').placeholder   = form.email;
+        f.querySelector('[name="empresa"]').placeholder = form.empresa;
+        f.querySelector('[name="mensaje"]').placeholder = form.mensaje;
+        var sel = f.querySelector('[name="servicio"]');
+        if (sel) {
+          sel.options[0].text = form.servicio;
+          var vals = ['web','ecommerce','branding','seo','mantenimiento','consultoria','otro'];
+          vals.forEach(function(v, i) {
+            var opt = sel.querySelector('[value="' + v + '"]');
+            if (opt) opt.text = form.opts[i];
+          });
+        }
+      }
+
+      /* Toggle button label */
+      var btn = g('langToggle'), mbtn = g('mnav-lang');
+      if (btn)  { btn.textContent = lang === 'es' ? 'EN' : 'ES'; btn.classList.toggle('active-en', lang === 'en'); }
+      if (mbtn) { mbtn.textContent = lang === 'es' ? 'EN' : 'ES'; }
+
+      /* html lang attribute */
+      document.documentElement.lang = lang;
+
+      /* Persist */
+      try { localStorage.setItem('cs-lang', lang); } catch(e) {}
+    }
+
+    function toggleLang() {
+      setLang(CS_LANG === 'es' ? 'en' : 'es');
+    }
+
+    /* Init on DOMContentLoaded */
+    window.addEventListener('DOMContentLoaded', function() {
+      var saved = null;
+      try { saved = localStorage.getItem('cs-lang'); } catch(e) {}
+      var detected = navigator.language.startsWith('es') ? 'es' : 'en';
+      setLang(saved || detected);
     });
 
     /* ── FORM ──────────────────────────────────────────────────── */
