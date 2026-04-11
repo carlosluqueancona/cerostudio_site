@@ -945,29 +945,29 @@
         <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/MAINOFLEX -Logo_FINAL_Alto_contrste-1000px.png" alt="Mainoflex"></div>
         <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/SAMADI-Logo_horizontal_Negro-1000px.png"        alt="Samadi"></div>
         <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/CICAP-Logo_Negro-1000px.png"                    alt="CICAP"></div>
-        <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/PF-Logo_NEGRO-1000px.png"                       alt="Patitas Felinas"></div>
+        <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/PF-Logo_NEGRO.webp"                       alt="Patitas Felinas"></div>
         <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Impresiones2M_NEGRO.png"                        alt="Impresiones 2M"></div>
         <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/KARUM_Logo@4x.png"                              alt="Karum"></div>
         <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Neurotica_FM.png"                               alt="Neurotica FM"></div>
-        <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Salvaxe-1500px.png"                             alt="Salvaxe"></div>
+        <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Salvaxe.webp"                             alt="Salvaxe"></div>
         <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/trion-blanco2.png"                              alt="Trion"></div>
         <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Capital_Pirata.png"                             alt="Capital Pirata"></div>
         <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Edecanes_Pachuca_Logo_vertical_path.png"        alt="Edecanes Pachuca"></div>
-        <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/PP_Logo-NEGRO-1000px.png"                       alt="Patitas Peludas"></div>
+        <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/PP_Logo-NEGRO.webp"                       alt="Patitas Peludas"></div>
       </div>
       <div class="ticker-group">
         <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/MAINOFLEX -Logo_FINAL_Alto_contrste-1000px.png" alt="Mainoflex"></div>
         <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/SAMADI-Logo_horizontal_Negro-1000px.png"        alt="Samadi"></div>
         <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/CICAP-Logo_Negro-1000px.png"                    alt="CICAP"></div>
-        <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/PF-Logo_NEGRO-1000px.png"                       alt="Patitas Felinas"></div>
+        <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/PF-Logo_NEGRO.webp"                       alt="Patitas Felinas"></div>
         <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Impresiones2M_NEGRO.png"                        alt="Impresiones 2M"></div>
         <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/KARUM_Logo@4x.png"                              alt="Karum"></div>
         <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Neurotica_FM.png"                               alt="Neurotica FM"></div>
-        <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Salvaxe-1500px.png"                             alt="Salvaxe"></div>
+        <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Salvaxe.webp"                             alt="Salvaxe"></div>
         <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/trion-blanco2.png"                              alt="Trion"></div>
         <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Capital_Pirata.png"                             alt="Capital Pirata"></div>
         <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Edecanes_Pachuca_Logo_vertical_path.png"        alt="Edecanes Pachuca"></div>
-        <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/PP_Logo-NEGRO-1000px.png"                       alt="Patitas Peludas"></div>
+        <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/PP_Logo-NEGRO.webp"                       alt="Patitas Peludas"></div>
       </div>
     </div>
   </div>
@@ -1380,10 +1380,11 @@
 
   </div><!-- /site-wrapper -->
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
   <script>
+    document.addEventListener('DOMContentLoaded', function() {
     gsap.registerPlugin(ScrollTrigger);
 
     /* ── TEXT SCRAMBLE ─────────────────────────────────────────── */
@@ -1578,8 +1579,8 @@
       ];
 
       function resize() {
-        W = canvas.width  = canvas.offsetWidth  || window.innerWidth;
-        H = canvas.height = canvas.offsetHeight || window.innerHeight;
+        W = canvas.width  = window.innerWidth;
+        H = canvas.height = window.innerHeight;
         STEPS = W < 768 ? 100 : 200;
         STEP  = W < 768 ? 8 : 5;
       }
@@ -1685,8 +1686,8 @@
       ];
 
       function resize() {
-        W = canvas.width  = canvas.offsetWidth  || window.innerWidth;
-        H = canvas.height = canvas.offsetHeight || window.innerHeight;
+        W = canvas.width  = window.innerWidth;
+        H = canvas.height = window.innerHeight;
       }
 
       function buildSeeds() {
@@ -1808,9 +1809,8 @@
       const MAX = 340;
 
       function resize() {
-        const r = canvas.parentElement.getBoundingClientRect();
-        W = canvas.width  = Math.round(r.width)  || window.innerWidth;
-        H = canvas.height = Math.round(r.height) || window.innerHeight;
+        W = canvas.width  = window.innerWidth;
+        H = canvas.height = window.innerHeight;
         _fav = null; // invalidate cached transform
       }
 
@@ -1983,8 +1983,8 @@
       const ctx = canvas.getContext('2d');
 
       function resize(){
-        canvas.width  = canvas.parentElement.offsetWidth  || window.innerWidth;
-        canvas.height = canvas.parentElement.offsetHeight || window.innerHeight;
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
       }
 
       // Layered sine noise field
@@ -2443,6 +2443,13 @@
         }, 3500);
       }, 1400);
     }
+
+    // Expose needed functions to global scope for inline event listeners
+    window.toggleNav = toggleNav;
+    window.closeNav = closeNav;
+    window.toggleLang = toggleLang;
+    window.handleSubmit = handleSubmit;
+    }); // end DOMContentLoaded
   </script>
 
   <!-- WhatsApp Float -->
