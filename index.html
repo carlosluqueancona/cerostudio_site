@@ -890,6 +890,7 @@
       <h2 class="hero-static-title">
         <span class="hero-line"><span data-hero-line="scrL1">PRESENCIA</span></span>
         <span class="hero-line"><span data-hero-line="scrL2a">DIGITAL&nbsp;</span><span class="t-outline" data-hero-line="scrL2b">QUE</span></span>
+        <span class="hero-line" id="heroLine3b" style="display:none"><span class="t-outline" data-hero-line="scrL3b" id="scrL3b"></span></span>
         <span class="hero-line"><span class="t-lime" data-hero-line="scrL3">VENDE.</span></span>
       </h2>
       <p class="hero-static-sub" id="heroSub">Desarrollamos sitios web y tiendas online para emprendedores y negocios. Diseño de nivel internacional, resultados reales.</p>
@@ -2341,16 +2342,18 @@
     /* Hero scramble texts per language */
     var CS_HERO_TEXTS = {
       es: [
-        { el: 'scrL1',  text: 'PRESENCIA',     delay: 200 },
-        { el: 'scrL2a', text: 'DIGITAL ',  delay: 380 },
-        { el: 'scrL2b', text: 'QUE',            delay: 420 },
-        { el: 'scrL3',  text: 'VENDE.',         delay: 660 },
+        { el: 'scrL1',  text: 'PRESENCIA',  delay: 200 },
+        { el: 'scrL2a', text: 'DIGITAL ', delay: 380 },
+        { el: 'scrL2b', text: 'QUE',        delay: 420 },
+        { el: 'scrL3b', text: '',           delay: 0   },
+        { el: 'scrL3',  text: 'VENDE.',     delay: 660 },
       ],
       en: [
-        { el: 'scrL1',  text: 'DIGITAL',        delay: 200 },
-        { el: 'scrL2a', text: 'PRESENCE',       delay: 380 },
-        { el: 'scrL2b', text: '',               delay: 420 },
-        { el: 'scrL3',  text: 'THAT SELLS.',    delay: 560 },
+        { el: 'scrL1',  text: 'DIGITAL',    delay: 200 },
+        { el: 'scrL2a', text: 'PRESENCE',   delay: 380 },
+        { el: 'scrL2b', text: '',           delay: 0   },
+        { el: 'scrL3b', text: 'THAT',       delay: 480 },
+        { el: 'scrL3',  text: 'SELLS.',     delay: 660 },
       ]
     };
 
@@ -2400,6 +2403,10 @@
           document.querySelectorAll('[data-hero-line="' + item.el + '"]').forEach(sync);
         });
       }
+
+      /* Mostrar/ocultar línea "THAT" (solo en inglés) */
+      var line3b = document.getElementById('heroLine3b');
+      if (line3b) line3b.style.display = (lang === 'en') ? 'block' : 'none';
 
       /* Form placeholders */
       var form = CS_FORM[lang];
