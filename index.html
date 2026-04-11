@@ -8,7 +8,8 @@
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"></noscript>
   <style>
     /* ============================================================ RESET */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1600,16 +1601,18 @@
         }
       }
 
+      let currentPoles = [];
+
       function field(x, y) {
         let fx = 0, fy = 0;
-        for (const p of poles) {
-          const px = p.fx * W + Math.sin(t * .8 + p.fy * 5) * 70;
-          const py = p.fy * H + Math.cos(t * .6 + p.fx * 5) * 60;
-          const dx = x - px, dy = y - py;
+        for (let i = 0; i < currentPoles.length; i++) {
+          const p = currentPoles[i];
+          const dx = x - p.px, dy = y - p.py;
           const d2 = dx*dx + dy*dy;
           const d  = Math.sqrt(d2) + 1;
-          fx += p.q * dx / (d2 * .0008 + d);
-          fy += p.q * dy / (d2 * .0008 + d);
+          const force = p.q / (d2 * .0008 + d);
+          fx += dx * force;
+          fy += dy * force;
         }
         const mag = Math.sqrt(fx*fx + fy*fy) + .0001;
         return { vx: fx / mag, vy: fy / mag };
@@ -1622,6 +1625,12 @@
         ctx.clearRect(0, 0, W, H);
         ctx.globalCompositeOperation = 'lighter';
         t += .004;
+
+        currentPoles = poles.map(p => ({
+          px: p.fx * W + Math.sin(t * .8 + p.fy * 5) * 70,
+          py: p.fy * H + Math.cos(t * .6 + p.fx * 5) * 60,
+          q: p.q
+        }));
 
         for (const seed of seeds) {
           let x = seed.x + Math.sin(t * .5 + seed.x * .002) * 35;
@@ -1718,17 +1727,18 @@
         }
       }
 
+      let currentPoles = [];
+
       function field(x, y) {
         let fx = 0, fy = 0;
-        for (const p of poles) {
-          // Poles orbit faster than hero3 (.008 t mult vs .008)
-          const px = p.fx * W + Math.sin(t * 1.1 + p.fy * 5) * 85;
-          const py = p.fy * H + Math.cos(t * .85 + p.fx * 5) * 72;
-          const dx = x - px, dy = y - py;
+        for (let i = 0; i < currentPoles.length; i++) {
+          const p = currentPoles[i];
+          const dx = x - p.px, dy = y - p.py;
           const d2 = dx*dx + dy*dy;
           const d  = Math.sqrt(d2) + 1;
-          fx += p.q * dx / (d2 * .0008 + d);
-          fy += p.q * dy / (d2 * .0008 + d);
+          const force = p.q / (d2 * .0008 + d);
+          fx += dx * force;
+          fy += dy * force;
         }
         const mag = Math.sqrt(fx*fx + fy*fy) + .0001;
         return { vx: fx / mag, vy: fy / mag };
@@ -1739,6 +1749,12 @@
         ctx.clearRect(0, 0, W, H);
         ctx.globalCompositeOperation = 'lighter';
         t += .0085;  // ~2× faster time than hero3 (.004)
+
+        currentPoles = poles.map(p => ({
+          px: p.fx * W + Math.sin(t * 1.1 + p.fy * 5) * 85,
+          py: p.fy * H + Math.cos(t * .85 + p.fx * 5) * 72,
+          q: p.q
+        }));
 
         for (const seed of seeds) {
           const drift = t * seed.driftSpd;
