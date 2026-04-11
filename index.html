@@ -143,7 +143,7 @@
     .scramble-char { color: var(--lime); opacity: .55; }
     .t-lime { color: var(--lime); }
 
-    .hero-sub { font-size: clamp(15px,1.3vw,18px); font-weight: 300; color: var(--gt); max-width: 500px; line-height: 1.75; margin-bottom: 52px; opacity: 0; }
+    .hero-sub { font-size: clamp(15px,1.3vw,18px); font-weight: 400; color: rgba(255,255,255,.85); max-width: 500px; line-height: 1.75; margin-bottom: 52px; opacity: 0; }
     .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; opacity: 0; }
 
     .hero-scroll { position: absolute; bottom: 44px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 10px; opacity: 0; z-index: 1; }
@@ -197,7 +197,7 @@
     .hero-static-eyebrow { display: inline-flex; align-items: center; gap: 12px; font-size: 10px; font-weight: 400; letter-spacing: .4em; text-transform: uppercase; color: var(--lime); margin-bottom: 36px; }
     .hero-static-eyebrow::before { content: ''; display: block; width: 36px; height: 1px; background: var(--lime); flex-shrink: 0; }
     .hero-static-title { font-family: var(--fd); font-size: clamp(68px,10.5vw,160px); font-weight: 900; line-height: .9; letter-spacing: -.01em; text-transform: uppercase; margin-bottom: 48px; }
-    .hero-static-sub { font-size: clamp(15px,1.3vw,18px); font-weight: 300; color: var(--gt); max-width: 500px; line-height: 1.75; margin-bottom: 52px; }
+    .hero-static-sub { font-size: clamp(15px,1.3vw,18px); font-weight: 400; color: rgba(255,255,255,.85); max-width: 500px; line-height: 1.75; margin-bottom: 52px; }
     .hero-static-actions { display: flex; gap: 14px; flex-wrap: wrap; }
 
     /* ============================================================ BUTTONS */
@@ -603,7 +603,7 @@
       font-weight: 700;
       letter-spacing: 0;
     }
-    .plan-price span {
+    .plan-price span, .plan-custom span {
       font-family: var(--fb);
       font-size: 14px;
       font-weight: 400;
@@ -841,7 +841,7 @@
         <span class="hero-line"><span class="scr" id="scrL2a">DIGITAL&nbsp;</span><span class="scr t-outline" id="scrL2b">QUE</span></span>
         <span class="hero-line"><span class="scr t-lime" id="scrL3">VENDE.</span></span>
       </h1>
-      <p class="hero-sub" data-i18n="heroSub">Desarrollamos sitios web y tiendas online para emprendedores y negocios en Estados Unidos. Diseño de nivel internacional, resultados reales.</p>
+      <p class="hero-sub" data-i18n="heroSub">Desarrollamos sitios web y tiendas online para emprendedores y negocios. Diseño de nivel internacional, resultados reales.</p>
       <div class="hero-actions">
         <a href="#portafolio" class="btn-primary ht" data-i18n="hero-btn-portfolio">Ver Portafolio</a>
         <a href="#contacto"   class="btn-ghost   ht" data-i18n="hero-btn-quote">Solicitar Cotización</a>
@@ -862,7 +862,7 @@
         <span class="hero-line"><span data-hero-line="scrL2a">DIGITAL&nbsp;</span><span class="t-outline" data-hero-line="scrL2b">QUE</span></span>
         <span class="hero-line"><span class="t-lime" data-hero-line="scrL3">VENDE.</span></span>
       </h2>
-      <p class="hero-static-sub" data-i18n="heroSub">Desarrollamos sitios web y tiendas online para emprendedores y negocios en Estados Unidos. Diseño de nivel internacional, resultados reales.</p>
+      <p class="hero-static-sub" data-i18n="heroSub">Desarrollamos sitios web y tiendas online para emprendedores y negocios. Diseño de nivel internacional, resultados reales.</p>
       <div class="hero-static-actions">
         <a href="#portafolio" class="btn-primary ht" data-i18n="hero-btn-portfolio">Ver Portafolio</a>
         <a href="#contacto"   class="btn-ghost   ht" data-i18n="hero-btn-quote">Solicitar Cotización</a>
@@ -882,7 +882,7 @@
         <span class="hero-line"><span data-hero-line="scrL2a">DIGITAL&nbsp;</span><span class="t-outline" data-hero-line="scrL2b">QUE</span></span>
         <span class="hero-line"><span class="t-lime" data-hero-line="scrL3">VENDE.</span></span>
       </h2>
-      <p class="hero-static-sub" id="heroSub">Desarrollamos sitios web y tiendas online para emprendedores y negocios en Estados Unidos. Diseño de nivel internacional, resultados reales.</p>
+      <p class="hero-static-sub" id="heroSub">Desarrollamos sitios web y tiendas online para emprendedores y negocios. Diseño de nivel internacional, resultados reales.</p>
       <div class="hero-static-actions" id="heroActions">
         <a href="#portafolio" class="btn-primary ht" id="hero-btn-portfolio">Ver Portafolio</a>
         <a href="#contacto"   class="btn-ghost   ht" id="hero-btn-quote">Solicitar Cotización</a>
@@ -900,7 +900,7 @@
         <span class="hero-line"><span data-hero-line="scrL2a">DIGITAL&nbsp;</span><span class="t-outline" data-hero-line="scrL2b">QUE</span></span>
         <span class="hero-line"><span class="t-lime" data-hero-line="scrL3">VENDE.</span></span>
       </h2>
-      <p class="hero-static-sub" data-i18n="heroSub">Desarrollamos sitios web y tiendas online para emprendedores y negocios en Estados Unidos. Diseño de nivel internacional, resultados reales.</p>
+      <p class="hero-static-sub" data-i18n="heroSub">Desarrollamos sitios web y tiendas online para emprendedores y negocios. Diseño de nivel internacional, resultados reales.</p>
       <div class="hero-static-actions">
         <a href="#portafolio" class="btn-primary ht" data-i18n="hero-btn-portfolio">Ver Portafolio</a>
         <a href="#contacto"   class="btn-ghost   ht" data-i18n="hero-btn-quote">Solicitar Cotización</a>
@@ -920,7 +920,7 @@
         <span class="hero-line"><span data-hero-line="scrL2a">DIGITAL&nbsp;</span><span class="t-outline" data-hero-line="scrL2b">QUE</span></span>
         <span class="hero-line"><span class="t-lime" data-hero-line="scrL3">VENDE.</span></span>
       </h2>
-      <p class="hero-static-sub" data-i18n="heroSub">Desarrollamos sitios web y tiendas online para emprendedores y negocios en Estados Unidos. Diseño de nivel internacional, resultados reales.</p>
+      <p class="hero-static-sub" data-i18n="heroSub">Desarrollamos sitios web y tiendas online para emprendedores y negocios. Diseño de nivel internacional, resultados reales.</p>
       <div class="hero-static-actions">
         <a href="#portafolio" class="btn-primary ht" data-i18n="hero-btn-portfolio">Ver Portafolio</a>
         <a href="#contacto"   class="btn-ghost   ht" data-i18n="hero-btn-quote">Solicitar Cotización</a>
@@ -1178,7 +1178,7 @@
         <div>
           <p class="eyebrow sr" id="nos-eyebrow">Nosotros</p>
           <h2 class="section-title sr" style="margin-bottom:32px;" id="nos-title">La agencia detrás de tu crecimiento <span class="t-lime">digital</span></h2>
-          <p class="nos-desc sr" id="nos-desc">Somos <strong>Cero Studio</strong>, una agencia digital fundada con una misión clara: ayudar a emprendedores y negocios en Estados Unidos a competir y ganar en el mundo digital.<br><br>Combinamos diseño de nivel internacional con una comprensión profunda de las necesidades del mercado multicultural. No hacemos sitios genéricos — construimos <strong>herramientas de negocio</strong> que trabajan mientras tú descansas.</p>
+          <p class="nos-desc sr" id="nos-desc">Somos <strong>Cero Studio</strong>, una agencia digital fundada con una misión clara: ayudar a emprendedores y negocios a competir y ganar en el mundo digital.<br><br>Combinamos diseño de nivel internacional con una comprensión profunda de las necesidades del mercado multicultural. No hacemos sitios genéricos — construimos <strong>herramientas de negocio</strong> que trabajan mientras tú descansas.</p>
           <img src="images/firma.png" alt="Firma Carlos Luque" class="nos-firma sr">
           <div class="stats-grid sr">
             <div class="stat-item"><div class="stat-num" data-target="150" data-suffix="+">0+</div><div class="stat-label" id="stat-l1">Clientes atendidos</div></div>
@@ -1248,7 +1248,7 @@
       <div class="precios-top sr">
         <div>
           <h2 class="precios-headline" id="precios-headline">Precios<br><em>sin letra chica.</em></h2>
-          <p style="font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--lime);margin-top:18px;" id="precios-urgency">Solo disponible para los primeros 5 clientes en USA</p>
+          <p style="font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--lime);margin-top:18px;" id="precios-urgency">Solo disponible para los primeros 5 clientes del mes</p>
         </div>
         <div class="precios-trust">
           <p id="precios-trust-text">Pago único. Sin mensualidades ocultas.<br>Sin sorpresas al final.</p>
@@ -1299,7 +1299,7 @@
         <!-- CERO PREMIUM -->
         <div class="plan-card sr">
           <p class="plan-name" id="premium-name">Cero Premium</p>
-          <div class="plan-custom" id="premium-price-display">Desde $1,800</div>
+          <div class="plan-custom" id="premium-price-display">Desde $1,800<span>USD</span></div>
           <p style="font-size:11px;color:var(--gt);text-decoration:line-through;margin-bottom:4px;" id="premium-old-price">Precio regular: desde $4,500 USD</p>
           <p class="plan-delivery" id="premium-delivery">cotización personalizada · entrega a convenir</p>
           <ul class="plan-features" id="premium-features">
@@ -1365,14 +1365,14 @@
   <footer>
     <div class="footer-inner">
       <div class="footer-top">
-        <div><img src="images/svg/Cero_Studio_AI.svg" alt="Cero Studio" class="footer-logo-img"><p class="footer-tagline" id="footer-tagline">Diseñamos el futuro digital de tu negocio en Estados Unidos.</p></div>
+        <div><img src="images/svg/Cero_Studio_AI.svg" alt="Cero Studio" class="footer-logo-img"><p class="footer-tagline" id="footer-tagline">Diseñamos el futuro digital de tu negocio.</p></div>
         <div><p class="footer-col-title" id="fcol-nav-title">Navegación</p><ul class="footer-links" id="fcol-nav-links"><li><a href="#servicios" id="fnav-srv">Servicios</a></li><li><a href="#portafolio" id="fnav-port">Portafolio</a></li><li><a href="#nosotros" id="fnav-nos">Nosotros</a></li><li><a href="#proceso" id="fnav-proc">Proceso</a></li><li><a href="#contacto" id="fnav-contact">Contacto</a></li></ul></div>
         <div><p class="footer-col-title" id="fcol-srv-title">Servicios</p><ul class="footer-links"><li><a href="#servicios" id="fsrv-1">Desarrollo Web</a></li><li><a href="#servicios" id="fsrv-2">Tiendas eCommerce</a></li><li><a href="#servicios" id="fsrv-3">Branding Digital</a></li><li><a href="#servicios" id="fsrv-4">SEO &amp; Visibilidad</a></li><li><a href="#servicios" id="fsrv-5">Mantenimiento</a></li></ul></div>
         <div><p class="footer-col-title" id="fcol-contact-title">Contacto</p><ul class="footer-links"><li><a href="mailto:hola@cerostudio.ai">hola@cerostudio.ai</a></li><li><a href="https://instagram.com/cerostudio.ai" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://linkedin.com/company/cerostudio" target="_blank" rel="noopener">LinkedIn</a></li></ul></div>
       </div>
       <div class="footer-bottom">
         <p class="footer-copy" id="footer-copy">© 2026 Cero Studio. Todos los derechos reservados.</p>
-        <p class="footer-credit" id="footer-credit">Hecho con <span>♥</span> para emprendedores en USA</p>
+        <p class="footer-credit" id="footer-credit">Hecho con <span>♥</span> para emprendedores</p>
       </div>
     </div>
   </footer>
@@ -2056,7 +2056,7 @@
         'mnav-contacto':  { t: 'Contacto' },
         /* ── HERO */
         'heroEyebrow':     { t: 'Agencia Digital Premium · cerostudio.ai' },
-        'heroSub':         { t: 'Desarrollamos sitios web y tiendas online para emprendedores y negocios en Estados Unidos. Diseño de nivel internacional, resultados reales.' },
+        'heroSub':         { t: 'Desarrollamos sitios web y tiendas online para emprendedores y negocios. Diseño de nivel internacional, resultados reales.' },
         'hero-btn-portfolio': { t: 'Ver Portafolio' },
         'hero-btn-quote':     { t: 'Solicitar Cotización' },
         /* ── MARQUEE */
@@ -2106,7 +2106,7 @@
         /* ── NOSOTROS */
         'nos-eyebrow': { t: 'Nosotros' },
         'nos-title':   { h: 'La agencia detrás de tu crecimiento <span class="t-lime">digital</span>' },
-        'nos-desc':    { h: 'Somos <strong>Cero Studio</strong>, una agencia digital fundada con una misión clara: ayudar a emprendedores y negocios en Estados Unidos a competir y ganar en el mundo digital.<br><br>Combinamos diseño de nivel internacional con una comprensión profunda de las necesidades del mercado multicultural. No hacemos sitios genéricos — construimos <strong>herramientas de negocio</strong> que trabajan mientras tú descansas.' },
+        'nos-desc':    { h: 'Somos <strong>Cero Studio</strong>, una agencia digital fundada con una misión clara: ayudar a emprendedores y negocios a competir y ganar en el mundo digital.<br><br>Combinamos diseño de nivel internacional con una comprensión profunda de las necesidades del mercado multicultural. No hacemos sitios genéricos — construimos <strong>herramientas de negocio</strong> que trabajan mientras tú descansas.' },
         'stat-l1': { t: 'Clientes atendidos' },
         'stat-l2': { t: 'Años de experiencia' },
         'stat-l3': { t: 'Proyectos entregados' },
@@ -2122,7 +2122,7 @@
         'proc-t4': { t: 'Resultados' },   'proc-d4': { t: 'Reportes claros cada mes: visitas, leads generados, conversiones y ventas. Sin tecnicismos — solo los números que importan a tu negocio.' },
         /* ── PRECIOS */
         'precios-headline':   { h: 'Precios<br><em>sin letra chica.</em>' },
-        'precios-urgency':    { t: 'Solo disponible para los primeros 5 clientes en USA' },
+        'precios-urgency':    { t: 'Solo disponible para los primeros 5 clientes del mes' },
         'precios-trust-text': { h: 'Pago único. Sin mensualidades ocultas.<br>Sin sorpresas al final.' },
         'launch-old-price':  { t: 'Precio regular: $499 USD' },
         'launch-delivery':   { t: 'pago único · entrega 5 días hábiles' },
@@ -2135,7 +2135,7 @@
         'pro-features':      { h: '<li>4 a 6 páginas con diseño de nivel internacional</li><li>Tú editas el contenido — sin depender de nosotros</li><li>Blog incluido para posicionarte como experto</li><li>Animaciones y microinteracciones premium</li><li>SEO avanzado + Google Search Console</li><li>Google Analytics + Tag Manager configurados</li><li>Botón de WhatsApp integrado</li><li>Responsive — celular, tablet y escritorio</li><li>Formulario de contacto profesional</li>' },
         'pro-note':          { t: 'Ideal para: negocios establecidos, profesionales independientes, empresas listas para crecer.' },
         'pro-cta':           { t: 'Quiero el Cero Pro →' },
-        'premium-price-display': { t: 'Desde $1,800' },
+        'premium-price-display': { h: 'Desde $1,800<span>USD</span>' },
         'premium-old-price':     { t: 'Precio regular: desde $4,500 USD' },
         'premium-delivery':      { t: 'cotización personalizada · entrega a convenir' },
         'premium-features':      { h: '<li>Todo lo del plan Cero Pro</li><li>Tienda en línea o funciones avanzadas</li><li>Estrategia digital incluida</li><li>Account manager dedicado</li>' },
@@ -2148,7 +2148,7 @@
         'contact-sub':     { t: 'Cuéntanos sobre tu proyecto. Respondemos en menos de 24 horas y la primera consulta es completamente gratis.' },
         'submitBtn':       { t: 'Enviar Mensaje' },
         /* ── FOOTER */
-        'footer-tagline':      { t: 'Diseñamos el futuro digital de tu negocio en Estados Unidos.' },
+        'footer-tagline':      { t: 'Diseñamos el futuro digital de tu negocio.' },
         'fcol-nav-title':      { t: 'Navegación' },
         'fcol-srv-title':      { t: 'Servicios' },
         'fcol-contact-title':  { t: 'Contacto' },
@@ -2159,7 +2159,7 @@
         'fsrv-3': { t: 'Branding Digital' },'fsrv-4': { t: 'SEO & Visibilidad' },
         'fsrv-5': { t: 'Mantenimiento' },
         'footer-copy':   { t: '© 2026 Cero Studio. Todos los derechos reservados.' },
-        'footer-credit': { h: 'Hecho con <span>♥</span> para emprendedores en USA' },
+        'footer-credit': { h: 'Hecho con <span>♥</span> para emprendedores' },
       },
       en: {
         /* ── LOADER */
@@ -2178,7 +2178,7 @@
         'mnav-contacto':  { t: 'Contact' },
         /* ── HERO */
         'heroEyebrow':     { t: 'Premium Digital Agency · cerostudio.ai' },
-        'heroSub':         { t: 'We build websites and online stores for entrepreneurs and businesses in the United States. International-level design, real results.' },
+        'heroSub':         { t: 'We build websites and online stores for entrepreneurs and businesses. International-level design, real results.' },
         'hero-btn-portfolio': { t: 'View Portfolio' },
         'hero-btn-quote':     { t: 'Request a Quote' },
         /* ── MARQUEE */
@@ -2228,7 +2228,7 @@
         /* ── NOSOTROS */
         'nos-eyebrow': { t: 'About Us' },
         'nos-title':   { h: 'The agency behind your <span class="t-lime">digital</span> growth' },
-        'nos-desc':    { h: "We are <strong>Cero Studio</strong>, a digital agency founded with a clear mission: to help entrepreneurs and businesses in the United States compete and win in the digital world.<br><br>We combine international-level design with a deep understanding of the multicultural and bilingual market. We don't build generic sites — we build <strong>business tools</strong> that work while you rest." },
+        'nos-desc':    { h: "We are <strong>Cero Studio</strong>, a digital agency founded with a clear mission: to help entrepreneurs and businesses compete and win in the digital world.<br><br>We combine international-level design with a deep understanding of the multicultural and bilingual market. We don't build generic sites — we build <strong>business tools</strong> that work while you rest." },
         'stat-l1': { t: 'Clients served' },
         'stat-l2': { t: 'Years of experience' },
         'stat-l3': { t: 'Projects delivered' },
@@ -2257,7 +2257,7 @@
         'pro-features':      { h: '<li>4 to 6 pages with international-level design</li><li>You edit your content — no waiting on us</li><li>Blog included to position you as an expert</li><li>Premium animations and microinteractions</li><li>Advanced SEO + Google Search Console</li><li>Google Analytics + Tag Manager setup</li><li>WhatsApp button integrated</li><li>Responsive — phone, tablet, and desktop</li><li>Professional contact form</li>' },
         'pro-note':          { t: 'Best for: established businesses, independent professionals, companies ready to grow in the US.' },
         'pro-cta':           { t: 'I want Cero Pro →' },
-        'premium-price-display': { t: 'From $1,800' },
+        'premium-price-display': { h: 'From $1,800<span>USD</span>' },
         'premium-old-price':     { t: 'Regular price: from $4,500 USD' },
         'premium-delivery':      { t: 'custom quote · timeline to be agreed' },
         'premium-features':      { h: '<li>Everything in Cero Pro</li><li>Online store or advanced features</li><li>Digital strategy included</li><li>Dedicated account manager</li>' },
@@ -2270,7 +2270,7 @@
         'contact-sub':     { t: 'Tell us about your project. We respond in under 24 hours and the first consultation is completely free.' },
         'submitBtn':       { t: 'Send Message' },
         /* ── FOOTER */
-        'footer-tagline':      { t: 'We design the digital future of your business in the United States.' },
+        'footer-tagline':      { t: 'We design the digital future of your business.' },
         'fcol-nav-title':      { t: 'Navigation' },
         'fcol-srv-title':      { t: 'Services' },
         'fcol-contact-title':  { t: 'Contact' },
@@ -2387,7 +2387,8 @@
     window.addEventListener('DOMContentLoaded', function() {
       var saved = null;
       try { saved = localStorage.getItem('cs-lang'); } catch(e) {}
-      var detected = navigator.language.startsWith('es') ? 'es' : 'en';
+      var navLang = navigator.language || navigator.userLanguage || '';
+      var detected = navLang.toLowerCase().startsWith('es') ? 'es' : 'en';
       setLang(saved || detected);
     });
 
