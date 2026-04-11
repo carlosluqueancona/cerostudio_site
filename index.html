@@ -711,9 +711,18 @@
     .form-group textarea { min-height: 140px; resize: vertical; }
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--lime); }
     .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,.22); }
-    .btn-submit { font-family: var(--fd); font-size: 15px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--bg); background: var(--lime); padding: 18px 0; width: 100%; border: none; cursor: pointer; clip-path: polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%); transition: background .2s, transform .2s; display: block; text-align: center; margin-top: 8px; }
+    .btn-submit { font-family: var(--fd); font-size: 15px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--bg); background: var(--lime); padding: 18px 0; width: 100%; border: none; cursor: pointer; clip-path: polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%); transition: background .2s, transform .2s; display: flex; align-items: center; justify-content: center; gap: 10px; text-align: center; margin-top: 8px; }
     .btn-submit:hover { background: #ccff33; transform: translateY(-2px); }
     .btn-submit:disabled { opacity: .6; transform: none; cursor: not-allowed; }
+    .btn-submit-spinner { width: 16px; height: 16px; border: 2px solid rgba(0,0,0,.25); border-top-color: var(--bg); border-radius: 50%; animation: btnSpin .6s linear infinite; flex-shrink: 0; display: none; }
+    .btn-submit.loading .btn-submit-spinner { display: block; }
+    @keyframes btnSpin { to { transform: rotate(360deg); } }
+    /* Form feedback messages */
+    .form-feedback { display: none; padding: 14px 20px; margin-top: 12px; font-size: 13px; font-weight: 400; line-height: 1.6; }
+    .form-feedback.success { display: block; background: rgba(0,221,102,.08); border: 1px solid rgba(0,221,102,.3); color: #00dd66; }
+    .form-feedback.error   { display: block; background: rgba(255,70,70,.08);  border: 1px solid rgba(255,70,70,.3);  color: #ff6464; }
+    /* Field-level validation highlight */
+    .form-group input.invalid, .form-group select.invalid, .form-group textarea.invalid { border-color: #ff6464 !important; }
 
     /* ============================================================ FOOTER */
     footer { background: var(--bg); border-top: 1px solid var(--gb); padding: 72px 48px 40px; }
@@ -1338,6 +1347,8 @@
           </div>
         </div>
         <form id="contactForm" class="sr" onsubmit="handleSubmit(event)" novalidate>
+          <!-- Honeypot anti-spam: oculto para humanos, bots lo rellenan -->
+          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
           <div class="form-row-2">
             <div class="form-group"><input type="text"  name="nombre"  placeholder="Nombre *" required></div>
             <div class="form-group"><input type="email" name="email"   placeholder="Email *"  required></div>
@@ -1356,7 +1367,11 @@
             </select>
           </div>
           <div class="form-group"><textarea name="mensaje" placeholder="Cuéntanos sobre tu proyecto *" required></textarea></div>
-          <button type="submit" class="btn-submit ht" id="submitBtn">Enviar Mensaje</button>
+          <button type="submit" class="btn-submit ht" id="submitBtn">
+            <span class="btn-submit-spinner"></span>
+            <span id="submitBtnLabel">Enviar Mensaje</span>
+          </button>
+          <div class="form-feedback" id="formFeedback"></div>
         </form>
       </div>
     </div>
@@ -2333,9 +2348,9 @@
       ],
       en: [
         { el: 'scrL1',  text: 'DIGITAL',        delay: 200 },
-        { el: 'scrL2a', text: 'PRESENCE ', delay: 380 },
-        { el: 'scrL2b', text: 'THAT',           delay: 420 },
-        { el: 'scrL3',  text: 'SELLS.',         delay: 660 },
+        { el: 'scrL2a', text: 'PRESENCE',       delay: 380 },
+        { el: 'scrL2b', text: '',               delay: 420 },
+        { el: 'scrL3',  text: 'THAT SELLS.',    delay: 560 },
       ]
     };
 
@@ -2431,17 +2446,136 @@
     });
 
     /* ── FORM ──────────────────────────────────────────────────── */
+    /*
+     * Envío real mediante Formspree (https://formspree.io).
+     * Pasos para activar:
+     *   1. Regístrate en formspree.io → crea un formulario.
+     *   2. Reemplaza 'YOUR_FORM_ID' en la constante FORMSPREE_URL con tu ID.
+     *      Ejemplo: 'https://formspree.io/f/xpwzgkqd'
+     */
+    var FORMSPREE_URL = 'https://formspree.io/f/YOUR_FORM_ID';
+
+    /* Mensajes de UI por idioma */
+    var FORM_MSGS = {
+      es: {
+        sending:      'Enviando...',
+        success:      '¡Mensaje enviado! Te contactaremos en menos de 24 horas.',
+        error:        'Hubo un problema al enviar. Intenta de nuevo o escríbenos a hola@cerostudio.ai.',
+        errRequired:  'Por favor completa todos los campos obligatorios (*).',
+        errEmail:     'Ingresa un email válido.',
+        send:         'Enviar Mensaje',
+      },
+      en: {
+        sending:      'Sending...',
+        success:      'Message sent! We will get back to you within 24 hours.',
+        error:        'Something went wrong. Try again or reach us at hola@cerostudio.ai.',
+        errRequired:  'Please fill in all required fields (*).',
+        errEmail:     'Please enter a valid email address.',
+        send:         'Send Message',
+      }
+    };
+
+    function validateForm(form) {
+      var lang  = (typeof CS_LANG !== 'undefined' ? CS_LANG : 'es');
+      var msgs  = FORM_MSGS[lang];
+      var valid = true;
+
+      /* Clear previous invalid marks */
+      form.querySelectorAll('.invalid').forEach(function(el) { el.classList.remove('invalid'); });
+
+      /* Required fields */
+      var required = form.querySelectorAll('[required]');
+      required.forEach(function(field) {
+        if (!field.value.trim()) { field.classList.add('invalid'); valid = false; }
+      });
+      if (!valid) return { ok: false, msg: msgs.errRequired };
+
+      /* Email format */
+      var emailField = form.querySelector('[name="email"]');
+      if (emailField && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailField.value.trim())) {
+        emailField.classList.add('invalid');
+        return { ok: false, msg: msgs.errEmail };
+      }
+
+      return { ok: true };
+    }
+
+    function setFeedback(type, msg) {
+      var fb = document.getElementById('formFeedback');
+      if (!fb) return;
+      fb.className = 'form-feedback ' + type;
+      fb.textContent = msg;
+      fb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function clearFeedback() {
+      var fb = document.getElementById('formFeedback');
+      if (fb) { fb.className = 'form-feedback'; fb.textContent = ''; }
+    }
+
     function handleSubmit(e) {
       e.preventDefault();
-      const btn = document.getElementById('submitBtn'), orig = btn.textContent;
-      btn.textContent = 'Enviando...'; btn.disabled = true;
-      setTimeout(() => {
-        btn.textContent = '¡Mensaje enviado!'; btn.style.background = '#00dd66'; btn.style.clipPath = 'none';
-        setTimeout(() => {
-          btn.textContent = orig; btn.style.background = ''; btn.style.clipPath = ''; btn.disabled = false;
-          e.target.reset();
-        }, 3500);
-      }, 1400);
+      var form  = e.target;
+      var btn   = document.getElementById('submitBtn');
+      var label = document.getElementById('submitBtnLabel');
+      var lang  = (typeof CS_LANG !== 'undefined' ? CS_LANG : 'es');
+      var msgs  = FORM_MSGS[lang];
+
+      /* Honeypot check (filled by bots) */
+      if (form.querySelector('[name="_gotcha"]') && form.querySelector('[name="_gotcha"]').value) return;
+
+      /* Client-side validation */
+      clearFeedback();
+      var check = validateForm(form);
+      if (!check.ok) { setFeedback('error', check.msg); return; }
+
+      /* Check if endpoint is configured */
+      if (FORMSPREE_URL.indexOf('YOUR_FORM_ID') !== -1) {
+        /* DEV fallback: log data and simulate success */
+        console.info('[Cero Studio] Formspree no configurado. Datos del formulario:', Object.fromEntries(new FormData(form)));
+        btn.classList.add('loading');
+        label.textContent = msgs.sending;
+        btn.disabled = true;
+        setTimeout(function() {
+          btn.classList.remove('loading');
+          btn.disabled = false;
+          label.textContent = msgs.send;
+          setFeedback('success', msgs.success + ' (modo demo — configura Formspree para envío real)');
+          form.reset();
+        }, 1400);
+        return;
+      }
+
+      /* Real submission */
+      btn.classList.add('loading');
+      label.textContent = msgs.sending;
+      btn.disabled = true;
+
+      fetch(FORMSPREE_URL, {
+        method:  'POST',
+        headers: { 'Accept': 'application/json' },
+        body:    new FormData(form)
+      })
+      .then(function(res) {
+        btn.classList.remove('loading');
+        btn.disabled = false;
+        label.textContent = msgs.send;
+        if (res.ok) {
+          setFeedback('success', msgs.success);
+          form.reset();
+        } else {
+          return res.json().then(function(data) {
+            var errMsg = (data && data.errors) ? data.errors.map(function(x) { return x.message; }).join(', ') : msgs.error;
+            setFeedback('error', errMsg);
+          });
+        }
+      })
+      .catch(function() {
+        btn.classList.remove('loading');
+        btn.disabled = false;
+        label.textContent = msgs.send;
+        setFeedback('error', msgs.error);
+      });
     }
 
     // Expose needed functions to global scope for inline event listeners
