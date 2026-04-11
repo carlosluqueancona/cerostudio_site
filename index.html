@@ -1,0 +1,2008 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cero Studio — Agencia digital premium de desarrollo web y eCommerce para negocios hispanos en Estados Unidos.">
+  <title>Cero Studio — Agencia Digital Premium</title>
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================ RESET */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #000; --white: #fff; --lime: #B8FF00;
+      --g1: #0a0a0a; --g2: #111; --g3: #1a1a1a;
+      --gb: #1f1f1f; --gt: #888;
+      --fd: 'Barlow Condensed', sans-serif;
+      --fb: 'Barlow', sans-serif;
+      --nh: 72px;
+    }
+    html { scroll-behavior: auto; }
+    body { background: var(--bg); color: var(--white); font-family: var(--fb); font-weight: 400; overflow-x: hidden; cursor: none; }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+    @media (hover: none) { body { cursor: auto; } .cursor-dot, .cursor-ring { display: none !important; } }
+
+    /* ============================================================ NOISE */
+    .noise { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9990; opacity: .04; }
+
+    /* ============================================================ CURSOR */
+    .cursor-dot  { width: 6px; height: 6px; background: var(--lime); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); }
+    .cursor-ring { width: 36px; height: 36px; border: 1px solid rgba(184,255,0,.4); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: width .3s, height .3s, border-color .3s, background .3s; }
+    .cursor-ring.on { width: 56px; height: 56px; border-color: var(--lime); background: rgba(184,255,0,.06); }
+
+    /* ============================================================ LOADER */
+    #loader { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; }
+    .ld-logo  { width: 200px; opacity: 0; }
+    .ld-wrap  { width: 200px; height: 2px; background: var(--g3); overflow: hidden; }
+    .ld-bar   { height: 100%; width: 0; background: var(--lime); }
+    .ld-lbl   { font-family: var(--fd); font-size: 10px; letter-spacing: .4em; text-transform: uppercase; color: var(--gt); }
+
+    /* ============================================================ MOBILE NAV */
+    #mobileNav { position: fixed; inset: 0; background: var(--bg); z-index: 998; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; transform: translateY(-100%); transition: transform .6s cubic-bezier(.76,0,.24,1); }
+    #mobileNav.open { transform: translateY(0); }
+    #mobileNav a { font-family: var(--fd); font-size: clamp(36px,8vw,56px); font-weight: 900; text-transform: uppercase; color: var(--white); transition: color .2s; }
+    #mobileNav a:hover { color: var(--lime); }
+
+    /* ============================================================ NAV */
+    #navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 999; height: var(--nh); padding: 0 48px; display: flex; align-items: center; justify-content: space-between; transition: background .4s, border-bottom-color .4s; border-bottom: 1px solid transparent; }
+    #navbar.scrolled { background: rgba(0,0,0,.92); backdrop-filter: blur(16px); border-bottom-color: var(--gb); }
+    .nav-logo { height: 26px; width: auto; }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a { font-size: 12px; font-weight: 400; letter-spacing: .08em; text-transform: uppercase; color: var(--gt); transition: color .2s; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta { font-family: var(--fd); font-size: 13px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--bg); background: var(--lime); padding: 10px 26px; clip-path: polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%); display: inline-block; transition: background .2s; }
+    .nav-cta:hover { background: #ccff33; }
+    .nav-ham { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .nav-ham span { display: block; width: 24px; height: 2px; background: var(--white); transition: all .35s; transform-origin: center; }
+    .nav-ham.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-ham.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-ham.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ============================================================ HERO */
+    #hero { position: relative; min-height: 100vh; display: flex; align-items: center; padding: calc(var(--nh) + 60px) 48px 100px; overflow: hidden; }
+
+    .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px), linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px); background-size: 80px 80px; pointer-events: none; z-index: 0; }
+
+    /* ── ORBS ──────────────────────────────────────────────────────────
+       Much more visible than before. Each orb is a radial gradient blob.
+       Blur reduced, gradient opacity increased, sizes enlarged.
+       Mouse parallax via GSAP quickTo — different speed per orb = depth.
+    ─────────────────────────────────────────────────────────────────── */
+    .orb { position: absolute; border-radius: 50%; pointer-events: none; will-change: transform; z-index: 0; }
+
+    /* Lime orbs — background to foreground */
+    #orb-a {                                     /* large bg, slow */
+      width: 900px; height: 900px;
+      top: calc(40% - 450px); left: calc(55% - 450px);
+      background: radial-gradient(circle, rgba(184,255,0,.22) 0%, rgba(184,255,0,.05) 45%, transparent 70%);
+      filter: blur(55px);
+    }
+    #orb-b {                                     /* medium mid */
+      width: 420px; height: 420px;
+      top: calc(65% - 210px); left: calc(25% - 210px);
+      background: radial-gradient(circle, rgba(184,255,0,.50) 0%, rgba(184,255,0,.10) 50%, transparent 70%);
+      filter: blur(28px);
+    }
+    #orb-c {                                     /* small fg, fastest — most visible */
+      width: 200px; height: 200px;
+      top: calc(28% - 100px); left: calc(72% - 100px);
+      background: radial-gradient(circle, rgba(184,255,0,.80) 0%, rgba(184,255,0,.20) 55%, transparent 70%);
+      filter: blur(14px);
+    }
+    /* White / cool orbs */
+    #orb-d {                                     /* large white bg */
+      width: 650px; height: 650px;
+      top: calc(20% - 325px); left: calc(18% - 325px);
+      background: radial-gradient(circle, rgba(255,255,255,.10) 0%, rgba(255,255,255,.02) 50%, transparent 70%);
+      filter: blur(80px);
+    }
+    #orb-e {                                     /* medium white mid */
+      width: 340px; height: 340px;
+      top: calc(75% - 170px); left: calc(70% - 170px);
+      background: radial-gradient(circle, rgba(255,255,255,.16) 0%, rgba(255,255,255,.04) 50%, transparent 70%);
+      filter: blur(45px);
+    }
+    #orb-f {                                     /* small white fg */
+      width: 180px; height: 180px;
+      top: calc(50% - 90px); left: calc(42% - 90px);
+      background: radial-gradient(circle, rgba(255,255,255,.22) 0%, rgba(255,255,255,.05) 55%, transparent 70%);
+      filter: blur(18px);
+    }
+
+    /* ── FAVICON BG ── */
+    .hero-favicon-bg {
+      position: absolute;
+      right: -120px; top: 50%;
+      transform: translateY(-50%);
+      width: min(820px, 90vw); height: min(820px, 90vw);
+      pointer-events: none; z-index: 0;
+    }
+    .hero-favicon-bg img {
+      width: 100%; height: 100%;
+      opacity: .055;
+      filter: brightness(0) invert(1) sepia(1) saturate(10) hue-rotate(60deg);
+    }
+
+    /* ── HERO CONTENT ── */
+    .hero-inner { position: relative; z-index: 1; max-width: 1200px; width: 100%; margin: 0 auto; }
+
+    .hero-eyebrow { display: inline-flex; align-items: center; gap: 12px; font-size: 10px; font-weight: 400; letter-spacing: .4em; text-transform: uppercase; color: var(--lime); margin-bottom: 36px; opacity: 0; }
+    .hero-eyebrow::before { content: ''; display: block; width: 36px; height: 1px; background: var(--lime); flex-shrink: 0; }
+
+    .hero-title { font-family: var(--fd); font-size: clamp(68px,10.5vw,160px); font-weight: 900; line-height: .9; letter-spacing: -.01em; text-transform: uppercase; margin-bottom: 48px; opacity: 0; }
+    .hero-line { display: block; overflow: visible; }
+    .scr { display: inline-block; }
+    .t-outline { -webkit-text-stroke: 2px var(--white); color: transparent; }
+    .scramble-char { color: var(--lime); opacity: .55; }
+    .t-lime { color: var(--lime); }
+
+    .hero-sub { font-size: clamp(15px,1.3vw,18px); font-weight: 300; color: var(--gt); max-width: 500px; line-height: 1.75; margin-bottom: 52px; opacity: 0; }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; opacity: 0; }
+
+    .hero-scroll { position: absolute; bottom: 44px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 10px; opacity: 0; z-index: 1; }
+    .hero-scroll span { font-size: 9px; letter-spacing: .35em; text-transform: uppercase; color: var(--gt); }
+    .scroll-line { width: 1px; height: 52px; background: linear-gradient(to bottom, var(--gt), transparent); animation: sp 2s ease-in-out infinite; }
+    @keyframes sp {
+      0%   { transform:scaleY(0); transform-origin:top;    opacity:1; }
+      50%  { transform:scaleY(1); transform-origin:top;    opacity:1; }
+      51%  { transform:scaleY(1); transform-origin:bottom; opacity:1; }
+      100% { transform:scaleY(0); transform-origin:bottom; opacity:0; }
+    }
+
+    /* ── HERO OPTION TAG ── */
+    .hero-opt-tag {
+      position: absolute;
+      bottom: 44px; right: 48px;
+      font-family: var(--fd);
+      font-size: 9px; font-weight: 700;
+      letter-spacing: .28em; text-transform: uppercase;
+      color: var(--bg); background: var(--lime);
+      padding: 6px 18px;
+      clip-path: polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+      z-index: 2;
+    }
+
+    /* ── HERO 2 — Curl Noise Flow ── */
+    #hero2 { position: relative; min-height: 100vh; display: flex; align-items: center; padding: calc(var(--nh) + 60px) 48px 100px; overflow: hidden; background: #000; }
+    #hero2Canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+
+    /* ── HERO 3 — Magnetic Field Lines ── */
+    #hero3 { position: relative; min-height: 100vh; display: flex; align-items: center; padding: calc(var(--nh) + 60px) 48px 100px; overflow: hidden; background: #000; }
+    #hero3Canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+
+    /* ── HERO 3B — Magnetic Field Lines (fast & varied) ── */
+    #hero3b { position: relative; min-height: 100vh; display: flex; align-items: center; padding: calc(var(--nh) + 60px) 48px 100px; overflow: hidden; background: #000; }
+    #hero3bCanvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+    .hero3b-inner { position: relative; z-index: 1; max-width: 1200px; width: 100%; margin: 0 auto; }
+
+    /* ── HERO G — Favicon Emanation Lines ── */
+    #heroG { position: relative; min-height: 100vh; display: flex; align-items: center; padding: calc(var(--nh) + 60px) 48px 100px; overflow: hidden; background: #000; }
+    #heroGCanvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+    .heroG-inner { position: relative; z-index: 1; max-width: 1200px; width: 100%; margin: 0 auto; }
+
+    /* ── HERO H — Curl Noise Flow (paleta Cero Studio) ── */
+    #heroH { position: relative; min-height: 100vh; display: flex; align-items: center; padding: calc(var(--nh) + 60px) 48px 100px; overflow: hidden; background: #000; }
+    #heroHCanvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+    .heroH-inner { position: relative; z-index: 1; max-width: 1200px; width: 100%; margin: 0 auto; }
+
+    /* shared static content in heroes 2 & 3 */
+    .hero2-inner, .hero3-inner { position: relative; z-index: 1; max-width: 1200px; width: 100%; margin: 0 auto; }
+    .hero-static-eyebrow { display: inline-flex; align-items: center; gap: 12px; font-size: 10px; font-weight: 400; letter-spacing: .4em; text-transform: uppercase; color: var(--lime); margin-bottom: 36px; }
+    .hero-static-eyebrow::before { content: ''; display: block; width: 36px; height: 1px; background: var(--lime); flex-shrink: 0; }
+    .hero-static-title { font-family: var(--fd); font-size: clamp(68px,10.5vw,160px); font-weight: 900; line-height: .9; letter-spacing: -.01em; text-transform: uppercase; margin-bottom: 48px; }
+    .hero-static-sub { font-size: clamp(15px,1.3vw,18px); font-weight: 300; color: var(--gt); max-width: 500px; line-height: 1.75; margin-bottom: 52px; }
+    .hero-static-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    /* ============================================================ BUTTONS */
+    .btn-primary { font-family: var(--fd); font-size: 14px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--bg); background: var(--lime); padding: 16px 38px; clip-path: polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%); display: inline-block; transition: background .2s, transform .2s; }
+    .btn-primary:hover { background: #ccff33; transform: translateY(-2px); }
+    .btn-ghost { font-family: var(--fd); font-size: 14px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--white); border: 1px solid rgba(255,255,255,.18); padding: 16px 38px; clip-path: polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%); display: inline-block; transition: border-color .2s, background .2s, transform .2s; }
+    .btn-ghost:hover { border-color: var(--lime); background: rgba(184,255,0,.06); transform: translateY(-2px); }
+
+    /* ============================================================ MARQUEE */
+    .marquee-strip { overflow: hidden; border-top: 1px solid var(--gb); border-bottom: 1px solid var(--gb); background: var(--g1); padding: 14px 0; }
+    .marquee-track { display: flex; width: max-content; animation: mq 22s linear infinite; }
+    .marquee-track span { font-family: var(--fd); font-size: 13px; font-weight: 700; letter-spacing: .25em; text-transform: uppercase; color: var(--gt); padding: 0 32px; white-space: nowrap; }
+    .marquee-track span em { color: var(--lime); font-style: normal; margin: 0 12px; }
+    @keyframes mq { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+    /* ============================================================ LOGO TICKER */
+    #ticker { overflow: hidden; border-bottom: 1px solid var(--gb); background: var(--bg); padding: 36px 0; }
+    .ticker-track { display: flex; width: max-content; animation: tk 28s linear infinite; }
+    .ticker-group { display: flex; align-items: center; }
+    .ticker-item { padding: 0 52px; display: flex; align-items: center; justify-content: center; border-right: 1px solid var(--gb); }
+    .ticker-item:last-child { border-right: none; }
+    .ticker-item img { height: 28px; width: auto; max-width: 120px; object-fit: contain; filter: brightness(0) invert(1); opacity: .36; transition: opacity .3s; }
+    .ticker-item:hover img { opacity: .85; }
+    @keyframes tk { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+    /* ============================================================ SECTION COMMONS */
+    section { padding: 120px 48px; }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 12px; font-size: 10px; font-weight: 400; letter-spacing: .38em; text-transform: uppercase; color: var(--lime); margin-bottom: 20px; }
+    .eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: var(--lime); flex-shrink: 0; }
+    .section-title { font-family: var(--fd); font-size: clamp(38px,4.8vw,68px); font-weight: 900; line-height: 1.0; letter-spacing: -.01em; text-transform: uppercase; }
+    .sr { opacity: 0; transform: translateY(44px); }
+
+    /* ============================================================ SERVICIOS */
+    #servicios { background: var(--g1); }
+    .srv-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; margin-bottom: 72px; }
+    .srv-header-desc { max-width: 300px; font-size: 15px; font-weight: 300; color: var(--gt); line-height: 1.75; flex-shrink: 0; }
+    .srv-grid { display: grid; grid-template-columns: repeat(3,1fr); background: var(--gb); gap: 1px; }
+    .srv-card { background: var(--g1); padding: 40px 36px; position: relative; overflow: hidden; transition: background .35s; }
+    .srv-card::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: var(--lime); transform: scaleX(0); transform-origin: left; transition: transform .45s ease; }
+    .srv-card:hover { background: #0d0d0d; }
+    .srv-card:hover::after { transform: scaleX(1); }
+    .srv-num { font-family: var(--fd); font-size: 11px; font-weight: 700; letter-spacing: .2em; color: var(--lime); margin-bottom: 36px; display: block; }
+    .srv-title { font-family: var(--fd); font-size: 26px; font-weight: 800; text-transform: uppercase; letter-spacing: .02em; margin-bottom: 14px; }
+    .srv-desc { font-size: 14px; font-weight: 300; color: var(--gt); line-height: 1.75; }
+
+    /* ============================================================ PORTAFOLIO
+       Uniform 4-column card grid. Each card: image + info + hover effects.
+       Click opens site in new tab.
+    ============================================================ */
+    #portafolio { background: var(--bg); }
+    .port-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; margin-bottom: 64px; }
+
+    .port-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--gb);
+    }
+
+    /* Each card is an anchor tag — opens in new tab */
+    .port-card {
+      display: block;
+      background: var(--g1);
+      position: relative;
+      overflow: hidden;
+      transition: background .3s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .port-card:hover { background: var(--g2); }
+
+    /* Image area */
+    .port-card-img-wrap {
+      position: relative;
+      overflow: hidden;
+    }
+    .port-card-img {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      display: block;
+      transition: transform .65s ease, filter .4s;
+      filter: none;
+    }
+    .port-card:hover .port-card-img {
+      transform: scale(1.06);
+      filter: brightness(.45);
+    }
+
+    /* "Ver proyecto" pill — appears on hover */
+    .port-card-badge {
+      position: absolute;
+      top: 14px; right: 14px;
+      font-family: var(--fd);
+      font-size: 10px; font-weight: 700;
+      letter-spacing: .18em; text-transform: uppercase;
+      color: var(--bg); background: var(--lime);
+      padding: 6px 14px;
+      clip-path: polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: opacity .35s, transform .35s;
+    }
+    .port-card:hover .port-card-badge {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Info area */
+    .port-card-info {
+      padding: 20px 24px 24px;
+      border-top: 1px solid var(--gb);
+      position: relative;
+    }
+    /* Lime bottom border — slides in on hover */
+    .port-card-info::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%; height: 2px;
+      background: var(--lime);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .4s ease;
+    }
+    .port-card:hover .port-card-info::after { transform: scaleX(1); }
+
+    .port-card-cat {
+      font-size: 9px; font-weight: 400;
+      letter-spacing: .32em; text-transform: uppercase;
+      color: var(--lime); display: block; margin-bottom: 6px;
+    }
+    .port-card-name {
+      font-family: var(--fd);
+      font-size: 20px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .02em;
+      color: var(--white); margin-bottom: 8px;
+      transition: color .2s;
+    }
+    .port-card:hover .port-card-name { color: var(--lime); }
+
+    .port-card-desc {
+      font-size: 12px; font-weight: 300;
+      color: var(--gt); line-height: 1.65;
+    }
+
+    /* CTA card — last portfolio item, pure code */
+    .port-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--lime);
+      text-decoration: none;
+      color: var(--bg);
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: unset;
+      min-height: 100%;
+      transition: background .25s;
+    }
+    .port-cta:hover { background: #ceff33; }
+    .port-cta-inner {
+      text-align: center;
+      padding: 40px 28px;
+      position: relative;
+      z-index: 1;
+    }
+    .port-cta-q {
+      font-family: var(--fd);
+      font-size: 36px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .02em;
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+    .port-cta-sub {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      opacity: .7;
+      margin-bottom: 28px;
+    }
+    .port-cta-btn {
+      display: inline-block;
+      font-family: var(--fd);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--lime);
+      background: var(--bg);
+      padding: 11px 24px;
+      clip-path: polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);
+      transition: opacity .2s;
+    }
+    .port-cta:hover .port-cta-btn { opacity: .85; }
+    /* big decorative number */
+    .port-cta-num {
+      position: absolute;
+      font-family: var(--fd);
+      font-size: 180px;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--bg);
+      opacity: .06;
+      bottom: -20px;
+      right: -10px;
+      letter-spacing: -.04em;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* ============================================================ NOSOTROS */
+    #nosotros { background: var(--g1); overflow: hidden; }
+    .nos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 96px; align-items: center; }
+    .nos-img-wrap { position: relative; }
+    .nos-img { width: 100%; height: 620px; object-fit: cover; object-position: center top; display: block; }
+    .nos-frame { position: absolute; bottom: -16px; right: -16px; width: 64px; height: 64px; background: var(--lime); pointer-events: none; }
+    .nos-desc { font-size: 16px; font-weight: 300; color: var(--gt); line-height: 1.8; margin-bottom: 28px; }
+    .nos-desc strong { color: var(--white); font-weight: 400; }
+    .nos-firma { height: 56px; width: auto; max-width: 220px; opacity: .75; filter: brightness(0) invert(1); margin-bottom: 44px; }
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; background: var(--gb); gap: 1px; margin-bottom: 44px; }
+    .stat-item { background: var(--g1); padding: 28px 30px; }
+    .stat-num { font-family: var(--fd); font-size: 54px; font-weight: 900; color: var(--lime); line-height: 1; margin-bottom: 4px; }
+    .stat-label { font-size: 12px; font-weight: 300; color: var(--gt); letter-spacing: .04em; }
+
+    /* ============================================================ PROCESO */
+    #proceso { background: var(--bg); }
+    /* ── PROCESO nuevo — inspirado en editorial grid ── */
+    .proc-headline {
+      font-family: var(--fd);
+      font-size: clamp(52px, 8vw, 120px);
+      font-weight: 900;
+      line-height: .92;
+      letter-spacing: -.02em;
+      text-transform: uppercase;
+      margin-bottom: 80px;
+    }
+    .proc-headline .t-outline { -webkit-text-stroke: 2px var(--white); color: transparent; }
+
+    .proc-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: var(--gb);
+      gap: 1px;
+    }
+    .proc-step {
+      background: var(--g1);
+      padding: 44px 36px 52px;
+      position: relative;
+      overflow: hidden;
+      transition: background .3s;
+    }
+    .proc-step:hover { background: var(--g2); }
+
+    /* lime line top — slides in on hover */
+    .proc-step::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 2px;
+      background: var(--lime);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .45s ease;
+    }
+    .proc-step:hover::before { transform: scaleX(1); }
+
+    .proc-step-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 48px;
+    }
+    .proc-num {
+      font-family: var(--fd);
+      font-size: 13px; font-weight: 700;
+      letter-spacing: .18em;
+      color: var(--lime);
+    }
+    .proc-dash {
+      flex: 1; height: 1px;
+      background: var(--gb);
+      margin-left: 20px;
+    }
+    .proc-title {
+      font-family: var(--fd);
+      font-size: 28px; font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .02em;
+      margin-bottom: 16px;
+      transition: color .25s;
+    }
+    .proc-step:hover .proc-title { color: var(--lime); }
+    .proc-desc {
+      font-size: 13px; font-weight: 300;
+      color: var(--gt); line-height: 1.8;
+    }
+
+    /* ============================================================ PRECIOS */
+    #precios { background: var(--bg); }
+
+    .precios-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 48px;
+      margin-bottom: 72px;
+    }
+    .precios-headline {
+      font-family: var(--fd);
+      font-size: clamp(52px, 8vw, 110px);
+      font-weight: 900;
+      line-height: .92;
+      letter-spacing: -.02em;
+      text-transform: uppercase;
+    }
+    .precios-headline em {
+      font-style: normal;
+      -webkit-text-stroke: 2px var(--white);
+      color: transparent;
+    }
+    .precios-trust {
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .precios-trust p {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--gt);
+      line-height: 1.9;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: var(--gb);
+      gap: 1px;
+      align-items: stretch;
+    }
+
+    .plan-card {
+      background: var(--g1);
+      padding: 44px 36px 40px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: background .3s;
+    }
+    .plan-card:not(.plan-featured):hover { background: var(--g2); }
+
+    /* Pro card — lime inversion */
+    .plan-featured {
+      background: var(--lime);
+      color: var(--bg);
+    }
+
+    .plan-badge {
+      display: inline-block;
+      font-family: var(--fd);
+      font-size: 9px; font-weight: 800;
+      letter-spacing: .22em; text-transform: uppercase;
+      background: var(--bg); color: var(--lime);
+      padding: 5px 14px;
+      clip-path: polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
+      margin-bottom: 28px;
+      align-self: flex-start;
+    }
+
+    .plan-name {
+      font-family: var(--fd);
+      font-size: 11px; font-weight: 700;
+      letter-spacing: .28em; text-transform: uppercase;
+      color: var(--gt);
+      margin-bottom: 20px;
+    }
+    .plan-featured .plan-name { color: rgba(0,0,0,.55); }
+
+    .plan-price {
+      font-family: var(--fd);
+      font-size: clamp(42px,4.5vw,60px);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -.02em;
+      margin-bottom: 6px;
+    }
+    .plan-price sup {
+      font-size: .4em;
+      vertical-align: super;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+    .plan-price span {
+      font-family: var(--fb);
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: .04em;
+      margin-left: 4px;
+      opacity: .55;
+    }
+    .plan-custom {
+      font-family: var(--fd);
+      font-size: clamp(32px,3vw,44px);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -.01em;
+      margin-bottom: 6px;
+    }
+
+    .plan-delivery {
+      font-size: 11px; font-weight: 300;
+      color: var(--gt);
+      margin-bottom: 36px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid var(--gb);
+    }
+    .plan-featured .plan-delivery { color: rgba(0,0,0,.5); border-bottom-color: rgba(0,0,0,.15); }
+
+    .plan-features {
+      list-style: none;
+      flex: 1;
+      margin-bottom: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .plan-features li {
+      font-size: 13px; font-weight: 300;
+      color: var(--gt);
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      line-height: 1.5;
+    }
+    .plan-featured .plan-features li { color: rgba(0,0,0,.75); }
+    .plan-features li::before {
+      content: '✓';
+      font-size: 11px; font-weight: 700;
+      color: var(--lime);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .plan-featured .plan-features li::before { color: var(--bg); }
+
+    .plan-cta {
+      display: block;
+      font-family: var(--fd);
+      font-size: 12px; font-weight: 800;
+      letter-spacing: .18em; text-transform: uppercase;
+      text-align: center;
+      padding: 14px 20px;
+      clip-path: polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);
+      transition: background .2s, color .2s, transform .2s;
+    }
+    .plan-cta:hover { transform: translateY(-2px); }
+
+    /* CTA variants */
+    .plan-cta-primary   { background: var(--lime); color: var(--bg); }
+    .plan-cta-primary:hover { background: #ceff33; }
+    .plan-cta-ghost     { border: 1px solid rgba(255,255,255,.18); color: var(--white); }
+    .plan-cta-ghost:hover { border-color: var(--lime); background: rgba(184,255,0,.06); }
+    .plan-cta-dark      { background: var(--bg); color: var(--lime); }
+    .plan-cta-dark:hover { background: #111; }
+
+    @media (max-width: 1100px) {
+      .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+      .precios-top { flex-direction: column; align-items: flex-start; }
+      .precios-trust { text-align: left; }
+    }
+    @media (max-width: 640px) {
+      .pricing-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================================ CONTACTO */
+    #contacto { background: var(--g1); position: relative; overflow: hidden; }
+    .contacto-glow { position: absolute; top: -250px; right: -150px; width: 650px; height: 650px; background: radial-gradient(circle,rgba(184,255,0,.07) 0%,transparent 70%); pointer-events: none; }
+    .contacto-grid { display: grid; grid-template-columns: 1fr 1.25fr; gap: 96px; align-items: start; }
+    .contacto-sub { font-size: 16px; font-weight: 300; color: var(--gt); line-height: 1.8; margin-bottom: 52px; }
+    .contact-links { border-top: 1px solid var(--gb); }
+    .contact-link-row { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; border-bottom: 1px solid var(--gb); transition: padding-left .2s; }
+    .contact-link-row:hover { padding-left: 8px; }
+    .contact-link-label { font-size: 9px; font-weight: 400; letter-spacing: .32em; text-transform: uppercase; color: var(--lime); display: block; margin-bottom: 3px; }
+    .contact-link-val { font-size: 15px; font-weight: 300; color: var(--gt); transition: color .2s; }
+    .contact-link-row:hover .contact-link-val { color: var(--white); }
+    .contact-link-arrow { font-size: 18px; color: var(--lime); opacity: 0; transform: translateX(-8px); transition: opacity .25s, transform .25s; }
+    .contact-link-row:hover .contact-link-arrow { opacity: 1; transform: translateX(0); }
+    .form-group { margin-bottom: 16px; }
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; background: rgba(255,255,255,.035); border: 1px solid var(--gb); color: var(--white);
+      font-family: var(--fb); font-size: 14px; font-weight: 300; padding: 16px 20px; outline: none;
+      transition: border-color .25s; -webkit-appearance: none; appearance: none;
+      clip-path: polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+    }
+    .form-group select { cursor: pointer; background: rgba(255,255,255,.035); }
+    .form-group select option { background: var(--g2); }
+    .form-group textarea { min-height: 140px; resize: vertical; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--lime); }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,.22); }
+    .btn-submit { font-family: var(--fd); font-size: 15px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--bg); background: var(--lime); padding: 18px 0; width: 100%; border: none; cursor: pointer; clip-path: polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%); transition: background .2s, transform .2s; display: block; text-align: center; margin-top: 8px; }
+    .btn-submit:hover { background: #ccff33; transform: translateY(-2px); }
+    .btn-submit:disabled { opacity: .6; transform: none; cursor: not-allowed; }
+
+    /* ============================================================ FOOTER */
+    footer { background: var(--bg); border-top: 1px solid var(--gb); padding: 72px 48px 40px; }
+    .footer-inner { max-width: 1200px; margin: 0 auto; }
+    .footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 72px; }
+    .footer-logo-img { height: 26px; width: auto; margin-bottom: 18px; }
+    .footer-tagline { font-size: 14px; font-weight: 300; color: var(--gt); line-height: 1.7; max-width: 260px; }
+    .footer-col-title { font-family: var(--fd); font-size: 11px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--white); margin-bottom: 22px; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-links a { font-size: 14px; font-weight: 300; color: var(--gt); transition: color .2s; }
+    .footer-links a:hover { color: var(--lime); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 32px; border-top: 1px solid var(--gb); }
+    .footer-copy, .footer-credit { font-size: 12px; font-weight: 300; color: rgba(255,255,255,.22); }
+    .footer-credit span { color: var(--lime); }
+
+    /* ============================================================ RESPONSIVE */
+    @media (max-width: 1200px) { .port-grid { grid-template-columns: repeat(3,1fr); } }
+    @media (max-width: 1100px) { .srv-grid { grid-template-columns: 1fr 1fr; } .proc-grid { grid-template-columns: repeat(2,1fr); } .nos-grid { grid-template-columns: 1fr; gap: 56px; } .nos-img { height: 420px; } .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; } }
+    @media (max-width: 768px) {
+      :root { --nh: 64px; }
+      #navbar { padding: 0 24px; }
+      .nav-links, .nav-cta { display: none; }
+      .nav-ham { display: flex; }
+      section { padding: 80px 24px; }
+      #hero { padding: calc(var(--nh) + 40px) 24px 80px; }
+      #orb-a { width: 400px; height: 400px; top: calc(40% - 200px); left: calc(55% - 200px); }
+      #orb-b { width: 220px; height: 220px; }
+      #orb-c { width: 120px; height: 120px; }
+      #orb-d { width: 300px; height: 300px; }
+      #orb-e, #orb-f { width: 160px; height: 160px; }
+      .srv-header { flex-direction: column; }
+      .srv-grid { grid-template-columns: 1fr; }
+      .port-grid { grid-template-columns: repeat(2,1fr); }
+      .proc-grid { grid-template-columns: 1fr; }
+      .contacto-grid { grid-template-columns: 1fr; gap: 56px; }
+      .form-row-2 { grid-template-columns: 1fr; }
+      footer { padding: 56px 24px 32px; }
+      .footer-top { grid-template-columns: 1fr; gap: 36px; }
+      .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+      .port-header { flex-direction: column; align-items: flex-start; }
+      .srv-header-desc { max-width: none; }
+    }
+    @media (max-width: 520px) { .proc-grid { grid-template-columns: 1fr; } .stats-grid { grid-template-columns: 1fr 1fr; } .port-grid { grid-template-columns: 1fr; } }
+
+    /* ── HERO ACTIVO: solo C-B ── */
+    /* Para activar otra versión: mover el ID al selector de abajo */
+    #hero,
+    #hero3,
+    #heroG,
+    #heroH { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <svg class="noise" xmlns="http://www.w3.org/2000/svg"><filter id="nf"><feTurbulence type="fractalNoise" baseFrequency=".68" numOctaves="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#nf)"/></svg>
+
+  <div class="cursor-dot"  id="cDot"></div>
+  <div class="cursor-ring" id="cRing"></div>
+
+  <div id="loader">
+    <img src="images/svg/Cero%20Studio%20AI%20Horizontal.svg" alt="Cero Studio" class="ld-logo" id="ldLogo">
+    <div class="ld-wrap"><div class="ld-bar" id="ldBar"></div></div>
+    <span class="ld-lbl" id="ldLbl">Cargando</span>
+  </div>
+
+  <div id="mobileNav">
+    <a href="#servicios"  onclick="closeNav()">Servicios</a>
+    <a href="#portafolio" onclick="closeNav()">Portafolio</a>
+    <a href="#nosotros"   onclick="closeNav()">Nosotros</a>
+    <a href="#precios"    onclick="closeNav()">Precios</a>
+    <a href="#contacto"   onclick="closeNav()">Contacto</a>
+  </div>
+
+  <nav id="navbar">
+    <a href="#hero" class="ht"><img src="images/svg/Cero%20Studio%20AI%20Horizontal.svg" alt="Cero Studio" class="nav-logo"></a>
+    <ul class="nav-links">
+      <li><a href="#servicios"  class="ht">Servicios</a></li>
+      <li><a href="#portafolio" class="ht">Portafolio</a></li>
+      <li><a href="#nosotros"   class="ht">Nosotros</a></li>
+      <li><a href="#precios"    class="ht">Precios</a></li>
+      <li><a href="#contacto"   class="ht">Contacto</a></li>
+    </ul>
+    <a href="#contacto" class="nav-cta ht">Hablemos</a>
+    <div class="nav-ham ht" id="navHam" onclick="toggleNav()"><span></span><span></span><span></span></div>
+  </nav>
+
+  <!-- ═══════════════════════════════════ HERO ═══════════════════════════════════ -->
+  <section id="hero">
+    <div class="hero-grid"></div>
+
+    <!-- CS Favicon as decorative background mark -->
+    <div class="hero-favicon-bg">
+      <img src="images/svg/CS_Favicon.svg" alt="">
+    </div>
+
+    <!-- Parallax orbs — visibility much increased vs previous version -->
+    <div id="orb-a" class="orb" data-factor="0.07"  data-dur="0.95"></div>
+    <div id="orb-b" class="orb" data-factor="0.18"  data-dur="0.55"></div>
+    <div id="orb-c" class="orb" data-factor="0.32"  data-dur="0.35"></div>
+    <div id="orb-d" class="orb" data-factor="0.045" data-dur="1.1" ></div>
+    <div id="orb-e" class="orb" data-factor="0.13"  data-dur="0.68"></div>
+    <div id="orb-f" class="orb" data-factor="0.26"  data-dur="0.42"></div>
+
+    <div class="hero-inner">
+      <p class="hero-eyebrow" id="heroEyebrow">Agencia Digital Premium · cerostudio.ai</p>
+      <h1 class="hero-title">
+        <span class="hero-line"><span class="scr" id="scrL1">PRESENCIA</span></span>
+        <span class="hero-line"><span class="scr" id="scrL2a">DIGITAL&nbsp;</span><span class="scr t-outline" id="scrL2b">QUE</span></span>
+        <span class="hero-line"><span class="scr t-lime" id="scrL3">VENDE.</span></span>
+      </h1>
+      <p class="hero-sub" id="heroSub">Desarrollamos sitios web y tiendas online para negocios hispanos en Estados Unidos. Diseño de nivel internacional, resultados reales.</p>
+      <div class="hero-actions" id="heroActions">
+        <a href="#portafolio" class="btn-primary ht">Ver Portafolio</a>
+        <a href="#contacto"   class="btn-ghost   ht">Solicitar Cotización</a>
+      </div>
+    </div>
+    <div class="hero-scroll" id="heroScroll"><span>Scroll</span><div class="scroll-line"></div></div>
+    <span class="hero-opt-tag">Opción D — Mouse Parallax Orbs</span>
+  </section>
+
+  <!-- ── HERO 3: Magnetic Field Lines ─────────────────────────── -->
+  <section id="hero3">
+    <canvas id="hero3Canvas"></canvas>
+    <div class="hero-grid"></div>
+    <div class="hero3-inner">
+      <p class="hero-static-eyebrow">Agencia Digital Premium · cerostudio.ai</p>
+      <h2 class="hero-static-title">
+        <span class="hero-line">PRESENCIA</span>
+        <span class="hero-line">DIGITAL&nbsp;<span class="t-outline">QUE</span></span>
+        <span class="hero-line t-lime">VENDE.</span>
+      </h2>
+      <p class="hero-static-sub">Desarrollamos sitios web y tiendas online para negocios hispanos en Estados Unidos. Diseño de nivel internacional, resultados reales.</p>
+      <div class="hero-static-actions">
+        <a href="#portafolio" class="btn-primary ht">Ver Portafolio</a>
+        <a href="#contacto"   class="btn-ghost   ht">Solicitar Cotización</a>
+      </div>
+    </div>
+    <span class="hero-opt-tag">Opción C — Campo Magnético</span>
+  </section>
+
+  <!-- ── HERO 3B: Magnetic Field Lines — Fast & Varied ─────────── -->
+  <section id="hero3b">
+    <canvas id="hero3bCanvas"></canvas>
+    <div class="hero-grid"></div>
+    <div class="hero3b-inner">
+      <p class="hero-static-eyebrow">Agencia Digital Premium · cerostudio.ai</p>
+      <h2 class="hero-static-title">
+        <span class="hero-line">PRESENCIA</span>
+        <span class="hero-line">DIGITAL&nbsp;<span class="t-outline">QUE</span></span>
+        <span class="hero-line t-lime">VENDE.</span>
+      </h2>
+      <p class="hero-static-sub">Desarrollamos sitios web y tiendas online para negocios hispanos en Estados Unidos. Diseño de nivel internacional, resultados reales.</p>
+      <div class="hero-static-actions">
+        <a href="#portafolio" class="btn-primary ht">Ver Portafolio</a>
+        <a href="#contacto"   class="btn-ghost   ht">Solicitar Cotización</a>
+      </div>
+    </div>
+    <span class="hero-opt-tag">Opción C-B — Campo Magnético (rápido)</span>
+  </section>
+
+  <!-- ── HERO G: Favicon Emanation Lines ──────────────────────── -->
+  <section id="heroG">
+    <canvas id="heroGCanvas"></canvas>
+    <div class="heroG-inner">
+      <p class="hero-static-eyebrow">Agencia Digital Premium · cerostudio.ai</p>
+      <h2 class="hero-static-title">
+        <span class="hero-line">PRESENCIA</span>
+        <span class="hero-line">DIGITAL&nbsp;<span class="t-outline">QUE</span></span>
+        <span class="hero-line t-lime">VENDE.</span>
+      </h2>
+      <p class="hero-static-sub">Desarrollamos sitios web y tiendas online para negocios hispanos en Estados Unidos. Diseño de nivel internacional, resultados reales.</p>
+      <div class="hero-static-actions">
+        <a href="#portafolio" class="btn-primary ht">Ver Portafolio</a>
+        <a href="#contacto"   class="btn-ghost   ht">Solicitar Cotización</a>
+      </div>
+    </div>
+    <span class="hero-opt-tag">Versión G — Emanación Favicon</span>
+  </section>
+
+  <!-- ── HERO H: Curl Noise Flow ──────────────────────────── -->
+  <section id="heroH">
+    <canvas id="heroHCanvas"></canvas>
+    <div class="hero-grid"></div>
+    <div class="heroH-inner">
+      <p class="hero-static-eyebrow">Agencia Digital Premium · cerostudio.ai</p>
+      <h2 class="hero-static-title">
+        <span class="hero-line">PRESENCIA</span>
+        <span class="hero-line">DIGITAL&nbsp;<span class="t-outline">QUE</span></span>
+        <span class="hero-line t-lime">VENDE.</span>
+      </h2>
+      <p class="hero-static-sub">Desarrollamos sitios web y tiendas online para negocios hispanos en Estados Unidos. Diseño de nivel internacional, resultados reales.</p>
+      <div class="hero-static-actions">
+        <a href="#portafolio" class="btn-primary ht">Ver Portafolio</a>
+        <a href="#contacto"   class="btn-ghost   ht">Solicitar Cotización</a>
+      </div>
+    </div>
+    <span class="hero-opt-tag">Versión H — Curl Noise Flow</span>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-strip">
+    <div class="marquee-track">
+      <span>Diseño Web <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Desarrollo <em>·</em> Consultoría <em>·</em> Mantenimiento <em>·</em> Identidad Visual <em>·</em></span>
+      <span>Diseño Web <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Desarrollo <em>·</em> Consultoría <em>·</em> Mantenimiento <em>·</em> Identidad Visual <em>·</em></span>
+    </div>
+  </div>
+
+  <!-- TICKER -->
+  <div id="ticker">
+    <div class="ticker-track">
+      <div class="ticker-group">
+        <div class="ticker-item"><img src="images/logos_ticker/MAINOFLEX -Logo_FINAL_Alto_contrste-1000px.png" alt="Mainoflex"></div>
+        <div class="ticker-item"><img src="images/logos_ticker/SAMADI-Logo_horizontal_Negro-1000px.png"        alt="Samadi"></div>
+        <div class="ticker-item"><img src="images/logos_ticker/CICAP-Logo_Negro-1000px.png"                    alt="CICAP"></div>
+        <div class="ticker-item"><img src="images/logos_ticker/PF-Logo_NEGRO-1000px.png"                       alt="Patitas Felinas"></div>
+        <div class="ticker-item"><img src="images/logos_ticker/Impresiones2M_NEGRO.png"                        alt="Impresiones 2M"></div>
+        <div class="ticker-item"><img src="images/logos_ticker/KARUM_Logo@4x.png"                              alt="Karum"></div>
+        <div class="ticker-item"><img src="images/logos_ticker/Neurotica_FM.png"                               alt="Neurotica FM"></div>
+        <div class="ticker-item"><img src="images/logos_ticker/Salvaxe-1500px.png"                             alt="Salvaxe"></div>
+        <div class="ticker-item"><img src="images/logos_ticker/trion-blanco2.png"                              alt="Trion"></div>
+        <div class="ticker-item"><img src="images/logos_ticker/Capital_Pirata.png"                             alt="Capital Pirata"></div>
+        <div class="ticker-item"><img src="images/logos_ticker/Edecanes_Pachuca_Logo_vertical_path.png"        alt="Edecanes Pachuca"></div>
+        <div class="ticker-item"><img src="images/logos_ticker/PP_Logo-NEGRO-1000px.png"                       alt="Patitas Peludas"></div>
+      </div>
+      <div class="ticker-group">
+        <div class="ticker-item"><img src="images/logos_ticker/MAINOFLEX -Logo_FINAL_Alto_contrste-1000px.png" alt="Mainoflex"></div>
+        <div class="ticker-item"><img src="images/logos_ticker/SAMADI-Logo_horizontal_Negro-1000px.png"        alt="Samadi"></div>
+        <div class="ticker-item"><img src="images/logos_ticker/CICAP-Logo_Negro-1000px.png"                    alt="CICAP"></div>
+        <div class="ticker-item"><img src="images/logos_ticker/PF-Logo_NEGRO-1000px.png"                       alt="Patitas Felinas"></div>
+        <div class="ticker-item"><img src="images/logos_ticker/Impresiones2M_NEGRO.png"                        alt="Impresiones 2M"></div>
+        <div class="ticker-item"><img src="images/logos_ticker/KARUM_Logo@4x.png"                              alt="Karum"></div>
+        <div class="ticker-item"><img src="images/logos_ticker/Neurotica_FM.png"                               alt="Neurotica FM"></div>
+        <div class="ticker-item"><img src="images/logos_ticker/Salvaxe-1500px.png"                             alt="Salvaxe"></div>
+        <div class="ticker-item"><img src="images/logos_ticker/trion-blanco2.png"                              alt="Trion"></div>
+        <div class="ticker-item"><img src="images/logos_ticker/Capital_Pirata.png"                             alt="Capital Pirata"></div>
+        <div class="ticker-item"><img src="images/logos_ticker/Edecanes_Pachuca_Logo_vertical_path.png"        alt="Edecanes Pachuca"></div>
+        <div class="ticker-item"><img src="images/logos_ticker/PP_Logo-NEGRO-1000px.png"                       alt="Patitas Peludas"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ SERVICIOS ═══════════════════════════════ -->
+  <section id="servicios">
+    <div class="section-inner">
+      <div class="srv-header">
+        <div>
+          <p class="eyebrow sr">Servicios</p>
+          <h2 class="section-title sr">Todo lo que necesitas<br>para <span class="t-outline">crecer</span> en línea</h2>
+        </div>
+        <p class="srv-header-desc sr">Desde el diseño hasta el lanzamiento, cubrimos cada aspecto de tu presencia digital con estándares de nivel internacional.</p>
+      </div>
+      <div class="srv-grid">
+        <div class="srv-card sr ht"><span class="srv-num">01</span><h3 class="srv-title">Desarrollo Web</h3><p class="srv-desc">Sitios rápidos, modernos y optimizados que generan confianza y convierten visitantes en clientes desde el primer clic.</p></div>
+        <div class="srv-card sr ht"><span class="srv-num">02</span><h3 class="srv-title">Tiendas eCommerce</h3><p class="srv-desc">Tu negocio abierto 24/7. Tiendas online completas con pasarelas de pago, inventario y experiencia de compra fluida.</p></div>
+        <div class="srv-card sr ht"><span class="srv-num">03</span><h3 class="srv-title">Branding Digital</h3><p class="srv-desc">Identidad visual profesional que diferencia tu marca y genera la confianza que tu audiencia necesita ver.</p></div>
+        <div class="srv-card sr ht"><span class="srv-num">04</span><h3 class="srv-title">SEO & Visibilidad</h3><p class="srv-desc">Posicionamiento en Google para que tus clientes te encuentren a ti, y no a la competencia.</p></div>
+        <div class="srv-card sr ht"><span class="srv-num">05</span><h3 class="srv-title">Mantenimiento</h3><p class="srv-desc">Soporte técnico continuo, actualizaciones de seguridad y optimización para que tu sitio funcione perfecto siempre.</p></div>
+        <div class="srv-card sr ht"><span class="srv-num">06</span><h3 class="srv-title">Consultoría Digital</h3><p class="srv-desc">Estrategia digital personalizada para escalar tu negocio. Tomamos las decisiones correctas antes de escribir código.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════ PORTAFOLIO ══════════════════════════════ -->
+  <section id="portafolio">
+    <div class="section-inner">
+      <div class="port-header">
+        <div>
+          <p class="eyebrow sr">Portafolio</p>
+          <h2 class="section-title sr">Proyectos que hacen<br>la <span class="t-outline">diferencia</span></h2>
+        </div>
+        <a href="#contacto" class="btn-ghost sr ht" style="white-space:nowrap;align-self:flex-end;">Iniciar Proyecto</a>
+      </div>
+
+      <!-- ── 4-column uniform grid ──
+           href values: update with real URLs before launch.
+           Each card opens in a new tab.
+      ── -->
+      <div class="port-grid">
+
+        <!-- 1 — Modelle -->
+        <a href="https://www.agenciamodelle.com.mx/" target="_blank" rel="noopener" class="port-card ht">
+          <div class="port-card-img-wrap">
+            <img src="images/portafolio/modelle-screenshot.webp" alt="Modelle" class="port-card-img">
+            <div class="port-card-badge">Ver Proyecto →</div>
+          </div>
+          <div class="port-card-info">
+            <span class="port-card-cat">Agencia · Modelos & Producción BTL</span>
+            <div class="port-card-name">Modelle</div>
+            <p class="port-card-desc">Plataforma digital para agencia de modelos, edecanes y producción de eventos corporativos.</p>
+          </div>
+        </a>
+
+        <!-- 2 — Impresiones 2M -->
+        <a href="https://www.impresiones2m.com" target="_blank" rel="noopener" class="port-card ht">
+          <div class="port-card-img-wrap">
+            <img src="images/portafolio/impresiones2m-screenshot.webp" alt="Impresiones 2M" class="port-card-img">
+            <div class="port-card-badge">Ver Proyecto →</div>
+          </div>
+          <div class="port-card-info">
+            <span class="port-card-cat">Imprenta · Cotizaciones en línea</span>
+            <div class="port-card-name">Impresiones 2M</div>
+            <p class="port-card-desc">Sitio corporativo para imprenta offset con cotizador de productos integrado.</p>
+          </div>
+        </a>
+
+        <!-- 3 — Seminuevos Coapa -->
+        <a href="https://seminuevoscoapa.com.mx" target="_blank" rel="noopener" class="port-card ht">
+          <div class="port-card-img-wrap">
+            <img src="images/portafolio/seminuevoscoapa-screenshot.webp" alt="Seminuevos Coapa" class="port-card-img">
+            <div class="port-card-badge">Ver Proyecto →</div>
+          </div>
+          <div class="port-card-info">
+            <span class="port-card-cat">Automotriz · Inventario en línea</span>
+            <div class="port-card-name">Seminuevos Coapa</div>
+            <p class="port-card-desc">Catálogo digital de vehículos con buscador avanzado y fichas técnicas detalladas.</p>
+          </div>
+        </a>
+
+        <!-- 4 — Edecanes Pachuca -->
+        <a href="https://www.edecanespachuca.com.mx/" target="_blank" rel="noopener" class="port-card ht">
+          <div class="port-card-img-wrap">
+            <img src="images/portafolio/edecanespachuca-screenshot.webp" alt="Edecanes Pachuca" class="port-card-img">
+            <div class="port-card-badge">Ver Proyecto →</div>
+          </div>
+          <div class="port-card-info">
+            <span class="port-card-cat">Agencia · Talento & Activaciones BTL</span>
+            <div class="port-card-name">Edecanes Pachuca</div>
+            <p class="port-card-desc">Sitio para agencia de talento profesional con activaciones BTL e infraestructura para eventos.</p>
+          </div>
+        </a>
+
+        <!-- 5 — Mainoflex -->
+        <a href="https://mainoflex.mx/" target="_blank" rel="noopener" class="port-card ht">
+          <div class="port-card-img-wrap">
+            <img src="images/portafolio/mainoflex-screenshot.webp" alt="Mainoflex" class="port-card-img">
+            <div class="port-card-badge">Ver Proyecto →</div>
+          </div>
+          <div class="port-card-info">
+            <span class="port-card-cat">Industrial · Soluciones antivibratorias</span>
+            <div class="port-card-name">Mainoflex</div>
+            <p class="port-card-desc">Catálogo y tienda online para distribuidora de productos de mantenimiento industrial.</p>
+          </div>
+        </a>
+
+        <!-- 6 — Molduras y Troqueles MYR -->
+        <a href="https://mytmyr.com/" target="_blank" rel="noopener" class="port-card ht">
+          <div class="port-card-img-wrap">
+            <img src="images/portafolio/myr-screenshot.webp" alt="Molduras y Troqueles MYR" class="port-card-img">
+            <div class="port-card-badge">Ver Proyecto →</div>
+          </div>
+          <div class="port-card-info">
+            <span class="port-card-cat">Manufactura · Estanterías y exhibidores</span>
+            <div class="port-card-name">Molduras y Troqueles MYR</div>
+            <p class="port-card-desc">Tienda multimarca con sistema de inventario en tiempo real y catálogo dinámico.</p>
+          </div>
+        </a>
+
+        <!-- 7 — Patitas Peludas -->
+        <a href="https://patitaspeludas.mx" target="_blank" rel="noopener" class="port-card ht">
+          <div class="port-card-img-wrap">
+            <img src="images/portafolio/patitaspeludas-screenshot.webp" alt="Patitas Peludas" class="port-card-img">
+            <div class="port-card-badge">Ver Proyecto →</div>
+          </div>
+          <div class="port-card-info">
+            <span class="port-card-cat">Tienda online · Mascotas</span>
+            <div class="port-card-name">Patitas Peludas</div>
+            <p class="port-card-desc">Tienda online de alta calidad para el cuidado y bienestar de mascotas.</p>
+          </div>
+        </a>
+
+        <!-- 8 — CICAP -->
+        <a href="https://cicap.edu.mx" target="_blank" rel="noopener" class="port-card ht">
+          <div class="port-card-img-wrap">
+            <img src="images/portafolio/cicap-screenshot.webp" alt="CICAP" class="port-card-img">
+            <div class="port-card-badge">Ver Proyecto →</div>
+          </div>
+          <div class="port-card-info">
+            <span class="port-card-cat">Educación · Inscripciones digitales</span>
+            <div class="port-card-name">CICAP</div>
+            <p class="port-card-desc">Portal institucional para centro de investigación con gestión editorial avanzada.</p>
+          </div>
+        </a>
+
+        <!-- 9 — IMVEC -->
+        <a href="https://imvec.mx/" target="_blank" rel="noopener" class="port-card ht">
+          <div class="port-card-img-wrap">
+            <img src="images/portafolio/imvec-screenshot.webp" alt="IMVEC" class="port-card-img">
+            <div class="port-card-badge">Ver Proyecto →</div>
+          </div>
+          <div class="port-card-info">
+            <span class="port-card-cat">Industrial · Fabricación metálica</span>
+            <div class="port-card-name">IMVEC</div>
+            <p class="port-card-desc">Portal empresarial con presentación institucional y gestión de proyectos activos.</p>
+          </div>
+        </a>
+
+        <!-- 10 — Patitas Felinas -->
+        <a href="https://patitasfelinas.com" target="_blank" rel="noopener" class="port-card ht">
+          <div class="port-card-img-wrap">
+            <img src="images/portafolio/patitasfelinas-screenshot.webp" alt="Patitas Felinas" class="port-card-img">
+            <div class="port-card-badge">Ver Proyecto →</div>
+          </div>
+          <div class="port-card-info">
+            <span class="port-card-cat">Tienda online · Gatos</span>
+            <div class="port-card-name">Patitas Felinas</div>
+            <p class="port-card-desc">E-commerce especializado en productos y accesorios premium para gatos.</p>
+          </div>
+        </a>
+
+        <!-- 11 — Respirar es Vivir -->
+        <a href="https://respiraresvivir.com" target="_blank" rel="noopener" class="port-card ht">
+          <div class="port-card-img-wrap">
+            <img src="images/portafolio/respiraresvivir-screenshot.webp" alt="Dr. César Salas Mártir" class="port-card-img">
+            <div class="port-card-badge">Ver Proyecto →</div>
+          </div>
+          <div class="port-card-info">
+            <span class="port-card-cat">Salud · Neumología</span>
+            <div class="port-card-name">Dr. César Salas Mártir</div>
+            <p class="port-card-desc">Plataforma de salud respiratoria con recursos educativos y consultas en línea.</p>
+          </div>
+        </a>
+
+        <!-- 12 — CTA -->
+        <a href="#contacto" class="port-card port-cta ht">
+          <div class="port-cta-inner">
+            <div class="port-cta-q">¿Tu negocio<br>aquí?</div>
+            <div class="port-cta-sub">Únete a +150 negocios exitosos</div>
+            <span class="port-cta-btn">Iniciar Proyecto</span>
+          </div>
+          <span class="port-cta-num">12</span>
+        </a>
+
+      </div><!-- /port-grid -->
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════ NOSOTROS ════════════════════════════════ -->
+  <section id="nosotros">
+    <div class="section-inner">
+      <div class="nos-grid">
+        <div class="nos-img-wrap sr">
+          <img src="images/Carlos_Luque_Ancona_2026-Retrato.webp" alt="Carlos Luque Ancona — Fundador, Cero Studio" class="nos-img">
+          <div class="nos-frame"></div>
+        </div>
+        <div>
+          <p class="eyebrow sr">Nosotros</p>
+          <h2 class="section-title sr" style="margin-bottom:32px;">La agencia detrás de tu crecimiento <span class="t-lime">digital</span></h2>
+          <p class="nos-desc sr">Somos <strong>Cero Studio</strong>, una agencia digital fundada con una misión clara: ayudar a negocios hispanos en Estados Unidos a competir y ganar en el mundo digital.<br><br>Combinamos diseño de nivel internacional con una comprensión profunda de la cultura hispana. No hacemos sitios genéricos — construimos <strong>herramientas de negocio</strong> que trabajan mientras tú descansas.</p>
+          <img src="images/firma.png" alt="Firma Carlos Luque" class="nos-firma sr">
+          <div class="stats-grid sr">
+            <div class="stat-item"><div class="stat-num" data-target="150" data-suffix="+">0+</div><div class="stat-label">Clientes atendidos</div></div>
+            <div class="stat-item"><div class="stat-num" data-target="25"  data-suffix="">0</div><div class="stat-label">Años de experiencia</div></div>
+            <div class="stat-item"><div class="stat-num" data-target="50"  data-suffix="+">0+</div><div class="stat-label">Proyectos entregados</div></div>
+            <div class="stat-item"><div class="stat-num" data-target="100" data-suffix="%">0%</div><div class="stat-label">Satisfacción garantizada</div></div>
+          </div>
+          <div class="sr"><a href="#contacto" class="btn-primary ht">Trabajemos Juntos</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════ PROCESO ═════════════════════════════════ -->
+  <section id="proceso">
+    <div class="section-inner">
+      <p class="eyebrow sr">Cómo Trabajamos</p>
+      <h2 class="proc-headline sr">
+        Sin sorpresas,<br><span class="t-outline">sin rodeos.</span>
+      </h2>
+      <div class="proc-grid">
+
+        <div class="proc-step sr ht">
+          <div class="proc-step-top">
+            <span class="proc-num">01</span>
+            <span class="proc-dash"></span>
+          </div>
+          <h3 class="proc-title">Diagnóstico</h3>
+          <p class="proc-desc">Analizamos tu negocio, tu competencia y tu mercado. Identificamos exactamente qué está funcionando, qué está fallando y por qué.</p>
+        </div>
+
+        <div class="proc-step sr ht">
+          <div class="proc-step-top">
+            <span class="proc-num">02</span>
+            <span class="proc-dash"></span>
+          </div>
+          <h3 class="proc-title">Estrategia</h3>
+          <p class="proc-desc">Plan a medida: qué servicios necesitas, en qué orden y con qué presupuesto para maximizar el retorno desde el primer mes.</p>
+        </div>
+
+        <div class="proc-step sr ht">
+          <div class="proc-step-top">
+            <span class="proc-num">03</span>
+            <span class="proc-dash"></span>
+          </div>
+          <h3 class="proc-title">Ejecución</h3>
+          <p class="proc-desc">Diseño, desarrollo, SEO y lo que haga falta. Tú apruebas, nosotros entregamos en tiempo y forma. Sin cobros sorpresa.</p>
+        </div>
+
+        <div class="proc-step sr ht">
+          <div class="proc-step-top">
+            <span class="proc-num">04</span>
+            <span class="proc-dash"></span>
+          </div>
+          <h3 class="proc-title">Resultados</h3>
+          <p class="proc-desc">Reportes claros cada mes: visitas, leads generados, conversiones y ventas. Sin tecnicismos — solo los números que importan a tu negocio.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════ PRECIOS ═════════════════════════════════ -->
+  <section id="precios">
+    <div class="section-inner">
+
+      <div class="precios-top sr">
+        <h2 class="precios-headline">Precios<br><em>sin letra chica.</em></h2>
+        <div class="precios-trust">
+          <p>Pago único. Sin mensualidades ocultas.<br>Sin sorpresas al final.</p>
+        </div>
+      </div>
+
+      <div class="pricing-grid">
+
+        <!-- AI EXPRESS -->
+        <div class="plan-card sr">
+          <p class="plan-name">AI Express</p>
+          <div class="plan-price"><sup>$</sup>4,499<span>MXN</span></div>
+          <p class="plan-delivery">pago único · entrega 5 días</p>
+          <ul class="plan-features">
+            <li>Sitio de 1–3 páginas con AI</li>
+            <li>Revisión y ajuste profesional</li>
+            <li>Responsive (móvil y tablet)</li>
+            <li>SEO básico configurado</li>
+            <li>Formulario de contacto</li>
+          </ul>
+          <a href="#contacto" class="plan-cta plan-cta-ghost">Empezar con AI Express</a>
+        </div>
+
+        <!-- BÁSICO -->
+        <div class="plan-card sr">
+          <p class="plan-name">Básico</p>
+          <div class="plan-price"><sup>$</sup>5,999<span>MXN</span></div>
+          <p class="plan-delivery">pago único · entrega 10 días</p>
+          <ul class="plan-features">
+            <li>Diseño web hasta 5 páginas</li>
+            <li>Responsive (móvil y tablet)</li>
+            <li>SEO básico configurado</li>
+            <li>Formulario de contacto</li>
+            <li>Estrategia de contenido</li>
+          </ul>
+          <a href="#contacto" class="plan-cta plan-cta-ghost">Empezar con Básico</a>
+        </div>
+
+        <!-- PRO — destacado -->
+        <div class="plan-card plan-featured sr">
+          <span class="plan-badge">Más Popular</span>
+          <p class="plan-name">Pro</p>
+          <div class="plan-price"><sup>$</sup>14,999<span>MXN</span></div>
+          <p class="plan-delivery">pago único · entrega 21 días</p>
+          <ul class="plan-features">
+            <li>Todo lo del plan Básico</li>
+            <li>Hasta 15 páginas diseñadas</li>
+            <li>SEO avanzado + Google Search Console</li>
+            <li>Estrategia de contenido 3 meses</li>
+            <li>CRM + integración WhatsApp</li>
+          </ul>
+          <a href="#contacto" class="plan-cta plan-cta-dark">Quiero el Plan Pro</a>
+        </div>
+
+        <!-- PREMIUM -->
+        <div class="plan-card sr">
+          <p class="plan-name">Premium</p>
+          <div class="plan-custom">A medida</div>
+          <p class="plan-delivery">cotización personalizada</p>
+          <ul class="plan-features">
+            <li>Todo lo del plan Pro</li>
+            <li>Campañas Google + Meta Ads</li>
+            <li>Gestión de redes sociales</li>
+            <li>Account manager dedicado</li>
+            <li>Reportes mensuales + soporte 24/7</li>
+          </ul>
+          <a href="#contacto" class="plan-cta plan-cta-primary">Pedir Cotización</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════ CONTACTO ════════════════════════════════ -->
+  <section id="contacto">
+    <div class="contacto-glow"></div>
+    <div class="section-inner">
+      <div class="contacto-grid">
+        <div>
+          <p class="eyebrow sr">Contacto</p>
+          <h2 class="section-title sr" style="margin-bottom:28px;">¿Listo para el<br><span class="t-outline">siguiente</span> nivel?</h2>
+          <p class="contacto-sub sr">Cuéntanos sobre tu proyecto. Respondemos en menos de 24 horas y la primera consulta es completamente gratis.</p>
+          <div class="contact-links sr">
+            <a href="mailto:hola@cerostudio.ai" class="contact-link-row ht"><div><span class="contact-link-label">Email</span><span class="contact-link-val">hola@cerostudio.ai</span></div><span class="contact-link-arrow">→</span></a>
+            <a href="https://wa.me/15551234567" target="_blank" rel="noopener" class="contact-link-row ht"><div><span class="contact-link-label">WhatsApp</span><span class="contact-link-val">+1 (555) 123-4567</span></div><span class="contact-link-arrow">→</span></a>
+            <a href="https://instagram.com/cerostudio.ai" target="_blank" rel="noopener" class="contact-link-row ht"><div><span class="contact-link-label">Instagram</span><span class="contact-link-val">@cerostudio.ai</span></div><span class="contact-link-arrow">→</span></a>
+          </div>
+        </div>
+        <form id="contactForm" class="sr" onsubmit="handleSubmit(event)" novalidate>
+          <div class="form-row-2">
+            <div class="form-group"><input type="text"  name="nombre"  placeholder="Nombre *" required></div>
+            <div class="form-group"><input type="email" name="email"   placeholder="Email *"  required></div>
+          </div>
+          <div class="form-group"><input type="text" name="empresa" placeholder="Empresa / Negocio"></div>
+          <div class="form-group">
+            <select name="servicio">
+              <option value="" disabled selected>¿Qué servicio necesitas?</option>
+              <option value="web">Desarrollo Web</option>
+              <option value="ecommerce">Tienda eCommerce</option>
+              <option value="branding">Branding Digital</option>
+              <option value="seo">SEO & Visibilidad</option>
+              <option value="mantenimiento">Mantenimiento</option>
+              <option value="consultoria">Consultoría Digital</option>
+              <option value="otro">Otro</option>
+            </select>
+          </div>
+          <div class="form-group"><textarea name="mensaje" placeholder="Cuéntanos sobre tu proyecto *" required></textarea></div>
+          <button type="submit" class="btn-submit ht" id="submitBtn">Enviar Mensaje</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div><img src="images/svg/Cero%20Studio%20AI%20Horizontal.svg" alt="Cero Studio" class="footer-logo-img"><p class="footer-tagline">Diseñamos el futuro digital de tu negocio hispano en Estados Unidos.</p></div>
+        <div><p class="footer-col-title">Navegación</p><ul class="footer-links"><li><a href="#servicios">Servicios</a></li><li><a href="#portafolio">Portafolio</a></li><li><a href="#nosotros">Nosotros</a></li><li><a href="#proceso">Proceso</a></li><li><a href="#contacto">Contacto</a></li></ul></div>
+        <div><p class="footer-col-title">Servicios</p><ul class="footer-links"><li><a href="#servicios">Desarrollo Web</a></li><li><a href="#servicios">Tiendas eCommerce</a></li><li><a href="#servicios">Branding Digital</a></li><li><a href="#servicios">SEO & Visibilidad</a></li><li><a href="#servicios">Mantenimiento</a></li></ul></div>
+        <div><p class="footer-col-title">Contacto</p><ul class="footer-links"><li><a href="mailto:hola@cerostudio.ai">hola@cerostudio.ai</a></li><li><a href="https://instagram.com/cerostudio.ai" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://linkedin.com/company/cerostudio" target="_blank" rel="noopener">LinkedIn</a></li></ul></div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© 2025 Cero Studio. Todos los derechos reservados.</p>
+        <p class="footer-credit">Hecho con <span>♥</span> para negocios hispanos en USA</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* ── TEXT SCRAMBLE ─────────────────────────────────────────── */
+    class TextScramble {
+      constructor(el) {
+        this.el = el;
+        this.chars = '!<>-_\\/[]{}—=+*^?#@ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        this.update = this.update.bind(this);
+      }
+      run(text) {
+        return new Promise(resolve => {
+          this.resolve = resolve; this.queue = []; this.frame = 0;
+          for (let i = 0; i < text.length; i++) {
+            const start = Math.floor(i * 1.6);
+            this.queue.push({ to: text[i], start, end: start + 8 + Math.floor(Math.random() * 6), char: '' });
+          }
+          cancelAnimationFrame(this.raf);
+          this.update();
+        });
+      }
+      update() {
+        let html = '', complete = 0;
+        for (const item of this.queue) {
+          if (this.frame >= item.end) { complete++; html += item.to; }
+          else if (this.frame >= item.start) {
+            if (!item.char || Math.random() < .3) item.char = this.chars[Math.floor(Math.random() * this.chars.length)];
+            html += `<span class="scramble-char">${item.char}</span>`;
+          } else { html += `<span class="scramble-char" style="opacity:.12">█</span>`; }
+        }
+        this.el.innerHTML = html;
+        if (complete === this.queue.length) { this.resolve(); return; }
+        this.frame++;
+        this.raf = requestAnimationFrame(this.update);
+      }
+    }
+
+    /* ── LOADER → HERO ─────────────────────────────────────────── */
+    gsap.timeline({ onComplete: runHeroEntrance })
+      .to('#ldLogo', { opacity: 1, duration: .5,  ease: 'power2.out' })
+      .to('#ldBar',  { width: '100%', duration: 1.1, ease: 'power2.inOut' }, '-=.1')
+      .to('#ldLbl',  { opacity: 0, duration: .35 }, '-=.25')
+      .to('#loader', { opacity: 0, duration: .65, ease: 'power2.out' }, '+=.1')
+      .set('#loader', { display: 'none' });
+
+    function runHeroEntrance() {
+      gsap.set('.hero-title', { opacity: 1 });   /* reveal container before scramble */
+      gsap.to('#heroEyebrow', { opacity: 1, duration: .8, ease: 'power2.out' });
+
+      [
+        { el: document.getElementById('scrL1'),  text: 'PRESENCIA',    delay: 200 },
+        { el: document.getElementById('scrL2a'), text: 'DIGITAL\u00A0', delay: 380 },
+        { el: document.getElementById('scrL2b'), text: 'QUE',           delay: 420 },
+        { el: document.getElementById('scrL3'),  text: 'VENDE.',        delay: 660 },
+      ].forEach(({ el, text, delay }) => setTimeout(() => new TextScramble(el).run(text), delay));
+
+      setTimeout(() => {
+        gsap.to('#heroSub',     { opacity: 1, duration: .85, ease: 'power3.out' });
+        gsap.to('#heroActions', { opacity: 1, duration: .75, ease: 'power3.out', delay: .18 });
+        gsap.to('#heroScroll',  { opacity: 1, duration: .6,                      delay: .4  });
+
+        /* Orbs fade in staggered, then start idle breathing animation */
+        gsap.to('.orb', {
+          opacity: 1, duration: 1.4, stagger: .12, ease: 'power2.out',
+          onComplete() {
+            // Idle breathing — different period per orb so they feel organic
+            gsap.to('#orb-b', { scale: 1.18, duration: 3.5, ease: 'power1.inOut', yoyo: true, repeat: -1 });
+            gsap.to('#orb-c', { scale: 1.25, duration: 2.5, ease: 'power1.inOut', yoyo: true, repeat: -1, delay: .8 });
+            gsap.to('#orb-f', { scale: 1.20, duration: 3.0, ease: 'power1.inOut', yoyo: true, repeat: -1, delay: .4 });
+            gsap.to('#orb-a', { scale: 1.08, duration: 5.0, ease: 'power1.inOut', yoyo: true, repeat: -1, delay: 1.2 });
+          }
+        });
+      }, 1600);
+    }
+
+    /* ── PARALLAX ORBS ─────────────────────────────────────────── */
+    const hero = document.getElementById('hero');
+    gsap.set('.orb', { opacity: 0 });
+
+    const orbTweens = Array.from(document.querySelectorAll('.orb')).map(orb => ({
+      x:      gsap.quickTo(orb, 'x', { duration: parseFloat(orb.dataset.dur), ease: 'power3.out' }),
+      y:      gsap.quickTo(orb, 'y', { duration: parseFloat(orb.dataset.dur), ease: 'power3.out' }),
+      factor: parseFloat(orb.dataset.factor)
+    }));
+
+    hero.addEventListener('mousemove', e => {
+      const r  = hero.getBoundingClientRect();
+      const dx = e.clientX - r.left - r.width  / 2;
+      const dy = e.clientY - r.top  - r.height / 2;
+      orbTweens.forEach(({ x, y, factor }) => { x(dx * factor); y(dy * factor); });
+    });
+    hero.addEventListener('mouseleave', () => {
+      orbTweens.forEach(({ x, y }) => { x(0); y(0); });
+    });
+
+    /* ── NAV ───────────────────────────────────────────────────── */
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    /* ── MOBILE NAV ────────────────────────────────────────────── */
+    let navOpen = false;
+    function toggleNav() {
+      navOpen = !navOpen;
+      document.getElementById('mobileNav').classList.toggle('open', navOpen);
+      document.getElementById('navHam').classList.toggle('open', navOpen);
+      document.body.style.overflow = navOpen ? 'hidden' : '';
+    }
+    function closeNav() {
+      navOpen = false;
+      document.getElementById('mobileNav').classList.remove('open');
+      document.getElementById('navHam').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    /* ── SMOOTH SCROLL ─────────────────────────────────────────── */
+    document.querySelectorAll('a[href^="#"]:not(.port-card)').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href');
+        if (id === '#') return;
+        const t = document.querySelector(id);
+        if (!t) return;
+        e.preventDefault();
+        const nh = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nh'));
+        window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - nh, behavior: 'smooth' });
+      });
+    });
+
+    /* ── SCROLL REVEALS ────────────────────────────────────────── */
+    gsap.utils.toArray('.sr').forEach(el => {
+      gsap.fromTo(el, { opacity: 0, y: 48 }, {
+        opacity: 1, y: 0, duration: .95, ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+      });
+    });
+
+    /* ── PORTFOLIO CARDS REVEAL ────────────────────────────────── */
+    gsap.utils.toArray('.port-card').forEach((card, i) => {
+      gsap.fromTo(card, { opacity: 0, y: 40 }, {
+        opacity: 1, y: 0, duration: .8, ease: 'power3.out',
+        delay: (i % 4) * .07,
+        scrollTrigger: { trigger: card, start: 'top 90%', toggleActions: 'play none none none' }
+      });
+    });
+
+    /* ── STAT COUNTERS ─────────────────────────────────────────── */
+    document.querySelectorAll('.stat-num').forEach(el => {
+      const target = parseInt(el.dataset.target), suffix = el.dataset.suffix || '';
+      let started = false;
+      ScrollTrigger.create({ trigger: el, start: 'top 88%', onEnter() {
+        if (started) return; started = true;
+        const t0 = performance.now();
+        (function step(now) {
+          const p = Math.min((now - t0) / 1600, 1);
+          el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * target) + suffix;
+          if (p < 1) requestAnimationFrame(step);
+        })(t0);
+      }});
+    });
+
+    /* ── CURSOR ────────────────────────────────────────────────── */
+    const dot = document.getElementById('cDot'), ring = document.getElementById('cRing');
+    document.addEventListener('mousemove', e => {
+      gsap.to(dot,  { x: e.clientX, y: e.clientY, duration: .06 });
+      gsap.to(ring, { x: e.clientX, y: e.clientY, duration: .28, ease: 'power2.out' });
+    });
+    document.querySelectorAll('.ht').forEach(el => {
+      el.addEventListener('mouseenter', () => ring.classList.add('on'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('on'));
+    });
+
+
+
+    /* ── HERO 3 — MAGNETIC FIELD LINES ────────────────────────── */
+    (function() {
+      const canvas = document.getElementById('hero3Canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let W, H, t = 0, seeds = [];
+
+      const poles = [
+        { fx: .20, fy: .32, q:  1 },
+        { fx: .80, fy: .68, q: -1 },
+        { fx: .58, fy: .15, q:  1 },
+        { fx: .38, fy: .80, q: -1 },
+        { fx: .72, fy: .28, q:  1 },
+        { fx: .28, fy: .72, q: -1 },
+      ];
+
+      function resize() {
+        W = canvas.width  = canvas.offsetWidth  || window.innerWidth;
+        H = canvas.height = canvas.offsetHeight || window.innerHeight;
+      }
+
+      function buildSeeds() {
+        const LINES = 90;
+        seeds = Array.from({ length: LINES }, (_, i) => {
+          const a = (i / LINES) * Math.PI * 2;
+          return {
+            x: W * .5 + Math.cos(a) * W * .46,
+            y: H * .5 + Math.sin(a) * H * .44,
+            lime: i % 3 === 0,
+          };
+        });
+        // Extra seeds near poles for density
+        for (const p of poles) {
+          for (let k = 0; k < 4; k++) {
+            const a = (k / 4) * Math.PI * 2;
+            seeds.push({ x: p.fx * W + Math.cos(a) * 80, y: p.fy * H + Math.sin(a) * 80, lime: p.q > 0 });
+          }
+        }
+      }
+
+      function field(x, y) {
+        let fx = 0, fy = 0;
+        for (const p of poles) {
+          const px = p.fx * W + Math.sin(t * .8 + p.fy * 5) * 70;
+          const py = p.fy * H + Math.cos(t * .6 + p.fx * 5) * 60;
+          const dx = x - px, dy = y - py;
+          const d2 = dx*dx + dy*dy;
+          const d  = Math.sqrt(d2) + 1;
+          fx += p.q * dx / (d2 * .0008 + d);
+          fy += p.q * dy / (d2 * .0008 + d);
+        }
+        const mag = Math.sqrt(fx*fx + fy*fy) + .0001;
+        return { vx: fx / mag, vy: fy / mag };
+      }
+
+      const STEPS = 200, STEP = 5;
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        ctx.globalCompositeOperation = 'lighter';
+        t += .004;
+
+        for (const seed of seeds) {
+          let x = seed.x + Math.sin(t * .5 + seed.x * .002) * 35;
+          let y = seed.y + Math.cos(t * .4 + seed.y * .002) * 28;
+
+          ctx.beginPath(); ctx.moveTo(x, y);
+          for (let s = 0; s < STEPS; s++) {
+            const { vx, vy } = field(x, y);
+            x += vx * STEP; y += vy * STEP;
+            if (x < 0 || x > W || y < 0 || y > H) break;
+            ctx.lineTo(x, y);
+          }
+
+          ctx.strokeStyle = seed.lime ? 'rgba(184,255,0,.38)' : 'rgba(255,255,255,.14)';
+          ctx.lineWidth   = seed.lime ? 1.6 : .9;
+          ctx.stroke();
+        }
+        requestAnimationFrame(draw);
+      }
+
+      requestAnimationFrame(() => {
+        resize();
+        buildSeeds();
+        draw();
+      });
+      window.addEventListener('resize', () => { resize(); buildSeeds(); });
+    })();
+
+    /* ── HERO 3B — MAGNETIC FIELD LINES (FAST & VARIED) ─────────── */
+    (function() {
+      const canvas = document.getElementById('hero3bCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let W, H, t = 0, seeds = [];
+
+      // More poles than hero3 (8 vs 6), tighter spread for wilder crossings
+      const poles = [
+        { fx: .18, fy: .28, q:  1 },
+        { fx: .82, fy: .72, q: -1 },
+        { fx: .55, fy: .12, q:  1 },
+        { fx: .35, fy: .82, q: -1 },
+        { fx: .74, fy: .24, q:  1 },
+        { fx: .26, fy: .76, q: -1 },
+        { fx: .50, fy: .50, q:  1 },  // central attractor
+        { fx: .88, fy: .42, q: -1 },  // right-side extra
+      ];
+
+      function resize() {
+        W = canvas.width  = canvas.offsetWidth  || window.innerWidth;
+        H = canvas.height = canvas.offsetHeight || window.innerHeight;
+      }
+
+      function buildSeeds() {
+        const LINES = 130;  // more lines for density
+        seeds = [];
+
+        // Perimeter seeds
+        for (let i = 0; i < LINES; i++) {
+          const a    = (i / LINES) * Math.PI * 2;
+          const lime = Math.random() < (i % 4 === 0 ? .75 : .22);  // varied lime ratio
+          // Each seed gets its own step size and drift amplitude for variety
+          seeds.push({
+            x:    W * .5 + Math.cos(a) * W * .47,
+            y:    H * .5 + Math.sin(a) * H * .45,
+            lime,
+            step:  6 + Math.random() * 8,          // 6–14 px per step (was fixed 5)
+            steps: 140 + Math.floor(Math.random() * 120), // 140–260 steps (was fixed 200)
+            drift: 30 + Math.random() * 55,         // drift amplitude 30–85px
+            driftSpd: .3 + Math.random() * .5,     // drift speed per seed
+            lw:   lime ? .8 + Math.random() * 1.6 : .4 + Math.random() * .8,
+            alpha: lime ? .28 + Math.random() * .25 : .08 + Math.random() * .12,
+          });
+        }
+
+        // Extra seeds near each pole for chaotic density
+        for (const p of poles) {
+          for (let k = 0; k < 6; k++) {
+            const a    = (k / 6) * Math.PI * 2;
+            const lime = p.q > 0;
+            seeds.push({
+              x: p.fx * W + Math.cos(a) * 90,
+              y: p.fy * H + Math.sin(a) * 90,
+              lime,
+              step:  8 + Math.random() * 10,
+              steps: 100 + Math.floor(Math.random() * 80),
+              drift: 15 + Math.random() * 35,
+              driftSpd: .5 + Math.random() * .7,
+              lw:   lime ? 1.0 + Math.random() * 1.8 : .5 + Math.random() * .6,
+              alpha: lime ? .35 + Math.random() * .30 : .07 + Math.random() * .10,
+            });
+          }
+        }
+      }
+
+      function field(x, y) {
+        let fx = 0, fy = 0;
+        for (const p of poles) {
+          // Poles orbit faster than hero3 (.008 t mult vs .008)
+          const px = p.fx * W + Math.sin(t * 1.1 + p.fy * 5) * 85;
+          const py = p.fy * H + Math.cos(t * .85 + p.fx * 5) * 72;
+          const dx = x - px, dy = y - py;
+          const d2 = dx*dx + dy*dy;
+          const d  = Math.sqrt(d2) + 1;
+          fx += p.q * dx / (d2 * .0008 + d);
+          fy += p.q * dy / (d2 * .0008 + d);
+        }
+        const mag = Math.sqrt(fx*fx + fy*fy) + .0001;
+        return { vx: fx / mag, vy: fy / mag };
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        ctx.globalCompositeOperation = 'lighter';
+        t += .0085;  // ~2× faster time than hero3 (.004)
+
+        for (const seed of seeds) {
+          const drift = t * seed.driftSpd;
+          let x = seed.x + Math.sin(drift + seed.x * .002) * seed.drift;
+          let y = seed.y + Math.cos(drift * .8 + seed.y * .002) * seed.drift * .7;
+
+          ctx.beginPath(); ctx.moveTo(x, y);
+          for (let s = 0; s < seed.steps; s++) {
+            const { vx, vy } = field(x, y);
+            x += vx * seed.step;
+            y += vy * seed.step;
+            if (x < -80 || x > W+80 || y < -80 || y > H+80) break;
+            ctx.lineTo(x, y);
+          }
+
+          ctx.strokeStyle = seed.lime
+            ? `rgba(184,255,0,${seed.alpha})`
+            : `rgba(255,255,255,${seed.alpha})`;
+          ctx.lineWidth = seed.lw;
+          ctx.stroke();
+        }
+        requestAnimationFrame(draw);
+      }
+
+      requestAnimationFrame(() => { resize(); buildSeeds(); draw(); });
+      window.addEventListener('resize', () => { resize(); buildSeeds(); });
+    })();
+
+    /* ── HERO G — FAVICON EMANATION LINES ───────────────────────── */
+    (function() {
+      const canvas = document.getElementById('heroGCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      // CS_Favicon geometry (viewBox 667×663)
+      const FAV = { cx: 334, cy: 331, outerR: 279, innerR: 190, dotR: 52, vbH: 663 };
+      let W, H;
+      let particles = [];
+      let _fav = null;
+      const MAX = 340;
+
+      function resize() {
+        const r = canvas.parentElement.getBoundingClientRect();
+        W = canvas.width  = Math.round(r.width)  || window.innerWidth;
+        H = canvas.height = Math.round(r.height) || window.innerHeight;
+        _fav = null; // invalidate cached transform
+      }
+
+      function getFav() {
+        if (_fav) return _fav;
+        const s = (H * 0.78) / FAV.vbH;
+        _fav = {
+          cx: W * 0.60, cy: H * 0.50, s,
+          outerR: FAV.outerR * s,
+          innerR: FAV.innerR * s,
+          dotR:   FAV.dotR   * s
+        };
+        return _fav;
+      }
+
+      function spawn() {
+        const f = getFav();
+        const rng = Math.random();
+        let px, py, lime;
+
+        if (rng < 0.42) {
+          // Outer circle edge — most emitters
+          const a = Math.random() * Math.PI * 2;
+          px = f.cx + Math.cos(a) * f.outerR;
+          py = f.cy + Math.sin(a) * f.outerR;
+          lime = true;
+        } else if (rng < 0.66) {
+          // Inner circle edge
+          const a = Math.random() * Math.PI * 2;
+          px = f.cx + Math.cos(a) * f.innerR;
+          py = f.cy + Math.sin(a) * f.innerR;
+          lime = Math.random() > 0.35;
+        } else if (rng < 0.82) {
+          // Center dot edge
+          const a = Math.random() * Math.PI * 2;
+          px = f.cx + Math.cos(a) * f.dotR;
+          py = f.cy + Math.sin(a) * f.dotR;
+          lime = true;
+        } else {
+          // Scattered in the annulus ring body
+          const a = Math.random() * Math.PI * 2;
+          const rad = f.innerR + Math.random() * (f.outerR - f.innerR);
+          px = f.cx + Math.cos(a) * rad;
+          py = f.cy + Math.sin(a) * rad;
+          lime = Math.random() > 0.45;
+        }
+
+        // Velocity: radially outward from favicon center + slight curl perturbation
+        const dx = px - f.cx, dy = py - f.cy;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        const nx = dx / dist, ny = dy / dist;   // outward radial
+        const tx = -ny, ty = nx;                 // tangential (CCW)
+        const curl = (Math.random() - 0.5) * 0.6;
+        const speed = 1.3 + Math.random() * 1.8;
+        const vx = nx + tx * curl, vy = ny + ty * curl;
+        const vm = Math.sqrt(vx * vx + vy * vy) || 1;
+
+        return {
+          x: px, y: py, px: px, py: py,
+          vx: (vx / vm) * speed,
+          vy: (vy / vm) * speed,
+          life: 1.0,
+          decay: 0.005 + Math.random() * 0.0075,
+          lime,
+          w: lime ? 0.85 + Math.random() * 1.2 : 0.45 + Math.random() * 0.75
+        };
+      }
+
+      function initParticles() {
+        particles = [];
+        for (let i = 0; i < MAX; i++) {
+          const p = spawn();
+          p.life = Math.random(); // stagger so they don't all die at once
+          particles.push(p);
+        }
+      }
+
+      function drawFavicon() {
+        const f = getFav();
+        ctx.save();
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.shadowColor = '#B8FF00';
+
+        // Outer circle
+        ctx.beginPath();
+        ctx.arc(f.cx, f.cy, f.outerR, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(184,255,0,.58)';
+        ctx.lineWidth = 1.8;
+        ctx.shadowBlur = 24;
+        ctx.stroke();
+
+        // Inner ring circle
+        ctx.beginPath();
+        ctx.arc(f.cx, f.cy, f.innerR, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(184,255,0,.48)';
+        ctx.lineWidth = 1.5;
+        ctx.shadowBlur = 18;
+        ctx.stroke();
+
+        // Center dot — filled glow + stroke
+        ctx.beginPath();
+        ctx.arc(f.cx, f.cy, f.dotR, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(184,255,0,.14)';
+        ctx.shadowBlur = 32;
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(184,255,0,.72)';
+        ctx.lineWidth = 1.8;
+        ctx.shadowBlur = 22;
+        ctx.stroke();
+
+        ctx.restore();
+      }
+
+      function draw() {
+        // Fade previous frame — slower fade = longer trails
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.fillStyle = 'rgba(0,0,0,.14)';
+        ctx.fillRect(0, 0, W, H);
+
+        drawFavicon();
+
+        // Draw particles with additive blending so overlapping lines glow
+        ctx.globalCompositeOperation = 'lighter';
+
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          p.px = p.x; p.py = p.y;
+          p.x += p.vx; p.y += p.vy;
+          p.life -= p.decay;
+
+          // Respawn dead or out-of-bounds particles
+          if (p.life <= 0 || p.x < -100 || p.x > W + 100 || p.y < -100 || p.y > H + 100) {
+            particles[i] = spawn();
+            continue;
+          }
+
+          // Alpha drops off quadratically with life (starts bright, fades fast at end)
+          const a = p.life * p.life;
+          if (p.lime) {
+            ctx.strokeStyle = `rgba(184,255,0,${(a * 0.70).toFixed(3)})`;
+          } else {
+            ctx.strokeStyle = `rgba(255,255,255,${(a * 0.34).toFixed(3)})`;
+          }
+          ctx.lineWidth = p.w;
+          ctx.beginPath();
+          ctx.moveTo(p.px, p.py);
+          ctx.lineTo(p.x, p.y);
+          ctx.stroke();
+        }
+
+        ctx.globalCompositeOperation = 'source-over';
+        requestAnimationFrame(draw);
+      }
+
+      requestAnimationFrame(() => { resize(); initParticles(); draw(); });
+      window.addEventListener('resize', () => { resize(); initParticles(); });
+    })();
+
+    /* ── HERO H — CURL NOISE FLOW ───────────────────────────────── */
+    (function(){
+      const canvas = document.getElementById('heroHCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      function resize(){
+        canvas.width  = canvas.parentElement.offsetWidth  || window.innerWidth;
+        canvas.height = canvas.parentElement.offsetHeight || window.innerHeight;
+      }
+
+      // Layered sine noise field
+      function N(x, y, t){
+        return Math.sin(x*1.3 + t*.5) * Math.cos(y*.9 - t*.3) * .55
+             + Math.sin(x*.6 - t*.2) * Math.sin(y*1.7 + t*.4) * .35
+             + Math.cos(x*2.1 + y*1.1 + t*.15) * .10;
+      }
+
+      // Curl = divergence-free flow from perpendicular gradient
+      const e = .006;
+      function curl(x, y, t){
+        return {
+          vx:  (N(x, y+e, t) - N(x, y-e, t)) / (2*e),
+          vy: -(N(x+e, y, t) - N(x-e, y, t)) / (2*e)
+        };
+      }
+
+      const SCALE = .0028, SPD = 9, N_P = 420;
+      let pts = [], T = 0, rafId;
+
+      function spawn(){
+        return {
+          x:    Math.random() * canvas.width,
+          y:    Math.random() * canvas.height,
+          life: Math.random(),
+          max:  .5 + Math.random() * .9,
+          sz:   .7 + Math.random() * 1.3,
+          spd:  SPD * (.8 + Math.random() * .5),
+          lime: Math.random() < .14   // 14% lime accent, rest white
+        };
+      }
+
+      function init(){ pts = Array.from({length: N_P}, spawn); }
+
+      function draw(){
+        rafId = requestAnimationFrame(draw);
+        T += .007;
+
+        // Soft trail — black fade keeps the "ink in water" look
+        ctx.fillStyle = 'rgba(0,0,0,0.12)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.globalCompositeOperation = 'lighter';
+
+        pts.forEach(p => {
+          p.life += .006;
+          const {vx, vy} = curl(p.x * SCALE, p.y * SCALE, T);
+          const m = Math.sqrt(vx*vx + vy*vy) || 1;
+          p.x += vx/m * p.spd;
+          p.y += vy/m * p.spd;
+
+          const fi = Math.min(p.life / .18, 1);
+          const fo = Math.max(1 - (p.life - p.max + .18) / .18, 0);
+          const a  = Math.min(fi, fo) * (p.lime ? .85 : .36);
+
+          if (a > 0){
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.sz, 0, Math.PI*2);
+            // lime (#B8FF00) for accent, white for base
+            ctx.fillStyle = p.lime
+              ? `rgba(184,255,0,${a})`
+              : `rgba(255,255,255,${a})`;
+            ctx.fill();
+          }
+
+          if (p.life > p.max || p.x < -8 || p.x > canvas.width+8 || p.y < -8 || p.y > canvas.height+8)
+            Object.assign(p, spawn());
+        });
+
+        ctx.globalCompositeOperation = 'source-over';
+      }
+
+      resize(); init();
+      window.addEventListener('resize', () => { resize(); init(); });
+      new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting){ if (!rafId) draw(); }
+        else { cancelAnimationFrame(rafId); rafId = null; }
+      }, {threshold: 0}).observe(canvas.parentElement);
+      draw();
+    })();
+
+    /* ── FORM ──────────────────────────────────────────────────── */
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn'), orig = btn.textContent;
+      btn.textContent = 'Enviando...'; btn.disabled = true;
+      setTimeout(() => {
+        btn.textContent = '¡Mensaje enviado!'; btn.style.background = '#00dd66'; btn.style.clipPath = 'none';
+        setTimeout(() => {
+          btn.textContent = orig; btn.style.background = ''; btn.style.clipPath = ''; btn.disabled = false;
+          e.target.reset();
+        }, 3500);
+      }, 1400);
+    }
+  </script>
+</body>
+</html>
