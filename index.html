@@ -1488,7 +1488,7 @@
 
     .pricing-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       background: var(--gb);
       gap: 1px;
       align-items: stretch;
@@ -1677,18 +1677,16 @@
       .pricing-grid {
         grid-template-columns: repeat(2, 1fr);
       }
-
       .precios-top {
         flex-direction: column;
         align-items: flex-start;
       }
-
       .precios-trust {
         text-align: left;
       }
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 768px) {
       .pricing-grid {
         grid-template-columns: 1fr;
       }
@@ -2738,7 +2736,8 @@
           <div>
             <p class="eyebrow sr" id="nos-eyebrow">Nosotros</p>
             <h2 class="section-title sr" style="margin-bottom:32px;" id="nos-title">La agencia detrás de tu crecimiento
-              <span class="t-lime">digital</span></h2>
+              <span class="t-lime">digital</span>
+            </h2>
             <p class="nos-desc sr" id="nos-desc">Somos <strong>Cero Studio</strong>, una agencia digital fundada con una
               misión clara: ayudar a emprendedores y negocios a competir y ganar en el mundo digital.<br><br>Combinamos
               diseño de nivel internacional con una comprensión profunda de las necesidades del mercado multicultural.
@@ -2837,7 +2836,7 @@
           </div>
         </div>
 
-        <div class="pricing-grid" style="grid-template-columns:repeat(3,1fr);">
+        <div class="pricing-grid">
 
           <!-- CERO LAUNCH -->
           <div class="plan-card sr">
