@@ -1580,10 +1580,13 @@
       function resize() {
         W = canvas.width  = canvas.offsetWidth  || window.innerWidth;
         H = canvas.height = canvas.offsetHeight || window.innerHeight;
+        STEPS = W < 768 ? 100 : 200;
+        STEP  = W < 768 ? 8 : 5;
       }
 
       function buildSeeds() {
-        const LINES = 90;
+        const isMobile = W < 768;
+        const LINES = isMobile ? 40 : 90;
         seeds = Array.from({ length: LINES }, (_, i) => {
           const a = (i / LINES) * Math.PI * 2;
           return {
@@ -1594,8 +1597,9 @@
         });
         // Extra seeds near poles for density
         for (const p of poles) {
-          for (let k = 0; k < 4; k++) {
-            const a = (k / 4) * Math.PI * 2;
+          const innerLines = isMobile ? 2 : 4;
+          for (let k = 0; k < innerLines; k++) {
+            const a = (k / innerLines) * Math.PI * 2;
             seeds.push({ x: p.fx * W + Math.cos(a) * 80, y: p.fy * H + Math.sin(a) * 80, lime: p.q > 0 });
           }
         }
@@ -1618,7 +1622,7 @@
         return { vx: fx / mag, vy: fy / mag };
       }
 
-      const STEPS = 200, STEP = 5;
+      let STEPS = 200, STEP = 5;
 
       let rafId;
       function draw() {
@@ -1686,7 +1690,8 @@
       }
 
       function buildSeeds() {
-        const LINES = 130;  // more lines for density
+        const isMobile = W < 768;
+        const LINES = isMobile ? 60 : 130;  // more lines for density
         seeds = [];
 
         // Perimeter seeds
@@ -1698,8 +1703,8 @@
             x:    W * .5 + Math.cos(a) * W * .47,
             y:    H * .5 + Math.sin(a) * H * .45,
             lime,
-            step:  6 + Math.random() * 8,          // 6–14 px per step (was fixed 5)
-            steps: 140 + Math.floor(Math.random() * 120), // 140–260 steps (was fixed 200)
+            step:  (isMobile ? 11 : 6) + Math.random() * 8,          // 6–14 px per step (was fixed 5)
+            steps: (isMobile ? 70 : 140) + Math.floor(Math.random() * (isMobile ? 60 : 120)), // 140–260 steps (was fixed 200)
             drift: 30 + Math.random() * 55,         // drift amplitude 30–85px
             driftSpd: .3 + Math.random() * .5,     // drift speed per seed
             lw:   lime ? .8 + Math.random() * 1.6 : .4 + Math.random() * .8,
@@ -1709,15 +1714,16 @@
 
         // Extra seeds near each pole for chaotic density
         for (const p of poles) {
-          for (let k = 0; k < 6; k++) {
-            const a    = (k / 6) * Math.PI * 2;
+          const innerLines = isMobile ? 3 : 6;
+          for (let k = 0; k < innerLines; k++) {
+            const a    = (k / innerLines) * Math.PI * 2;
             const lime = p.q > 0;
             seeds.push({
               x: p.fx * W + Math.cos(a) * 90,
               y: p.fy * H + Math.sin(a) * 90,
               lime,
-              step:  8 + Math.random() * 10,
-              steps: 100 + Math.floor(Math.random() * 80),
+              step:  (isMobile ? 12 : 8) + Math.random() * 10,
+              steps: (isMobile ? 50 : 100) + Math.floor(Math.random() * (isMobile ? 40 : 80)),
               drift: 15 + Math.random() * 35,
               driftSpd: .5 + Math.random() * .7,
               lw:   lime ? 1.0 + Math.random() * 1.8 : .5 + Math.random() * .6,
