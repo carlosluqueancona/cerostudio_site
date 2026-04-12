@@ -514,18 +514,12 @@
       border-bottom: 1px solid rgba(0, 0, 0, .18);
       background: var(--lime);
       padding: 18px 0;
-      -webkit-transform: translateZ(0);
-      transform: translateZ(0);
     }
 
     .ticker-track {
       display: flex;
       width: max-content;
-      animation: tk 28s linear infinite;
       pointer-events: none;
-      will-change: transform;
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
     }
 
     .ticker-group {
@@ -556,16 +550,6 @@
 
     .ticker-item img.logo-sq {
       height: 82px;
-    }
-
-    @keyframes tk {
-      0% {
-        transform: translate3d(0, 0, 0);
-      }
-
-      100% {
-        transform: translate3d(-50%, 0, 0);
-      }
     }
 
     @media (max-width: 768px) {
@@ -2596,6 +2580,16 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       gsap.registerPlugin(ScrollTrigger);
+
+      /* ── LOGO TICKER ───────────────────────────────────────────── */
+      (function () {
+        const track = document.querySelector('.ticker-track');
+        if (!track) return;
+        gsap.fromTo(track,
+          { xPercent: 0 },
+          { xPercent: -50, duration: 28, ease: 'none', repeat: -1 }
+        );
+      })();
 
       /* ── TEXT SCRAMBLE ─────────────────────────────────────────── */
       class TextScramble {
