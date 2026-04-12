@@ -520,6 +520,7 @@
       display: flex;
       width: max-content;
       animation: tk 28s linear infinite;
+      pointer-events: none;
     }
 
     .ticker-group {
@@ -545,17 +546,11 @@
       max-width: 280px;
       object-fit: contain;
       filter: brightness(0);
-      opacity: 1;
-      transition: all .4s ease;
+      pointer-events: none;
     }
 
     .ticker-item img.logo-sq {
       height: 82px;
-    }
-
-    .ticker-item:hover img {
-      opacity: 1;
-      transform: scale(1.05);
     }
 
     @keyframes tk {
