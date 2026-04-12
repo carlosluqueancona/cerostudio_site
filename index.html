@@ -7,7 +7,7 @@
   <meta name="description"
     content="Cero Studio — Agencia digital premium de desarrollo web y eCommerce para emprendedores y negocios en Estados Unidos.">
   <title>Cero Studio — Agencia Digital Premium</title>
-  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="icon" href="images/svg/CS_Favicon.svg" type="image/svg+xml">
 
   <!-- ── Open Graph (WhatsApp, Facebook, iMessage, Telegram, LinkedIn) ── -->
   <meta property="og:type" content="website">
@@ -506,9 +506,9 @@
     /* ============================================================ LOGO TICKER */
     #ticker {
       overflow: hidden;
-      border-bottom: 1px solid var(--gb);
-      background: var(--bg);
-      padding: 36px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, .18);
+      background: var(--lime);
+      padding: 18px 0;
     }
 
     .ticker-track {
@@ -527,7 +527,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      border-right: 1px solid var(--gb);
+      border-right: 1px solid rgba(0, 0, 0, .18);
     }
 
     .ticker-item:last-child {
@@ -535,17 +535,22 @@
     }
 
     .ticker-item img {
-      height: 56px;
+      height: 60px;
       width: auto;
-      max-width: 240px;
+      max-width: 280px;
       object-fit: contain;
-      filter: brightness(0) invert(1);
-      opacity: .36;
-      transition: opacity .3s;
+      filter: brightness(0);
+      opacity: 1;
+      transition: all .4s ease;
+    }
+
+    .ticker-item img.logo-sq {
+      height: 82px;
     }
 
     .ticker-item:hover img {
-      opacity: .85;
+      opacity: 1;
+      transform: scale(1.05);
     }
 
     @keyframes tk {
@@ -1982,49 +1987,51 @@
       <div class="ticker-track">
         <div class="ticker-group">
           <div class="ticker-item"><img loading="lazy"
-              src="images/logos_ticker/MAINOFLEX -Logo_FINAL_Alto_contrste-1000px.png" alt="Mainoflex"></div>
+              src="images/logos_ticker/MAINOFLEX -Logo_FINAL_Alto_contrste-1000px.png" alt="Mainoflex" class="logo-sq">
+          </div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/SAMADI-Logo_horizontal_Negro-1000px.png"
               alt="Samadi"></div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/CICAP-Logo_Negro-1000px.png"
               alt="CICAP"></div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/PF-Logo_NEGRO.webp"
-              alt="Patitas Felinas"></div>
+              alt="Patitas Felinas" class="logo-sq"></div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Impresiones2M_NEGRO.png"
               alt="Impresiones 2M"></div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/KARUM_Logo@4x.png" alt="Karum"></div>
+          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Capital_Pirata.png" alt="Capital Pirata"
+              class="logo-sq"></div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Neurotica_FM.png" alt="Neurotica FM">
           </div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Salvaxe.webp" alt="Salvaxe"></div>
+          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/PP_Logo-NEGRO.webp"
+              alt="Patitas Peludas" class="logo-sq"></div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/trion-blanco2.png" alt="Trion"></div>
-          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Capital_Pirata.png"
-              alt="Capital Pirata"></div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Edecanes_Pachuca_Logo_vertical_path.png"
               alt="Edecanes Pachuca"></div>
-          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/PP_Logo-NEGRO.webp"
-              alt="Patitas Peludas"></div>
         </div>
         <div class="ticker-group">
           <div class="ticker-item"><img loading="lazy"
-              src="images/logos_ticker/MAINOFLEX -Logo_FINAL_Alto_contrste-1000px.png" alt="Mainoflex"></div>
+              src="images/logos_ticker/MAINOFLEX -Logo_FINAL_Alto_contrste-1000px.png" alt="Mainoflex" class="logo-sq">
+          </div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/SAMADI-Logo_horizontal_Negro-1000px.png"
               alt="Samadi"></div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/CICAP-Logo_Negro-1000px.png"
               alt="CICAP"></div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/PF-Logo_NEGRO.webp"
-              alt="Patitas Felinas"></div>
+              alt="Patitas Felinas" class="logo-sq"></div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Impresiones2M_NEGRO.png"
               alt="Impresiones 2M"></div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/KARUM_Logo@4x.png" alt="Karum"></div>
+          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Capital_Pirata.png" alt="Capital Pirata"
+              class="logo-sq"></div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Neurotica_FM.png" alt="Neurotica FM">
           </div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Salvaxe.webp" alt="Salvaxe"></div>
+          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/PP_Logo-NEGRO.webp"
+              alt="Patitas Peludas" class="logo-sq"></div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/trion-blanco2.png" alt="Trion"></div>
-          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Capital_Pirata.png"
-              alt="Capital Pirata"></div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Edecanes_Pachuca_Logo_vertical_path.png"
               alt="Edecanes Pachuca"></div>
-          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/PP_Logo-NEGRO.webp"
-              alt="Patitas Peludas"></div>
         </div>
       </div>
     </div>
@@ -2275,10 +2282,12 @@
     <section id="nosotros">
       <div class="section-inner">
         <div class="nos-grid">
-          <div class="nos-img-wrap sr">
-            <img src="images/Carlos_Luque_Ancona_2026-Retrato.webp" alt="Carlos Luque Ancona — Fundador, Cero Studio"
-              class="nos-img" loading="lazy">
-            <div class="nos-frame"></div>
+          <div class="sr">
+            <div class="nos-img-wrap">
+              <img src="images/Carlos_Luque_Ancona_2026-Retrato.webp" alt="Carlos Luque Ancona — Fundador, Cero Studio"
+                class="nos-img" loading="lazy">
+              <div class="nos-frame"></div>
+            </div>
             <p class="nos-quote" id="nos-quote">Un sitio web no es un gasto. Es el vendedor más barato que nunca duerme.
             </p>
           </div>
@@ -2612,7 +2621,7 @@
         .set('#loader', { display: 'none' });
 
       function runHeroEntrance() {
-        gsap.set('.hero-title', { opacity: 1 });   /* reveal container before scramble */
+        gsap.set('.hero-static-title', { opacity: 1 });   /* reveal container before scramble */
         gsap.to('#heroEyebrow', { opacity: 1, duration: .8, ease: 'power2.out' });
 
         var _heroT = (typeof CS_HERO_TEXTS !== 'undefined' && typeof CS_LANG !== 'undefined') ? CS_HERO_TEXTS[CS_LANG] : [
@@ -2629,7 +2638,6 @@
         setTimeout(() => {
           gsap.to('#heroSub', { opacity: 1, duration: .85, ease: 'power3.out' });
           gsap.to('#heroActions', { opacity: 1, duration: .75, ease: 'power3.out', delay: .18 });
-          gsap.to('#heroScroll', { opacity: 1, duration: .6, delay: .4 });
         }, 1600);
       }
 
