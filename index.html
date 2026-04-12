@@ -520,6 +520,8 @@
       display: flex;
       width: max-content;
       pointer-events: none;
+      will-change: transform;
+      backface-visibility: hidden;
     }
 
     .ticker-group {
@@ -2587,7 +2589,7 @@
         if (!track) return;
         gsap.fromTo(track,
           { xPercent: 0 },
-          { xPercent: -50, duration: 28, ease: 'none', repeat: -1 }
+          { xPercent: -50, duration: 28, ease: 'none', repeat: -1, force3D: true }
         );
       })();
 
