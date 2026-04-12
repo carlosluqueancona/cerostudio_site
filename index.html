@@ -404,7 +404,7 @@
       letter-spacing: -.01em;
       text-transform: uppercase;
       margin-bottom: 48px;
-      opacity: 0; /* Hidden initially for entrance animation */
+      visibility: hidden; /* Reserva el espacio para evitar saltos en la carga */
     }
 
     .hero-static-title span[data-hero-line] {
@@ -2617,7 +2617,7 @@
             else if (this.frame >= item.start) {
               if (!item.char || Math.random() < .3) item.char = this.chars[Math.floor(Math.random() * this.chars.length)];
               html += `<span class="scramble-char">${item.char}</span>`;
-            } else { html += `<span class="scramble-char" style="opacity:.12">█</span>`; }
+            } else { html += `<span class="scramble-char" style="opacity:0">${item.to}</span>`; }
           }
           this.el.innerHTML = html;
           if (complete === this.queue.length) { this.resolve(); return; }
@@ -2635,7 +2635,7 @@
         .set('#loader', { display: 'none' });
 
       function runHeroEntrance() {
-        gsap.set('.hero-static-title', { opacity: 1 });   /* reveal container before scramble */
+        gsap.set('.hero-static-title', { visibility: 'visible' });   /* revelamos el contenedor */
         gsap.to('#heroEyebrow', { opacity: 1, duration: .8, ease: 'power2.out' });
 
         var _heroT = (typeof CS_HERO_TEXTS !== 'undefined' && typeof CS_LANG !== 'undefined') ? CS_HERO_TEXTS[CS_LANG] : [
