@@ -404,6 +404,11 @@
       letter-spacing: -.01em;
       text-transform: uppercase;
       margin-bottom: 48px;
+      opacity: 0; /* Hidden initially for entrance animation */
+    }
+
+    .hero-static-title span[data-hero-line] {
+      opacity: 0;
     }
 
     .hero-static-sub {
@@ -1986,52 +1991,32 @@
     <div id="ticker">
       <div class="ticker-track">
         <div class="ticker-group">
-          <div class="ticker-item"><img loading="lazy"
-              src="images/logos_ticker/MAINOFLEX -Logo_FINAL_Alto_contrste-1000px.png" alt="Mainoflex" class="logo-sq">
-          </div>
-          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/SAMADI-Logo_horizontal_Negro-1000px.png"
-              alt="Samadi"></div>
-          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/CICAP-Logo_Negro-1000px.png"
-              alt="CICAP"></div>
-          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/PF-Logo_NEGRO.webp"
-              alt="Patitas Felinas" class="logo-sq"></div>
-          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Impresiones2M_NEGRO.png"
-              alt="Impresiones 2M"></div>
+          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/MAINOFLEX -Logo_FINAL_Alto_contrste-1000px.png" alt="Mainoflex" class="logo-sq"></div>
+          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/SAMADI-Logo_horizontal_Negro-1000px.png" alt="Samadi"></div>
+          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/CICAP-Logo_Negro-1000px.png" alt="CICAP"></div>
+          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/PF-Logo_NEGRO.webp" alt="Patitas Felinas" class="logo-sq"></div>
+          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Impresiones2M_NEGRO.png" alt="Impresiones 2M"></div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/KARUM_Logo@4x.png" alt="Karum"></div>
-          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Capital_Pirata.png" alt="Capital Pirata"
-              class="logo-sq"></div>
-          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Neurotica_FM.png" alt="Neurotica FM">
-          </div>
+          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Capital_Pirata.png" alt="Capital Pirata" class="logo-sq"></div>
+          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Neurotica_FM.png" alt="Neurotica FM"></div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Salvaxe.webp" alt="Salvaxe"></div>
-          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/PP_Logo-NEGRO.webp"
-              alt="Patitas Peludas" class="logo-sq"></div>
+          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/PP_Logo-NEGRO.webp" alt="Patitas Peludas" class="logo-sq"></div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/trion-blanco2.png" alt="Trion"></div>
-          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Edecanes_Pachuca_Logo_vertical_path.png"
-              alt="Edecanes Pachuca"></div>
+          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Edecanes_Pachuca_Logo_vertical_path.png" alt="Edecanes Pachuca"></div>
         </div>
         <div class="ticker-group">
-          <div class="ticker-item"><img loading="lazy"
-              src="images/logos_ticker/MAINOFLEX -Logo_FINAL_Alto_contrste-1000px.png" alt="Mainoflex" class="logo-sq">
-          </div>
-          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/SAMADI-Logo_horizontal_Negro-1000px.png"
-              alt="Samadi"></div>
-          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/CICAP-Logo_Negro-1000px.png"
-              alt="CICAP"></div>
-          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/PF-Logo_NEGRO.webp"
-              alt="Patitas Felinas" class="logo-sq"></div>
-          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Impresiones2M_NEGRO.png"
-              alt="Impresiones 2M"></div>
+          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/MAINOFLEX -Logo_FINAL_Alto_contrste-1000px.png" alt="Mainoflex" class="logo-sq"></div>
+          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/SAMADI-Logo_horizontal_Negro-1000px.png" alt="Samadi"></div>
+          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/CICAP-Logo_Negro-1000px.png" alt="CICAP"></div>
+          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/PF-Logo_NEGRO.webp" alt="Patitas Felinas" class="logo-sq"></div>
+          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Impresiones2M_NEGRO.png" alt="Impresiones 2M"></div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/KARUM_Logo@4x.png" alt="Karum"></div>
-          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Capital_Pirata.png" alt="Capital Pirata"
-              class="logo-sq"></div>
-          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Neurotica_FM.png" alt="Neurotica FM">
-          </div>
+          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Capital_Pirata.png" alt="Capital Pirata" class="logo-sq"></div>
+          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Neurotica_FM.png" alt="Neurotica FM"></div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Salvaxe.webp" alt="Salvaxe"></div>
-          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/PP_Logo-NEGRO.webp"
-              alt="Patitas Peludas" class="logo-sq"></div>
+          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/PP_Logo-NEGRO.webp" alt="Patitas Peludas" class="logo-sq"></div>
           <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/trion-blanco2.png" alt="Trion"></div>
-          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Edecanes_Pachuca_Logo_vertical_path.png"
-              alt="Edecanes Pachuca"></div>
+          <div class="ticker-item"><img loading="lazy" src="images/logos_ticker/Edecanes_Pachuca_Logo_vertical_path.png" alt="Edecanes Pachuca"></div>
         </div>
       </div>
     </div>
@@ -2582,6 +2567,7 @@
       class TextScramble {
         constructor(el) {
           this.el = el;
+          this.el.style.opacity = 1; // Reveal element when beginning scramble
           this.chars = '!<>-_\\/[]{}—=+*^?#@ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
           this.update = this.update.bind(this);
         }
