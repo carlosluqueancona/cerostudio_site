@@ -31,11 +31,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload"
-    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
     as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
     <link
-      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
       rel="stylesheet">
   </noscript>
   <style>
@@ -49,16 +49,30 @@
     }
 
     :root {
-      --bg: #000;
+      /* ── Base ── */
+      --bg: #131313;
       --white: #fff;
-      --lime: #B8FF00;
-      --g1: #0a0a0a;
+      --lime: #b2f700;
+      --lime-dim: #9cd900;
+      --on-lime: #131f00;
+
+      /* ── Surface layers (Kinetic Brutalism) ── */
+      --surface:          #131313;
+      --surface-low:      #1b1b1c;
+      --surface-lowest:   #0e0e0e;
+      --surface-high:     #2a2a2a;
+      --surface-highest:  #353535;
+
+      /* ── Legacy aliases (compatibilidad) ── */
+      --g1: #0e0e0e;
       --g2: #111;
       --g3: #1a1a1a;
-      --gb: #1f1f1f;
+      --gb: #2a2a2a;
       --gt: #888;
-      --fd: 'Barlow Condensed', sans-serif;
-      --fb: 'Barlow', sans-serif;
+
+      /* ── Typography ── */
+      --fd: 'Space Grotesk', sans-serif;
+      --fb: 'Inter', sans-serif;
       --nh: 72px;
     }
 
@@ -242,14 +256,13 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      transition: background .4s, border-bottom-color .4s;
-      border-bottom: 1px solid transparent;
+      transition: background .4s;
     }
 
     #navbar.scrolled {
-      background: rgba(0, 0, 0, .92);
-      backdrop-filter: blur(16px);
-      border-bottom-color: var(--gb);
+      background: rgba(19, 19, 19, .88);
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
     }
 
     .nav-logo {
@@ -279,19 +292,21 @@
     .nav-cta {
       font-family: var(--fd);
       font-size: 13px;
-      font-weight: 800;
-      letter-spacing: .12em;
+      font-weight: 700;
+      letter-spacing: .1em;
       text-transform: uppercase;
-      color: var(--bg);
-      background: var(--lime);
+      color: var(--on-lime);
+      background: linear-gradient(135deg, var(--lime) 0%, var(--lime-dim) 100%);
+      box-shadow: 0px 0px 16px rgba(178, 247, 0, 0.25);
       padding: 10px 26px;
-      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
       display: inline-block;
-      transition: background .2s;
+      transition: background .15s ease-out, color .15s ease-out, box-shadow .15s ease-out;
     }
 
     .nav-cta:hover {
-      background: #ccff33;
+      background: #ffffff;
+      color: #000000;
+      box-shadow: none;
     }
 
     .nav-ham {
@@ -430,40 +445,40 @@
     .btn-primary {
       font-family: var(--fd);
       font-size: 14px;
-      font-weight: 800;
-      letter-spacing: .14em;
+      font-weight: 700;
+      letter-spacing: .1em;
       text-transform: uppercase;
-      color: var(--bg);
-      background: var(--lime);
+      color: var(--on-lime);
+      background: linear-gradient(135deg, var(--lime) 0%, var(--lime-dim) 100%);
+      box-shadow: 0px 0px 20px rgba(178, 247, 0, 0.3);
       padding: 16px 38px;
-      clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
       display: inline-block;
-      transition: background .2s, transform .2s;
+      transition: background .15s ease-out, color .15s ease-out, box-shadow .15s ease-out;
     }
 
     .btn-primary:hover {
-      background: #ccff33;
-      transform: translateY(-2px);
+      background: #ffffff;
+      color: #000000;
+      box-shadow: none;
     }
 
     .btn-ghost {
       font-family: var(--fd);
       font-size: 14px;
-      font-weight: 800;
-      letter-spacing: .14em;
+      font-weight: 700;
+      letter-spacing: .1em;
       text-transform: uppercase;
-      color: var(--white);
-      border: 1px solid rgba(255, 255, 255, .18);
+      color: var(--lime);
+      border: 1px solid rgba(178, 247, 0, .2);
+      background: transparent;
       padding: 16px 38px;
-      clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
       display: inline-block;
-      transition: border-color .2s, background .2s, transform .2s;
+      transition: border-color .15s ease-out, background .15s ease-out;
     }
 
     .btn-ghost:hover {
       border-color: var(--lime);
-      background: rgba(184, 255, 0, .06);
-      transform: translateY(-2px);
+      background: rgba(178, 247, 0, .06);
     }
 
     /* ============================================================ MARQUEE */
@@ -1478,27 +1493,27 @@
     .form-group select,
     .form-group textarea {
       width: 100%;
-      background: rgba(255, 255, 255, .035);
-      border: 1px solid var(--gb);
+      background: var(--surface-highest);
+      border: none;
+      border-bottom: 2px solid transparent;
       color: var(--white);
       font-family: var(--fb);
       font-size: 14px;
       font-weight: 300;
       padding: 16px 20px;
       outline: none;
-      transition: border-color .25s;
+      transition: border-bottom-color .15s ease-out, background .15s ease-out;
       -webkit-appearance: none;
       appearance: none;
-      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
     }
 
     .form-group select {
       cursor: pointer;
-      background: rgba(255, 255, 255, .035);
+      background: var(--surface-highest);
     }
 
     .form-group select option {
-      background: var(--g2);
+      background: var(--surface-high);
     }
 
     .form-group textarea {
@@ -1509,7 +1524,8 @@
     .form-group input:focus,
     .form-group select:focus,
     .form-group textarea:focus {
-      border-color: var(--lime);
+      border-bottom-color: var(--lime);
+      background: var(--surface-high);
     }
 
     .form-group input::placeholder,
@@ -1520,17 +1536,17 @@
     .btn-submit {
       font-family: var(--fd);
       font-size: 15px;
-      font-weight: 800;
-      letter-spacing: .14em;
+      font-weight: 700;
+      letter-spacing: .1em;
       text-transform: uppercase;
-      color: var(--bg);
-      background: var(--lime);
+      color: var(--on-lime);
+      background: linear-gradient(135deg, var(--lime) 0%, var(--lime-dim) 100%);
+      box-shadow: 0px 0px 20px rgba(178, 247, 0, 0.3);
       padding: 18px 0;
       width: 100%;
       border: none;
       cursor: pointer;
-      clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
-      transition: background .2s, transform .2s;
+      transition: background .15s ease-out, color .15s ease-out, box-shadow .15s ease-out;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1540,8 +1556,9 @@
     }
 
     .btn-submit:hover {
-      background: #ccff33;
-      transform: translateY(-2px);
+      background: #ffffff;
+      color: #000000;
+      box-shadow: none;
     }
 
     .btn-submit:disabled {
