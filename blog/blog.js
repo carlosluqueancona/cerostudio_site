@@ -101,21 +101,23 @@ async function renderPost(slug) {
     if (!response.ok) throw new Error('Not found');
     const post = await response.json();
 
+    const heroImg = post.featured_image
+      ? '<div class="article-featured-image"><img src="' + post.featured_image + '" alt="' + (post.featured_image_alt || post.title) + '"></div>'
+      : '';
+
     root.innerHTML = `
       <article class="article-container">
         <a href="/blog/" onclick="navigate(event, '/blog/')" class="back-link">
           ← Volver al blog
         </a>
-        
+
         <header class="article-header">
           <div class="post-card-cat" style="margin-bottom: 24px;">${post.category || 'General'}</div>
           <h1 class="article-title">${post.title}</h1>
           <div class="article-meta">
             Publicado el ${formatDate(post.published_at)} • Cero Studio
           </div>
-          ${post.featured_image
-            ? `<div class="article-featured-image"><img src="${post.featured_image}" alt="${post.featured_image_alt || post.title}"></div>`
-            : ''}
+          ${heroImg}
         </header>
 
         <div class="article-content">
