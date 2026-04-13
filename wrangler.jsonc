@@ -1,7 +1,12 @@
 {
-  "name": "ancient-bread-63a8",
-  "compatibility_date": "2026-04-13",
-  "assets": {
-    "directory": "."
-  }
+	"name": "cerostudio-blog",
+	"compatibility_date": "2026-04-13",
+	"pages_build_output_dir": ".",
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "cerostudio-blog",
+			"database_id": "1a7a6532-2113-41b2-b19d-93fc46e21338"
+		}
+	]
 }

@@ -1,0 +1,237 @@
+/* ============================================================ VARIABLES */
+:root {
+  --bg: #131313;
+  --white: #fff;
+  --lime: #b2f700;
+  --lime-dim: #9cd900;
+  --on-lime: #131f00;
+
+  --surface: #131313;
+  --surface-low: #1b1b1c;
+  --surface-lowest: #0e0e0e;
+  --surface-high: #2a2a2a;
+  --surface-highest: #353535;
+
+  --g1: #0e0e0e;
+  --g2: #111;
+  --g3: #1a1a1a;
+  --gb: #2a2a2a;
+  --gt: #888;
+
+  --fd: 'Space Grotesk', sans-serif;
+  --fb: 'Inter', sans-serif;
+  --nh: 72px;
+}
+
+/* ============================================================ RESET */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--fb);
+  font-weight: 400;
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+  line-height: 1.5;
+}
+
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; transition: color .2s; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+/* ============================================================ BLOG COMMON */
+.section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: .38em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 20px;
+}
+
+.eyebrow::before {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--lime);
+  flex-shrink: 0;
+}
+
+.section-title {
+  font-family: var(--fd);
+  font-size: clamp(38px, 4.8vw, 68px);
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: -.01em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+/* ============================================================ BLOG GRID */
+.blog-hero {
+  padding-top: calc(var(--nh) + 60px);
+  padding-bottom: 60px;
+  text-align: center;
+}
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2px;
+  background: var(--surface);
+  margin-bottom: 100px;
+}
+
+.post-card {
+  background: var(--surface-lowest);
+  padding: 40px;
+  transition: background .3s;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.post-card:hover {
+  background: var(--surface-low);
+}
+
+.post-card-cat {
+  font-family: var(--fd);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--lime);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: 16px;
+}
+
+.post-card-title {
+  font-family: var(--fd);
+  font-size: 24px;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.post-card-excerpt {
+  font-size: 14px;
+  color: var(--gt);
+  margin-bottom: 24px;
+  flex-grow: 1;
+}
+
+.post-card-meta {
+  font-size: 12px;
+  color: var(--gt);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+/* ============================================================ ARTICLE VIEW */
+.article-container {
+  padding-top: calc(var(--nh) + 60px);
+  max-width: 800px;
+  margin: 0 auto 100px;
+}
+
+.article-header {
+  margin-bottom: 48px;
+}
+
+.article-title {
+  font-family: var(--fd);
+  font-size: clamp(32px, 5vw, 64px);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 24px;
+}
+
+.article-meta {
+  color: var(--gt);
+  font-size: 14px;
+  margin-bottom: 40px;
+}
+
+.article-content {
+  font-size: 18px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.article-content h2 {
+  font-family: var(--fd);
+  font-size: 32px;
+  margin: 48px 0 24px;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.article-content h3 {
+  font-family: var(--fd);
+  font-size: 24px;
+  margin: 32px 0 16px;
+  text-transform: uppercase;
+  color: var(--lime);
+}
+
+.article-content p {
+  margin-bottom: 24px;
+}
+
+.article-content ul, .article-content ol {
+  margin-bottom: 24px;
+  padding-left: 20px;
+}
+
+.article-content li {
+  margin-bottom: 12px;
+}
+
+.article-content strong {
+  color: var(--lime);
+}
+
+.article-content a {
+  color: var(--lime);
+  text-decoration: underline;
+}
+
+/* ============================================================ UTILS */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--lime);
+  font-family: var(--fd);
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+
+#blog-root {
+  min-height: 80vh;
+}
