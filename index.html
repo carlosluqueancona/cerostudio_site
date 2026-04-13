@@ -680,16 +680,16 @@
     .srv-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      background: var(--gb);
-      gap: 1px;
+      background: var(--surface);
+      gap: 2px;
     }
 
     .srv-card {
-      background: var(--g1);
+      background: var(--surface-lowest);
       padding: 40px 36px;
       position: relative;
       overflow: hidden;
-      transition: background .35s;
+      transition: background .15s ease-out;
     }
 
     .srv-card::after {
@@ -702,11 +702,11 @@
       background: var(--lime);
       transform: scaleX(0);
       transform-origin: left;
-      transition: transform .45s ease;
+      transition: transform .35s ease-out;
     }
 
     .srv-card:hover {
-      background: #0d0d0d;
+      background: var(--surface-low);
     }
 
     .srv-card:hover::after {
@@ -758,23 +758,23 @@
     .port-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: var(--gb);
+      gap: 2px;
+      background: var(--surface);
     }
 
     /* Each card is an anchor tag — opens in new tab */
     .port-card {
       display: block;
-      background: var(--g1);
+      background: var(--surface-lowest);
       position: relative;
       overflow: hidden;
-      transition: background .3s;
+      transition: background .15s ease-out;
       text-decoration: none;
       color: inherit;
     }
 
     .port-card:hover {
-      background: var(--g2);
+      background: var(--surface-low);
     }
 
     /* Image area */
@@ -807,13 +807,12 @@
       font-weight: 700;
       letter-spacing: .18em;
       text-transform: uppercase;
-      color: var(--bg);
+      color: var(--on-lime);
       background: var(--lime);
       padding: 6px 14px;
-      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
       opacity: 0;
       transform: translateY(-8px);
-      transition: opacity .35s, transform .35s;
+      transition: opacity .15s ease-out, transform .15s ease-out;
     }
 
     .port-card:hover .port-card-badge {
@@ -824,7 +823,7 @@
     /* Info area */
     .port-card-info {
       padding: 20px 24px 24px;
-      border-top: 1px solid var(--gb);
+      background: var(--surface-low);
       position: relative;
     }
 
@@ -876,6 +875,89 @@
       font-weight: 300;
       color: var(--gt);
       line-height: 1.65;
+    }
+
+    /* ============================================================ KINETIC SCROLLER */
+    .kinetic-scroller {
+      overflow: hidden;
+      margin-bottom: 64px;
+      position: relative;
+    }
+
+    .kinetic-track {
+      display: flex;
+      width: max-content;
+      gap: 2px;
+      animation: kinetic-scroll 48s linear infinite;
+      will-change: transform;
+    }
+
+    .kinetic-track:hover {
+      animation-play-state: paused;
+    }
+
+    .kinetic-item {
+      position: relative;
+      width: 400px;
+      height: 252px;
+      overflow: hidden;
+      flex-shrink: 0;
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .kinetic-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .6s ease, filter .4s;
+      filter: brightness(.55);
+    }
+
+    .kinetic-item:hover img {
+      transform: scale(1.05);
+      filter: brightness(.3);
+    }
+
+    .kinetic-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px 22px 18px;
+      background: linear-gradient(transparent, rgba(0, 0, 0, .75));
+      transition: opacity .25s;
+    }
+
+    .kinetic-label-cat {
+      display: block;
+      font-family: var(--fd);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 5px;
+    }
+
+    .kinetic-label-name {
+      font-family: var(--fd);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--white);
+      transition: color .15s ease-out;
+    }
+
+    .kinetic-item:hover .kinetic-label-name {
+      color: var(--lime);
+    }
+
+    @keyframes kinetic-scroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
     }
 
     /* CTA card — last portfolio item, pure code */
@@ -1198,22 +1280,22 @@
     .pricing-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      background: var(--gb);
-      gap: 1px;
+      background: var(--surface);
+      gap: 2px;
       align-items: stretch;
     }
 
     .plan-card {
-      background: var(--g1);
+      background: var(--surface-lowest);
       padding: 44px 36px 40px;
       display: flex;
       flex-direction: column;
       position: relative;
-      transition: background .3s;
+      transition: background .15s ease-out;
     }
 
     .plan-card:not(.plan-featured):hover {
-      background: var(--g2);
+      background: var(--surface-low);
     }
 
     /* Pro card — lime inversion */
@@ -1226,13 +1308,12 @@
       display: inline-block;
       font-family: var(--fd);
       font-size: 9px;
-      font-weight: 800;
+      font-weight: 700;
       letter-spacing: .22em;
       text-transform: uppercase;
-      background: var(--bg);
+      background: var(--surface-highest);
       color: var(--lime);
       padding: 5px 14px;
-      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
       margin-bottom: 28px;
       align-self: flex-start;
     }
@@ -2127,6 +2208,84 @@
           </div>
           <a href="#contacto" class="btn-ghost sr ht" style="white-space:nowrap;align-self:flex-end;"
             id="port-start-btn">Iniciar Proyecto</a>
+        </div>
+
+        <!-- ── Kinetic Scroller ── -->
+        <div class="kinetic-scroller">
+          <div class="kinetic-track">
+            <!-- Set A -->
+            <a href="https://www.agenciamodelle.com.mx/" target="_blank" rel="noopener" class="kinetic-item">
+              <img src="images/portafolio/modelle-screenshot.webp" alt="Modelle" loading="lazy">
+              <div class="kinetic-label">
+                <span class="kinetic-label-cat">Agencia · Modelos</span>
+                <div class="kinetic-label-name">Modelle</div>
+              </div>
+            </a>
+            <a href="https://www.impresiones2m.com" target="_blank" rel="noopener" class="kinetic-item">
+              <img src="images/portafolio/impresiones2m-screenshot.webp" alt="Impresiones 2M" loading="lazy">
+              <div class="kinetic-label">
+                <span class="kinetic-label-cat">Imprenta · Cotizador</span>
+                <div class="kinetic-label-name">Impresiones 2M</div>
+              </div>
+            </a>
+            <a href="https://seminuevoscoapa.com.mx" target="_blank" rel="noopener" class="kinetic-item">
+              <img src="images/portafolio/seminuevoscoapa-screenshot.webp" alt="Seminuevos Coapa" loading="lazy">
+              <div class="kinetic-label">
+                <span class="kinetic-label-cat">Automotriz · Inventario</span>
+                <div class="kinetic-label-name">Seminuevos Coapa</div>
+              </div>
+            </a>
+            <a href="https://www.edecanespachuca.com.mx/" target="_blank" rel="noopener" class="kinetic-item">
+              <img src="images/portafolio/edecanespachuca-screenshot.webp" alt="Edecanes Pachuca" loading="lazy">
+              <div class="kinetic-label">
+                <span class="kinetic-label-cat">Agencia · Talento BTL</span>
+                <div class="kinetic-label-name">Edecanes Pachuca</div>
+              </div>
+            </a>
+            <a href="https://mainoflex.mx/" target="_blank" rel="noopener" class="kinetic-item">
+              <img src="images/portafolio/mainoflex-screenshot.webp" alt="Mainoflex" loading="lazy">
+              <div class="kinetic-label">
+                <span class="kinetic-label-cat">Industrial · Manufactura</span>
+                <div class="kinetic-label-name">Mainoflex</div>
+              </div>
+            </a>
+            <!-- Set B (espejo para loop continuo) -->
+            <a href="https://www.agenciamodelle.com.mx/" target="_blank" rel="noopener" class="kinetic-item">
+              <img src="images/portafolio/modelle-screenshot.webp" alt="Modelle" loading="lazy">
+              <div class="kinetic-label">
+                <span class="kinetic-label-cat">Agencia · Modelos</span>
+                <div class="kinetic-label-name">Modelle</div>
+              </div>
+            </a>
+            <a href="https://www.impresiones2m.com" target="_blank" rel="noopener" class="kinetic-item">
+              <img src="images/portafolio/impresiones2m-screenshot.webp" alt="Impresiones 2M" loading="lazy">
+              <div class="kinetic-label">
+                <span class="kinetic-label-cat">Imprenta · Cotizador</span>
+                <div class="kinetic-label-name">Impresiones 2M</div>
+              </div>
+            </a>
+            <a href="https://seminuevoscoapa.com.mx" target="_blank" rel="noopener" class="kinetic-item">
+              <img src="images/portafolio/seminuevoscoapa-screenshot.webp" alt="Seminuevos Coapa" loading="lazy">
+              <div class="kinetic-label">
+                <span class="kinetic-label-cat">Automotriz · Inventario</span>
+                <div class="kinetic-label-name">Seminuevos Coapa</div>
+              </div>
+            </a>
+            <a href="https://www.edecanespachuca.com.mx/" target="_blank" rel="noopener" class="kinetic-item">
+              <img src="images/portafolio/edecanespachuca-screenshot.webp" alt="Edecanes Pachuca" loading="lazy">
+              <div class="kinetic-label">
+                <span class="kinetic-label-cat">Agencia · Talento BTL</span>
+                <div class="kinetic-label-name">Edecanes Pachuca</div>
+              </div>
+            </a>
+            <a href="https://mainoflex.mx/" target="_blank" rel="noopener" class="kinetic-item">
+              <img src="images/portafolio/mainoflex-screenshot.webp" alt="Mainoflex" loading="lazy">
+              <div class="kinetic-label">
+                <span class="kinetic-label-cat">Industrial · Manufactura</span>
+                <div class="kinetic-label-name">Mainoflex</div>
+              </div>
+            </a>
+          </div>
         </div>
 
         <!-- ── 4-column uniform grid ──
