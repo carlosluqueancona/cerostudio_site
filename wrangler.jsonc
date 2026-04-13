@@ -14,11 +14,5 @@
 			"binding": "IMAGES",
 			"bucket_name": "cerostudio-blog-images"
 		}
-	],
-	"send_email": [
-		{
-			"name": "SEND_EMAIL",
-			"destination_address": "cerostudiomx@gmail.com"
-		}
 	]
 }
