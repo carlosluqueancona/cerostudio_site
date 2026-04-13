@@ -24,8 +24,26 @@
       --lime-dim: #9cd900;
       --on-lime:  #131f00;
       --red:      #ff4444;
+      --amber:    #FFA600;
+      --amber-10: rgba(255,166,0,.1);
       --fd: 'Space Grotesk', sans-serif;
       --fb: 'Inter', sans-serif;
+      /* ── Alpha tokens ── */
+      --lime-03:  rgba(178,247,0,.03);
+      --lime-08:  rgba(178,247,0,.08);
+      --lime-12:  rgba(178,247,0,.12);
+      --lime-20:  rgba(178,247,0,.2);
+      --lime-35:  rgba(178,247,0,.35);
+      --lime-40:  rgba(178,247,0,.4);
+      --lime-50:  rgba(178,247,0,.5);
+      --red-08:   rgba(255,68,68,.08);
+      --red-10:   rgba(255,68,68,.1);
+      --red-25:   rgba(255,68,68,.25);
+      --red-30:   rgba(255,68,68,.3);
+      --red-40:   rgba(255,68,68,.4);
+      --white-02: rgba(255,255,255,.02);
+      --white-20: rgba(255,255,255,.2);
+      --white-25: rgba(255,255,255,.25);
     }
 
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -62,13 +80,13 @@
     }
     .btn-primary {
       background:linear-gradient(135deg,var(--lime) 0%,var(--lime-dim) 100%);
-      color:var(--on-lime); box-shadow:0 0 12px rgba(178,247,0,.2);
+      color:var(--on-lime); box-shadow:0 0 12px var(--lime-20);
     }
-    .btn-primary:hover { box-shadow:0 0 20px rgba(178,247,0,.35); }
+    .btn-primary:hover { box-shadow:0 0 20px var(--lime-35); }
     .btn-ghost  { background:none; color:var(--gt); border:1px solid var(--border); }
-    .btn-ghost:hover { color:var(--white); border-color:rgba(255,255,255,.25); }
-    .btn-danger { background:none; color:var(--red); border:1px solid rgba(255,68,68,.25); }
-    .btn-danger:hover { background:rgba(255,68,68,.08); }
+    .btn-ghost:hover { color:var(--white); border-color:var(--white-25); }
+    .btn-danger { background:none; color:var(--red); border:1px solid var(--red-25); }
+    .btn-danger:hover { background:var(--red-08); }
     .btn-sm     { padding:6px 12px; font-size:11px; }
     .btn:active { transform:scale(0.97); }
     .btn:disabled { opacity:.4; cursor:not-allowed; transform:none; }
@@ -84,7 +102,7 @@
       color:var(--white); font-family:var(--fb); font-size:14px;
       border-radius:0; outline:none; transition:border-color .2s;
     }
-    input:focus, textarea:focus, select:focus { border-color:rgba(178,247,0,.5); }
+    input:focus, textarea:focus, select:focus { border-color:var(--lime-50); }
     textarea { resize:vertical; }
     select option { background:var(--surface-1); }
     .help { font-size:11px; color:var(--gt); margin-top:4px; }
@@ -111,12 +129,12 @@
     }
     td { padding:14px 16px; border-bottom:1px solid var(--border); font-size:13px; vertical-align:middle; }
     tr:last-child td { border-bottom:none; }
-    tr:hover td { background:rgba(255,255,255,.02); }
+    tr:hover td { background:var(--white-02); }
 
     /* ── Badge ── */
     .badge { display:inline-block; padding:3px 8px; font-family:var(--fd); font-size:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
-    .badge-pub   { background:rgba(178,247,0,.12); color:var(--lime); }
-    .badge-draft { background:rgba(255,166,0,.1);  color:#FFA600; }
+    .badge-pub   { background:var(--lime-12); color:var(--lime); }
+    .badge-draft { background:var(--amber-10);  color:var(--amber); }
 
     /* ── Search bar ── */
     .search-wrap { position:relative; margin-bottom:16px; }
@@ -136,8 +154,8 @@
     .login-box h1 { font-family:var(--fd); font-size:24px; font-weight:700; margin-bottom:6px; }
     .login-box p  { font-size:13px; color:var(--gt); margin-bottom:32px; }
     .field { margin-bottom:20px; }
-    .error-msg { background:rgba(255,68,68,.1); border:1px solid rgba(255,68,68,.3); color:var(--red); padding:10px 14px; font-size:13px; margin-bottom:20px; }
-    .success-msg { background:rgba(178,247,0,.08); border:1px solid rgba(178,247,0,.2); color:var(--lime); padding:10px 14px; font-size:13px; margin-bottom:16px; }
+    .error-msg { background:var(--red-10); border:1px solid var(--red-30); color:var(--red); padding:10px 14px; font-size:13px; margin-bottom:20px; }
+    .success-msg { background:var(--lime-08); border:1px solid var(--lime-20); color:var(--lime); padding:10px 14px; font-size:13px; margin-bottom:16px; }
 
     /* ── Editor layout ── */
     .editor-grid { display:grid; grid-template-columns:1fr 300px; gap:24px; align-items:start; }
@@ -152,7 +170,7 @@
     .toolbar button:hover { background:var(--surface-3); color:var(--white); }
     #content { font-family:'SF Mono',Consolas,'Courier New',monospace; font-size:13px; line-height:1.6; min-height:360px; tab-size:2; }
     .char-counter { font-size:11px; font-weight:400; color:var(--gt); }
-    .char-counter.warn { color:#FFA600; }
+    .char-counter.warn { color:var(--amber); }
     .char-counter.over { color:var(--red); }
     .img-preview { width:100%; border:1px solid var(--border); display:none; margin-top:8px; border-radius:2px; }
     .img-preview.visible { display:block; }
@@ -161,7 +179,7 @@
       text-align:center; cursor:pointer; transition:border-color .2s, background .2s;
       font-size:12px; color:var(--gt); margin-top:8px;
     }
-    .upload-zone:hover, .upload-zone.drag { border-color:rgba(178,247,0,.5); background:rgba(178,247,0,.03); color:var(--white); }
+    .upload-zone:hover, .upload-zone.drag { border-color:var(--lime-50); background:var(--lime-03); color:var(--white); }
     .upload-zone input[type=file] { display:none; }
     .upload-progress { display:none; height:3px; background:var(--surface-3); margin-top:6px; }
     .upload-progress-bar { height:100%; background:var(--lime); width:0; transition:width .3s; }
@@ -179,16 +197,16 @@
       pointer-events:none;
     }
     #toast.show { opacity:1; transform:translateY(0); }
-    #toast.toast-ok  { border-color:rgba(178,247,0,.4); color:var(--lime); }
-    #toast.toast-err { border-color:rgba(255,68,68,.4); color:var(--red); }
+    #toast.toast-ok  { border-color:var(--lime-40); color:var(--lime); }
+    #toast.toast-err { border-color:var(--red-40); color:var(--red); }
 
     /* ── Loader ── */
-    .spinner { display:inline-block; width:16px; height:16px; border:2px solid rgba(255,255,255,.2); border-top-color:var(--lime); border-radius:50%; animation:spin .7s linear infinite; }
+    .spinner { display:inline-block; width:16px; height:16px; border:2px solid var(--white-20); border-top-color:var(--lime); border-radius:50%; animation:spin .7s linear infinite; }
     @keyframes spin { to { transform:rotate(360deg); } }
     .loading { text-align:center; padding:60px; color:var(--gt); }
 
     /* ── Tab nav ── */
-    .tab-active { border-color:rgba(178,247,0,.5) !important; color:var(--lime) !important; }
+    .tab-active { border-color:var(--lime-50) !important; color:var(--lime) !important; }
 
     /* ── Mensaje card ── */
     .msg-card {
@@ -255,7 +273,7 @@
       <span>Blog Admin</span>
     </div>
     <div class="topbar-actions">
-      <button class="btn btn-ghost btn-sm" id="tab-posts-btn"   onclick="switchTab('posts')"   style="border-color:rgba(178,247,0,.5);color:var(--lime);">Artículos</button>
+      <button class="btn btn-ghost btn-sm" id="tab-posts-btn"   onclick="switchTab('posts')"   style="border-color:var(--lime-50);color:var(--lime);">Artículos</button>
       <button class="btn btn-ghost btn-sm" id="tab-msgs-btn"    onclick="switchTab('messages')">Mensajes <span id="unread-badge" style="display:none;background:var(--lime);color:var(--on-lime);border-radius:99px;padding:1px 7px;font-size:10px;margin-left:4px;"></span></button>
       <a href="/blog/" target="_blank" class="btn btn-ghost btn-sm">Ver blog ↗</a>
       <button class="btn btn-ghost btn-sm" onclick="logout()">Salir</button>
@@ -269,7 +287,7 @@
     <div class="stats">
       <div class="stat"><div class="stat-num" id="stat-total">—</div><div class="stat-lbl">Artículos</div></div>
       <div class="stat"><div class="stat-num" id="stat-pub" style="color:var(--lime);">—</div><div class="stat-lbl">Publicados</div></div>
-      <div class="stat"><div class="stat-num" id="stat-draft" style="color:#FFA600;">—</div><div class="stat-lbl">Borradores</div></div>
+      <div class="stat"><div class="stat-num" id="stat-draft" style="color:var(--amber);">—</div><div class="stat-lbl">Borradores</div></div>
       <div class="stat"><div class="stat-num" id="stat-cats">—</div><div class="stat-lbl">Categorías</div></div>
     </div>
 
