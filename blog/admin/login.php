@@ -38,8 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>Admin — Blog Tomate.MX</title>
-  <link rel="icon" type="image/svg+xml" href="/images/Tomate_2026_Final.svg" />
+  <title>Admin — Blog Cero Studio</title>
+  <link rel="icon" type="image/svg+xml" href="/images/svg/CS_Favicon.svg" />
   <style>
     :root { --red:#E81323; --ink:#111010; --cream:#F2EFE7; }
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -68,8 +68,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
   <div class="login-card">
+    <img src="/images/svg/Cero_Studio_AI_Horizontal.svg" alt="Cero Studio" style="height:28px;margin-bottom:24px;display:block;" />
     <h1>Blog Admin</h1>
-    <p>Tomate.MX — Panel de contenido</p>
+    <p>Cero Studio — Panel de contenido</p>
     <?php if ($error): ?><div class="error"><?= e($error) ?></div><?php endif; ?>
     <form method="POST">
       <label for="username">Usuario</label>

@@ -46,6 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verify_csrf($_POST['csrf_token'] ??
 
 $stmt = $db->query("SELECT * FROM blog_posts ORDER BY created_at DESC");
 $posts = $stmt->fetchAll();
+
+$total     = count($posts);
+$published = count(array_filter($posts, fn($p) => $p['status'] === 'published'));
+$drafts    = $total - $published;
+$categories = count(array_unique(array_filter(array_column($posts, 'category'))));
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -53,8 +58,8 @@ $posts = $stmt->fetchAll();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>Dashboard — Blog Admin</title>
-  <link rel="icon" type="image/svg+xml" href="/images/Tomate_2026_Final.svg" />
+  <title>Dashboard — Cero Studio Blog</title>
+  <link rel="icon" type="image/svg+xml" href="/images/svg/CS_Favicon.svg" />
   <style>
     :root { --red:#E81323; --ink:#111010; --cream:#F2EFE7; --border:rgba(17,16,16,0.08); }
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -86,11 +91,19 @@ $posts = $stmt->fetchAll();
     .badge-draft { background:#FFF3E0; color:#E65100; }
     .actions { display:flex; gap:6px; }
     .empty { text-align:center; padding:60px 24px; color:#888; }
+    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px; }
+    .stat-card { background:#fff; border-radius:10px; padding:20px 24px; box-shadow:0 2px 12px rgba(0,0,0,0.04); }
+    .stat-card .num { font-size:28px; font-weight:800; letter-spacing:-0.03em; }
+    .stat-card .lbl { font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:#888; margin-top:2px; }
+    .search-bar { margin-bottom:16px; }
+    .search-bar input { width:100%; padding:10px 14px; border:1px solid #E5E7EB; border-radius:6px; font-size:14px; font-family:inherit; background:#fff; }
+    .search-bar input:focus { outline:none; border-color:var(--red); }
+    @media(max-width:600px) { .stats { grid-template-columns:1fr 1fr; } }
   </style>
 </head>
 <body>
   <div class="admin-nav">
-    <h1>Tomate.MX — Blog Admin</h1>
+    <h1>Cero Studio — Blog Admin</h1>
     <div class="admin-nav-links">
       <a href="/blog/" target="_blank">Ver blog ↗</a>
       <a href="logout.php">Cerrar sesión</a>
@@ -98,6 +111,14 @@ $posts = $stmt->fetchAll();
   </div>
   <div class="container">
     <?php if (!empty($msg)): ?><div class="msg"><?= e($msg) ?></div><?php endif; ?>
+
+    <div class="stats">
+      <div class="stat-card"><div class="num"><?= $total ?></div><div class="lbl">Total artículos</div></div>
+      <div class="stat-card"><div class="num" style="color:#2E7D32;"><?= $published ?></div><div class="lbl">Publicados</div></div>
+      <div class="stat-card"><div class="num" style="color:#E65100;"><?= $drafts ?></div><div class="lbl">Borradores</div></div>
+      <div class="stat-card"><div class="num"><?= $categories ?></div><div class="lbl">Categorías</div></div>
+    </div>
+
     <div class="top-bar">
       <h2>Artículos (<?= count($posts) ?>)</h2>
       <div style="display:flex;gap:8px;align-items:center;">
@@ -113,6 +134,10 @@ $posts = $stmt->fetchAll();
         </form>
         <a href="editor.php" class="btn btn-primary">+ Nuevo artículo</a>
       </div>
+    </div>
+
+    <div class="search-bar">
+      <input type="text" id="search" placeholder="Buscar por título, categoría o slug..." oninput="filterPosts(this.value)" />
     </div>
 
     <?php if (empty($posts)): ?>
@@ -161,5 +186,14 @@ $posts = $stmt->fetchAll();
       </table>
     <?php endif; ?>
   </div>
+<script>
+  function filterPosts(q) {
+    q = q.toLowerCase();
+    document.querySelectorAll('tbody tr').forEach(row => {
+      const text = row.textContent.toLowerCase();
+      row.style.display = text.includes(q) ? '' : 'none';
+    });
+  }
+</script>
 </body>
 </html>

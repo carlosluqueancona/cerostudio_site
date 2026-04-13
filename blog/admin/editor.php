@@ -79,8 +79,8 @@ $v = fn($f) => e($post[$f] ?? ($_POST[$f] ?? ''));
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title><?= $id ? 'Editar' : 'Nuevo' ?> artículo — Blog Admin</title>
-  <link rel="icon" type="image/svg+xml" href="/images/Tomate_2026_Final.svg" />
+  <title><?= $id ? 'Editar' : 'Nuevo' ?> artículo — Cero Studio Blog</title>
+  <link rel="icon" type="image/svg+xml" href="/images/svg/CS_Favicon.svg" />
   <style>
     :root { --red:#E81323; --ink:#111010; --cream:#F2EFE7; --border:rgba(17,16,16,0.08); }
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -194,12 +194,12 @@ $v = fn($f) => e($post[$f] ?? ($_POST[$f] ?? ''));
         <label for="featured_image_alt">Alt de imagen</label>
         <input type="text" id="featured_image_alt" name="featured_image_alt" value="<?= $v('featured_image_alt') ?>" placeholder="Descripción de la imagen" />
 
-        <label for="meta_title">Meta título (SEO)</label>
-        <input type="text" id="meta_title" name="meta_title" value="<?= $v('meta_title') ?>" placeholder="Override para <title>" />
+        <label for="meta_title">Meta título (SEO) <span id="meta_title_count" style="font-weight:400;color:#aaa;">0/60</span></label>
+        <input type="text" id="meta_title" name="meta_title" value="<?= $v('meta_title') ?>" placeholder="Override para <title>" oninput="countChars('meta_title',60)" />
         <p class="help">Dejar vacío usa el título del artículo.</p>
 
-        <label for="meta_description">Meta descripción (SEO)</label>
-        <textarea id="meta_description" name="meta_description" rows="2" placeholder="Override para meta description"><?= $v('meta_description') ?></textarea>
+        <label for="meta_description">Meta descripción (SEO) <span id="meta_description_count" style="font-weight:400;color:#aaa;">0/160</span></label>
+        <textarea id="meta_description" name="meta_description" rows="2" placeholder="Override para meta description" oninput="countChars('meta_description',160)"><?= $v('meta_description') ?></textarea>
         <p class="help">Dejar vacío usa el extracto.</p>
 
         <div class="actions-bar">
@@ -283,6 +283,27 @@ $v = fn($f) => e($post[$f] ?? ($_POST[$f] ?? ''));
         this.setRangeText('  ', start, start, 'end');
       }
     });
+
+    // Ctrl+S / Cmd+S to save
+    document.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        document.querySelector('button[type=submit]').click();
+      }
+    });
+
+    // SEO char counters
+    function countChars(fieldId, max) {
+      const el    = document.getElementById(fieldId);
+      const count = document.getElementById(fieldId + '_count');
+      if (!el || !count) return;
+      const len = el.value.length;
+      count.textContent = len + '/' + max;
+      count.style.color = len > max ? '#C00' : len > max * 0.85 ? '#E65100' : '#aaa';
+    }
+    // Init counters on load
+    countChars('meta_title', 60);
+    countChars('meta_description', 160);
 
     // Image upload
     const uploadArea  = document.getElementById('upload-area');

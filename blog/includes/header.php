@@ -139,7 +139,7 @@ $_extra_head  = $extra_head ?? '';
       backdrop-filter:blur(40px);
       -webkit-backdrop-filter:blur(40px);
     }
-    .nav-logo { height:26px; width:auto; }
+    .nav-logo { height:34px; width:auto; }
     .nav-links { display:flex; gap:36px; list-style:none; }
     .nav-links a {
       font-size:12px; font-weight:400; letter-spacing:.08em;
