@@ -1,6 +1,5 @@
 -- Cero Studio Blog Schema (Cloudflare D1)
 
-DROP TABLE IF EXISTS posts;
 CREATE TABLE IF NOT EXISTS posts (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   title TEXT NOT NULL,
