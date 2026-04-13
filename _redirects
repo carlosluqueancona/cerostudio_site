@@ -1,3 +1,2 @@
-/blog/admin   /blog/admin/index.html 200
-/blog/admin/* /blog/admin/index.html 200
-/blog/*       /blog/index.html 200
+# Blog post SPA routing is handled by functions/blog/[slug].js
+
