@@ -187,6 +187,28 @@
     @keyframes spin { to { transform:rotate(360deg); } }
     .loading { text-align:center; padding:60px; color:var(--gt); }
 
+    /* ── Tab nav ── */
+    .tab-active { border-color:rgba(178,247,0,.5) !important; color:var(--lime) !important; }
+
+    /* ── Mensaje card ── */
+    .msg-card {
+      background:var(--surface-1); border:1px solid var(--border);
+      padding:20px 24px; margin-bottom:2px; cursor:pointer;
+      transition:background .15s;
+    }
+    .msg-card:hover { background:var(--surface-2); }
+    .msg-card.unread { border-left:3px solid var(--lime); }
+    .msg-card-header { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:8px; }
+    .msg-card-name { font-family:var(--fd); font-size:15px; font-weight:700; }
+    .msg-card-meta { font-size:11px; color:var(--gt); white-space:nowrap; }
+    .msg-card-email { font-size:12px; color:var(--lime); margin-bottom:4px; }
+    .msg-card-tags { display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap; }
+    .msg-card-preview { font-size:13px; color:var(--gt); line-height:1.5;
+      overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; line-clamp:2; -webkit-box-orient:vertical; }
+    .msg-body { display:none; margin-top:12px; padding-top:12px; border-top:1px solid var(--border); font-size:14px; line-height:1.7; white-space:pre-wrap; }
+    .msg-body.open { display:block; }
+    .msg-actions { display:flex; gap:8px; margin-top:12px; }
+
     /* ── Responsive ── */
     @media(max-width:900px) {
       .stats { grid-template-columns:1fr 1fr; }
@@ -233,11 +255,16 @@
       <span>Blog Admin</span>
     </div>
     <div class="topbar-actions">
+      <button class="btn btn-ghost btn-sm" id="tab-posts-btn"   onclick="switchTab('posts')"   style="border-color:rgba(178,247,0,.5);color:var(--lime);">Artículos</button>
+      <button class="btn btn-ghost btn-sm" id="tab-msgs-btn"    onclick="switchTab('messages')">Mensajes <span id="unread-badge" style="display:none;background:var(--lime);color:var(--on-lime);border-radius:99px;padding:1px 7px;font-size:10px;margin-left:4px;"></span></button>
       <a href="/blog/" target="_blank" class="btn btn-ghost btn-sm">Ver blog ↗</a>
       <button class="btn btn-ghost btn-sm" onclick="logout()">Salir</button>
     </div>
   </header>
   <main class="main">
+
+    <!-- ── TAB: ARTÍCULOS ── -->
+    <div id="tab-posts">
     <!-- Stats -->
     <div class="stats">
       <div class="stat"><div class="stat-num" id="stat-total">—</div><div class="stat-lbl">Artículos</div></div>
@@ -275,6 +302,19 @@
         No hay artículos. <button class="btn btn-ghost btn-sm" onclick="openEditor(null)" style="margin-left:8px;">Crear el primero →</button>
       </div>
     </div>
+    </div><!-- /tab-posts -->
+
+    <!-- ── TAB: MENSAJES ── -->
+    <div id="tab-messages" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <h2 style="font-family:var(--fd);font-size:18px;font-weight:700;">Mensajes de contacto</h2>
+        <span id="msg-count" style="font-size:12px;color:var(--gt);"></span>
+      </div>
+      <div id="msgs-loading" class="loading"><span class="spinner"></span></div>
+      <div id="msgs-list" style="display:none;"></div>
+      <div id="msgs-empty" class="loading" style="display:none;color:var(--gt);">No hay mensajes aún.</div>
+    </div><!-- /tab-messages -->
+
   </main>
 </div>
 
@@ -947,6 +987,125 @@ async function uploadFile(file) {
     zone.style.pointerEvents = '';
     setTimeout(() => { progress.style.display = 'none'; bar.style.width = '0'; }, 800);
   }
+}
+
+// ── Tabs ──────────────────────────────────────────────────────────────────────
+let currentTab = 'posts';
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.getElementById('tab-posts').style.display    = tab === 'posts'    ? '' : 'none';
+  document.getElementById('tab-messages').style.display = tab === 'messages' ? '' : 'none';
+  document.getElementById('tab-posts-btn').classList.toggle('tab-active',  tab === 'posts');
+  document.getElementById('tab-msgs-btn').classList.toggle('tab-active',   tab === 'messages');
+  if (tab === 'messages') loadMessages();
+}
+
+// ── Messages ──────────────────────────────────────────────────────────────────
+let allMessages = [];
+
+async function loadMessages() {
+  document.getElementById('msgs-loading').style.display = '';
+  document.getElementById('msgs-list').style.display    = 'none';
+  document.getElementById('msgs-empty').style.display   = 'none';
+
+  try {
+    const r = await apiFetch('/messages');
+    if (!r.ok) { if (r.status === 401) { clearToken(); showView('login'); } return; }
+    allMessages = await r.json();
+    renderMessages();
+  } catch { toast('Error al cargar mensajes', 'err'); }
+}
+
+function renderMessages() {
+  document.getElementById('msgs-loading').style.display = 'none';
+  const unread = allMessages.filter(m => !m.leido).length;
+
+  // Badge en el botón del tab
+  const badge = document.getElementById('unread-badge');
+  if (unread > 0) { badge.textContent = unread; badge.style.display = ''; }
+  else            { badge.style.display = 'none'; }
+
+  document.getElementById('msg-count').textContent =
+    `${allMessages.length} mensaje${allMessages.length !== 1 ? 's' : ''} · ${unread} sin leer`;
+
+  if (!allMessages.length) {
+    document.getElementById('msgs-empty').style.display = '';
+    return;
+  }
+
+  document.getElementById('msgs-list').style.display = '';
+  document.getElementById('msgs-list').innerHTML = allMessages.map(m => `
+    <div class="msg-card ${m.leido ? '' : 'unread'}" id="msg-${m.id}" onclick="toggleMsg(${m.id})">
+      <div class="msg-card-header">
+        <div>
+          <div class="msg-card-name">${esc(m.nombre)} ${m.leido ? '' : '<span style="font-size:10px;background:var(--lime);color:var(--on-lime);padding:2px 7px;margin-left:6px;font-family:var(--fd);">NUEVO</span>'}</div>
+          <div class="msg-card-email">${esc(m.email)}</div>
+        </div>
+        <div class="msg-card-meta">${fmtDate(m.created_at)}</div>
+      </div>
+      ${m.empresa || m.servicio ? `
+      <div class="msg-card-tags">
+        ${m.empresa  ? `<span class="badge badge-draft">${esc(m.empresa)}</span>`  : ''}
+        ${m.servicio ? `<span class="badge badge-pub">${esc(m.servicio)}</span>` : ''}
+      </div>` : ''}
+      <div class="msg-card-preview">${esc(m.mensaje)}</div>
+      <div class="msg-body" id="msg-body-${m.id}">${esc(m.mensaje)}
+        <div class="msg-actions">
+          <a href="mailto:${esc(m.email)}?subject=Re: tu mensaje a Cero Studio" class="btn btn-primary btn-sm">Responder por email</a>
+          <button class="btn btn-ghost btn-sm" onclick="toggleLeido(event,${m.id},${m.leido ? 1 : 0})">${m.leido ? 'Marcar sin leer' : 'Marcar leído'}</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteMsg(event,${m.id})">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleMsg(id) {
+  const body = document.getElementById('msg-body-' + id);
+  body.classList.toggle('open');
+  // Marcar como leído en el servidor si se abre
+  const msg = allMessages.find(m => m.id === id);
+  if (msg && !msg.leido && body.classList.contains('open')) {
+    apiFetch(`/messages?id=${id}`, { method: 'PATCH', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ leido: true }) });
+    msg.leido = 1;
+    const card = document.getElementById('msg-' + id);
+    card.classList.remove('unread');
+    renderUnreadBadge();
+  }
+}
+
+function renderUnreadBadge() {
+  const unread = allMessages.filter(m => !m.leido).length;
+  const badge = document.getElementById('unread-badge');
+  if (unread > 0) { badge.textContent = unread; badge.style.display = ''; }
+  else            { badge.style.display = 'none'; }
+}
+
+async function toggleLeido(e, id, currentLeido) {
+  e.stopPropagation();
+  const newLeido = !currentLeido;
+  try {
+    await apiFetch(`/messages?id=${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ leido: newLeido }),
+    });
+    const msg = allMessages.find(m => m.id === id);
+    if (msg) msg.leido = newLeido ? 1 : 0;
+    renderMessages();
+  } catch { toast('Error al actualizar', 'err'); }
+}
+
+async function deleteMsg(e, id) {
+  e.stopPropagation();
+  if (!confirm('¿Eliminar este mensaje?')) return;
+  try {
+    const r = await apiFetch(`/messages?id=${id}`, { method: 'DELETE' });
+    const d = await r.json();
+    if (d.ok) { allMessages = allMessages.filter(m => m.id !== id); renderMessages(); toast('Mensaje eliminado', 'ok'); }
+    else toast(d.error || 'Error al eliminar', 'err');
+  } catch { toast('Error de conexión', 'err'); }
 }
 
 // ── Boot ──────────────────────────────────────────────────────────────────────

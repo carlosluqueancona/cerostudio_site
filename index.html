@@ -3598,14 +3598,9 @@
       });
 
       /* ── FORM ──────────────────────────────────────────────────── */
-      /*
-       * Envío real mediante Formspree (https://formspree.io).
-       * Pasos para activar:
-       *   1. Regístrate en formspree.io → crea un formulario.
-       *   2. Reemplaza 'YOUR_FORM_ID' en la constante FORMSPREE_URL con tu ID.
-       *      Ejemplo: 'https://formspree.io/f/xpwzgkqd'
-       */
-      var FORMSPREE_URL = 'https://formspree.io/f/YOUR_FORM_ID';
+      /* Envío propio via /api/contact → D1 + email vía Cloudflare Email Workers */
+
+      var CONTACT_URL = '/api/contact';
 
       /* Mensajes de UI por idioma */
       var FORM_MSGS = {
@@ -3681,32 +3676,19 @@
         var check = validateForm(form);
         if (!check.ok) { setFeedback('error', check.msg); return; }
 
-        /* Check if endpoint is configured */
-        if (FORMSPREE_URL.indexOf('YOUR_FORM_ID') !== -1) {
-          /* DEV fallback: log data and simulate success */
-          console.info('[Cero Studio] Formspree no configurado. Datos del formulario:', Object.fromEntries(new FormData(form)));
-          btn.classList.add('loading');
-          label.textContent = msgs.sending;
-          btn.disabled = true;
-          setTimeout(function () {
-            btn.classList.remove('loading');
-            btn.disabled = false;
-            label.textContent = msgs.send;
-            setFeedback('success', msgs.success + ' (modo demo — configura Formspree para envío real)');
-            form.reset();
-          }, 1400);
-          return;
-        }
-
-        /* Real submission */
+        /* Submit */
         btn.classList.add('loading');
         label.textContent = msgs.sending;
         btn.disabled = true;
 
-        fetch(FORMSPREE_URL, {
+        var fd = new FormData(form);
+        var payload = {};
+        fd.forEach(function(v, k) { payload[k] = v; });
+
+        fetch(CONTACT_URL, {
           method: 'POST',
-          headers: { 'Accept': 'application/json' },
-          body: new FormData(form)
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
         })
           .then(function (res) {
             btn.classList.remove('loading');

@@ -21,3 +21,18 @@ CREATE TABLE IF NOT EXISTS posts (
 CREATE INDEX idx_posts_slug ON posts(slug);
 -- Index for category filtering
 CREATE INDEX idx_posts_category ON posts(category);
+
+-- ── Contact form submissions ──────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS contact_submissions (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  nombre     TEXT NOT NULL,
+  email      TEXT NOT NULL,
+  empresa    TEXT DEFAULT '',
+  servicio   TEXT DEFAULT '',
+  mensaje    TEXT NOT NULL,
+  leido      INTEGER DEFAULT 0,
+  created_at TEXT NOT NULL
+);
+
+CREATE INDEX idx_contact_created ON contact_submissions(created_at DESC);
+CREATE INDEX idx_contact_leido   ON contact_submissions(leido);
