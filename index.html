@@ -758,6 +758,7 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 2px;
       background: var(--surface);
+      align-items: stretch;
     }
 
     /* Each card is an anchor tag — opens in new tab */
@@ -968,8 +969,9 @@
       color: var(--bg);
       position: relative;
       overflow: hidden;
-      aspect-ratio: unset;
-      min-height: 320px;
+      /* stretch to match adjacent card height via grid row */
+      align-self: stretch;
+      min-height: 0;
       transition: background .25s;
     }
 
@@ -978,33 +980,36 @@
     }
 
     .port-cta-inner {
-      text-align: center;
-      padding: 40px 28px;
+      text-align: left;
+      padding: 40px 36px;
       position: relative;
       z-index: 1;
+      width: 100%;
     }
 
     .port-cta-q {
       font-family: var(--fd);
-      font-size: 36px;
+      font-size: clamp(28px, 3.5vw, 48px);
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: .02em;
-      line-height: 1.05;
-      margin-bottom: 20px;
+      letter-spacing: -.01em;
+      line-height: 1.0;
+      margin-bottom: 16px;
     }
 
     .port-cta-sub {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
-      letter-spacing: .25em;
+      letter-spacing: .3em;
       text-transform: uppercase;
-      opacity: .7;
-      margin-bottom: 28px;
+      opacity: .65;
+      margin-bottom: 32px;
     }
 
     .port-cta-btn {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
       font-family: var(--fd);
       font-size: 11px;
       font-weight: 800;
@@ -1012,25 +1017,37 @@
       text-transform: uppercase;
       color: var(--lime);
       background: var(--bg);
-      padding: 11px 24px;
-      transition: opacity .2s;
+      padding: 13px 28px;
+      transition: gap .2s ease, opacity .2s;
+    }
+
+    .port-cta-btn::after {
+      content: '→';
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0;
+      transition: transform .2s ease;
     }
 
     .port-cta:hover .port-cta-btn {
-      opacity: .85;
+      opacity: .9;
     }
 
-    /* big decorative number */
+    .port-cta:hover .port-cta-btn::after {
+      transform: translateX(4px);
+    }
+
+    /* big decorative symbol */
     .port-cta-num {
       position: absolute;
       font-family: var(--fd);
-      font-size: 180px;
+      font-size: 260px;
       font-weight: 900;
       line-height: 1;
       color: var(--bg);
-      opacity: .06;
-      bottom: -20px;
-      right: -10px;
+      opacity: .07;
+      bottom: -40px;
+      right: -20px;
       letter-spacing: -.04em;
       pointer-events: none;
       user-select: none;
@@ -2558,7 +2575,7 @@
               <div class="port-cta-sub" id="port-cta-sub">Únete a +150 negocios exitosos</div>
               <span class="port-cta-btn" id="port-cta-btn">Iniciar Proyecto</span>
             </div>
-
+            <span class="port-cta-num" aria-hidden="true">+</span>
           </a>
 
         </div><!-- /port-grid -->
