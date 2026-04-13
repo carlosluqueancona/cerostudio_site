@@ -13,10 +13,11 @@ export async function onRequest(context) {
     return context.env.ASSETS.fetch(context.request);
   }
 
-  // Redirect /blog/admin → /blog/admin/
+  // Serve admin panel directly (avoid redirect loop)
   if (slug === 'admin') {
-    const origin = new URL(context.request.url).origin;
-    return Response.redirect(origin + '/blog/admin/', 301);
+    const url = new URL(context.request.url);
+    url.pathname = '/blog/admin/index.html';
+    return context.env.ASSETS.fetch(url.toString());
   }
 
   // Serve blog SPA for post slugs
