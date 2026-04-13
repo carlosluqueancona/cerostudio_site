@@ -767,7 +767,8 @@
 
     /* Each card is an anchor tag — opens in new tab */
     .port-card {
-      display: block;
+      display: flex;
+      flex-direction: column;
       background: var(--surface-lowest);
       position: relative;
       overflow: hidden;
@@ -825,6 +826,7 @@
 
     /* Info area */
     .port-card-info {
+      flex: 1;
       padding: 20px 24px 24px;
       background: var(--surface-low);
       position: relative;
@@ -878,6 +880,10 @@
       font-weight: 300;
       color: var(--gt);
       line-height: 1.65;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     /* ============================================================ KINETIC SCROLLER */
