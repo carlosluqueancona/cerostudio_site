@@ -8,5 +8,11 @@
 			"database_name": "cerostudio-blog",
 			"database_id": "1a7a6532-2113-41b2-b19d-93fc46e21338"
 		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "IMAGES",
+			"bucket_name": "cerostudio-blog-images"
+		}
 	]
 }

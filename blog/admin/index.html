@@ -154,8 +154,18 @@
     .char-counter { font-size:11px; font-weight:400; color:var(--gt); }
     .char-counter.warn { color:#FFA600; }
     .char-counter.over { color:var(--red); }
-    .img-preview { width:100%; border:1px solid var(--border); display:none; margin-top:8px; }
+    .img-preview { width:100%; border:1px solid var(--border); display:none; margin-top:8px; border-radius:2px; }
     .img-preview.visible { display:block; }
+    .upload-zone {
+      border:2px dashed var(--border); padding:24px 16px;
+      text-align:center; cursor:pointer; transition:border-color .2s, background .2s;
+      font-size:12px; color:var(--gt); margin-top:8px;
+    }
+    .upload-zone:hover, .upload-zone.drag { border-color:rgba(178,247,0,.5); background:rgba(178,247,0,.03); color:var(--white); }
+    .upload-zone input[type=file] { display:none; }
+    .upload-progress { display:none; height:3px; background:var(--surface-3); margin-top:6px; }
+    .upload-progress-bar { height:100%; background:var(--lime); width:0; transition:width .3s; }
+    .upload-status { font-size:11px; margin-top:6px; color:var(--gt); min-height:16px; }
     .preview-pane { display:none; padding:24px; background:var(--surface-1); border:1px solid var(--border); min-height:200px; font-size:16px; line-height:1.8; max-height:500px; overflow-y:auto; margin-top:8px; }
     .preview-pane.visible { display:block; }
 
@@ -345,8 +355,19 @@
 
         <div class="card" style="display:flex;flex-direction:column;gap:12px;">
           <div>
-            <label for="f-featured-url">Imagen destacada (URL)</label>
-            <input type="text" id="f-featured-url" placeholder="https://… o /blog/uploads/…" oninput="updateImgPreview(this.value)" />
+            <label>Imagen destacada</label>
+            <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+              <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp,image/gif" onchange="uploadFile(this.files[0])" />
+              <div id="upload-icon">↑</div>
+              <div id="upload-label">Arrastra una imagen o haz clic</div>
+              <div style="margin-top:4px;font-size:10px;opacity:.5;">JPG · PNG · WebP · GIF · máx 5 MB</div>
+            </div>
+            <div class="upload-progress" id="upload-progress"><div class="upload-progress-bar" id="upload-bar"></div></div>
+            <div class="upload-status" id="upload-status"></div>
+          </div>
+          <div>
+            <label for="f-featured-url">O pega una URL directamente</label>
+            <input type="text" id="f-featured-url" placeholder="https://…" oninput="updateImgPreview(this.value)" />
           </div>
           <img id="f-img-preview" class="img-preview" alt="Preview" />
           <div>
@@ -821,6 +842,80 @@ function esc(str) {
 function fmtDate(str) {
   if (!str) return '—';
   return new Date(str).toLocaleDateString('es-MX', { day:'numeric', month:'short', year:'numeric' });
+}
+
+// ── Image upload ──────────────────────────────────────────────────────────────
+function onDragOver(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.add('drag');
+}
+function onDragLeave(e) {
+  document.getElementById('upload-zone').classList.remove('drag');
+}
+function onDrop(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.remove('drag');
+  const file = e.dataTransfer.files[0];
+  if (file) uploadFile(file);
+}
+
+async function uploadFile(file) {
+  if (!file) return;
+
+  const zone     = document.getElementById('upload-zone');
+  const progress = document.getElementById('upload-progress');
+  const bar      = document.getElementById('upload-bar');
+  const status   = document.getElementById('upload-status');
+  const label    = document.getElementById('upload-label');
+
+  // Validar en cliente primero
+  const allowed = ['image/jpeg','image/png','image/webp','image/gif'];
+  if (!allowed.includes(file.type)) {
+    status.textContent = '✗ Tipo no permitido. Usa JPG, PNG, WebP o GIF.';
+    status.style.color = 'var(--red)';
+    return;
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    status.textContent = '✗ El archivo supera 5 MB.';
+    status.style.color = 'var(--red)';
+    return;
+  }
+
+  // UI: subiendo
+  zone.style.pointerEvents = 'none';
+  label.textContent = 'Subiendo…';
+  status.textContent = '';
+  progress.style.display = 'block';
+  bar.style.width = '30%';
+
+  const fd = new FormData();
+  fd.append('file', file);
+
+  try {
+    bar.style.width = '70%';
+    const r    = await apiFetch('/upload', { method: 'POST', body: fd });
+    const data = await r.json();
+    bar.style.width = '100%';
+
+    if (data.ok) {
+      document.getElementById('f-featured-url').value = data.url;
+      updateImgPreview(data.url);
+      label.textContent = '✓ ' + file.name;
+      status.textContent = 'Imagen subida correctamente';
+      status.style.color = 'var(--lime)';
+    } else {
+      label.textContent = 'Arrastra una imagen o haz clic';
+      status.textContent = '✗ ' + (data.error || 'Error al subir');
+      status.style.color = 'var(--red)';
+    }
+  } catch {
+    label.textContent = 'Arrastra una imagen o haz clic';
+    status.textContent = '✗ Error de conexión';
+    status.style.color = 'var(--red)';
+  } finally {
+    zone.style.pointerEvents = '';
+    setTimeout(() => { progress.style.display = 'none'; bar.style.width = '0'; }, 800);
+  }
 }
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
