@@ -67,18 +67,18 @@ function renderList() {
   `;
   
   posts.forEach(post => {
-    const thumb = post.featured_image
-      ? `<div class="post-card-thumb"><img src="${post.featured_image}" alt="${post.title}" loading="lazy"></div>`
+    const thumbHtml = post.featured_image
+      ? '<div class="post-card-thumb"><img src="' + post.featured_image + '" alt="' + post.title + '" loading="lazy"></div>'
       : '';
-    html += `
-      <article class="post-card" onclick="navigate(null, '/blog/${post.slug}')" style="cursor: pointer;">
-        ${thumb}
-        <div class="post-card-cat">${post.category || 'General'}</div>
-        <h2 class="post-card-title">${post.title}</h2>
-        <p class="post-card-excerpt">${post.excerpt || ''}</p>
-        <div class="post-card-meta">${formatDate(post.published_at)}</div>
-      </article>
-    `;
+    html += '<article class="post-card' + (post.featured_image ? ' has-thumb' : '') + '" onclick="navigate(null, \'/blog/' + post.slug + '\')" style="cursor: pointer;">'
+      + thumbHtml
+      + '<div class="post-card-body">'
+      + '<div class="post-card-cat">' + (post.category || 'General') + '</div>'
+      + '<h2 class="post-card-title">' + post.title + '</h2>'
+      + '<p class="post-card-excerpt">' + (post.excerpt || '') + '</p>'
+      + '<div class="post-card-meta">' + formatDate(post.published_at) + '</div>'
+      + '</div>'
+      + '</article>';
   });
   
   html += `
