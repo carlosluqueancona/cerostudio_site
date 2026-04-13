@@ -1,0 +1,22 @@
+RewriteEngine On
+RewriteBase /blog/
+
+# Protect config
+<Files "config.php">
+  Deny from all
+</Files>
+
+# Sitemap
+RewriteRule ^sitemap\.xml$ sitemap.php [L]
+
+# Pagination: /blog/pagina/2
+RewriteRule ^pagina/([0-9]+)/?$ index.php?page=$1 [L,QSA]
+
+# Category: /blog/categoria/seo
+RewriteRule ^categoria/([a-z0-9\-]+)/?$ index.php?categoria=$1 [L,QSA]
+RewriteRule ^categoria/([a-z0-9\-]+)/pagina/([0-9]+)/?$ index.php?categoria=$1&page=$2 [L,QSA]
+
+# Single article: /blog/slug-here
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([a-z0-9\-]+)/?$ articulo.php?slug=$1 [L,QSA]
