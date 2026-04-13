@@ -8,11 +8,18 @@
 export async function onRequest(context) {
   const slug = context.params.slug;
 
-  // Redirect /blog/admin → /blog/admin/
-  if (slug === 'admin') {
-    return Response.redirect(new URL('/blog/admin/', context.request.url).origin + '/blog/admin/', 301);
+  // Pass through static assets (js, css, images, etc.)
+  if (/\.[a-zA-Z0-9]+$/.test(slug)) {
+    return context.env.ASSETS.fetch(context.request);
   }
 
+  // Redirect /blog/admin → /blog/admin/
+  if (slug === 'admin') {
+    const origin = new URL(context.request.url).origin;
+    return Response.redirect(origin + '/blog/admin/', 301);
+  }
+
+  // Serve blog SPA for post slugs
   const url = new URL(context.request.url);
   url.pathname = '/blog/index.html';
   return context.env.ASSETS.fetch(url.toString());
