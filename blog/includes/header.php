@@ -81,6 +81,30 @@ $_extra_head  = $extra_head ?? '';
     img { display:block; max-width:100%; }
     a { text-decoration:none; color:inherit; }
 
+    /* ── Mobile Nav Overlay ── */
+    #mobileNav {
+      position:fixed; inset:0;
+      background:var(--bg); z-index:998;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center; gap:28px;
+      transform:translateY(-100%);
+      transition:transform .6s cubic-bezier(.76,0,.24,1);
+    }
+    #mobileNav.open { transform:translateY(0); }
+    #mobileNav a {
+      font-family:var(--fd);
+      font-size:clamp(32px,8vw,52px); font-weight:900;
+      text-transform:uppercase; color:var(--white); transition:color .2s;
+    }
+    #mobileNav a:hover { color:var(--lime); }
+    #mobileNav .mnav-cta {
+      font-family:var(--fd); font-size:14px; font-weight:700;
+      letter-spacing:.1em; text-transform:uppercase;
+      color:var(--on-lime);
+      background:linear-gradient(135deg, var(--lime) 0%, var(--lime-dim) 100%);
+      padding:12px 32px; margin-top:8px;
+    }
+
     /* ── Cursor ── */
     .cursor-dot {
       width:6px; height:6px; background:var(--lime); border-radius:50%;
@@ -132,6 +156,17 @@ $_extra_head  = $extra_head ?? '';
       transition:background .15s ease-out, color .15s ease-out, box-shadow .15s ease-out;
     }
     .nav-cta:hover { background:#fff; color:#000; box-shadow:none; }
+    .nav-ham {
+      display:none; flex-direction:column; gap:5px;
+      cursor:pointer; padding:4px; background:none; border:none;
+    }
+    .nav-ham span {
+      display:block; width:24px; height:2px;
+      background:var(--white); transition:all .35s; transform-origin:center;
+    }
+    .nav-ham.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .nav-ham.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
+    .nav-ham.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
 
     /* ── Breadcrumb ── */
     .blog-breadcrumb {
@@ -356,12 +391,15 @@ $_extra_head  = $extra_head ?? '';
 
     /* ── Mobile ── */
     @media(max-width:900px){
-      nav { padding:0 24px; }
-      .nav-links { display:none; }
       .blog-hero { padding:120px 24px 40px; }
       .blog-grid { grid-template-columns:1fr 1fr; padding:32px 24px 60px; gap:16px; }
       .blog-breadcrumb { padding:88px 24px 0; }
       .related-grid { grid-template-columns:1fr; }
+    }
+    @media(max-width:768px){
+      nav { padding:0 24px; }
+      .nav-links, .nav-cta { display:none; }
+      .nav-ham { display:flex; }
     }
     @media(max-width:480px){
       .blog-grid { grid-template-columns:1fr; }
@@ -376,6 +414,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="cursor-dot" id="cursorDot"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
+<div id="mobileNav">
+  <a href="/" onclick="closeNav()">Inicio</a>
+  <a href="/blog/" onclick="closeNav()">Blog</a>
+  <a href="https://wa.me/525531007101?text=Hola%2C%20me%20interesa%20tener%20un%20sitio%20web%20profesional%20para%20mi%20negocio." class="mnav-cta" target="_blank" rel="noopener" onclick="closeNav()">Hablemos →</a>
+</div>
+
 <nav id="navbar" aria-label="Navegación principal">
   <a href="/" aria-label="Cero Studio — inicio">
     <img src="/images/svg/Cero_Studio_AI_Horizontal.svg" alt="Cero Studio" class="nav-logo" />
@@ -385,4 +429,5 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <li><a href="/blog/">Blog</a></li>
   </ul>
   <a href="https://wa.me/525531007101?text=Hola%2C%20me%20interesa%20tener%20un%20sitio%20web%20profesional%20para%20mi%20negocio." class="nav-cta" target="_blank" rel="noopener">Hablemos →</a>
+  <button class="nav-ham" id="navHam" onclick="toggleNav()" aria-label="Menú" aria-expanded="false"><span></span><span></span><span></span></button>
 </nav>

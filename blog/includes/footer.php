@@ -105,7 +105,9 @@ footer {
   justify-content: space-between;
   align-items: center;
   padding-top: 32px;
+  margin-top: 32px;
   border-top: 1px solid var(--border);
+  background: var(--surface-lowest);
 }
 .footer-copy,
 .footer-credit {
@@ -159,6 +161,25 @@ footer {
 </style>
 
 <script>
+  // Mobile nav
+  let navOpen = false;
+  function toggleNav() {
+    navOpen = !navOpen;
+    document.getElementById('mobileNav').classList.toggle('open', navOpen);
+    const ham = document.getElementById('navHam');
+    if (ham) { ham.classList.toggle('open', navOpen); ham.setAttribute('aria-expanded', navOpen); }
+    document.body.style.overflow = navOpen ? 'hidden' : '';
+  }
+  function closeNav() {
+    navOpen = false;
+    document.getElementById('mobileNav').classList.remove('open');
+    const ham = document.getElementById('navHam');
+    if (ham) { ham.classList.remove('open'); ham.setAttribute('aria-expanded', 'false'); }
+    document.body.style.overflow = '';
+  }
+  window.toggleNav = toggleNav;
+  window.closeNav  = closeNav;
+
   // Cursor
   const dot  = document.getElementById('cursorDot');
   const ring = document.getElementById('cursorRing');
