@@ -67,8 +67,12 @@ function renderList() {
   `;
   
   posts.forEach(post => {
+    const thumb = post.featured_image
+      ? `<div class="post-card-thumb"><img src="${post.featured_image}" alt="${post.title}" loading="lazy"></div>`
+      : '';
     html += `
       <article class="post-card" onclick="navigate(null, '/blog/${post.slug}')" style="cursor: pointer;">
+        ${thumb}
         <div class="post-card-cat">${post.category || 'General'}</div>
         <h2 class="post-card-title">${post.title}</h2>
         <p class="post-card-excerpt">${post.excerpt || ''}</p>
@@ -109,8 +113,11 @@ async function renderPost(slug) {
           <div class="article-meta">
             Publicado el ${formatDate(post.published_at)} • Cero Studio
           </div>
+          ${post.featured_image
+            ? `<div class="article-featured-image"><img src="${post.featured_image}" alt="${post.featured_image_alt || post.title}"></div>`
+            : ''}
         </header>
-        
+
         <div class="article-content">
           ${post.content}
         </div>
