@@ -2,15 +2,11 @@
  * POST /api/contact
  * Recibe el formulario de contacto público.
  * - Guarda en D1 (contact_submissions)
- * - Envía notificación por email via Cloudflare Email Workers (send_email binding)
+ * - Envía notificación por email via Resend API (env.RESEND_API_KEY)
  *
- * El binding send_email requiere:
- *   1. Email Routing activo en el dominio cerostudio.ai (Cloudflare dashboard)
- *   2. cerostudiomx@gmail.com verificado como destino
- *   3. Binding declarado en wrangler.jsonc (ya incluido)
+ * Configuración requerida en Cloudflare Pages → Settings → Environment variables:
+ *   RESEND_API_KEY = re_xxxxxxxxxxxx   (obtenido en resend.com)
  */
-
-import { EmailMessage } from 'cloudflare:email';
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -57,7 +53,7 @@ export async function onRequestPost(context) {
     ).run();
 
     // Enviar email de notificación
-    if (env.SEND_EMAIL) {
+    if (env.RESEND_API_KEY) {
       try {
         await sendNotification(env, { nombre, email, empresa, servicio, mensaje, now });
       } catch (err) {
@@ -99,19 +95,12 @@ async function sendNotification(env, { nombre, email, empresa, servicio, mensaje
     otro:          'Otro',
   };
 
-  const raw = [
-    `From: Cero Studio <${FROM_EMAIL}>`,
-    `To: ${DEST_EMAIL}`,
-    `Subject: =?utf-8?B?${btoa(unescape(encodeURIComponent(`Nuevo mensaje de ${nombre} — Cero Studio`)))}?=`,
-    `MIME-Version: 1.0`,
-    `Content-Type: text/plain; charset=utf-8`,
-    `Content-Transfer-Encoding: quoted-printable`,
-    ``,
+  const text = [
     `Nuevo mensaje desde el formulario de contacto de cerostudio.ai`,
     ``,
     `Nombre:    ${nombre}`,
     `Email:     ${email}`,
-    `Empresa:   ${empresa  || '—'}`,
+    `Empresa:   ${empresa || '—'}`,
     `Servicio:  ${servicioLabels[servicio] || servicio || '—'}`,
     `Fecha:     ${fecha}`,
     ``,
@@ -122,8 +111,25 @@ async function sendNotification(env, { nombre, email, empresa, servicio, mensaje
     ``,
     `Responder directamente a: ${email}`,
     `Ver en el admin: https://cerostudio.ai/blog/admin/`,
-  ].join('\r\n');
+  ].join('\n');
 
-  const msg = new EmailMessage(FROM_EMAIL, DEST_EMAIL, raw);
-  await env.SEND_EMAIL.send(msg);
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: `Cero Studio <${FROM_EMAIL}>`,
+      to: [DEST_EMAIL],
+      reply_to: email,
+      subject: `Nuevo mensaje de ${nombre} — Cero Studio`,
+      text,
+    }),
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Resend API error ${res.status}: ${err}`);
+  }
 }
