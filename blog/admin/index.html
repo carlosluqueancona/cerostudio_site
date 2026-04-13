@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Admin — Cero Studio Blog</title>
+  <link rel="icon" type="image/svg+xml" href="/images/svg/CS_Favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ── Tokens ── */
+    :root {
+      --bg:       #0e0e0e;
+      --surface:  #131313;
+      --surface-1:#1b1b1c;
+      --surface-2:#242424;
+      --surface-3:#2e2e2e;
+      --white:    #ffffff;
+      --gt:       #888;
+      --border:   rgba(255,255,255,0.08);
+      --lime:     #b2f700;
+      --lime-dim: #9cd900;
+      --on-lime:  #131f00;
+      --red:      #ff4444;
+      --fd: 'Space Grotesk', sans-serif;
+      --fb: 'Inter', sans-serif;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { height:100%; }
+    body {
+      font-family: var(--fb);
+      background: var(--bg);
+      color: var(--white);
+      min-height: 100vh;
+    }
+
+    a { text-decoration:none; color:inherit; }
+
+    /* ── Layout ── */
+    .app        { display:flex; flex-direction:column; min-height:100vh; }
+    .topbar     {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 32px; height:60px;
+      background:var(--surface); border-bottom:1px solid var(--border);
+      position:sticky; top:0; z-index:100;
+    }
+    .topbar-brand { display:flex; align-items:center; gap:12px; }
+    .topbar-brand img { height:22px; }
+    .topbar-brand span { font-family:var(--fd); font-size:12px; font-weight:600; color:var(--gt); letter-spacing:.08em; text-transform:uppercase; }
+    .topbar-actions { display:flex; align-items:center; gap:12px; }
+    .main       { flex:1; padding:32px; max-width:1100px; margin:0 auto; width:100%; }
+
+    /* ── Buttons ── */
+    .btn {
+      font-family:var(--fd); font-size:12px; font-weight:700; letter-spacing:.06em;
+      text-transform:uppercase; cursor:pointer; border:none;
+      padding:9px 20px; transition:all .15s ease-out; display:inline-flex;
+      align-items:center; gap:6px;
+    }
+    .btn-primary {
+      background:linear-gradient(135deg,var(--lime) 0%,var(--lime-dim) 100%);
+      color:var(--on-lime); box-shadow:0 0 12px rgba(178,247,0,.2);
+    }
+    .btn-primary:hover { box-shadow:0 0 20px rgba(178,247,0,.35); }
+    .btn-ghost  { background:none; color:var(--gt); border:1px solid var(--border); }
+    .btn-ghost:hover { color:var(--white); border-color:rgba(255,255,255,.25); }
+    .btn-danger { background:none; color:var(--red); border:1px solid rgba(255,68,68,.25); }
+    .btn-danger:hover { background:rgba(255,68,68,.08); }
+    .btn-sm     { padding:6px 12px; font-size:11px; }
+    .btn:active { transform:scale(0.97); }
+    .btn:disabled { opacity:.4; cursor:not-allowed; transform:none; }
+
+    /* ── Form controls ── */
+    label {
+      display:block; font-size:11px; font-weight:600; letter-spacing:.08em;
+      text-transform:uppercase; color:var(--gt); margin-bottom:6px;
+    }
+    input[type=text], input[type=password], textarea, select {
+      width:100%; padding:10px 12px;
+      background:var(--surface-1); border:1px solid var(--border);
+      color:var(--white); font-family:var(--fb); font-size:14px;
+      border-radius:0; outline:none; transition:border-color .2s;
+    }
+    input:focus, textarea:focus, select:focus { border-color:rgba(178,247,0,.5); }
+    textarea { resize:vertical; }
+    select option { background:var(--surface-1); }
+    .help { font-size:11px; color:var(--gt); margin-top:4px; }
+
+    /* ── Cards ── */
+    .card {
+      background:var(--surface-1); border:1px solid var(--border);
+      padding:24px;
+    }
+
+    /* ── Stats ── */
+    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px; }
+    .stat  { background:var(--surface-1); border:1px solid var(--border); padding:20px 24px; }
+    .stat-num { font-family:var(--fd); font-size:30px; font-weight:700; letter-spacing:-0.03em; }
+    .stat-lbl { font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--gt); margin-top:4px; }
+
+    /* ── Table ── */
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; }
+    th {
+      text-align:left; font-family:var(--fd); font-size:10px; font-weight:700;
+      letter-spacing:.1em; text-transform:uppercase; color:var(--gt);
+      padding:12px 16px; border-bottom:1px solid var(--border);
+    }
+    td { padding:14px 16px; border-bottom:1px solid var(--border); font-size:13px; vertical-align:middle; }
+    tr:last-child td { border-bottom:none; }
+    tr:hover td { background:rgba(255,255,255,.02); }
+
+    /* ── Badge ── */
+    .badge { display:inline-block; padding:3px 8px; font-family:var(--fd); font-size:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
+    .badge-pub   { background:rgba(178,247,0,.12); color:var(--lime); }
+    .badge-draft { background:rgba(255,166,0,.1);  color:#FFA600; }
+
+    /* ── Search bar ── */
+    .search-wrap { position:relative; margin-bottom:16px; }
+    .search-wrap input { padding-left:36px; }
+    .search-wrap::before {
+      content:'⌕'; position:absolute; left:12px; top:50%; transform:translateY(-50%);
+      color:var(--gt); font-size:16px; pointer-events:none;
+    }
+
+    /* ── Login ── */
+    #view-login {
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+      background:var(--bg);
+    }
+    .login-box { width:100%; max-width:400px; padding:0 24px; }
+    .login-box img { height:28px; margin-bottom:32px; display:block; }
+    .login-box h1 { font-family:var(--fd); font-size:24px; font-weight:700; margin-bottom:6px; }
+    .login-box p  { font-size:13px; color:var(--gt); margin-bottom:32px; }
+    .field { margin-bottom:20px; }
+    .error-msg { background:rgba(255,68,68,.1); border:1px solid rgba(255,68,68,.3); color:var(--red); padding:10px 14px; font-size:13px; margin-bottom:20px; }
+    .success-msg { background:rgba(178,247,0,.08); border:1px solid rgba(178,247,0,.2); color:var(--lime); padding:10px 14px; font-size:13px; margin-bottom:16px; }
+
+    /* ── Editor layout ── */
+    .editor-grid { display:grid; grid-template-columns:1fr 300px; gap:24px; align-items:start; }
+    .editor-main { display:flex; flex-direction:column; gap:20px; }
+    .editor-sidebar { display:flex; flex-direction:column; gap:16px; }
+    .toolbar { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:6px; }
+    .toolbar button {
+      padding:4px 10px; background:var(--surface-2); border:1px solid var(--border);
+      color:var(--gt); font-size:11px; font-weight:700; font-family:var(--fd);
+      cursor:pointer; transition:all .15s;
+    }
+    .toolbar button:hover { background:var(--surface-3); color:var(--white); }
+    #content { font-family:'SF Mono',Consolas,'Courier New',monospace; font-size:13px; line-height:1.6; min-height:360px; tab-size:2; }
+    .char-counter { font-size:11px; font-weight:400; color:var(--gt); }
+    .char-counter.warn { color:#FFA600; }
+    .char-counter.over { color:var(--red); }
+    .img-preview { width:100%; border:1px solid var(--border); display:none; margin-top:8px; }
+    .img-preview.visible { display:block; }
+    .preview-pane { display:none; padding:24px; background:var(--surface-1); border:1px solid var(--border); min-height:200px; font-size:16px; line-height:1.8; max-height:500px; overflow-y:auto; margin-top:8px; }
+    .preview-pane.visible { display:block; }
+
+    /* ── Toast ── */
+    #toast {
+      position:fixed; bottom:32px; right:32px; z-index:9999;
+      background:var(--surface-2); border:1px solid var(--border);
+      padding:12px 20px; font-size:13px; font-family:var(--fd); font-weight:600;
+      opacity:0; transform:translateY(8px);
+      transition:opacity .25s, transform .25s;
+      pointer-events:none;
+    }
+    #toast.show { opacity:1; transform:translateY(0); }
+    #toast.toast-ok  { border-color:rgba(178,247,0,.4); color:var(--lime); }
+    #toast.toast-err { border-color:rgba(255,68,68,.4); color:var(--red); }
+
+    /* ── Loader ── */
+    .spinner { display:inline-block; width:16px; height:16px; border:2px solid rgba(255,255,255,.2); border-top-color:var(--lime); border-radius:50%; animation:spin .7s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .loading { text-align:center; padding:60px; color:var(--gt); }
+
+    /* ── Responsive ── */
+    @media(max-width:900px) {
+      .stats { grid-template-columns:1fr 1fr; }
+      .editor-grid { grid-template-columns:1fr; }
+      .topbar { padding:0 20px; }
+      .main { padding:20px; }
+    }
+    @media(max-width:480px) {
+      .stats { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════ LOGIN VIEW ══════════════════════════ -->
+<div id="view-login" style="display:none;">
+  <div class="login-box">
+    <img src="/images/svg/Cero_Studio_AI_Horizontal.svg" alt="Cero Studio" />
+    <h1>Blog Admin</h1>
+    <p>Panel de contenido — Cero Studio</p>
+    <div id="login-error" class="error-msg" style="display:none;"></div>
+    <form id="login-form">
+      <div class="field">
+        <label for="username">Usuario</label>
+        <input type="text" id="username" name="username" required autocomplete="username" />
+      </div>
+      <div class="field">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" required autocomplete="current-password" />
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;" id="login-btn">
+        Entrar →
+      </button>
+    </form>
+    <a href="/blog/" style="display:block;text-align:center;margin-top:24px;font-size:12px;color:var(--gt);">← Volver al blog</a>
+  </div>
+</div>
+
+<!-- ══════════════════════════ DASHBOARD VIEW ══════════════════════════ -->
+<div id="view-dashboard" style="display:none;" class="app">
+  <header class="topbar">
+    <div class="topbar-brand">
+      <img src="/images/svg/Cero_Studio_AI_Horizontal.svg" alt="Cero Studio" />
+      <span>Blog Admin</span>
+    </div>
+    <div class="topbar-actions">
+      <a href="/blog/" target="_blank" class="btn btn-ghost btn-sm">Ver blog ↗</a>
+      <button class="btn btn-ghost btn-sm" onclick="logout()">Salir</button>
+    </div>
+  </header>
+  <main class="main">
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat"><div class="stat-num" id="stat-total">—</div><div class="stat-lbl">Artículos</div></div>
+      <div class="stat"><div class="stat-num" id="stat-pub" style="color:var(--lime);">—</div><div class="stat-lbl">Publicados</div></div>
+      <div class="stat"><div class="stat-num" id="stat-draft" style="color:#FFA600;">—</div><div class="stat-lbl">Borradores</div></div>
+      <div class="stat"><div class="stat-num" id="stat-cats">—</div><div class="stat-lbl">Categorías</div></div>
+    </div>
+
+    <!-- Controls -->
+    <div style="display:flex;gap:12px;align-items:center;margin-bottom:16px;">
+      <div class="search-wrap" style="flex:1;">
+        <input type="text" id="search-input" placeholder="Buscar por título, categoría o slug…" oninput="filterTable(this.value)" />
+      </div>
+      <button class="btn btn-primary" onclick="openEditor(null)">+ Nuevo artículo</button>
+    </div>
+
+    <!-- Table -->
+    <div class="card" style="padding:0;">
+      <div id="posts-loading" class="loading"><span class="spinner"></span></div>
+      <div class="table-wrap" id="posts-table" style="display:none;">
+        <table>
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Categoría</th>
+              <th>Estado</th>
+              <th>Fecha</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="posts-tbody"></tbody>
+        </table>
+      </div>
+      <div id="posts-empty" class="loading" style="display:none;color:var(--gt);">
+        No hay artículos. <button class="btn btn-ghost btn-sm" onclick="openEditor(null)" style="margin-left:8px;">Crear el primero →</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ══════════════════════════ EDITOR VIEW ══════════════════════════ -->
+<div id="view-editor" style="display:none;" class="app">
+  <header class="topbar">
+    <div class="topbar-brand">
+      <img src="/images/svg/Cero_Studio_AI_Horizontal.svg" alt="Cero Studio" />
+      <span id="editor-breadcrumb">Nuevo artículo</span>
+    </div>
+    <div class="topbar-actions">
+      <span id="editor-saving" style="font-size:12px;color:var(--gt);display:none;">Guardando…</span>
+      <button class="btn btn-ghost btn-sm" onclick="showDashboard()">← Dashboard</button>
+      <button class="btn btn-primary" onclick="savePost()" id="save-btn">Guardar</button>
+    </div>
+  </header>
+  <main class="main">
+    <div id="editor-msg" style="display:none;margin-bottom:16px;"></div>
+    <div class="editor-grid">
+
+      <!-- Main column -->
+      <div class="editor-main">
+        <div class="card" style="padding:20px;display:flex;flex-direction:column;gap:16px;">
+          <div>
+            <label for="f-title">Título *</label>
+            <input type="text" id="f-title" placeholder="Título del artículo" oninput="autoSlug()" />
+          </div>
+          <div>
+            <label for="f-slug">URL slug</label>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:12px;color:var(--gt);white-space:nowrap;">/blog/</span>
+              <input type="text" id="f-slug" placeholder="se-genera-automatico" oninput="slugEdited=true" />
+            </div>
+          </div>
+          <div>
+            <label for="f-excerpt">Extracto</label>
+            <textarea id="f-excerpt" rows="2" placeholder="Resumen corto para listados y SEO…"></textarea>
+          </div>
+        </div>
+
+        <div class="card" style="padding:20px;">
+          <label>Contenido (HTML)</label>
+          <div class="toolbar">
+            <button type="button" onclick="wrap('h2')">H2</button>
+            <button type="button" onclick="wrap('h3')">H3</button>
+            <button type="button" onclick="wrap('p')">P</button>
+            <button type="button" onclick="wrap('strong')">B</button>
+            <button type="button" onclick="wrap('em')">I</button>
+            <button type="button" onclick="insertList()">Lista</button>
+            <button type="button" onclick="insertOl()">Numerada</button>
+            <button type="button" onclick="insertQuote()">Cita</button>
+            <button type="button" onclick="insertLink()">Link</button>
+            <button type="button" onclick="insertImg()">Imagen</button>
+            <button type="button" onclick="insertCode()">Código</button>
+            <button type="button" onclick="togglePreview()" id="preview-btn">Vista previa</button>
+          </div>
+          <textarea id="content" name="content" rows="20"></textarea>
+          <div id="preview-pane" class="preview-pane article-body"></div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="editor-sidebar">
+        <div class="card" style="display:flex;flex-direction:column;gap:16px;">
+          <div>
+            <label for="f-status">Estado</label>
+            <select id="f-status">
+              <option value="draft">Borrador</option>
+              <option value="published">Publicado</option>
+            </select>
+          </div>
+          <div>
+            <label for="f-category">Categoría</label>
+            <input type="text" id="f-category" placeholder="Ej: diseño web, seo, ecommerce" list="cats-list" />
+            <datalist id="cats-list"></datalist>
+          </div>
+        </div>
+
+        <div class="card" style="display:flex;flex-direction:column;gap:12px;">
+          <div>
+            <label for="f-featured-url">Imagen destacada (URL)</label>
+            <input type="text" id="f-featured-url" placeholder="https://… o /blog/uploads/…" oninput="updateImgPreview(this.value)" />
+          </div>
+          <img id="f-img-preview" class="img-preview" alt="Preview" />
+          <div>
+            <label for="f-featured-alt">Alt de imagen</label>
+            <input type="text" id="f-featured-alt" placeholder="Descripción accesible" />
+          </div>
+        </div>
+
+        <div class="card" style="display:flex;flex-direction:column;gap:12px;">
+          <div>
+            <label for="f-meta-title">
+              Meta título (SEO)
+              <span class="char-counter" id="cnt-meta-title">0/60</span>
+            </label>
+            <input type="text" id="f-meta-title" placeholder="Dejar vacío = título del artículo" oninput="countChars('f-meta-title','cnt-meta-title',60)" />
+            <p class="help">Máx. recomendado: 60 caracteres</p>
+          </div>
+          <div>
+            <label for="f-meta-desc">
+              Meta descripción (SEO)
+              <span class="char-counter" id="cnt-meta-desc">0/160</span>
+            </label>
+            <textarea id="f-meta-desc" rows="3" placeholder="Dejar vacío = extracto" oninput="countChars('f-meta-desc','cnt-meta-desc',160)"></textarea>
+            <p class="help">Máx. recomendado: 160 caracteres</p>
+          </div>
+        </div>
+
+        <div id="editor-post-link" style="display:none;">
+          <a id="editor-view-link" href="#" target="_blank" class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;">Ver artículo ↗</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+'use strict';
+
+// ── State ────────────────────────────────────────────────────────────────────
+const API    = '/api/admin';
+let token    = localStorage.getItem('cs_admin_token') || '';
+let postId   = null;          // current post being edited
+let slugEdited = false;
+let allPosts = [];
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+async function init() {
+  if (!token) { showView('login'); return; }
+  // Validate token by fetching posts
+  try {
+    const r = await apiFetch('/posts');
+    if (r.ok) {
+      allPosts = await r.json();
+      renderDashboard();
+      showView('dashboard');
+    } else {
+      clearToken(); showView('login');
+    }
+  } catch { clearToken(); showView('login'); }
+}
+
+// ── Views ────────────────────────────────────────────────────────────────────
+function showView(name) {
+  ['login','dashboard','editor'].forEach(v => {
+    document.getElementById('view-' + v).style.display = 'none';
+  });
+  document.getElementById('view-' + name).style.display = '';
+}
+
+function showDashboard() {
+  refreshDashboard();
+  showView('dashboard');
+}
+
+// ── Auth ─────────────────────────────────────────────────────────────────────
+document.getElementById('login-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = document.getElementById('login-btn');
+  btn.disabled = true; btn.textContent = 'Entrando…';
+  const errEl = document.getElementById('login-error');
+  errEl.style.display = 'none';
+
+  try {
+    const r = await fetch(API + '/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value,
+      }),
+    });
+    const data = await r.json();
+    if (data.token) {
+      token = data.token;
+      localStorage.setItem('cs_admin_token', token);
+      await refreshDashboard();
+      showView('dashboard');
+    } else {
+      errEl.textContent = data.error || 'Error al iniciar sesión';
+      errEl.style.display = 'block';
+    }
+  } catch {
+    errEl.textContent = 'Error de conexión';
+    errEl.style.display = 'block';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Entrar →';
+  }
+});
+
+function logout() {
+  clearToken();
+  showView('login');
+}
+
+function clearToken() {
+  token = '';
+  localStorage.removeItem('cs_admin_token');
+}
+
+// ── Dashboard ────────────────────────────────────────────────────────────────
+async function refreshDashboard() {
+  showLoadingState();
+  try {
+    const r = await apiFetch('/posts');
+    if (!r.ok) { if (r.status === 401) { clearToken(); showView('login'); } return; }
+    allPosts = await r.json();
+    renderDashboard();
+  } catch { toast('Error al cargar artículos', 'err'); }
+}
+
+function showLoadingState() {
+  document.getElementById('posts-loading').style.display = '';
+  document.getElementById('posts-table').style.display  = 'none';
+  document.getElementById('posts-empty').style.display  = 'none';
+}
+
+function renderDashboard() {
+  const pub  = allPosts.filter(p => p.status === 'published').length;
+  const cats = new Set(allPosts.map(p => p.category).filter(Boolean)).size;
+
+  document.getElementById('stat-total').textContent = allPosts.length;
+  document.getElementById('stat-pub').textContent   = pub;
+  document.getElementById('stat-draft').textContent = allPosts.length - pub;
+  document.getElementById('stat-cats').textContent  = cats;
+
+  // Fill categories datalist for editor
+  const dl = document.getElementById('cats-list');
+  dl.innerHTML = [...new Set(allPosts.map(p => p.category).filter(Boolean))]
+    .map(c => `<option value="${esc(c)}">`).join('');
+
+  renderTable(allPosts);
+}
+
+function renderTable(posts) {
+  document.getElementById('posts-loading').style.display = 'none';
+
+  if (!posts.length) {
+    document.getElementById('posts-table').style.display = 'none';
+    document.getElementById('posts-empty').style.display = '';
+    return;
+  }
+
+  document.getElementById('posts-table').style.display = '';
+  document.getElementById('posts-empty').style.display = 'none';
+
+  document.getElementById('posts-tbody').innerHTML = posts.map(p => `
+    <tr data-search="${esc((p.title+' '+p.category+' '+p.slug).toLowerCase())}">
+      <td>
+        <strong style="font-size:14px;">${esc(p.title)}</strong>
+        <div style="font-size:11px;color:var(--gt);margin-top:2px;">/blog/${esc(p.slug)}</div>
+      </td>
+      <td style="font-size:12px;color:var(--gt);">${esc(p.category || '—')}</td>
+      <td><span class="badge badge-${p.status === 'published' ? 'pub' : 'draft'}">${p.status === 'published' ? 'Publicado' : 'Borrador'}</span></td>
+      <td style="font-size:12px;color:var(--gt);">${fmtDate(p.created_at)}</td>
+      <td>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-ghost btn-sm" onclick="openEditor(${p.id})">Editar</button>
+          <button class="btn btn-ghost btn-sm" onclick="toggleStatus(${p.id}, '${p.status}', this)">${p.status === 'published' ? 'Despublicar' : 'Publicar'}</button>
+          ${p.status === 'published' ? `<a href="/blog/${esc(p.slug)}" target="_blank" class="btn btn-ghost btn-sm">Ver ↗</a>` : ''}
+          <button class="btn btn-danger btn-sm" onclick="deletePost(${p.id}, this)">Eliminar</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function filterTable(q) {
+  q = q.toLowerCase().trim();
+  document.querySelectorAll('#posts-tbody tr').forEach(row => {
+    row.style.display = !q || row.dataset.search.includes(q) ? '' : 'none';
+  });
+}
+
+async function toggleStatus(id, currentStatus, btn) {
+  btn.disabled = true;
+  try {
+    const r = await apiFetch(`/posts?action=toggle&id=${id}`, { method: 'POST' });
+    const d = await r.json();
+    if (d.ok) { toast(d.status === 'published' ? 'Artículo publicado' : 'Movido a borrador', 'ok'); await refreshDashboard(); }
+    else toast(d.error || 'Error', 'err');
+  } catch { toast('Error de conexión', 'err'); }
+  finally { btn.disabled = false; }
+}
+
+async function deletePost(id, btn) {
+  if (!confirm('¿Eliminar este artículo? Esta acción no se puede deshacer.')) return;
+  btn.disabled = true;
+  try {
+    const r = await apiFetch(`/posts?id=${id}`, { method: 'DELETE' });
+    const d = await r.json();
+    if (d.ok) { toast('Artículo eliminado', 'ok'); await refreshDashboard(); }
+    else toast(d.error || 'Error al eliminar', 'err');
+  } catch { toast('Error de conexión', 'err'); }
+  finally { btn.disabled = false; }
+}
+
+// ── Editor ───────────────────────────────────────────────────────────────────
+async function openEditor(id) {
+  postId     = id;
+  slugEdited = !!id;
+
+  // Reset form
+  ['f-title','f-slug','f-excerpt','content','f-category',
+   'f-featured-url','f-featured-alt','f-meta-title','f-meta-desc']
+    .forEach(fid => { document.getElementById(fid).value = ''; });
+  document.getElementById('f-status').value = 'draft';
+  document.getElementById('f-img-preview').className = 'img-preview';
+  document.getElementById('preview-pane').className  = 'preview-pane article-body';
+  document.getElementById('editor-post-link').style.display = 'none';
+  document.getElementById('editor-msg').style.display = 'none';
+  countChars('f-meta-title','cnt-meta-title',60);
+  countChars('f-meta-desc','cnt-meta-desc',160);
+  document.getElementById('editor-breadcrumb').textContent = id ? 'Editar artículo' : 'Nuevo artículo';
+
+  if (id) {
+    try {
+      const r = await apiFetch(`/posts?id=${id}`);
+      const p = await r.json();
+      document.getElementById('f-title').value       = p.title || '';
+      document.getElementById('f-slug').value        = p.slug  || '';
+      document.getElementById('f-excerpt').value     = p.excerpt || '';
+      document.getElementById('content').value       = p.content || '';
+      document.getElementById('f-category').value    = p.category || '';
+      document.getElementById('f-status').value      = p.status || 'draft';
+      document.getElementById('f-featured-url').value = p.featured_image || '';
+      document.getElementById('f-featured-alt').value = p.featured_image_alt || '';
+      document.getElementById('f-meta-title').value  = p.meta_title || '';
+      document.getElementById('f-meta-desc').value   = p.meta_description || '';
+      updateImgPreview(p.featured_image);
+      countChars('f-meta-title','cnt-meta-title',60);
+      countChars('f-meta-desc','cnt-meta-desc',160);
+      if (p.status === 'published') {
+        const link = document.getElementById('editor-view-link');
+        link.href = `/blog/${p.slug}`;
+        document.getElementById('editor-post-link').style.display = 'block';
+      }
+    } catch { toast('Error al cargar el artículo', 'err'); }
+  }
+
+  showView('editor');
+  document.getElementById('f-title').focus();
+}
+
+async function savePost() {
+  const title = document.getElementById('f-title').value.trim();
+  if (!title) { showEditorMsg('El título es obligatorio.', 'err'); return; }
+
+  const btn = document.getElementById('save-btn');
+  btn.disabled = true; btn.textContent = 'Guardando…';
+
+  const body = {
+    id:                 postId,
+    title,
+    slug:               document.getElementById('f-slug').value.trim() || slugFrom(title),
+    excerpt:            document.getElementById('f-excerpt').value.trim(),
+    content:            document.getElementById('content').value,
+    category:           document.getElementById('f-category').value.trim(),
+    status:             document.getElementById('f-status').value,
+    featured_image:     document.getElementById('f-featured-url').value.trim(),
+    featured_image_alt: document.getElementById('f-featured-alt').value.trim(),
+    meta_title:         document.getElementById('f-meta-title').value.trim(),
+    meta_description:   document.getElementById('f-meta-desc').value.trim(),
+  };
+
+  try {
+    const method = postId ? 'PUT' : 'POST';
+    const r = await apiFetch('/posts', {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    const d = await r.json();
+    if (d.ok || d.id) {
+      if (!postId && d.id) { postId = d.id; slugEdited = true; }
+      toast(postId ? 'Artículo guardado' : 'Artículo creado', 'ok');
+      showEditorMsg('Guardado correctamente.', 'ok');
+      // Update view link if published
+      if (body.status === 'published') {
+        const link = document.getElementById('editor-view-link');
+        link.href = `/blog/${body.slug}`;
+        document.getElementById('editor-post-link').style.display = 'block';
+      }
+      document.getElementById('editor-breadcrumb').textContent = 'Editar artículo';
+    } else {
+      showEditorMsg(d.error || 'Error al guardar.', 'err');
+      toast(d.error || 'Error al guardar', 'err');
+    }
+  } catch { toast('Error de conexión', 'err'); }
+  finally { btn.disabled = false; btn.textContent = 'Guardar'; }
+}
+
+function showEditorMsg(msg, type) {
+  const el = document.getElementById('editor-msg');
+  el.className = type === 'ok' ? 'success-msg' : 'error-msg';
+  el.textContent = msg;
+  el.style.display = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 4000);
+}
+
+// ── Toolbar ───────────────────────────────────────────────────────────────────
+const ta = () => document.getElementById('content');
+
+function wrap(tag) {
+  const t = ta(), s = t.selectionStart, e = t.selectionEnd;
+  const sel = t.value.substring(s, e) || 'texto aquí';
+  t.setRangeText(`<${tag}>${sel}</${tag}>`, s, e, 'end');
+  t.focus();
+}
+
+function insertList() {
+  const t = ta(), s = t.selectionStart;
+  t.setRangeText('<ul>\n  <li>Elemento 1</li>\n  <li>Elemento 2</li>\n  <li>Elemento 3</li>\n</ul>', s, s, 'end');
+  t.focus();
+}
+
+function insertOl() {
+  const t = ta(), s = t.selectionStart;
+  t.setRangeText('<ol>\n  <li>Paso 1</li>\n  <li>Paso 2</li>\n  <li>Paso 3</li>\n</ol>', s, s, 'end');
+  t.focus();
+}
+
+function insertQuote() {
+  const t = ta(), s = t.selectionStart, e = t.selectionEnd;
+  const sel = t.value.substring(s, e) || 'Cita aquí';
+  t.setRangeText(`<blockquote><p>${sel}</p></blockquote>`, s, e, 'end');
+  t.focus();
+}
+
+function insertLink() {
+  const url = prompt('URL del enlace:', 'https://');
+  if (!url) return;
+  const t = ta(), s = t.selectionStart, e = t.selectionEnd;
+  const text = t.value.substring(s, e) || 'texto del enlace';
+  t.setRangeText(`<a href="${url}">${text}</a>`, s, e, 'end');
+  t.focus();
+}
+
+function insertImg() {
+  const url = prompt('URL de la imagen:', 'https://');
+  if (!url) return;
+  const alt = prompt('Alt text:', '') || '';
+  const t = ta(), s = t.selectionStart;
+  t.setRangeText(`<img src="${url}" alt="${alt}" />`, s, s, 'end');
+  t.focus();
+}
+
+function insertCode() {
+  const t = ta(), s = t.selectionStart, e = t.selectionEnd;
+  const sel = t.value.substring(s, e) || 'código aquí';
+  t.setRangeText(`<pre><code>${sel}</code></pre>`, s, e, 'end');
+  t.focus();
+}
+
+function togglePreview() {
+  const pane = document.getElementById('preview-pane');
+  const btn  = document.getElementById('preview-btn');
+  if (pane.classList.contains('visible')) {
+    pane.classList.remove('visible');
+    btn.textContent = 'Vista previa';
+  } else {
+    pane.innerHTML = ta().value;
+    pane.classList.add('visible');
+    btn.textContent = 'Ocultar previa';
+  }
+}
+
+// Tab key in textarea
+document.getElementById('content').addEventListener('keydown', function(e) {
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    const s = this.selectionStart;
+    this.setRangeText('  ', s, s, 'end');
+  }
+});
+
+// Ctrl/Cmd+S to save
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 's' && document.getElementById('view-editor').style.display !== 'none') {
+    e.preventDefault();
+    savePost();
+  }
+});
+
+// ── Slug auto-gen ─────────────────────────────────────────────────────────────
+function autoSlug() {
+  if (slugEdited) return;
+  document.getElementById('f-slug').value = slugFrom(document.getElementById('f-title').value);
+}
+
+function slugFrom(text) {
+  const map = {á:'a',é:'e',í:'i',ó:'o',ú:'u',ñ:'n',ü:'u',Á:'a',É:'e',Í:'i',Ó:'o',Ú:'u',Ñ:'n'};
+  return text.toLowerCase()
+    .replace(/[áéíóúñüÁÉÍÓÚÑ]/g, c => map[c]||c)
+    .replace(/[^a-z0-9-]/g,'-')
+    .replace(/-+/g,'-')
+    .replace(/^-|-$/g,'');
+}
+
+document.getElementById('f-slug').addEventListener('input', () => { slugEdited = document.getElementById('f-slug').value.length > 0; });
+
+// ── Image preview ─────────────────────────────────────────────────────────────
+function updateImgPreview(url) {
+  const img = document.getElementById('f-img-preview');
+  if (url && url.trim()) {
+    img.src = url.trim();
+    img.className = 'img-preview visible';
+  } else {
+    img.className = 'img-preview';
+  }
+}
+
+// ── SEO counters ──────────────────────────────────────────────────────────────
+function countChars(inputId, counterId, max) {
+  const el  = document.getElementById(inputId);
+  const cnt = document.getElementById(counterId);
+  if (!el || !cnt) return;
+  const len = el.value.length;
+  cnt.textContent = `${len}/${max}`;
+  cnt.className = 'char-counter' + (len > max ? ' over' : len > max * 0.85 ? ' warn' : '');
+}
+
+// ── API helper ────────────────────────────────────────────────────────────────
+function apiFetch(path, opts = {}) {
+  return fetch(API + path, {
+    ...opts,
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      ...(opts.headers || {}),
+    },
+  });
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+let toastTimer;
+function toast(msg, type = 'ok') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `show toast-${type}`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.className = el.className.replace(' show',''); }, 3000);
+}
+
+// ── Utils ─────────────────────────────────────────────────────────────────────
+function esc(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function fmtDate(str) {
+  if (!str) return '—';
+  return new Date(str).toLocaleDateString('es-MX', { day:'numeric', month:'short', year:'numeric' });
+}
+
+// ── Boot ──────────────────────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
