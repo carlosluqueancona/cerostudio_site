@@ -8,11 +8,17 @@ let posts = [];
 
 async function initBlog() {
   const root = document.getElementById('blog-root');
-  
+
   try {
     const response = await fetch(BLOG_DATA_URL);
     posts = await response.json();
-    
+
+    // DEBUG: ver qué devuelve la API
+    if (posts.length > 0) {
+      console.log('[Blog] Primer post recibido:', JSON.stringify(posts[0]));
+      console.log('[Blog] featured_image del primer post:', posts[0].featured_image);
+    }
+
     // Simple router based on pathname
     handleRoute();
     
@@ -100,6 +106,9 @@ async function renderPost(slug) {
     const response = await fetch(`${BLOG_DATA_URL}?slug=${slug}`);
     if (!response.ok) throw new Error('Not found');
     const post = await response.json();
+
+    // DEBUG: ver campo de imagen en el post individual
+    console.log('[Blog] Post individual featured_image:', post.featured_image);
 
     const heroImg = post.featured_image
       ? '<div class="article-featured-image"><img src="' + post.featured_image + '" alt="' + (post.featured_image_alt || post.title) + '"></div>'
