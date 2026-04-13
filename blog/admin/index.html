@@ -370,6 +370,7 @@
             <input type="text" id="f-featured-url" placeholder="https://…" oninput="updateImgPreview(this.value)" />
           </div>
           <img id="f-img-preview" class="img-preview" alt="Preview" />
+          <button type="button" id="clear-img-btn" class="btn btn-danger btn-sm" style="display:none;margin-top:4px;" onclick="clearFeaturedImage()">✕ Borrar imagen</button>
           <div>
             <label for="f-featured-alt">Alt de imagen</label>
             <input type="text" id="f-featured-alt" placeholder="Descripción accesible" />
@@ -794,13 +795,43 @@ document.getElementById('f-slug').addEventListener('input', () => { slugEdited =
 
 // ── Image preview ─────────────────────────────────────────────────────────────
 function updateImgPreview(url) {
-  const img = document.getElementById('f-img-preview');
+  const img     = document.getElementById('f-img-preview');
+  const clearBtn = document.getElementById('clear-img-btn');
   if (url && url.trim()) {
     img.src = url.trim();
     img.className = 'img-preview visible';
+    clearBtn.style.display = '';
   } else {
     img.className = 'img-preview';
+    clearBtn.style.display = 'none';
   }
+}
+
+async function clearFeaturedImage() {
+  const urlInput = document.getElementById('f-featured-url');
+  const url = urlInput.value.trim();
+
+  if (url && !confirm('¿Eliminar esta imagen del servidor? Esta acción no se puede deshacer.')) return;
+
+  if (url) {
+    try {
+      const r = await apiFetch('/upload?url=' + encodeURIComponent(url), { method: 'DELETE' });
+      const d = await r.json();
+      if (d.ok) {
+        toast('Imagen eliminada del servidor', 'ok');
+      } else {
+        toast(d.error || 'No se pudo borrar del servidor', 'err');
+      }
+    } catch {
+      toast('Error de conexión al borrar', 'err');
+    }
+  }
+
+  urlInput.value = '';
+  document.getElementById('f-featured-alt').value = '';
+  document.getElementById('upload-label').textContent = 'Arrastra una imagen o haz clic';
+  document.getElementById('upload-status').textContent = '';
+  updateImgPreview('');
 }
 
 // ── SEO counters ──────────────────────────────────────────────────────────────

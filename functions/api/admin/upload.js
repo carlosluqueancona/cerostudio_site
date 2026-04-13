@@ -51,6 +51,37 @@ export async function onRequestOptions() {
   return new Response(null, { status: 204, headers: CORS });
 }
 
+export async function onRequestDelete(context) {
+  const { request, env } = context;
+
+  const header = request.headers.get('Authorization') || '';
+  const token  = header.startsWith('Bearer ') ? header.slice(7) : '';
+  if (!await verifyJWT(token, env.JWT_SECRET || 'change-this-secret')) {
+    return json({ ok: false, error: 'No autorizado' }, 401);
+  }
+
+  if (!env.IMAGES) {
+    return json({ ok: false, error: 'R2 no configurado' }, 500);
+  }
+
+  try {
+    const { searchParams } = new URL(request.url);
+    const url = searchParams.get('url');
+    if (!url) return json({ ok: false, error: 'URL requerida' }, 400);
+
+    const base = (env.R2_PUBLIC_URL || '').replace(/\/$/, '');
+    if (!base || !url.startsWith(base + '/')) {
+      return json({ ok: false, error: 'URL no pertenece a este bucket' }, 400);
+    }
+
+    const key = url.slice(base.length + 1);
+    await env.IMAGES.delete(key);
+    return json({ ok: true });
+  } catch (e) {
+    return json({ ok: false, error: e.message }, 500);
+  }
+}
+
 export async function onRequestPost(context) {
   const { request, env } = context;
 
