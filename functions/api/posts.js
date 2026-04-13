@@ -26,12 +26,9 @@ export async function onRequestGet(context) {
         headers: { "Content-Type": "application/json" }
       });
     } else {
-      // Fetch list of posts
-      const { results } = await env.DB.prepare(
-        "SELECT id, title, slug, category, excerpt, featured_image, featured_image_alt, published_at FROM posts WHERE status = 'published' ORDER BY published_at DESC"
-      ).all();
-
-      return new Response(JSON.stringify(results), {
+      // Get list of published posts
+      const { results } = await env.DB.prepare('SELECT id, title, slug, category, excerpt, published_at FROM posts WHERE status = "published" ORDER BY published_at DESC').all();
+      return new Response(JSON.stringify(results), { 
         headers: { "Content-Type": "application/json" }
       });
     }

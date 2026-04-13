@@ -66,10 +66,7 @@ function renderList() {
       <div class="blog-grid">
   `;
   
-  // Filter for published posts
-  const publishedPosts = posts.filter(p => p.status === 'published');
-  
-  publishedPosts.forEach(post => {
+  posts.forEach(post => {
     html += `
       <article class="post-card" onclick="navigate(null, '/blog/${post.slug}')" style="cursor: pointer;">
         <div class="post-card-cat">${post.category || 'General'}</div>
