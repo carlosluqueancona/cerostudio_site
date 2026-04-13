@@ -232,6 +232,267 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   margin-bottom: 32px;
 }
 
-#blog-root {
-  min-height: 80vh;
+/* ============================================================ NAV */
+#navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  height: var(--nh);
+  padding: 0 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background .4s;
+}
+
+#navbar.scrolled {
+  background: rgba(19, 19, 19, .88);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+}
+
+.nav-logo {
+  height: 26px;
+  width: auto;
+}
+
+.nav-links {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--gt);
+  transition: color .2s;
+}
+
+.nav-links a:hover {
+  color: var(--white);
+}
+
+.nav-cta {
+  font-family: var(--fd);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--on-lime);
+  background: linear-gradient(135deg, var(--lime) 0%, var(--lime-dim) 100%);
+  box-shadow: 0px 0px 16px rgba(178, 247, 0, 0.25);
+  padding: 10px 26px;
+  display: inline-block;
+  transition: background .15s ease-out, color .15s ease-out, box-shadow .15s ease-out;
+}
+
+.nav-cta:hover {
+  background: #ffffff;
+  color: #000000;
+  box-shadow: none;
+}
+
+.nav-ham {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.nav-ham span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--white);
+  transition: all .35s;
+  transform-origin: center;
+}
+
+.nav-ham.open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-ham.open span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.nav-ham.open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ============================================================ FOOTER */
+footer {
+  background: var(--surface-lowest);
+  padding: 72px 48px 40px;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 72px;
+}
+
+.footer-logo-img {
+  height: 52px;
+  width: auto;
+  margin-bottom: 22px;
+}
+
+.footer-tagline {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--gt);
+  line-height: 1.7;
+  max-width: 260px;
+}
+
+.footer-col-title {
+  font-family: var(--fd);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--white);
+  margin-bottom: 22px;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-links a {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--gt);
+  transition: color .2s;
+}
+
+.footer-links a:hover {
+  color: var(--lime);
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 32px;
+  margin-top: 32px;
+  background: var(--surface-lowest);
+  border-top: 1px solid var(--surface-high);
+}
+
+.footer-copy,
+.footer-credit {
+  font-size: 12px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, .22);
+}
+
+.footer-credit span {
+  color: var(--lime);
+}
+
+/* ============================================================ MOBILE NAV OVERLAY */
+#mobileNav {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 998;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  transform: translateY(-100%);
+  transition: transform .6s cubic-bezier(.76, 0, .24, 1);
+}
+
+#mobileNav.open {
+  transform: translateY(0);
+}
+
+#mobileNav a {
+  font-family: var(--fd);
+  font-size: clamp(36px, 8vw, 56px);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--white);
+  transition: color .2s;
+}
+
+#mobileNav a:hover {
+  color: var(--lime);
+}
+
+/* ============================================================ RESPONSIVE BLOG */
+@media (max-width: 1100px) {
+  .footer-top {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --nh: 64px;
+  }
+  
+  #navbar {
+    padding: 0 24px;
+  }
+  
+  .nav-links,
+  .nav-cta {
+    display: none;
+  }
+  
+  .nav-ham {
+    display: flex;
+  }
+  
+  .blog-hero {
+    padding-top: calc(var(--nh) + 40px);
+    padding-bottom: 40px;
+  }
+  
+  .section-inner {
+    padding: 0 24px;
+  }
+
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .post-card {
+    padding: 30px;
+  }
+  
+  .blog-grid {
+    grid-template-columns: 1fr;
+  }
 }

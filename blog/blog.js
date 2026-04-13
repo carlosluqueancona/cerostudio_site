@@ -136,5 +136,34 @@ function formatDate(dateStr) {
 // Global scope for onclick handlers in strings
 window.navigate = navigate;
 
+// --- Navigation Logic ---
+function toggleNav() {
+  const nav = document.getElementById('mobileNav');
+  const ham = document.querySelector('.nav-ham');
+  nav.classList.toggle('open');
+  ham.classList.toggle('open');
+}
+
+function closeNav() {
+  const nav = document.getElementById('mobileNav');
+  const ham = document.querySelector('.nav-ham');
+  nav.classList.remove('open');
+  ham.classList.remove('open');
+}
+
+// Scroll effects
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('navbar');
+  if (window.scrollY > 50) {
+    nav.classList.add('scrolled');
+  } else {
+    nav.classList.remove('scrolled');
+  }
+});
+
+// Global exposure
+window.toggleNav = toggleNav;
+window.closeNav = closeNav;
+
 // Start the engine
 document.addEventListener('DOMContentLoaded', initBlog);
