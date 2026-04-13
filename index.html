@@ -423,7 +423,7 @@
       font-size: clamp(68px, 10.5vw, 160px);
       font-weight: 900;
       line-height: .9;
-      letter-spacing: -.01em;
+      letter-spacing: -.04em;
       text-transform: uppercase;
       margin-bottom: 48px;
       visibility: hidden; /* Reserva el espacio para evitar saltos en la carga */
@@ -438,7 +438,7 @@
       font-weight: 400;
       color: rgba(255, 255, 255, .85);
       max-width: 500px;
-      line-height: 1.75;
+      line-height: 1.6;
       margin-bottom: 52px;
     }
 
@@ -491,9 +491,7 @@
     /* ============================================================ MARQUEE */
     .marquee-strip {
       overflow: hidden;
-      border-top: 1px solid var(--gb);
-      border-bottom: 1px solid var(--gb);
-      background: var(--g1);
+      background: var(--surface-low);
       padding: 14px 0;
     }
 
@@ -673,7 +671,7 @@
       font-size: 15px;
       font-weight: 300;
       color: var(--gt);
-      line-height: 1.75;
+      line-height: 1.6;
       flex-shrink: 0;
     }
 
@@ -736,7 +734,7 @@
       font-size: 14px;
       font-weight: 300;
       color: var(--gt);
-      line-height: 1.75;
+      line-height: 1.6;
     }
 
     /* ============================================================ PORTAFOLIO
@@ -971,7 +969,7 @@
       position: relative;
       overflow: hidden;
       aspect-ratio: unset;
-      min-height: 100%;
+      min-height: 320px;
       transition: background .25s;
     }
 
@@ -1015,7 +1013,6 @@
       color: var(--lime);
       background: var(--bg);
       padding: 11px 24px;
-      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
       transition: opacity .2s;
     }
 
@@ -1242,6 +1239,74 @@
       background: var(--bg);
     }
 
+    /* ── Dominate CTA break ── */
+    .dominate-section {
+      background: var(--lime);
+      padding: 96px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 64px;
+      overflow: hidden;
+    }
+
+    .dominate-headline {
+      font-family: var(--fd);
+      font-size: clamp(56px, 9vw, 128px);
+      font-weight: 900;
+      line-height: .88;
+      letter-spacing: -.04em;
+      text-transform: uppercase;
+      color: var(--bg);
+      flex: 1;
+    }
+
+    .dominate-action {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 16px;
+    }
+
+    .dominate-sub {
+      font-family: var(--fb);
+      font-size: 13px;
+      font-weight: 400;
+      color: rgba(0,0,0,.55);
+      letter-spacing: .04em;
+      text-align: right;
+    }
+
+    .dominate-btn {
+      display: inline-block;
+      font-family: var(--fd);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--lime);
+      background: var(--bg);
+      padding: 18px 44px;
+      text-decoration: none;
+      transition: background .15s ease-out, color .15s ease-out;
+    }
+
+    .dominate-btn:hover {
+      background: var(--surface-lowest);
+    }
+
+    @media (max-width: 768px) {
+      .dominate-section {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 64px 24px;
+        gap: 40px;
+      }
+      .dominate-action { align-items: flex-start; }
+      .dominate-sub { text-align: left; }
+    }
+
     .precios-top {
       display: flex;
       justify-content: space-between;
@@ -1298,10 +1363,23 @@
       background: var(--surface-low);
     }
 
-    /* Pro card — lime inversion */
+    /* Pro card — lime accent, dark surface */
     .plan-featured {
+      background: var(--surface-low);
+      color: var(--white);
+      position: relative;
+    }
+
+    .plan-featured::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
       background: var(--lime);
-      color: var(--bg);
+    }
+
+    .plan-featured:hover {
+      background: var(--surface-high);
     }
 
     .plan-badge {
@@ -1311,8 +1389,8 @@
       font-weight: 700;
       letter-spacing: .22em;
       text-transform: uppercase;
-      background: var(--surface-highest);
-      color: var(--lime);
+      background: var(--lime);
+      color: var(--on-lime);
       padding: 5px 14px;
       margin-bottom: 28px;
       align-self: flex-start;
@@ -1329,7 +1407,12 @@
     }
 
     .plan-featured .plan-name {
-      color: rgba(0, 0, 0, .55);
+      color: var(--lime);
+    }
+
+    .plan-featured .plan-price,
+    .plan-featured .plan-custom {
+      color: var(--lime);
     }
 
     .plan-price {
@@ -1367,18 +1450,24 @@
       margin-bottom: 6px;
     }
 
+    .plan-old-price {
+      font-size: 11px;
+      font-weight: 300;
+      color: rgba(255, 255, 255, .28);
+      text-decoration: line-through;
+      margin-bottom: 4px;
+    }
+
     .plan-delivery {
       font-size: 11px;
       font-weight: 300;
       color: var(--gt);
       margin-bottom: 36px;
       padding-bottom: 36px;
-      border-bottom: 1px solid var(--gb);
     }
 
     .plan-featured .plan-delivery {
-      color: rgba(0, 0, 0, .5);
-      border-bottom-color: rgba(0, 0, 0, .15);
+      color: var(--gt);
     }
 
     .plan-features {
@@ -1401,7 +1490,7 @@
     }
 
     .plan-featured .plan-features li {
-      color: rgba(0, 0, 0, .75);
+      color: rgba(255, 255, 255, .75);
     }
 
     .plan-features li::before {
@@ -1414,7 +1503,7 @@
     }
 
     .plan-featured .plan-features li::before {
-      color: var(--bg);
+      color: var(--lime);
     }
 
     .plan-cta {
@@ -1426,8 +1515,7 @@
       text-transform: uppercase;
       text-align: center;
       padding: 14px 20px;
-      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
-      transition: background .2s, color .2s, transform .2s;
+      transition: background .15s ease-out, color .15s ease-out, transform .15s ease-out;
     }
 
     .plan-cta:hover {
@@ -1517,15 +1605,14 @@
     }
 
     .contact-links {
-      border-top: 1px solid var(--gb);
+      padding-top: 8px;
     }
 
     .contact-link-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 22px 0;
-      border-bottom: 1px solid var(--gb);
+      padding: 24px 0;
       transition: padding-left .2s;
     }
 
@@ -1614,6 +1701,8 @@
     .form-group textarea:focus {
       border-bottom-color: var(--lime);
       background: var(--surface-high);
+      caret-color: var(--lime);
+      outline: none;
     }
 
     .form-group input::placeholder,
@@ -1709,8 +1798,7 @@
 
     /* ============================================================ FOOTER */
     footer {
-      background: var(--bg);
-      border-top: 1px solid var(--gb);
+      background: var(--surface-lowest);
       padding: 72px 48px 40px;
     }
 
@@ -1773,7 +1861,8 @@
       justify-content: space-between;
       align-items: center;
       padding-top: 32px;
-      border-top: 1px solid var(--gb);
+      margin-top: 32px;
+      background: var(--surface-lowest);
     }
 
     .footer-copy,
@@ -1994,22 +2083,22 @@
       letter-spacing: .18em;
       text-transform: uppercase;
       color: var(--gt);
-      border: 1px solid var(--gb);
+      border: none;
       padding: 7px 14px;
-      background: transparent;
-      transition: color .2s, border-color .2s;
+      background: var(--surface-high);
+      transition: color .15s ease-out, background .15s ease-out;
       cursor: pointer;
       font-family: var(--fb);
     }
 
     .lang-btn:hover {
       color: var(--white);
-      border-color: rgba(255, 255, 255, .4);
+      background: var(--surface-highest);
     }
 
     .lang-btn.active-en {
-      color: var(--lime);
-      border-color: var(--lime);
+      color: var(--on-lime);
+      background: var(--lime);
     }
 
     .lang-btn-mobile {
@@ -2017,17 +2106,23 @@
       font-weight: 700;
       letter-spacing: .2em;
       color: var(--gt);
-      background: transparent;
-      border: 1px solid var(--gb);
+      background: var(--surface-high);
+      border: none;
       padding: 12px 28px;
       margin-top: 12px;
       font-family: var(--fb);
       cursor: pointer;
-      transition: color .2s;
+      transition: color .15s ease-out, background .15s ease-out;
     }
 
     .lang-btn-mobile:hover {
-      color: var(--lime);
+      color: var(--white);
+      background: var(--surface-highest);
+    }
+
+    .lang-btn-mobile.active-en {
+      color: var(--on-lime);
+      background: var(--lime);
     }
   </style>
 </head>
@@ -2577,6 +2672,7 @@
 
         <div class="precios-top sr">
           <div>
+            <p class="eyebrow" style="margin-bottom:28px;" id="precios-eyebrow">Inversión</p>
             <h2 class="precios-headline" id="precios-headline">Precios<br><em>sin letra chica.</em></h2>
             <p style="font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--lime);margin-top:18px;"
               id="precios-urgency">Solo disponible para los primeros 5 clientes del mes</p>
@@ -2592,8 +2688,7 @@
           <div class="plan-card sr">
             <p class="plan-name" id="launch-name">Cero Launch</p>
             <div class="plan-price"><sup>$</sup>299<span>USD</span></div>
-            <p style="font-size:11px;color:var(--gt);text-decoration:line-through;margin-bottom:4px;"
-              id="launch-old-price">Precio regular: $499 USD</p>
+            <p class="plan-old-price" id="launch-old-price">Precio regular: $499 USD</p>
             <p class="plan-delivery" id="launch-delivery">pago único · entrega 5 días hábiles</p>
             <ul class="plan-features" id="launch-features">
               <li>1 a 3 páginas diseñadas profesionalmente</li>
@@ -2612,8 +2707,7 @@
             <span class="plan-badge" id="pro-badge">Más solicitado</span>
             <p class="plan-name" id="pro-name">Cero Pro</p>
             <div class="plan-price"><sup>$</sup>999<span>USD</span></div>
-            <p style="font-size:11px;color:rgba(0,0,0,.45);text-decoration:line-through;margin-bottom:4px;"
-              id="pro-old-price">Precio regular: $2,500 USD</p>
+            <p class="plan-old-price" id="pro-old-price">Precio regular: $2,500 USD</p>
             <p class="plan-delivery" id="pro-delivery">pago único · entrega 21 días hábiles</p>
             <ul class="plan-features" id="pro-features">
               <li>4 a 6 páginas con diseño de nivel internacional</li>
@@ -2628,15 +2722,14 @@
             </ul>
             <p style="font-size:11px;font-weight:300;color:rgba(0,0,0,.55);margin-bottom:24px;" id="pro-note">Ideal
               para: negocios establecidos, profesionales independientes, empresas listas para crecer.</p>
-            <a href="#contacto" class="plan-cta plan-cta-dark" id="pro-cta">Quiero el Cero Pro →</a>
+            <a href="#contacto" class="plan-cta plan-cta-primary" id="pro-cta">Quiero el Cero Pro →</a>
           </div>
 
           <!-- CERO PREMIUM -->
           <div class="plan-card sr">
             <p class="plan-name" id="premium-name">Cero Premium</p>
             <div class="plan-custom" id="premium-price-display">Desde $1,800<span>USD</span></div>
-            <p style="font-size:11px;color:var(--gt);text-decoration:line-through;margin-bottom:4px;"
-              id="premium-old-price">Precio regular: desde $4,500 USD</p>
+            <p class="plan-old-price" id="premium-old-price">Precio regular: desde $4,500 USD</p>
             <p class="plan-delivery" id="premium-delivery">cotización personalizada · entrega a convenir</p>
             <ul class="plan-features" id="premium-features">
               <li>Todo lo del plan Cero Pro</li>
@@ -2659,6 +2752,15 @@
 
       </div>
     </section>
+
+    <!-- ═══════════════════════════════ CTA BREAK ══════════════════════════════ -->
+    <div class="dominate-section">
+      <p class="dominate-headline" id="dominate-headline">¿Listo<br>para<br>dominar?</p>
+      <div class="dominate-action">
+        <p class="dominate-sub" id="dominate-sub">Primera consulta gratis.<br>Sin compromisos.</p>
+        <a href="#contacto" class="dominate-btn" id="dominate-cta">Iniciar Proyecto</a>
+      </div>
+    </div>
 
     <!-- ═══════════════════════════════ CONTACTO ════════════════════════════════ -->
     <section id="contacto">
@@ -3151,9 +3253,13 @@
           'proc-t3': { t: 'Ejecución' }, 'proc-d3': { t: 'Diseño, desarrollo, SEO y lo que haga falta. Tú apruebas, nosotros entregamos en tiempo y forma. Sin cobros sorpresa.' },
           'proc-t4': { t: 'Resultados' }, 'proc-d4': { t: 'Reportes claros cada mes: visitas, leads generados, conversiones y ventas. Sin tecnicismos — solo los números que importan a tu negocio.' },
           /* ── PRECIOS */
+          'precios-eyebrow': { t: 'Inversión' },
           'precios-headline': { h: 'Precios<br><em>sin letra chica.</em>' },
           'precios-urgency': { t: 'Solo disponible para los primeros 5 clientes del mes' },
           'precios-trust-text': { h: 'Pago único. Sin mensualidades ocultas.<br>Sin sorpresas al final.' },
+          'dominate-headline': { h: '¿Listo<br>para<br>dominar?' },
+          'dominate-sub': { h: 'Primera consulta gratis.<br>Sin compromisos.' },
+          'dominate-cta': { t: 'Iniciar Proyecto' },
           'launch-old-price': { t: 'Precio regular: $499 USD' },
           'launch-delivery': { t: 'pago único · entrega 5 días hábiles' },
           'launch-features': { h: '<li>1 a 3 páginas diseñadas profesionalmente</li><li>Diseño responsive — celular y computadora</li><li>SEO básico configurado desde el inicio</li><li>Formulario de contacto incluido</li><li>Cambios de contenido a través de Cero Studio</li>' },
@@ -3273,9 +3379,13 @@
           'proc-t3': { t: 'Execution' }, 'proc-d3': { t: 'Design, development, SEO — whatever it takes. You approve, we deliver on time. No surprise charges.' },
           'proc-t4': { t: 'Results' }, 'proc-d4': { t: 'Clear monthly reports: visits, leads generated, conversions, and sales. No jargon — just the numbers that matter to your business.' },
           /* ── PRECIOS */
+          'precios-eyebrow': { t: 'Investment' },
           'precios-headline': { h: 'Pricing<br><em>no hidden fees.</em>' },
           'precios-urgency': { t: 'Available for the first 5 clients in the US only' },
           'precios-trust-text': { h: 'One-time payment. No hidden subscriptions.<br>No surprises at the end.' },
+          'dominate-headline': { h: 'Ready<br>to<br>dominate?' },
+          'dominate-sub': { h: 'Free first consultation.<br>No commitments.' },
+          'dominate-cta': { t: 'Start Your Project' },
           'launch-old-price': { t: 'Regular price: $499 USD' },
           'launch-delivery': { t: 'one-time payment · delivered in 5 business days' },
           'launch-features': { h: '<li>1 to 3 professionally designed pages</li><li>Responsive design — phone and desktop</li><li>Basic SEO configured from day one</li><li>Contact form included</li><li>Content updates handled by Cero Studio</li>' },
