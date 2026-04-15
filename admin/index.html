@@ -990,11 +990,11 @@
           <div class="field-row">
             <div class="field">
               <label>Total acordado (USD)</label>
-              <input type="number" id="p-total" value="${b.total_amount||""}" placeholder="1200">
+              <input type="number" id="p-total" value="${b.total_amount != null ? b.total_amount : ""}" placeholder="1200">
             </div>
             <div class="field">
               <label>Pagado hasta hoy (USD)</label>
-              <input type="number" id="p-paid" value="${b.paid_amount||""}" placeholder="600">
+              <input type="number" id="p-paid" value="${b.paid_amount != null ? b.paid_amount : ""}" placeholder="600">
             </div>
           </div>
           <button class="btn btn-primary btn-sm btn-full" onclick="updatePayment()">Actualizar pagos</button>
@@ -1182,11 +1182,13 @@
   }
 
   async function updatePayment() {
-    const total = parseFloat(document.getElementById("p-total").value) || null;
-    const paid  = parseFloat(document.getElementById("p-paid").value) || null;
+    const totalVal = document.getElementById("p-total").value;
+    const paidVal  = document.getElementById("p-paid").value;
+    const total = totalVal !== "" ? parseFloat(totalVal) : null;
+    const paid  = paidVal  !== "" ? parseFloat(paidVal)  : null;
     const body = {};
-    if (total !== null) body.total_amount = total;
-    if (paid !== null) body.paid_amount = paid;
+    if (total !== null && !isNaN(total)) body.total_amount = total;
+    if (paid  !== null && !isNaN(paid))  body.paid_amount  = paid;
     if (!Object.keys(body).length) { toast("Ingresa al menos un monto", "error"); return; }
     const res = await api(`/briefs/${CURRENT_BRIEF_ID}/payment`, "PATCH", body);
     if (res.success) {
