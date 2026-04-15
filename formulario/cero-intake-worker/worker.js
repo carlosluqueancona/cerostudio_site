@@ -16,9 +16,9 @@ export default {
   async fetch(request, env) {
     // ─── CORS headers ───
     const corsHeaders = {
-      "Access-Control-Allow-Origin": "*", // In production, restrict to cerostudio.ai
-      "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST, GET, PATCH, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, X-API-Key",
     };
 
     // Handle preflight
