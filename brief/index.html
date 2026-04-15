@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex,nofollow">
   <title>Brief de Proyecto — Cero Studio</title>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstile&render=explicit" async defer></script>
   <link rel="stylesheet" href="../css/base.css">
   <style>
     :root {
@@ -134,6 +135,7 @@
 </head>
 <body>
 
+<div id="cf-ts" style="display:none"></div>
 <header id="hd">
   <img src="../images/svg/Cero_Studio_AI_Horizontal.svg" alt="Cero Studio" style="height:34px;width:auto;">
   <div id="dots"></div>
@@ -150,8 +152,9 @@
 
 <script>
 /* ── CONFIG ────────────────────────────────────────────── */
-const WORKER = 'https://intake.cerostudio.ai';
-const WA_NUM = '525531007101';
+const WORKER             = 'https://intake.cerostudio.ai';
+const WA_NUM             = '525531007101';
+const TURNSTILE_SITE_KEY = 'YOUR_TURNSTILE_SITE_KEY'; // ← reemplazar con el sitekey de Cloudflare Dashboard
 
 /* ── DATA ──────────────────────────────────────────────── */
 const STEPS = [
@@ -260,6 +263,39 @@ const DESCS = {
 
 /* ── STATE ─────────────────────────────────────────────── */
 const S = { step: 0, data: {}, sending: false, briefId: null };
+
+/* ── TURNSTILE ─────────────────────────────────────────── */
+let tsWidgetId        = null;
+let tsToken           = null;
+let tsPendingResolve  = null;
+
+function onloadTurnstile() {
+  tsWidgetId = turnstile.render('#cf-ts', {
+    sitekey:            TURNSTILE_SITE_KEY,
+    size:               'invisible',
+    execution:          'execute',
+    callback(token) {
+      tsToken = token;
+      if (tsPendingResolve) { tsPendingResolve(token); tsPendingResolve = null; }
+    },
+    'error-callback'() {
+      if (tsPendingResolve) { tsPendingResolve(null); tsPendingResolve = null; }
+    },
+    'expired-callback'() { tsToken = null; },
+  });
+}
+
+function getTurnstileToken() {
+  return new Promise(resolve => {
+    if (tsToken) return resolve(tsToken);
+    if (!window.turnstile || tsWidgetId === null) return resolve(null);
+    tsPendingResolve = resolve;
+    turnstile.execute(tsWidgetId);
+    setTimeout(() => {
+      if (tsPendingResolve) { tsPendingResolve(null); tsPendingResolve = null; }
+    }, 15000);
+  });
+}
 
 /* ── HELPERS ───────────────────────────────────────────── */
 const $ = id => document.getElementById(id);
@@ -421,12 +457,17 @@ async function handleSubmit() {
   render();
 
   const briefText = generateBrief();
+  const cfToken   = await getTurnstileToken();
+
+  // Reset token para que no se reutilice en un reenvío
+  tsToken = null;
+  if (tsWidgetId !== null) turnstile.reset(tsWidgetId);
 
   try {
     const res = await fetch(`${WORKER}/submit`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...S.data, briefText }),
+      body: JSON.stringify({ ...S.data, briefText, cf_turnstile_response: cfToken || '' }),
     });
     const result = await res.json();
     if (!result.success) throw new Error(result.error || 'Error');

@@ -33,6 +33,33 @@ export default {
       try {
         const body = await request.json();
 
+        // ── Verificar Turnstile ──
+        if (env.TURNSTILE_SECRET_KEY) {
+          const tsToken = body.cf_turnstile_response || '';
+          if (!tsToken) {
+            return Response.json(
+              { success: false, error: 'Verificación de seguridad requerida' },
+              { status: 400, headers: corsHeaders }
+            );
+          }
+          const tsRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              secret:   env.TURNSTILE_SECRET_KEY,
+              response: tsToken,
+              remoteip: request.headers.get('CF-Connecting-IP') || undefined,
+            }),
+          });
+          const tsData = await tsRes.json();
+          if (!tsData.success) {
+            return Response.json(
+              { success: false, error: 'Verificación de seguridad fallida' },
+              { status: 403, headers: corsHeaders }
+            );
+          }
+        }
+
         // Validate required fields
         if (!body.name || !body.email || !body.phone) {
           return Response.json(
