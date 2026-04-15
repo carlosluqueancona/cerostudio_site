@@ -24,3 +24,12 @@
 
 /blog/*
   Cache-Control: no-cache
+
+# Admin panel: no cache, no indexing
+/admin/
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+
+/admin/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow

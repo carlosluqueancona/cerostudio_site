@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Cero Studio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --white: #ffffff;
+      --lime: #B8FF00;
+      --gray1: #111111;
+      --gray2: #1a1a1a;
+      --gray3: #2a2a2a;
+      --gray4: #333333;
+      --gray-text: #777777;
+      --gray-light: #aaaaaa;
+      --gray-border: rgba(255,255,255,0.07);
+      --admin: #FF9500;
+      --admin-bg: rgba(255,149,0,0.07);
+      --admin-border: rgba(255,149,0,0.2);
+      --danger: #ff4444;
+      --danger-bg: rgba(255,68,68,0.07);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── LAYOUT ── */
+    .shell {
+      display: flex; min-height: 100vh;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: 220px; flex-shrink: 0;
+      background: var(--gray1);
+      border-right: 1px solid var(--gray-border);
+      display: flex; flex-direction: column;
+      position: sticky; top: 0; height: 100vh;
+    }
+    .sidebar-logo {
+      padding: 22px 20px 18px;
+      border-bottom: 1px solid var(--gray-border);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .sidebar-logo svg { width: 20px; height: 20px; flex-shrink: 0; }
+    .sidebar-logo-text { font-size: 13px; font-weight: 800; letter-spacing: -0.01em; }
+    .sidebar-logo-sub {
+      font-size: 8px; font-weight: 400; letter-spacing: 0.22em;
+      opacity: 0.35; display: block; margin-top: 1px;
+    }
+    .sidebar-nav { padding: 12px 0; flex: 1; }
+    .nav-label {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--gray-text);
+      padding: 8px 20px 4px;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 20px; font-size: 13px; font-weight: 500;
+      color: var(--gray-text); cursor: pointer; border: none;
+      background: none; font-family: 'Syne', sans-serif;
+      width: 100%; text-align: left; transition: all 0.15s;
+      border-left: 2px solid transparent;
+    }
+    .nav-item:hover { color: var(--white); background: rgba(255,255,255,0.04); }
+    .nav-item.active { color: var(--white); border-left-color: var(--lime); background: rgba(184,255,0,0.04); }
+    .nav-item svg { width: 14px; height: 14px; flex-shrink: 0; opacity: 0.6; }
+    .nav-item.active svg { opacity: 1; }
+    .sidebar-footer {
+      padding: 16px 20px;
+      border-top: 1px solid var(--gray-border);
+    }
+    .session-info {
+      font-size: 10px; color: var(--gray-text);
+      letter-spacing: 0.04em; margin-bottom: 8px;
+    }
+    .logout-btn {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--gray-text);
+      background: none; border: none; font-family: 'Syne', sans-serif;
+      cursor: pointer; padding: 0; transition: color 0.15s;
+    }
+    .logout-btn:hover { color: var(--danger); }
+
+    /* ── MAIN ── */
+    .main {
+      flex: 1; overflow-y: auto;
+    }
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      padding: 18px 32px; border-bottom: 1px solid var(--gray-border);
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(10,10,10,0.9); backdrop-filter: blur(8px);
+      position: sticky; top: 0; z-index: 10;
+    }
+    .topbar-title { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; }
+    .topbar-sub { font-size: 12px; color: var(--gray-text); margin-top: 1px; }
+    .topbar-actions { display: flex; gap: 8px; }
+
+    /* ── CONTENT ── */
+    .content { padding: 28px 32px; }
+
+    /* ── LOGIN PAGE ── */
+    .login-wrap {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .login-box {
+      width: 100%; max-width: 400px;
+    }
+    .login-logo {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 40px;
+    }
+    .login-logo svg { width: 28px; height: 28px; }
+    .login-logo-text { font-size: 16px; font-weight: 800; }
+    .login-logo-sub { font-size: 9px; opacity: 0.35; letter-spacing: 0.22em; margin-left: 6px; }
+    .login-title { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 6px; }
+    .login-sub { font-size: 14px; color: var(--gray-text); margin-bottom: 32px; }
+    .login-error {
+      padding: 10px 14px; background: var(--danger-bg);
+      border: 1px solid rgba(255,68,68,0.2); border-radius: 6px;
+      font-size: 12px; color: var(--danger); margin-bottom: 16px; display: none;
+    }
+
+    /* ── FORM ELEMENTS ── */
+    .field { margin-bottom: 16px; }
+    .field label {
+      display: block; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--gray-text); margin-bottom: 6px;
+    }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 10px 14px;
+      background: var(--gray2); border: 1px solid var(--gray3);
+      border-radius: 7px; color: var(--white);
+      font-family: 'Syne', sans-serif; font-size: 13px;
+      transition: border-color 0.15s; appearance: none;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      outline: none; border-color: rgba(184,255,0,0.4);
+    }
+    .field textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+    .field select option { background: var(--gray2); }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    /* ── BUTTONS ── */
+    .btn {
+      padding: 10px 20px; border-radius: 7px; font-family: 'Syne', sans-serif;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; cursor: pointer; border: none;
+      transition: all 0.15s; display: inline-flex; align-items: center; gap: 7px;
+    }
+    .btn-primary { background: var(--lime); color: var(--black); }
+    .btn-primary:hover { transform: scale(1.02); }
+    .btn-ghost {
+      background: transparent; color: var(--gray-light);
+      border: 1px solid var(--gray3);
+    }
+    .btn-ghost:hover { border-color: var(--gray-light); color: var(--white); }
+    .btn-admin { background: var(--admin-bg); color: var(--admin); border: 1px solid var(--admin-border); }
+    .btn-admin:hover { background: rgba(255,149,0,0.12); }
+    .btn-danger { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(255,68,68,0.2); }
+    .btn-danger:hover { background: rgba(255,68,68,0.12); }
+    .btn-sm { padding: 6px 12px; font-size: 10px; }
+    .btn:disabled { opacity: 0.4; pointer-events: none; }
+    .btn-full { width: 100%; justify-content: center; }
+
+    /* ── STATS ROW ── */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+      margin-bottom: 28px;
+    }
+    .stat-card {
+      background: var(--gray1); border: 1px solid var(--gray-border);
+      border-radius: 10px; padding: 16px 18px;
+    }
+    .stat-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--gray-text); margin-bottom: 6px;
+    }
+    .stat-value { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; }
+    .stat-value.lime { color: var(--lime); }
+
+    /* ── BRIEFS TABLE ── */
+    .brief-list { display: flex; flex-direction: column; gap: 8px; }
+    .brief-row {
+      display: flex; align-items: center; gap: 16px;
+      padding: 14px 16px; background: var(--gray1);
+      border: 1px solid var(--gray-border); border-radius: 10px;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .brief-row:hover { border-color: rgba(255,255,255,0.12); background: var(--gray2); }
+    .brief-row-id {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      color: var(--gray-text); min-width: 90px;
+    }
+    .brief-row-name { font-size: 14px; font-weight: 600; flex: 1; }
+    .brief-row-client { font-size: 12px; color: var(--gray-text); }
+    .brief-row-date { font-size: 11px; color: var(--gray-text); min-width: 80px; text-align: right; }
+    .status-pill {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+      padding: 4px 10px; border-radius: 20px; white-space: nowrap;
+      text-transform: uppercase;
+    }
+    .s-new { background: rgba(184,255,0,0.1); color: var(--lime); }
+    .s-reviewed { background: rgba(255,149,0,0.1); color: var(--admin); }
+    .s-proposal_sent { background: rgba(33,150,243,0.1); color: #64B5F6; }
+    .s-approved { background: rgba(76,175,80,0.1); color: #81C784; }
+    .s-in_progress { background: rgba(156,39,176,0.1); color: #CE93D8; }
+    .s-delivered { background: rgba(0,188,212,0.1); color: #80DEEA; }
+    .s-archived { background: rgba(255,255,255,0.05); color: var(--gray-text); }
+
+    /* ── PORTAL BADGE ── */
+    .portal-pill {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
+      padding: 3px 8px; border-radius: 20px; text-transform: uppercase;
+      background: rgba(184,255,0,0.07); color: rgba(184,255,0,0.5);
+      border: 1px solid rgba(184,255,0,0.1);
+    }
+    .portal-pill.active { color: var(--lime); border-color: rgba(184,255,0,0.3); background: rgba(184,255,0,0.1); }
+
+    /* ── DETAIL PAGE ── */
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--gray-text);
+      background: none; border: none; cursor: pointer;
+      font-family: 'Syne', sans-serif; padding: 0; margin-bottom: 24px;
+      transition: color 0.15s;
+    }
+    .back-btn:hover { color: var(--white); }
+
+    .detail-grid {
+      display: grid; grid-template-columns: 1fr 340px; gap: 20px;
+      align-items: start;
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--gray1); border: 1px solid var(--gray-border);
+      border-radius: 10px; overflow: hidden; margin-bottom: 16px;
+    }
+    .card-header {
+      padding: 14px 18px; border-bottom: 1px solid var(--gray-border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .card-title {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--gray-text);
+    }
+    .card-body { padding: 18px; }
+
+    /* ── FORM CARD (admin actions) ── */
+    .action-card {
+      background: var(--gray1); border: 1px solid var(--gray-border);
+      border-radius: 10px; overflow: hidden; margin-bottom: 14px;
+    }
+    .action-header {
+      padding: 12px 16px; border-bottom: 1px solid var(--gray-border);
+      display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; user-select: none;
+    }
+    .action-header:hover { background: rgba(255,255,255,0.02); }
+    .action-title {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--white);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .action-chevron { color: var(--gray-text); font-size: 11px; transition: transform 0.2s; }
+    .action-chevron.open { transform: rotate(180deg); }
+    .action-body { padding: 16px; display: none; }
+    .action-body.open { display: block; }
+
+    /* ── QUICK STATUS / PHASE ── */
+    .quick-row {
+      display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 12px;
+    }
+    .quick-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--gray-text); min-width: 52px;
+    }
+    .phase-btn-sm {
+      padding: 5px 10px; background: var(--gray2);
+      border: 1px solid var(--gray3); border-radius: 5px;
+      color: var(--gray-text); font-size: 11px; font-weight: 600;
+      font-family: 'Syne', sans-serif; cursor: pointer; transition: all 0.15s;
+    }
+    .phase-btn-sm:hover { border-color: var(--lime); color: var(--lime); }
+    .phase-btn-sm.active { background: rgba(184,255,0,0.08); border-color: var(--lime); color: var(--lime); }
+
+    /* ── FILES LIST ── */
+    .file-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 0; border-bottom: 1px solid var(--gray-border);
+    }
+    .file-item:last-child { border-bottom: none; }
+    .file-left { display: flex; align-items: center; gap: 10px; }
+    .file-icon-sm {
+      width: 30px; height: 30px; border-radius: 5px; background: var(--gray2);
+      display: flex; align-items: center; justify-content: center; font-size: 13px;
+    }
+    .file-name-sm { font-size: 13px; font-weight: 500; }
+    .file-meta-sm { font-size: 11px; color: var(--gray-text); margin-top: 1px; }
+
+    /* ── ACTIVITY LIST ── */
+    .act-item {
+      display: flex; gap: 12px; padding: 10px 0;
+      border-bottom: 1px solid var(--gray-border);
+    }
+    .act-item:last-child { border-bottom: none; }
+    .act-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--gray3); flex-shrink: 0; margin-top: 5px;
+    }
+    .act-dot.delivery { background: var(--lime); }
+    .act-dot.payment { background: #4CAF50; }
+    .act-dot.approval { background: #2196F3; }
+    .act-dot.update { background: var(--admin); }
+    .act-title-sm { font-size: 13px; font-weight: 500; }
+    .act-desc-sm { font-size: 11px; color: var(--gray-text); margin-top: 1px; }
+    .act-date-sm { font-size: 10px; color: var(--gray-text); margin-top: 2px; }
+
+    /* ── BRIEF FIELDS (same as portal) ── */
+    .brief-group { margin-bottom: 20px; }
+    .brief-group:last-child { margin-bottom: 0; }
+    .brief-group-label {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--admin); opacity: 0.7; margin-bottom: 10px; padding-bottom: 6px;
+      border-bottom: 1px solid var(--admin-border);
+    }
+    .brief-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .brief-grid.full { grid-template-columns: 1fr; }
+    .bf-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--gray-text); margin-bottom: 3px;
+    }
+    .bf-value { font-size: 13px; color: var(--gray-light); line-height: 1.5; }
+    .bf-value.none { color: var(--gray3); font-style: italic; font-size: 12px; }
+    .brief-tag {
+      display: inline-block; padding: 2px 7px; background: var(--gray2);
+      border-radius: 4px; font-size: 11px; margin: 2px 2px 2px 0;
+      color: var(--gray-light); border: 1px solid var(--gray3);
+    }
+    .brief-text-pre {
+      font-size: 12px; color: var(--gray-light); line-height: 1.6;
+      padding: 12px; background: rgba(0,0,0,0.3); border-radius: 6px;
+      border-left: 2px solid var(--admin-border); white-space: pre-wrap;
+    }
+
+    /* ── PORTAL URL BOX ── */
+    .url-box {
+      display: flex; gap: 8px; align-items: center;
+      padding: 10px 14px; background: rgba(184,255,0,0.05);
+      border: 1px solid rgba(184,255,0,0.15); border-radius: 7px; margin-top: 12px;
+    }
+    .url-text {
+      flex: 1; font-size: 11px; color: var(--lime); word-break: break-all;
+      line-height: 1.4;
+    }
+
+    /* ── MILESTONES ── */
+    .milestone-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 10px 0; border-bottom: 1px solid var(--gray-border);
+    }
+    .milestone-item:last-child { border-bottom: none; }
+    .ms-check {
+      width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+      border: 2px solid var(--gray3); display: flex; align-items: center;
+      justify-content: center; margin-top: 1px; cursor: pointer; transition: all 0.15s;
+    }
+    .ms-check:hover { border-color: var(--lime); }
+    .ms-check.done { background: var(--lime); border-color: var(--lime); }
+    .ms-title { font-size: 13px; font-weight: 500; }
+    .ms-title.done-text { color: var(--gray-text); text-decoration: line-through; }
+    .ms-desc { font-size: 11px; color: var(--gray-text); margin-top: 2px; }
+    .ms-phase { font-size: 10px; color: var(--gray-text); margin-top: 2px; letter-spacing: 0.04em; }
+
+    /* ── PAYMENT DISPLAY ── */
+    .pay-bar-bg {
+      height: 5px; background: var(--gray3); border-radius: 3px; overflow: hidden; margin: 10px 0;
+    }
+    .pay-bar { height: 100%; background: var(--lime); border-radius: 3px; transition: width 0.5s; }
+    .pay-info { display: flex; justify-content: space-between; font-size: 12px; }
+    .pay-paid { color: var(--lime); font-weight: 700; }
+    .pay-total { color: var(--gray-text); }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px; z-index: 999;
+      padding: 10px 18px; border-radius: 8px;
+      font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
+      opacity: 0; transform: translateY(8px);
+      transition: all 0.2s; pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.success { background: var(--lime); color: var(--black); }
+    .toast.error { background: var(--danger); color: white; }
+
+    /* ── EMPTY ── */
+    .empty { text-align: center; padding: 20px; color: var(--gray-text); font-size: 12px; }
+
+    /* ── DIVIDER ── */
+    .divider { border: none; border-top: 1px solid var(--gray-border); margin: 16px 0; }
+
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .detail-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .content { padding: 20px 16px; }
+      .topbar { padding: 14px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     LOGIN
+════════════════════════════════════════════════════ -->
+<div id="page-login">
+  <div class="login-wrap">
+    <div class="login-box">
+      <div class="login-logo">
+        <svg viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="white" stroke-width="7"/>
+          <circle cx="50" cy="50" r="7.5" fill="white"/>
+        </svg>
+        <div>
+          <span class="login-logo-text">CERO</span>
+          <span class="login-logo-sub">STUDIO.AI</span>
+        </div>
+      </div>
+      <h1 class="login-title">Panel de Admin</h1>
+      <p class="login-sub">Ingresa tu API key para continuar.</p>
+      <div class="login-error" id="login-error">API key incorrecta. Verifica e intenta de nuevo.</div>
+      <div class="field">
+        <label>API Key</label>
+        <input type="password" id="login-key" placeholder="afe49df2..." autocomplete="off"
+          onkeydown="if(event.key==='Enter') doLogin()">
+      </div>
+      <button class="btn btn-primary btn-full" onclick="doLogin()">
+        Entrar →
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     APP SHELL
+════════════════════════════════════════════════════ -->
+<div id="app-shell" style="display:none">
+  <div class="shell">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <svg viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="white" stroke-width="7"/>
+          <circle cx="50" cy="50" r="7.5" fill="white"/>
+        </svg>
+        <div>
+          <div class="sidebar-logo-text">CERO</div>
+          <span class="sidebar-logo-sub">STUDIO.AI</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-label">Menú</div>
+        <button class="nav-item active" id="nav-briefs" onclick="showPage('briefs')">
+          <svg viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="11" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><line x1="4" y1="5" x2="10" y2="5" stroke="currentColor" stroke-width="1.2"/><line x1="4" y1="7.5" x2="10" y2="7.5" stroke="currentColor" stroke-width="1.2"/><line x1="4" y1="10" x2="7.5" y2="10" stroke="currentColor" stroke-width="1.2"/></svg>
+          Proyectos
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="session-info" id="session-info">—</div>
+        <button class="logout-btn" onclick="doLogout()">Cerrar sesión</button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- ── PAGE: BRIEFS LIST ── -->
+      <div class="page active" id="page-briefs">
+        <div class="topbar">
+          <div>
+            <div class="topbar-title">Proyectos</div>
+            <div class="topbar-sub">Todos los briefs recibidos</div>
+          </div>
+          <div class="topbar-actions">
+            <button class="btn btn-ghost btn-sm" onclick="loadBriefs()">↺ Actualizar</button>
+          </div>
+        </div>
+        <div class="content">
+          <div class="stats-row" id="stats-row">
+            <div class="stat-card"><div class="stat-label">Total</div><div class="stat-value" id="stat-total">—</div></div>
+            <div class="stat-card"><div class="stat-label">Nuevos</div><div class="stat-value lime" id="stat-new">—</div></div>
+            <div class="stat-card"><div class="stat-label">En progreso</div><div class="stat-value" id="stat-inprogress">—</div></div>
+            <div class="stat-card"><div class="stat-label">Entregados</div><div class="stat-value" id="stat-delivered">—</div></div>
+          </div>
+          <div id="briefs-list"><div class="empty">Cargando...</div></div>
+        </div>
+      </div>
+
+      <!-- ── PAGE: PROJECT DETAIL ── -->
+      <div class="page" id="page-detail">
+        <div class="topbar">
+          <div>
+            <div class="topbar-title" id="detail-topbar-title">Proyecto</div>
+            <div class="topbar-sub" id="detail-topbar-sub">—</div>
+          </div>
+          <div class="topbar-actions">
+            <button class="btn btn-ghost btn-sm" id="btn-open-portal" onclick="openPortal()" style="display:none">Ver como cliente ↗</button>
+          </div>
+        </div>
+        <div class="content">
+          <button class="back-btn" onclick="showPage('briefs')">← Volver a proyectos</button>
+          <div class="detail-grid">
+
+            <!-- LEFT: info + brief -->
+            <div id="detail-left"></div>
+
+            <!-- RIGHT: admin actions -->
+            <div id="detail-right"></div>
+
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── CONFIG ──
+  const WORKER_URL = "https://intake.cerostudio.ai";
+  const PORTAL_BASE = "https://cerostudio.ai/proyecto/";
+
+  const PHASES = ["Intake", "Diseño", "Sistema", "Desarrollo", "Entrega"];
+  const STATUS_LABELS = {
+    new: "Nuevo", reviewed: "Revisado", proposal_sent: "Propuesta enviada",
+    approved: "Aprobado", in_progress: "En desarrollo",
+    delivered: "Entregado", archived: "Archivado",
+  };
+  const FILE_ICONS = { quotation:"💰", contract:"📄", deliverable:"🚀", preview:"👁", other:"📎" };
+  const FILE_LABELS = { quotation:"Cotización", contract:"Contrato", deliverable:"Entregable", preview:"Preview", other:"Archivo" };
+  const ACT_LABELS = { update:"Actualización", delivery:"Entrega", payment:"Pago", approval:"Aprobación", note:"Nota interna" };
+
+  let API_KEY = "";
+  let CURRENT_BRIEF_ID = "";
+  let CURRENT_DETAIL = null;
+
+  // ── UTILS ──
+  function toast(msg, type = "success") {
+    const el = document.getElementById("toast");
+    el.textContent = msg; el.className = `toast ${type} show`;
+    setTimeout(() => el.classList.remove("show"), 2400);
+  }
+
+  function formatDate(iso) {
+    if (!iso) return "—";
+    return new Date(iso).toLocaleDateString("es-MX", { day:"numeric", month:"short", year:"numeric" });
+  }
+
+  function parseTags(v) {
+    if (!v) return [];
+    try { const a = typeof v === "string" ? JSON.parse(v) : v; return Array.isArray(a) ? a : []; }
+    catch { return typeof v === "string" ? [v] : []; }
+  }
+
+  async function api(path, method = "GET", body = null) {
+    const opts = { method, headers: { "X-API-Key": API_KEY } };
+    if (body) { opts.headers["Content-Type"] = "application/json"; opts.body = JSON.stringify(body); }
+    const res = await fetch(WORKER_URL + path, opts);
+    return res.json();
+  }
+
+  // ── AUTH ──
+  async function doLogin() {
+    const key = document.getElementById("login-key").value.trim();
+    if (!key) return;
+    // Test the key
+    const res = await fetch(WORKER_URL + "/briefs", { headers: { "X-API-Key": key } });
+    if (!res.ok) {
+      document.getElementById("login-error").style.display = "block";
+      return;
+    }
+    API_KEY = key;
+    sessionStorage.setItem("cs_admin_key", key);
+    document.getElementById("login-error").style.display = "none";
+    bootApp();
+    const data = await res.json();
+    renderBriefs(data.briefs || []);
+  }
+
+  function doLogout() {
+    sessionStorage.removeItem("cs_admin_key");
+    API_KEY = "";
+    document.getElementById("app-shell").style.display = "none";
+    document.getElementById("page-login").style.display = "block";
+    document.getElementById("login-key").value = "";
+  }
+
+  function bootApp() {
+    document.getElementById("page-login").style.display = "none";
+    document.getElementById("app-shell").style.display = "block";
+    const keyPreview = API_KEY.slice(0, 8) + "...";
+    document.getElementById("session-info").textContent = `Key: ${keyPreview}`;
+  }
+
+  // ── NAVIGATION ──
+  function showPage(name) {
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+    document.getElementById(`page-${name}`).classList.add("active");
+    const navEl = document.getElementById(`nav-${name}`);
+    if (navEl) navEl.classList.add("active");
+    if (name === "briefs") loadBriefs();
+  }
+
+  function toggleAction(id) {
+    const body = document.getElementById(`ab-${id}`);
+    const chev = document.getElementById(`ac-${id}`);
+    const open = body.classList.contains("open");
+    body.classList.toggle("open", !open);
+    chev.classList.toggle("open", !open);
+  }
+
+  // ── BRIEFS LIST ──
+  async function loadBriefs() {
+    document.getElementById("briefs-list").innerHTML = '<div class="empty">Cargando...</div>';
+    const data = await api("/briefs");
+    renderBriefs(data.briefs || []);
+  }
+
+  function renderBriefs(briefs) {
+    // Stats
+    document.getElementById("stat-total").textContent = briefs.length;
+    document.getElementById("stat-new").textContent = briefs.filter(b => b.status === "new").length;
+    document.getElementById("stat-inprogress").textContent = briefs.filter(b => b.status === "in_progress").length;
+    document.getElementById("stat-delivered").textContent = briefs.filter(b => b.status === "delivered").length;
+
+    if (!briefs.length) {
+      document.getElementById("briefs-list").innerHTML = '<div class="empty">No hay briefs todavía</div>';
+      return;
+    }
+
+    document.getElementById("briefs-list").innerHTML = `
+      <div class="brief-list">
+        ${briefs.map(b => `
+          <div class="brief-row" onclick="loadDetail('${b.brief_id}')">
+            <div class="brief-row-id">${b.brief_id}</div>
+            <div style="flex:1">
+              <div class="brief-row-name">${b.business_name || b.name}</div>
+              <div class="brief-row-client">${b.name} · ${b.email}</div>
+            </div>
+            <span class="portal-pill ${b.portal_enabled ? 'active' : ''}">
+              ${b.portal_enabled ? 'Portal activo' : 'Sin portal'}
+            </span>
+            <span class="status-pill s-${b.status}">${STATUS_LABELS[b.status] || b.status}</span>
+            <div class="brief-row-date">${formatDate(b.submitted_at)}</div>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  // ── DETAIL ──
+  async function loadDetail(id) {
+    CURRENT_BRIEF_ID = id;
+    showPage("detail");
+    document.getElementById("detail-left").innerHTML = '<div class="empty">Cargando...</div>';
+    document.getElementById("detail-right").innerHTML = "";
+
+    const data = await api(`/briefs/${id}`);
+    CURRENT_DETAIL = data;
+    const b = data.brief;
+
+    document.getElementById("detail-topbar-title").textContent = b.business_name || b.name;
+    document.getElementById("detail-topbar-sub").textContent = `${b.brief_id} · ${b.email}`;
+
+    // Portal button
+    if (b.portal_enabled && b.client_access_key) {
+      document.getElementById("btn-open-portal").style.display = "inline-flex";
+    } else {
+      document.getElementById("btn-open-portal").style.display = "none";
+    }
+
+    renderDetailLeft(data);
+    renderDetailRight(data);
+  }
+
+  function openPortal() {
+    const b = CURRENT_DETAIL.brief;
+    if (b.client_access_key) {
+      window.open(`${PORTAL_BASE}?key=${b.client_access_key}`, "_blank");
+    }
+  }
+
+  // ── LEFT COLUMN ──
+  function renderDetailLeft(data) {
+    const b = data.brief;
+    const milestones = data.milestones || [];
+    const files = data.files || [];
+    const activity = data.activity || [];
+
+    document.getElementById("detail-left").innerHTML = `
+
+      <!-- Status / Phase quick controls -->
+      <div class="card">
+        <div class="card-header"><div class="card-title">Estado del proyecto</div></div>
+        <div class="card-body">
+          <div class="quick-row">
+            <div class="quick-label">Status</div>
+            <select class="field" style="flex:1;margin:0" id="qs-status" onchange="quickStatus()">
+              ${["new","reviewed","proposal_sent","approved","in_progress","delivered","archived"].map(s =>
+                `<option value="${s}" ${b.status===s?"selected":""}>${STATUS_LABELS[s]}</option>`
+              ).join("")}
+            </select>
+          </div>
+          <div class="quick-row" style="margin-top:10px">
+            <div class="quick-label">Fase</div>
+            <div style="display:flex;gap:5px;flex-wrap:wrap">
+              ${PHASES.map((name, i) => `
+                <button class="phase-btn-sm ${(b.current_phase||0)===i?"active":""}"
+                  title="${name}" onclick="quickPhase(${i})">${i} · ${name}</button>
+              `).join("")}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Brief original -->
+      <div class="action-card">
+        <div class="action-header" onclick="toggleAction('brief')">
+          <div class="action-title">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="color:#FF9500">
+              <rect x="1" y="1" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+              <line x1="3" y1="4" x2="9" y2="4" stroke="currentColor" stroke-width="1.2"/>
+              <line x1="3" y1="6.5" x2="9" y2="6.5" stroke="currentColor" stroke-width="1.2"/>
+              <line x1="3" y1="9" x2="6.5" y2="9" stroke="currentColor" stroke-width="1.2"/>
+            </svg>
+            Brief Original
+          </div>
+          <span class="action-chevron" id="ac-brief">▾</span>
+        </div>
+        <div class="action-body" id="ab-brief">
+          ${renderBriefFields(b)}
+        </div>
+      </div>
+
+      <!-- Milestones -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Timeline / Milestones</div>
+        </div>
+        <div class="card-body" style="padding:10px 18px">
+          ${milestones.length ? milestones.map(m => `
+            <div class="milestone-item">
+              <div class="ms-check ${m.status==="completed"?"done":""}"
+                onclick="toggleMilestone(${m.id}, '${m.status}')" title="${m.status==="completed"?"Marcar pendiente":"Marcar completado"}">
+                ${m.status==="completed"?'<svg width="9" height="9" viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" stroke="#0a0a0a" stroke-width="1.5" fill="none"/></svg>':""}
+              </div>
+              <div>
+                <div class="ms-title ${m.status==="completed"?"done-text":""}">${m.title}</div>
+                ${m.description?`<div class="ms-desc">${m.description}</div>`:""}
+                <div class="ms-phase">Fase ${m.phase} · ${m.status==="completed"?`Completado ${formatDate(m.completed_at)}`:`Pendiente`}</div>
+              </div>
+            </div>
+          `).join("") : '<div class="empty">Sin milestones</div>'}
+        </div>
+      </div>
+
+      <!-- Files -->
+      <div class="card">
+        <div class="card-header"><div class="card-title">Archivos</div></div>
+        <div class="card-body" style="padding:8px 18px" id="files-list">
+          ${renderFiles(files)}
+        </div>
+      </div>
+
+      <!-- Activity -->
+      <div class="card">
+        <div class="card-header"><div class="card-title">Actividad</div></div>
+        <div class="card-body" style="padding:8px 18px" id="activity-list">
+          ${renderActivity(activity)}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderFiles(files) {
+    if (!files.length) return '<div class="empty">Sin archivos</div>';
+    return files.map(f => `
+      <div class="file-item" id="file-${f.id}">
+        <div class="file-left">
+          <div class="file-icon-sm">${FILE_ICONS[f.file_type]||"📎"}</div>
+          <div>
+            <div class="file-name-sm"><a href="${f.file_url}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">${f.file_name}</a></div>
+            <div class="file-meta-sm">${FILE_LABELS[f.file_type]||"Archivo"} · ${formatDate(f.uploaded_at)}</div>
+          </div>
+        </div>
+        <button class="btn btn-danger btn-sm" onclick="deleteFile(${f.id})">Eliminar</button>
+      </div>
+    `).join("");
+  }
+
+  function renderActivity(activity) {
+    if (!activity.length) return '<div class="empty">Sin actividad registrada</div>';
+    return activity.map(a => `
+      <div class="act-item">
+        <div class="act-dot ${a.entry_type}"></div>
+        <div>
+          <div class="act-title-sm">${a.title}</div>
+          ${a.description?`<div class="act-desc-sm">${a.description}</div>`:""}
+          <div class="act-date-sm">${formatDate(a.date)}</div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  // ── RIGHT COLUMN ──
+  function renderDetailRight(data) {
+    const b = data.brief;
+    const payPct = b.total_amount ? Math.round((b.paid_amount||0)/b.total_amount*100) : 0;
+    const portalUrl = b.portal_enabled && b.client_access_key
+      ? `${PORTAL_BASE}?key=${b.client_access_key}` : null;
+
+    document.getElementById("detail-right").innerHTML = `
+
+      <!-- Portal -->
+      <div class="action-card">
+        <div class="action-header" onclick="toggleAction('portal')">
+          <div class="action-title">Portal del cliente</div>
+          <span class="action-chevron open" id="ac-portal">▾</span>
+        </div>
+        <div class="action-body open" id="ab-portal">
+          ${portalUrl ? `
+            <p style="font-size:12px;color:var(--gray-text);margin-bottom:8px">Link activo — comparte esta URL con el cliente:</p>
+            <div class="url-box">
+              <span class="url-text" id="portal-url-text">${portalUrl}</span>
+              <button class="btn btn-admin btn-sm" onclick="copyPortalUrl('${portalUrl}')">Copiar</button>
+            </div>
+          ` : `
+            <p style="font-size:12px;color:var(--gray-text);margin-bottom:12px">El portal no está activado para este cliente.</p>
+            <button class="btn btn-primary btn-sm" onclick="enablePortal()">Activar portal →</button>
+          `}
+        </div>
+      </div>
+
+      <!-- Add file -->
+      <div class="action-card">
+        <div class="action-header" onclick="toggleAction('file')">
+          <div class="action-title">+ Subir archivo</div>
+          <span class="action-chevron" id="ac-file">▾</span>
+        </div>
+        <div class="action-body" id="ab-file">
+          <div class="field">
+            <label>Nombre del archivo</label>
+            <input type="text" id="f-name" placeholder="Cotización La Cocina de María.pdf">
+          </div>
+          <div class="field">
+            <label>Tipo</label>
+            <select id="f-type">
+              <option value="quotation">Cotización</option>
+              <option value="contract">Contrato</option>
+              <option value="deliverable">Entregable</option>
+              <option value="preview">Preview / Staging</option>
+              <option value="other">Otro</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>URL del archivo (Drive, Dropbox, etc.)</label>
+            <input type="url" id="f-url" placeholder="https://drive.google.com/...">
+          </div>
+          <div class="field">
+            <label>Descripción (opcional)</label>
+            <input type="text" id="f-desc" placeholder="Versión 2 con revisiones">
+          </div>
+          <button class="btn btn-primary btn-sm btn-full" onclick="addFile()">Agregar archivo</button>
+        </div>
+      </div>
+
+      <!-- Add activity -->
+      <div class="action-card">
+        <div class="action-header" onclick="toggleAction('act')">
+          <div class="action-title">+ Registrar actividad</div>
+          <span class="action-chevron" id="ac-act">▾</span>
+        </div>
+        <div class="action-body" id="ab-act">
+          <div class="field">
+            <label>Tipo</label>
+            <select id="a-type">
+              <option value="update">Actualización</option>
+              <option value="delivery">Entrega</option>
+              <option value="payment">Pago</option>
+              <option value="approval">Aprobación</option>
+              <option value="note">Nota interna</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Título</label>
+            <input type="text" id="a-title" placeholder="Preview del sitio enviado">
+          </div>
+          <div class="field">
+            <label>Descripción (opcional)</label>
+            <textarea id="a-desc" placeholder="Link de staging enviado por WhatsApp al cliente"></textarea>
+          </div>
+          <button class="btn btn-primary btn-sm btn-full" onclick="addActivity()">Registrar</button>
+        </div>
+      </div>
+
+      <!-- Payment -->
+      <div class="action-card">
+        <div class="action-header" onclick="toggleAction('pay')">
+          <div class="action-title">💰 Pagos</div>
+          <span class="action-chevron open" id="ac-pay">▾</span>
+        </div>
+        <div class="action-body open" id="ab-pay">
+          ${b.total_amount ? `
+            <div class="pay-bar-bg"><div class="pay-bar" style="width:${payPct}%"></div></div>
+            <div class="pay-info">
+              <span class="pay-paid">$${(b.paid_amount||0).toLocaleString()} pagados</span>
+              <span class="pay-total">de $${b.total_amount.toLocaleString()} total</span>
+            </div>
+            <hr class="divider">
+          ` : ""}
+          <div class="field-row">
+            <div class="field">
+              <label>Total acordado (USD)</label>
+              <input type="number" id="p-total" value="${b.total_amount||""}" placeholder="1200">
+            </div>
+            <div class="field">
+              <label>Pagado hasta hoy (USD)</label>
+              <input type="number" id="p-paid" value="${b.paid_amount||""}" placeholder="600">
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm btn-full" onclick="updatePayment()">Actualizar pagos</button>
+        </div>
+      </div>
+    `;
+  }
+
+  // ── BRIEF FIELDS RENDERER ──
+  function bField(label, val) {
+    const empty = !val || (Array.isArray(val) && !val.length);
+    const content = empty
+      ? `<div class="bf-value none">—</div>`
+      : `<div class="bf-value">${val}</div>`;
+    return `<div><div class="bf-label">${label}</div>${content}</div>`;
+  }
+
+  function bTags(raw) {
+    const arr = parseTags(raw);
+    if (!arr.length) return '<div class="bf-value none">—</div>';
+    return `<div>${arr.map(t => `<span class="brief-tag">${t}</span>`).join("")}</div>`;
+  }
+
+  function renderBriefFields(b) {
+    return `
+      <div class="brief-group">
+        <div class="brief-group-label">Contacto</div>
+        <div class="brief-grid">
+          ${bField("Nombre", b.name)} ${bField("Email", b.email)}
+          ${bField("Teléfono", b.phone)} ${bField("Empresa", b.company)}
+        </div>
+      </div>
+      <div class="brief-group">
+        <div class="brief-group-label">Negocio</div>
+        <div class="brief-grid">
+          ${bField("Nombre del negocio", b.business_name)} ${bField("Industria", b.industry)}
+          ${bField("Ubicación", b.location)} ${bField("Idioma", b.lang)}
+        </div>
+        <div class="brief-grid full" style="margin-top:10px">
+          ${bField("Audiencia", b.target_audience)}
+          ${bField("Competidores", b.competitors)}
+          ${bField("USP", b.usp)}
+        </div>
+      </div>
+      <div class="brief-group">
+        <div class="brief-group-label">Proyecto</div>
+        <div class="brief-grid">
+          <div><div class="bf-label">Tipo</div>${bTags(b.project_type)}</div>
+          ${bField("Sitio actual", b.current_site)}
+        </div>
+        <div class="brief-grid full" style="margin-top:10px">
+          ${bField("Problema con sitio actual", b.current_site_pain)}
+          <div><div class="bf-label">Páginas</div>${bTags(b.pages)}</div>
+          <div><div class="bf-label">Funcionalidades</div>${bTags(b.features)}</div>
+          ${b.ecomm_products ? bField("Productos e-comm", b.ecomm_products) : ""}
+        </div>
+      </div>
+      <div class="brief-group">
+        <div class="brief-group-label">Visual & Contenido</div>
+        <div class="brief-grid">
+          <div><div class="bf-label">Dirección visual</div>${bTags(b.visual_direction)}</div>
+          ${bField("Sitios referencia", b.reference_sites)}
+          ${bField("Qué evitar", b.avoidance)}
+          ${bField("¿Tiene logo?", b.has_logo)}
+          ${bField("¿Tiene colores?", b.has_brand_colors)}
+          ${bField("Colores de marca", b.brand_colors_detail)}
+        </div>
+        <div class="brief-grid" style="margin-top:10px">
+          ${bField("Status contenido", b.content_status)}
+          ${bField("Status fotos", b.photo_status)}
+          <div><div class="bf-label">Contenido existente</div>${bTags(b.existing_content)}</div>
+          ${b.content_notes ? bField("Notas contenido", b.content_notes) : ""}
+        </div>
+      </div>
+      <div class="brief-group">
+        <div class="brief-group-label">Comercial</div>
+        <div class="brief-grid">
+          ${bField("Objetivo", b.goal)} ${bField("Presupuesto", b.budget)}
+          ${bField("Timeline", b.timeline)} ${bField("Fecha límite", b.deadline_detail)}
+          ${bField("Mantenimiento", b.maintenance)}
+          ${bField("Recibido", b.submitted_at ? formatDate(b.submitted_at) : null)}
+        </div>
+      </div>
+      ${b.additional_notes ? `
+        <div class="brief-group">
+          <div class="brief-group-label">Notas adicionales</div>
+          <div class="brief-text-pre">${b.additional_notes}</div>
+        </div>` : ""}
+      ${b.brief_text ? `
+        <div class="brief-group">
+          <div class="brief-group-label">Brief libre</div>
+          <div class="brief-text-pre">${b.brief_text}</div>
+        </div>` : ""}
+    `;
+  }
+
+  // ── ADMIN ACTIONS ──
+  async function quickStatus() {
+    const status = document.getElementById("qs-status").value;
+    const res = await api(`/briefs/${CURRENT_BRIEF_ID}/status`, "PATCH", { status });
+    if (res.success) { toast("Status actualizado"); CURRENT_DETAIL.brief.status = status; }
+    else toast("Error", "error");
+  }
+
+  async function quickPhase(phase) {
+    const res = await api(`/briefs/${CURRENT_BRIEF_ID}/phase`, "PATCH", { phase });
+    if (res.success) {
+      toast(`Fase → ${PHASES[phase]}`);
+      CURRENT_DETAIL.brief.current_phase = phase;
+      document.querySelectorAll(".phase-btn-sm").forEach((btn, i) => {
+        btn.classList.toggle("active", i === phase);
+      });
+    } else toast("Error", "error");
+  }
+
+  async function toggleMilestone(id, currentStatus) {
+    const newStatus = currentStatus === "completed" ? "pending" : "completed";
+    const res = await api(`/milestones/${id}`, "PATCH", { status: newStatus });
+    if (res.success) {
+      toast(newStatus === "completed" ? "Milestone completado" : "Marcado como pendiente");
+      // Refresh detail
+      loadDetail(CURRENT_BRIEF_ID);
+    } else toast("Error", "error");
+  }
+
+  async function enablePortal() {
+    const res = await api(`/briefs/${CURRENT_BRIEF_ID}/portal`, "POST");
+    if (res.success) {
+      toast("Portal activado");
+      CURRENT_DETAIL.brief.portal_enabled = 1;
+      CURRENT_DETAIL.brief.client_access_key = res.accessKey;
+      renderDetailRight(CURRENT_DETAIL);
+      document.getElementById("btn-open-portal").style.display = "inline-flex";
+    } else toast("Error", "error");
+  }
+
+  function copyPortalUrl(url) {
+    navigator.clipboard.writeText(url).then(() => toast("URL copiada"));
+  }
+
+  async function addFile() {
+    const name = document.getElementById("f-name").value.trim();
+    const url  = document.getElementById("f-url").value.trim();
+    const type = document.getElementById("f-type").value;
+    const desc = document.getElementById("f-desc").value.trim();
+    if (!name || !url) { toast("Nombre y URL son requeridos", "error"); return; }
+    const res = await api(`/briefs/${CURRENT_BRIEF_ID}/files`, "POST", {
+      file_name: name, file_type: type, file_url: url, description: desc || null
+    });
+    if (res.success) {
+      toast("Archivo agregado");
+      document.getElementById("f-name").value = "";
+      document.getElementById("f-url").value = "";
+      document.getElementById("f-desc").value = "";
+      // Refresh files list
+      const data = await api(`/briefs/${CURRENT_BRIEF_ID}`);
+      document.getElementById("files-list").innerHTML = renderFiles(data.files || []);
+    } else toast("Error al agregar", "error");
+  }
+
+  async function deleteFile(id) {
+    if (!confirm("¿Eliminar este archivo?")) return;
+    const res = await api(`/files/${id}`, "DELETE");
+    if (res.success) {
+      toast("Archivo eliminado");
+      document.getElementById(`file-${id}`)?.remove();
+    } else toast("Error", "error");
+  }
+
+  async function addActivity() {
+    const type  = document.getElementById("a-type").value;
+    const title = document.getElementById("a-title").value.trim();
+    const desc  = document.getElementById("a-desc").value.trim();
+    if (!title) { toast("El título es requerido", "error"); return; }
+    const res = await api(`/briefs/${CURRENT_BRIEF_ID}/activity`, "POST", {
+      entry_type: type, title, description: desc || null
+    });
+    if (res.success) {
+      toast("Actividad registrada");
+      document.getElementById("a-title").value = "";
+      document.getElementById("a-desc").value = "";
+      const data = await api(`/briefs/${CURRENT_BRIEF_ID}`);
+      document.getElementById("activity-list").innerHTML = renderActivity(data.activity || []);
+    } else toast("Error", "error");
+  }
+
+  async function updatePayment() {
+    const total = parseFloat(document.getElementById("p-total").value) || null;
+    const paid  = parseFloat(document.getElementById("p-paid").value) || null;
+    const body = {};
+    if (total !== null) body.total_amount = total;
+    if (paid !== null) body.paid_amount = paid;
+    if (!Object.keys(body).length) { toast("Ingresa al menos un monto", "error"); return; }
+    const res = await api(`/briefs/${CURRENT_BRIEF_ID}/payment`, "PATCH", body);
+    if (res.success) {
+      toast("Pagos actualizados");
+      if (total !== null) CURRENT_DETAIL.brief.total_amount = total;
+      if (paid !== null) CURRENT_DETAIL.brief.paid_amount = paid;
+      renderDetailRight(CURRENT_DETAIL);
+    } else toast("Error", "error");
+  }
+
+  // ── BOOT ──
+  const savedKey = sessionStorage.getItem("cs_admin_key");
+  if (savedKey) {
+    API_KEY = savedKey;
+    bootApp();
+    loadBriefs();
+  }
+</script>
+</body>
+</html>
