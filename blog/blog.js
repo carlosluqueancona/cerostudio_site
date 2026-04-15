@@ -5,6 +5,7 @@
 
 const BLOG_DATA_URL = '/api/posts';
 const PER_PAGE = 9;
+const INITIAL_LOAD = 50; // carga todos los posts actuales de golpe
 
 let currentPage = 1;
 let hasMore = false;
@@ -14,9 +15,10 @@ async function initBlog() {
   const root = document.getElementById('blog-root');
 
   try {
-    const response = await fetch(`${BLOG_DATA_URL}?page=1&per=${PER_PAGE}`);
+    const response = await fetch(`${BLOG_DATA_URL}?page=1&per=${INITIAL_LOAD}`);
     const firstBatch = await response.json();
-    hasMore = firstBatch.length === PER_PAGE;
+    // hasMore solo es true si llegamos al límite inicial (50+)
+    hasMore = firstBatch.length === INITIAL_LOAD;
 
     // Seed global posts array for list view
     window._blogPosts = firstBatch;
@@ -111,11 +113,11 @@ async function loadMore() {
 
   try {
     const nextPage = currentPage + 1;
-    const response = await fetch(`${BLOG_DATA_URL}?page=${nextPage}&per=${PER_PAGE}`);
+    const response = await fetch(`${BLOG_DATA_URL}?page=${nextPage}&per=${INITIAL_LOAD}`);
     const newPosts = await response.json();
 
     currentPage = nextPage;
-    hasMore = newPosts.length === PER_PAGE;
+    hasMore = newPosts.length === INITIAL_LOAD;
     window._blogPosts = (window._blogPosts || []).concat(newPosts);
 
     const grid = document.getElementById('blog-grid');
