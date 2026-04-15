@@ -40,6 +40,8 @@
   <meta name="twitter:image" content="https://cerostudio.ai/images/CERO_Studio_SocialShare.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Preload Space Grotesk 700 (LCP font — hero title) -->
+  <link rel="preload" href="https://fonts.gstatic.com/s/spacegrotesk/v22/V8mQoQDjQSkFtoMM3T6r8E7mF71Q-gOoraIAEj4PVnskPMBBSSJLm2E.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" as="script" crossorigin>
   <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" as="script" crossorigin>
@@ -432,8 +434,8 @@
       letter-spacing: -.04em;
       text-transform: uppercase;
       margin-bottom: 48px;
-      visibility: hidden;
-      /* Reserva el espacio para evitar saltos en la carga */
+      /* opacity:0 instead of visibility:hidden — browser measures LCP correctly */
+      opacity: 0;
     }
 
     .hero-static-title span[data-hero-line] {
@@ -2978,15 +2980,21 @@
       }
 
       /* ── LOADER → HERO ─────────────────────────────────────────── */
-      gsap.timeline({ onComplete: runHeroEntrance })
-        .to('#ldLogo', { opacity: 1, duration: .5, ease: 'power2.out' })
-        .to('#ldBar', { width: '100%', duration: 1.1, ease: 'power2.inOut' }, '-=.1')
-        .to('#ldLbl', { opacity: 0, duration: .35 }, '-=.25')
-        .to('#loader', { opacity: 0, duration: .65, ease: 'power2.out' }, '+=.1')
-        .set('#loader', { display: 'none' });
+      /* Skip loader on repeat visits — LCP improvement for returning users */
+      if (sessionStorage.getItem('cs_v')) {
+        document.getElementById('loader').style.display = 'none';
+        runHeroEntrance();
+      } else {
+        sessionStorage.setItem('cs_v', '1');
+        gsap.timeline({ onComplete: runHeroEntrance })
+          .to('#ldLogo', { opacity: 1, duration: .2, ease: 'power2.out' })
+          .to('#ldBar', { width: '100%', duration: .25, ease: 'power2.inOut' }, '-=.05')
+          .to('#loader', { opacity: 0, duration: .3, ease: 'power2.out' }, '+=.05')
+          .set('#loader', { display: 'none' });
+      }
 
       function runHeroEntrance() {
-        gsap.set('.hero-static-title', { visibility: 'visible' });   /* revelamos el contenedor */
+        gsap.set('.hero-static-title', { opacity: 1 });   /* revelamos el contenedor */
         gsap.to('#heroEyebrow', { opacity: 1, duration: .8, ease: 'power2.out' });
 
         var _heroT = (typeof CS_HERO_TEXTS !== 'undefined' && typeof CS_LANG !== 'undefined') ? CS_HERO_TEXTS[CS_LANG] : [
