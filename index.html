@@ -907,7 +907,6 @@
 
     .kinetic-track {
       display: flex;
-      align-items: flex-start;
       width: max-content;
       gap: 2px;
       animation: kinetic-scroll 48s linear infinite;
@@ -921,6 +920,7 @@
     .kinetic-item {
       position: relative;
       width: 400px;
+      aspect-ratio: 16 / 10;
       overflow: hidden;
       flex-shrink: 0;
       display: block;
@@ -930,7 +930,9 @@
 
     .kinetic-item img {
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
       display: block;
       transition: transform .6s ease, filter .4s;
       filter: brightness(.55);
