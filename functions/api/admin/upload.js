@@ -24,6 +24,22 @@ const MAX_SIZE    = 5 * 1024 * 1024; // 5 MB
 const ALLOWED     = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 const EXT_MAP     = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/gif': 'gif' };
 
+// ── Magic bytes detection ─────────────────────────────────────────────────────
+function detectMimeFromBytes(buffer) {
+  const b = new Uint8Array(buffer, 0, 12);
+  // JPEG: FF D8 FF
+  if (b[0] === 0xFF && b[1] === 0xD8 && b[2] === 0xFF) return 'image/jpeg';
+  // PNG: 89 50 4E 47 0D 0A 1A 0A
+  if (b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4E && b[3] === 0x47 &&
+      b[4] === 0x0D && b[5] === 0x0A && b[6] === 0x1A && b[7] === 0x0A) return 'image/png';
+  // WebP: RIFF????WEBP
+  if (b[0] === 0x52 && b[1] === 0x49 && b[2] === 0x46 && b[3] === 0x46 &&
+      b[8] === 0x57 && b[9] === 0x45 && b[10] === 0x42 && b[11] === 0x50) return 'image/webp';
+  // GIF87a / GIF89a: GIF8
+  if (b[0] === 0x47 && b[1] === 0x49 && b[2] === 0x46 && b[3] === 0x38) return 'image/gif';
+  return null;
+}
+
 // ── JWT verify (igual que en posts.js) ───────────────────────────────────────
 async function verifyJWT(token, secret) {
   try {
@@ -121,11 +137,16 @@ export async function onRequestPost(context) {
       return json({ ok: false, error: 'El archivo supera el límite de 5 MB' }, 400, origin);
     }
 
-    // Validar tipo MIME
-    const mime = file.type || 'application/octet-stream';
-    if (!ALLOWED.includes(mime)) {
+    // Validar tipo MIME por magic bytes (el campo file.type viene del cliente y puede ser falso)
+    const detectedMime = detectMimeFromBytes(buffer);
+    if (!detectedMime) {
       return json({ ok: false, error: 'Tipo de archivo no permitido. Usa JPG, PNG, WebP o GIF.' }, 400, origin);
     }
+    const claimedMime = file.type || '';
+    if (claimedMime && claimedMime !== detectedMime) {
+      return json({ ok: false, error: 'El tipo de archivo declarado no coincide con su contenido real.' }, 400, origin);
+    }
+    const mime = detectedMime;
 
     // Nombre único: blog/2026/04/uuid.ext
     const ext      = EXT_MAP[mime];
