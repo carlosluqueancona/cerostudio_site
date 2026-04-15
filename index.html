@@ -771,7 +771,7 @@
 
     .port-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 2px;
       background: var(--surface);
       align-items: stretch;
@@ -802,8 +802,9 @@
     .port-card-img {
       width: 100%;
       aspect-ratio: 16 / 10;
-      object-fit: cover;
-      object-position: top;
+      object-fit: contain;
+      object-position: center;
+      background: var(--surface);
       display: block;
       transition: transform .65s ease, filter .4s;
       filter: none;
