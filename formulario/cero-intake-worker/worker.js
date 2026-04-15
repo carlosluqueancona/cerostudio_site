@@ -17,7 +17,7 @@ export default {
     // ─── CORS headers ───
     const corsHeaders = {
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "POST, GET, PATCH, OPTIONS",
+      "Access-Control-Allow-Methods": "POST, GET, PATCH, DELETE, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type, X-API-Key",
     };
 
@@ -249,65 +249,103 @@ export default {
       );
     }
 
-    // ─── PATCH /briefs/:id/payment — Update payment amounts (protected) ───
-    if (request.method === "PATCH" && url.pathname.match(/\/briefs\/.*\/payment/)) {
+    // helper: recalc paid_amount from history sum
+    async function recalcPaid(briefId) {
+      const row = await env.DB.prepare(
+        "SELECT COALESCE(SUM(amount), 0) as total FROM payment_history WHERE brief_id = ?"
+      ).bind(briefId).first();
+      const newPaid = row.total;
+      await env.DB.prepare(
+        "UPDATE briefs SET paid_amount = ?, updated_at = datetime('now') WHERE brief_id = ?"
+      ).bind(newPaid, briefId).run();
+      return newPaid;
+    }
+
+    // ─── PATCH /briefs/:id/payment — Add transaction or update total (protected) ───
+    if (request.method === "PATCH" && url.pathname.match(/^\/briefs\/[^/]+\/payment$/)) {
       const authKey = request.headers.get("X-API-Key");
       if (authKey !== env.ADMIN_API_KEY) {
-        return Response.json(
-          { error: "No autorizado" },
-          { status: 401, headers: corsHeaders }
-        );
+        return Response.json({ error: "No autorizado" }, { status: 401, headers: corsHeaders });
       }
-
       const id = url.pathname.split("/briefs/")[1].split("/payment")[0];
-      const { total_amount, paid_amount, note } = await request.json();
+      const body = await request.json();
+      const { total_amount, amount, note } = body;
+
+      if (amount !== undefined) {
+        if (isNaN(parseFloat(amount)) || parseFloat(amount) === 0) {
+          return Response.json({ error: "Monto inválido" }, { status: 400, headers: corsHeaders });
+        }
+        await env.DB.prepare(
+          "INSERT INTO payment_history (brief_id, amount, note) VALUES (?, ?, ?)"
+        ).bind(id, parseFloat(amount), note || null).run();
+      }
 
       const sets = ["updated_at = datetime('now')"];
       const params = [];
+      if (amount !== undefined) {
+        const newPaid = await recalcPaid(id);
+        sets.push("paid_amount = ?"); params.push(newPaid);
+      }
       if (total_amount !== undefined) { sets.push("total_amount = ?"); params.push(total_amount); }
-      if (paid_amount  !== undefined) { sets.push("paid_amount = ?");  params.push(paid_amount);  }
-
-      if (params.length === 0) {
-        return Response.json(
-          { error: "Ingresa al menos un monto" },
-          { status: 400, headers: corsHeaders }
-        );
+      if (params.length) {
+        params.push(id);
+        await env.DB.prepare(`UPDATE briefs SET ${sets.join(", ")} WHERE brief_id = ?`).bind(...params).run();
+      } else if (amount === undefined) {
+        return Response.json({ error: "Nada que actualizar" }, { status: 400, headers: corsHeaders });
       }
 
-      // Fetch current paid_amount to compute the delta
-      const current = await env.DB.prepare(
-        "SELECT paid_amount FROM briefs WHERE brief_id = ?"
-      ).bind(id).first();
-
-      params.push(id);
-      await env.DB.prepare(
-        `UPDATE briefs SET ${sets.join(", ")} WHERE brief_id = ?`
-      ).bind(...params).run();
-
-      // Record payment history entry when paid_amount actually changes
-      if (paid_amount !== undefined) {
-        const prev = current?.paid_amount ?? 0;
-        const delta = paid_amount - prev;
-        if (delta !== 0) {
-          await env.DB.prepare(
-            "INSERT INTO payment_history (brief_id, amount, note) VALUES (?, ?, ?)"
-          ).bind(id, delta, note || null).run();
-        }
-      }
-
-      // Return updated history
       const { results: paymentHistory } = await env.DB.prepare(
         "SELECT id, amount, note, recorded_at FROM payment_history WHERE brief_id = ? ORDER BY recorded_at DESC"
       ).bind(id).all();
+      const paid = await env.DB.prepare("SELECT paid_amount FROM briefs WHERE brief_id = ?").bind(id).first();
+      return Response.json({ success: true, briefId: id, paidAmount: paid?.paid_amount, paymentHistory }, { headers: corsHeaders });
+    }
 
-      return Response.json(
-        { success: true, briefId: id, paymentHistory },
-        { headers: corsHeaders }
-      );
+    // ─── PATCH /briefs/:id/payment/:paymentId — Edit transaction (protected) ───
+    if (request.method === "PATCH" && url.pathname.match(/^\/briefs\/[^/]+\/payment\/\d+$/)) {
+      const authKey = request.headers.get("X-API-Key");
+      if (authKey !== env.ADMIN_API_KEY) {
+        return Response.json({ error: "No autorizado" }, { status: 401, headers: corsHeaders });
+      }
+      const parts = url.pathname.split("/");
+      const briefId = parts[2];
+      const paymentId = parts[4];
+      const { amount, note } = await request.json();
+
+      const sets = []; const params = [];
+      if (amount !== undefined) { sets.push("amount = ?"); params.push(parseFloat(amount)); }
+      if (note    !== undefined) { sets.push("note = ?");   params.push(note); }
+      if (!sets.length) return Response.json({ error: "Nada que actualizar" }, { status: 400, headers: corsHeaders });
+      params.push(paymentId, briefId);
+      await env.DB.prepare(`UPDATE payment_history SET ${sets.join(", ")} WHERE id = ? AND brief_id = ?`).bind(...params).run();
+
+      const newPaid = await recalcPaid(briefId);
+      const { results: paymentHistory } = await env.DB.prepare(
+        "SELECT id, amount, note, recorded_at FROM payment_history WHERE brief_id = ? ORDER BY recorded_at DESC"
+      ).bind(briefId).all();
+      return Response.json({ success: true, paidAmount: newPaid, paymentHistory }, { headers: corsHeaders });
+    }
+
+    // ─── DELETE /briefs/:id/payment/:paymentId — Delete transaction (protected) ───
+    if (request.method === "DELETE" && url.pathname.match(/^\/briefs\/[^/]+\/payment\/\d+$/)) {
+      const authKey = request.headers.get("X-API-Key");
+      if (authKey !== env.ADMIN_API_KEY) {
+        return Response.json({ error: "No autorizado" }, { status: 401, headers: corsHeaders });
+      }
+      const parts = url.pathname.split("/");
+      const briefId = parts[2];
+      const paymentId = parts[4];
+
+      await env.DB.prepare("DELETE FROM payment_history WHERE id = ? AND brief_id = ?").bind(paymentId, briefId).run();
+      const newPaid = await recalcPaid(briefId);
+      const { results: paymentHistory } = await env.DB.prepare(
+        "SELECT id, amount, note, recorded_at FROM payment_history WHERE brief_id = ? ORDER BY recorded_at DESC"
+      ).bind(briefId).all();
+      return Response.json({ success: true, paidAmount: newPaid, paymentHistory }, { headers: corsHeaders });
     }
 
     return Response.json(
-      { error: "Not found", endpoints: ["POST /submit", "GET /briefs", "GET /briefs/:id", "PATCH /briefs/:id/status", "PATCH /briefs/:id/payment"] },
+      { error: "Not found", endpoints: ["POST /submit", "GET /briefs", "GET /briefs/:id", "PATCH /briefs/:id/status", "PATCH /briefs/:id/payment", "PATCH /briefs/:id/payment/:id", "DELETE /briefs/:id/payment/:id"] },
       { status: 404, headers: corsHeaders }
     );
   },

@@ -943,45 +943,41 @@
         </div>
         <div class="action-body open" id="ab-pay">
           ${b.total_amount ? `
-            <div class="pay-bar-bg"><div class="pay-bar" style="width:${payPct}%"></div></div>
+            <div class="pay-bar-bg"><div class="pay-bar" style="width:${Math.min(payPct,100)}%"></div></div>
             <div class="pay-info">
               <span class="pay-paid">$${(b.paid_amount||0).toLocaleString()} pagados</span>
               <span class="pay-total">de $${b.total_amount.toLocaleString()} total</span>
             </div>
             <hr class="divider">
           ` : ""}
-          <div class="field-row" style="align-items:end;margin-bottom:10px">
-            <div class="field" style="margin-bottom:0">
+          <div class="field-row" style="align-items:end;gap:8px;margin-bottom:12px">
+            <div class="field" style="margin-bottom:0;flex:1">
               <label>Total acordado (USD)</label>
               <input type="number" id="p-total" value="${b.total_amount != null ? b.total_amount : ""}" placeholder="1200">
             </div>
-            <div class="field" style="margin-bottom:0">
-              <label>Pagado (USD)</label>
-              <input type="number" id="p-paid" value="${b.paid_amount != null ? b.paid_amount : ""}" placeholder="600">
+            <button class="btn btn-sm" style="white-space:nowrap;flex-shrink:0" onclick="saveTotal()">Guardar total</button>
+          </div>
+          <hr class="divider">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray-text);margin-bottom:8px">Agregar transacción</div>
+          <div class="field-row" style="align-items:end;gap:8px;margin-bottom:8px">
+            <div class="field" style="margin-bottom:0;width:110px;flex-shrink:0">
+              <label>Monto (USD)</label>
+              <input type="number" id="p-amount" placeholder="-300">
+            </div>
+            <div class="field" style="margin-bottom:0;flex:1">
+              <label>Nota (opcional)</label>
+              <input type="text" id="p-note" placeholder="Ej: Anticipo 50%">
             </div>
           </div>
-          <div class="field" style="margin-bottom:10px">
-            <label>Nota del pago (opcional)</label>
-            <input type="text" id="p-note" placeholder="Ej: Anticipo 50%, transferencia SPEI">
-          </div>
-          <button class="btn btn-primary btn-sm btn-full" onclick="updatePayment()">Actualizar pagos</button>
+          <div style="font-size:10px;color:var(--gray-text);margin-bottom:8px">Negativo para devolución</div>
+          <button class="btn btn-primary btn-sm btn-full" onclick="addPayment()">+ Agregar pago</button>
           ${(data.paymentHistory && data.paymentHistory.length) ? `
             <hr class="divider">
             <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray-text);margin-bottom:10px">Historial</div>
-            ${data.paymentHistory.map(p => `
-              <div style="display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--gray-border)">
-                <div>
-                  <div style="font-size:14px;font-weight:600;color:${p.amount >= 0 ? 'var(--lime-text)' : 'var(--danger)'}">
-                    ${p.amount >= 0 ? '+' : ''}$${Math.abs(p.amount).toLocaleString()}
-                  </div>
-                  ${p.note ? `<div style="font-size:11px;color:var(--gray-text);margin-top:2px">${p.note}</div>` : ''}
-                </div>
-                <div style="font-size:11px;color:var(--gray-text);white-space:nowrap;margin-left:8px">
-                  ${formatDate(p.recorded_at)}
-                </div>
-              </div>
-            `).join('')}
-          ` : ''}
+            <div id="payment-history-list">
+            ${data.paymentHistory.map(p => renderPaymentEntry(p)).join('')}
+            </div>
+          ` : '<div id="payment-history-list"></div>'}
         </div>
       </div>
     `;
@@ -1165,32 +1161,118 @@
     } else toast("Error", "error");
   }
 
-  async function updatePayment() {
+  function renderPaymentEntry(p) {
+    const color = p.amount >= 0 ? 'var(--lime-text)' : 'var(--danger)';
+    const sign  = p.amount >= 0 ? '+' : '';
+    return `<div id="ph-${p.id}" style="display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--gray-border)">
+      <div style="flex:1">
+        <div id="ph-view-${p.id}">
+          <div style="font-size:14px;font-weight:600;color:${color}">${sign}$${Math.abs(p.amount).toLocaleString()}</div>
+          ${p.note ? `<div style="font-size:11px;color:var(--gray-text);margin-top:2px">${p.note}</div>` : ''}
+        </div>
+        <div id="ph-edit-${p.id}" style="display:none">
+          <div style="display:flex;gap:6px;align-items:center;margin-top:4px">
+            <input type="number" id="ph-amt-${p.id}" value="${p.amount}" style="width:90px;font-size:12px;padding:4px 6px;background:var(--gray3);border:1px solid var(--gray-border);border-radius:4px;color:var(--white)">
+            <input type="text" id="ph-note-${p.id}" value="${p.note||''}" placeholder="nota" style="flex:1;font-size:12px;padding:4px 6px;background:var(--gray3);border:1px solid var(--gray-border);border-radius:4px;color:var(--white)">
+            <button onclick="saveEditPayment(${p.id})" style="font-size:11px;padding:4px 8px;background:var(--lime);color:var(--black);border:none;border-radius:4px;cursor:pointer;font-weight:700">✓</button>
+            <button onclick="cancelEditPayment(${p.id})" style="font-size:11px;padding:4px 8px;background:var(--gray3);color:var(--gray-text);border:none;border-radius:4px;cursor:pointer">✕</button>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;margin-left:8px;flex-shrink:0">
+        <span style="font-size:11px;color:var(--gray-text)">${formatDate(p.recorded_at)}</span>
+        <button onclick="startEditPayment(${p.id})" title="Editar" style="font-size:11px;padding:2px 6px;background:none;border:1px solid var(--gray-border);border-radius:4px;color:var(--gray-text);cursor:pointer">✎</button>
+        <button onclick="deletePayment(${p.id})" title="Eliminar" style="font-size:11px;padding:2px 6px;background:none;border:1px solid rgba(255,68,68,.3);border-radius:4px;color:var(--danger);cursor:pointer">×</button>
+      </div>
+    </div>`;
+  }
+
+  function startEditPayment(id) {
+    document.getElementById(`ph-view-${id}`).style.display = 'none';
+    document.getElementById(`ph-edit-${id}`).style.display = 'block';
+  }
+  function cancelEditPayment(id) {
+    document.getElementById(`ph-view-${id}`).style.display = 'block';
+    document.getElementById(`ph-edit-${id}`).style.display = 'none';
+  }
+
+  async function saveEditPayment(id) {
+    const amount = parseFloat(document.getElementById(`ph-amt-${id}`).value);
+    const note   = document.getElementById(`ph-note-${id}`).value.trim() || null;
+    if (isNaN(amount)) { toast("Monto inválido", "error"); return; }
+    const res = await api(`/briefs/${CURRENT_BRIEF_ID}/payment/${id}`, "PATCH", { amount, note });
+    if (res.success) {
+      CURRENT_DETAIL.paymentHistory = res.paymentHistory;
+      CURRENT_DETAIL.brief.paid_amount = res.paidAmount;
+      refreshPaymentUI(res);
+      toast("Transacción editada ✓");
+    } else toast(res.error || "Error", "error");
+  }
+
+  async function deletePayment(id) {
+    if (!confirm("¿Eliminar esta transacción?")) return;
+    const res = await api(`/briefs/${CURRENT_BRIEF_ID}/payment/${id}`, "DELETE");
+    if (res.success) {
+      CURRENT_DETAIL.paymentHistory = res.paymentHistory;
+      CURRENT_DETAIL.brief.paid_amount = res.paidAmount;
+      refreshPaymentUI(res);
+      toast("Transacción eliminada");
+    } else toast(res.error || "Error", "error");
+  }
+
+  async function saveTotal() {
     if (!CURRENT_BRIEF_ID) { toast("Sin proyecto seleccionado", "error"); return; }
     const totalVal = document.getElementById("p-total").value;
-    const paidVal  = document.getElementById("p-paid").value;
-    const total = totalVal !== "" ? parseFloat(totalVal) : null;
-    const paid  = paidVal  !== "" ? parseFloat(paidVal)  : null;
-    const body = {};
-    if (total !== null && !isNaN(total)) body.total_amount = total;
-    if (paid  !== null && !isNaN(paid))  body.paid_amount  = paid;
-    if (!Object.keys(body).length) { toast("Ingresa al menos un monto", "error"); return; }
-    const note = document.getElementById("p-note")?.value.trim() || null;
-    if (note) body.note = note;
-    try {
-      const res = await api(`/briefs/${CURRENT_BRIEF_ID}/payment`, "PATCH", body);
-      if (res.success) {
-        toast("Pagos actualizados ✓");
-        if (total !== null) CURRENT_DETAIL.brief.total_amount = total;
-        if (paid  !== null) CURRENT_DETAIL.brief.paid_amount  = paid;
-        if (res.paymentHistory) CURRENT_DETAIL.paymentHistory = res.paymentHistory;
-        renderDetailRight(CURRENT_DETAIL);
-      } else {
-        toast(res.error || "Error al guardar", "error");
-      }
-    } catch (err) {
-      toast("Error de conexión", "error");
+    if (totalVal === "") { toast("Ingresa el total acordado", "error"); return; }
+    const total = parseFloat(totalVal);
+    if (isNaN(total)) { toast("Monto inválido", "error"); return; }
+    const res = await api(`/briefs/${CURRENT_BRIEF_ID}/payment`, "PATCH", { total_amount: total });
+    if (res.success) {
+      CURRENT_DETAIL.brief.total_amount = total;
+      refreshPaymentUI(res);
+      toast("Total guardado ✓");
+    } else toast(res.error || "Error", "error");
+  }
+
+  async function addPayment() {
+    if (!CURRENT_BRIEF_ID) { toast("Sin proyecto seleccionado", "error"); return; }
+    const amountVal = document.getElementById("p-amount").value;
+    if (amountVal === "") { toast("Ingresa un monto", "error"); return; }
+    const amount = parseFloat(amountVal);
+    if (isNaN(amount) || amount === 0) { toast("Monto inválido", "error"); return; }
+    const note = document.getElementById("p-note").value.trim() || null;
+    const res = await api(`/briefs/${CURRENT_BRIEF_ID}/payment`, "PATCH", { amount, note });
+    if (res.success) {
+      CURRENT_DETAIL.paymentHistory = res.paymentHistory;
+      CURRENT_DETAIL.brief.paid_amount = res.paidAmount;
+      document.getElementById("p-amount").value = "";
+      document.getElementById("p-note").value = "";
+      refreshPaymentUI(res);
+      toast("Pago agregado ✓");
+    } else toast(res.error || "Error", "error");
+  }
+
+  function refreshPaymentUI(res) {
+    const b = CURRENT_DETAIL.brief;
+    if (res.paidAmount !== undefined) b.paid_amount = res.paidAmount;
+    const history = res.paymentHistory || CURRENT_DETAIL.paymentHistory || [];
+    const total = b.total_amount;
+    const paid  = b.paid_amount || 0;
+    const pct   = total ? Math.min((paid / total) * 100, 100) : 0;
+
+    // Update bar + labels
+    const barWrap = document.querySelector("#ab-pay .pay-bar-bg");
+    if (barWrap) {
+      barWrap.querySelector(".pay-bar").style.width = pct + "%";
     }
+    const paidEl = document.querySelector("#ab-pay .pay-paid");
+    const totEl  = document.querySelector("#ab-pay .pay-total");
+    if (paidEl) paidEl.textContent = `$${paid.toLocaleString()} pagados`;
+    if (totEl && total) totEl.textContent = `de $${total.toLocaleString()} total`;
+
+    // Update history list
+    const list = document.getElementById("payment-history-list");
+    if (list) list.innerHTML = history.map(p => renderPaymentEntry(p)).join('');
   }
 
   // ── THEME ──
