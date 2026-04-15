@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tu Proyecto — Cero Studio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --white: #ffffff;
+      --lime: #B8FF00;
+      --gray1: #111111;
+      --gray2: #1a1a1a;
+      --gray3: #2a2a2a;
+      --gray-text: #777777;
+      --gray-light: #aaaaaa;
+      --gray-border: rgba(255,255,255,0.06);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+
+    /* ── HEADER ── */
+    header {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--gray-border);
+      margin-bottom: 40px;
+    }
+    .header-inner {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; }
+    .logo svg { width: 22px; height: 22px; }
+    .logo-text { font-size: 14px; font-weight: 800; letter-spacing: -0.01em; }
+    .logo-sub { font-size: 9px; font-weight: 400; letter-spacing: 0.22em; opacity: 0.4; margin-left: 8px; }
+    .header-badge {
+      font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--gray-text); font-weight: 600;
+    }
+
+    /* ── LOADING ── */
+    .loading {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; min-height: 60vh; gap: 24px;
+    }
+    .loading svg { animation: pulse 2s ease-in-out infinite; }
+    .loading p { color: var(--gray-text); font-size: 14px; }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+    /* ── ERROR ── */
+    .error-state {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; min-height: 60vh; gap: 16px; text-align: center;
+    }
+    .error-state h2 { font-size: 24px; font-weight: 800; }
+    .error-state p { color: var(--gray-text); font-size: 14px; max-width: 400px; }
+
+    /* ── PROJECT HEADER ── */
+    .project-header { margin-bottom: 40px; }
+    .project-id {
+      font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--gray-text); margin-bottom: 6px; font-weight: 600;
+    }
+    .project-name {
+      font-size: 32px; font-weight: 800; letter-spacing: -0.035em;
+      line-height: 1.1; margin-bottom: 8px;
+    }
+    .project-client {
+      font-size: 14px; color: var(--gray-text); margin-bottom: 16px;
+    }
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border-radius: 20px;
+      background: rgba(184,255,0,0.06); border: 1px solid rgba(184,255,0,0.15);
+    }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); }
+    .status-text {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--lime);
+    }
+
+    /* ── PHASE TIMELINE ── */
+    .section { margin-bottom: 40px; }
+    .section-title {
+      font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--gray-text); margin-bottom: 16px; font-weight: 700;
+      padding-bottom: 8px; border-bottom: 1px solid var(--gray-border);
+    }
+
+    .phases {
+      display: flex; gap: 4px; margin-bottom: 24px;
+    }
+    .phase-bar {
+      flex: 1; height: 4px; border-radius: 2px;
+      background: var(--gray3); transition: background 0.4s ease;
+    }
+    .phase-bar.completed { background: var(--lime); }
+    .phase-bar.active { background: var(--lime); opacity: 0.5; }
+
+    .phase-labels {
+      display: flex; justify-content: space-between; margin-bottom: 32px;
+    }
+    .phase-label {
+      font-size: 10px; color: var(--gray-text); text-align: center;
+      flex: 1; letter-spacing: 0.03em;
+    }
+    .phase-label.active { color: var(--lime); font-weight: 700; }
+    .phase-label.completed { color: var(--gray-light); }
+
+    /* ── MILESTONES ── */
+    .milestone {
+      display: flex; gap: 14px; padding: 14px 0;
+      border-bottom: 1px solid var(--gray-border);
+    }
+    .milestone:last-child { border-bottom: none; }
+    .milestone-check {
+      width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+      border: 2px solid var(--gray3); display: flex; align-items: center;
+      justify-content: center; margin-top: 1px;
+    }
+    .milestone-check.done { background: var(--lime); border-color: var(--lime); }
+    .milestone-check.active { border-color: var(--lime); }
+    .milestone-title { font-size: 14px; color: var(--white); font-weight: 500; }
+    .milestone-desc { font-size: 12px; color: var(--gray-text); margin-top: 2px; line-height: 1.4; }
+    .milestone-date { font-size: 11px; color: var(--gray-text); margin-top: 4px; }
+    .milestone.pending .milestone-title { color: var(--gray-text); }
+
+    /* ── FILES ── */
+    .file-card {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px; background: var(--gray2); border-radius: 8px;
+      margin-bottom: 8px; transition: background 0.2s;
+    }
+    .file-card:hover { background: var(--gray3); }
+    .file-info { display: flex; align-items: center; gap: 12px; }
+    .file-icon {
+      width: 36px; height: 36px; border-radius: 6px; background: var(--gray3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0;
+    }
+    .file-name { font-size: 14px; font-weight: 500; }
+    .file-type { font-size: 11px; color: var(--gray-text); margin-top: 1px; }
+    .file-download {
+      padding: 8px 16px; background: transparent;
+      border: 1px solid var(--gray3); border-radius: 6px;
+      color: var(--gray-light); font-size: 12px; font-family: 'Syne', sans-serif;
+      cursor: pointer; text-decoration: none; letter-spacing: 0.04em;
+      text-transform: uppercase; font-weight: 600; transition: all 0.2s;
+    }
+    .file-download:hover { border-color: var(--lime); color: var(--lime); }
+
+    /* ── ACTIVITY ── */
+    .activity-item {
+      display: flex; gap: 14px; padding: 12px 0;
+      border-bottom: 1px solid var(--gray-border);
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-dot-wrap {
+      display: flex; flex-direction: column; align-items: center; gap: 0;
+    }
+    .activity-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--gray3); flex-shrink: 0; margin-top: 5px;
+    }
+    .activity-dot.delivery { background: var(--lime); }
+    .activity-dot.payment { background: #4CAF50; }
+    .activity-dot.approval { background: #2196F3; }
+    .activity-title { font-size: 13px; color: var(--white); font-weight: 500; }
+    .activity-desc { font-size: 12px; color: var(--gray-text); margin-top: 2px; }
+    .activity-date { font-size: 11px; color: var(--gray-text); margin-top: 3px; }
+
+    /* ── PAYMENT ── */
+    .payment-bar-bg {
+      width: 100%; height: 6px; background: var(--gray3);
+      border-radius: 3px; overflow: hidden; margin: 12px 0;
+    }
+    .payment-bar {
+      height: 100%; background: var(--lime); border-radius: 3px;
+      transition: width 0.6s ease;
+    }
+    .payment-info {
+      display: flex; justify-content: space-between; font-size: 13px;
+    }
+    .payment-paid { color: var(--lime); font-weight: 600; }
+    .payment-total { color: var(--gray-text); }
+
+    /* ── WHATSAPP CTA ── */
+    .whatsapp-cta {
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; padding: 16px 32px; background: var(--lime);
+      color: var(--black); border: none; border-radius: 8px;
+      font-size: 13px; font-weight: 800; font-family: 'Syne', sans-serif;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      text-decoration: none; transition: transform 0.15s;
+      margin: 32px 0 60px; width: 100%;
+    }
+    .whatsapp-cta:hover { transform: scale(1.02); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 20px 0; border-top: 1px solid var(--gray-border);
+      text-align: center; margin-bottom: 40px;
+    }
+    footer p { font-size: 11px; color: var(--gray-text); letter-spacing: 0.08em; }
+
+    /* ── EMPTY STATE ── */
+    .empty { text-align: center; padding: 24px; color: var(--gray-text); font-size: 13px; }
+
+    @media (max-width: 600px) {
+      .project-name { font-size: 24px; }
+      .phase-labels { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- HEADER -->
+    <header>
+      <div class="header-inner">
+        <div class="logo">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="white" stroke-width="7"/>
+            <circle cx="50" cy="50" r="7.5" fill="white"/>
+          </svg>
+          <span class="logo-text">CERO</span>
+          <span class="logo-sub">STUDIO.AI</span>
+        </div>
+        <span class="header-badge">Portal de Proyecto</span>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <main id="app">
+      <div class="loading" id="loading">
+        <svg width="48" height="48" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="white" stroke-width="7"/>
+          <circle cx="50" cy="50" r="7.5" fill="white"/>
+        </svg>
+        <p>Cargando tu proyecto...</p>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>CERO STUDIO — cerostudio.ai</p>
+    </footer>
+  </div>
+
+  <script>
+    // ── CONFIG ──
+    const WORKER_URL = "https://intake.cerostudio.ai"; // Change to your Worker URL
+    const WHATSAPP = "521XXXXXXXXXX"; // Change to your number
+
+    const PHASES = ["Intake", "Diseño", "Sistema", "Desarrollo", "Entrega"];
+    const STATUS_LABELS = {
+      new: "Brief recibido", reviewed: "En revisión", proposal_sent: "Propuesta enviada",
+      approved: "Aprobado", in_progress: "En desarrollo", delivered: "Entregado", archived: "Archivado",
+    };
+    const FILE_ICONS = {
+      quotation: "💰", contract: "📄", deliverable: "🚀", preview: "👁", other: "📎",
+    };
+    const FILE_LABELS = {
+      quotation: "Cotización", contract: "Contrato", deliverable: "Entregable", preview: "Preview", other: "Archivo",
+    };
+
+    function formatDate(iso) {
+      if (!iso) return "";
+      const d = new Date(iso);
+      return d.toLocaleDateString("es-MX", { day: "numeric", month: "short", year: "numeric" });
+    }
+
+    async function init() {
+      const params = new URLSearchParams(window.location.search);
+      const key = params.get("key");
+
+      if (!key) {
+        showError("Sin acceso", "Necesitas un link válido de proyecto para acceder a esta página. Si crees que es un error, contáctanos por WhatsApp.");
+        return;
+      }
+
+      try {
+        const res = await fetch(`${WORKER_URL}/portal/${key}`);
+        if (!res.ok) throw new Error("Not found");
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
+        render(data);
+      } catch (err) {
+        showError("Proyecto no encontrado", "El link de acceso no es válido o ha expirado. Contáctanos por WhatsApp si necesitas ayuda.");
+      }
+    }
+
+    function showError(title, msg) {
+      document.getElementById("app").innerHTML = `
+        <div class="error-state">
+          <svg width="48" height="48" viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="#333" stroke-width="7"/><circle cx="50" cy="50" r="7.5" fill="#333"/></svg>
+          <h2>${title}</h2>
+          <p>${msg}</p>
+          <a href="https://wa.me/${WHATSAPP}" class="whatsapp-cta" style="width:auto;margin:16px 0">Contactar por WhatsApp →</a>
+        </div>
+      `;
+    }
+
+    function render(data) {
+      const { project, milestones, files, activity } = data;
+      const phase = project.currentPhase || 0;
+
+      // Payment percentage
+      const payPct = project.totalAmount ? Math.round((project.paidAmount || 0) / project.totalAmount * 100) : 0;
+
+      // Group milestones by phase
+      const grouped = {};
+      milestones.forEach(m => {
+        if (!grouped[m.phase]) grouped[m.phase] = [];
+        grouped[m.phase].push(m);
+      });
+
+      document.getElementById("app").innerHTML = `
+        <!-- PROJECT HEADER -->
+        <div class="project-header">
+          <div class="project-id">${project.id}</div>
+          <h1 class="project-name">${project.name}</h1>
+          <div class="project-client">Cliente: ${project.clientName}</div>
+          <div class="status-badge">
+            <div class="status-dot"></div>
+            <span class="status-text">${STATUS_LABELS[project.status] || project.status}</span>
+          </div>
+        </div>
+
+        <!-- PHASE PROGRESS -->
+        <div class="section">
+          <div class="section-title">Progreso del Proyecto</div>
+          <div class="phases">
+            ${PHASES.map((_, i) => `<div class="phase-bar ${i < phase ? 'completed' : i === phase ? 'active' : ''}"></div>`).join("")}
+          </div>
+          <div class="phase-labels">
+            ${PHASES.map((name, i) => `<div class="phase-label ${i < phase ? 'completed' : i === phase ? 'active' : ''}">${name}</div>`).join("")}
+          </div>
+        </div>
+
+        <!-- MILESTONES -->
+        <div class="section">
+          <div class="section-title">Timeline del Proyecto</div>
+          ${milestones.length ? milestones.map(m => `
+            <div class="milestone ${m.status}">
+              <div class="milestone-check ${m.status === 'completed' ? 'done' : m.status === 'active' ? 'active' : ''}">
+                ${m.status === 'completed' ? '<svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" stroke="#0a0a0a" stroke-width="1.5" fill="none"/></svg>' : ''}
+              </div>
+              <div>
+                <div class="milestone-title">${m.title}</div>
+                ${m.description ? `<div class="milestone-desc">${m.description}</div>` : ''}
+                ${m.completed_at ? `<div class="milestone-date">Completado: ${formatDate(m.completed_at)}</div>` : m.target_date ? `<div class="milestone-date">Fecha objetivo: ${formatDate(m.target_date)}</div>` : ''}
+              </div>
+            </div>
+          `).join("") : '<div class="empty">Pronto aparecerán los hitos de tu proyecto</div>'}
+        </div>
+
+        <!-- FILES -->
+        <div class="section">
+          <div class="section-title">Archivos del Proyecto</div>
+          ${files.length ? files.map(f => `
+            <div class="file-card">
+              <div class="file-info">
+                <div class="file-icon">${FILE_ICONS[f.file_type] || '📎'}</div>
+                <div>
+                  <div class="file-name">${f.file_name}</div>
+                  <div class="file-type">${FILE_LABELS[f.file_type] || 'Archivo'} · ${formatDate(f.uploaded_at)}</div>
+                </div>
+              </div>
+              <a href="${f.file_url}" target="_blank" rel="noopener" class="file-download">Descargar</a>
+            </div>
+          `).join("") : '<div class="empty">Los archivos de tu proyecto aparecerán aquí</div>'}
+        </div>
+
+        <!-- PAYMENT -->
+        ${project.totalAmount ? `
+        <div class="section">
+          <div class="section-title">Pagos</div>
+          <div class="payment-bar-bg"><div class="payment-bar" style="width:${payPct}%"></div></div>
+          <div class="payment-info">
+            <span class="payment-paid">$${(project.paidAmount||0).toLocaleString()} USD pagados</span>
+            <span class="payment-total">de $${project.totalAmount.toLocaleString()} USD total</span>
+          </div>
+        </div>
+        ` : ''}
+
+        <!-- ACTIVITY LOG -->
+        ${activity.length ? `
+        <div class="section">
+          <div class="section-title">Actividad Reciente</div>
+          ${activity.map(a => `
+            <div class="activity-item">
+              <div class="activity-dot-wrap">
+                <div class="activity-dot ${a.entry_type}"></div>
+              </div>
+              <div>
+                <div class="activity-title">${a.title}</div>
+                ${a.description ? `<div class="activity-desc">${a.description}</div>` : ''}
+                <div class="activity-date">${formatDate(a.date)}</div>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+        ` : ''}
+
+        <!-- WHATSAPP CTA -->
+        <a href="https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Hola, tengo una pregunta sobre mi proyecto ${project.id} (${project.name}).`)}" target="_blank" rel="noopener" class="whatsapp-cta">
+          ¿Tienes preguntas? Escríbenos por WhatsApp →
+        </a>
+      `;
+    }
+
+    init();
+  </script>
+</body>
+</html>
