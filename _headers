@@ -1,0 +1,26 @@
+# Cloudflare Pages — Cache Headers
+
+# Images: 1 year immutable (content never changes for a given filename)
+/images/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Blog CSS + JS: 1 week (may update)
+/blog/blog.css
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+/blog/blog.js
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+# SVG/font assets: 1 year
+/images/svg/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML pages: no cache (always fresh, JS/CSS embedded)
+/
+  Cache-Control: no-cache
+
+/blog/
+  Cache-Control: no-cache
+
+/blog/*
+  Cache-Control: no-cache
