@@ -3570,16 +3570,12 @@
           document.querySelectorAll('[data-i18n="' + id + '"]').forEach(apply);
         });
 
-        /* Hero titulares (scramble + variantes estáticas) */
+        /* Hero titulares — solo actualiza texto, sin tocar opacity.
+           La opacidad la maneja exclusivamente TextScramble al animar. */
         if (typeof CS_HERO_TEXTS !== 'undefined' && CS_HERO_TEXTS[lang]) {
           CS_HERO_TEXTS[lang].forEach(function (item) {
             var txt = item.text;
-            var sync = function (el) {
-              if (el) {
-                el.textContent = txt;
-                el.style.opacity = txt ? 1 : ''; /* revela si tiene texto, o devuelve al CSS */
-              }
-            };
+            var sync = function (el) { if (el) el.textContent = txt; };
             sync(g(item.el));
             document.querySelectorAll('[data-hero-line="' + item.el + '"]').forEach(sync);
           });
