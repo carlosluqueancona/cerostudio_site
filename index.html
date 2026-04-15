@@ -202,12 +202,13 @@
     }
 
     .ld-logo {
-      width: 200px;
+      width: 280px;
+      height: auto;
       opacity: 0;
     }
 
     .ld-wrap {
-      width: 200px;
+      width: 280px;
       height: 2px;
       background: var(--g3);
       overflow: hidden;
@@ -3092,10 +3093,10 @@
       });
       function _stepCursor() {
         _craf = null;
-        dot.style.transform = 'translate(' + _mx + 'px,' + _my + 'px)';
+        dot.style.transform  = 'translate(calc(' + _mx + 'px - 50%), calc(' + _my + 'px - 50%))';
         _rx += (_mx - _rx) * 0.18;
         _ry += (_my - _ry) * 0.18;
-        ring.style.transform = 'translate(' + _rx + 'px,' + _ry + 'px)';
+        ring.style.transform = 'translate(calc(' + _rx + 'px - 50%), calc(' + _ry + 'px - 50%))';
         if (Math.abs(_mx - _rx) > 0.5 || Math.abs(_my - _ry) > 0.5)
           _craf = requestAnimationFrame(_stepCursor);
       }
