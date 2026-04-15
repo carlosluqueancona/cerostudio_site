@@ -443,6 +443,11 @@
       opacity: 0;
     }
 
+    @media (max-width: 768px) {
+      .hero-sep { display: none; }
+      .hero-static-title span[data-hero-line] { display: block; }
+    }
+
     .hero-static-sub {
       font-size: clamp(15px, 1.3vw, 18px);
       font-weight: 400;
@@ -2233,8 +2238,8 @@
       <div class="hero-inner">
         <p class="hero-static-eyebrow" id="heroEyebrow">Agencia Digital Premium · cerostudio.ai</p>
         <h2 class="hero-static-title">
-          <span class="hero-line"><span data-hero-line="scrL1" id="scrL1">PRESENCIA</span>&nbsp;<span data-hero-line="scrL2a" id="scrL2a">DIGITAL</span></span>
-          <span class="hero-line"><span class="t-outline" data-hero-line="scrL2b" id="scrL2b">QUE</span>&nbsp;<span class="t-lime" data-hero-line="scrL3" id="scrL3">VENDE.</span></span>
+          <span class="hero-line"><span data-hero-line="scrL1" id="scrL1">PRESENCIA</span><span class="hero-sep">&nbsp;</span><span data-hero-line="scrL2a" id="scrL2a">DIGITAL</span></span>
+          <span class="hero-line"><span class="t-outline" data-hero-line="scrL2b" id="scrL2b">QUE</span><span class="hero-sep">&nbsp;</span><span class="t-lime" data-hero-line="scrL3" id="scrL3">VENDE.</span></span>
         </h2>
         <p class="hero-static-sub" id="heroSub">Desarrollamos sitios web y tiendas online para emprendedores y negocios.
           Diseño de nivel internacional, resultados reales.</p>
