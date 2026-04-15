@@ -1,4 +1,36 @@
-# Cloudflare Pages — Cache Headers
+# Cloudflare Pages — Cache + Security Headers
+
+# ── Security headers (all routes) ────────────────────────────────────────────
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
+# ── Content-Security-Policy por sección ──────────────────────────────────────
+
+# Sitio principal y páginas generales
+/
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://intake.cerostudio.ai
+
+# Blog público
+/blog/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; object-src 'none'; frame-ancestors 'none'; base-uri 'self'
+
+# Admin panel — más permisivo para permitir uploads a R2
+/blog/admin/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; font-src 'self' data:; connect-src 'self' https://cerostudio.ai https://*.r2.dev; object-src 'none'; frame-ancestors 'none'; base-uri 'self'
+
+# Portal cliente
+/proyecto/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; object-src 'none'; frame-ancestors 'none'; base-uri 'self'
+
+# Formulario de intake / brief
+/brief/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://intake.cerostudio.ai; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://intake.cerostudio.ai
+
+# ── Cache Headers ─────────────────────────────────────────────────────────────
 
 # Images: 1 year immutable (content never changes for a given filename)
 /images/*
