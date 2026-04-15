@@ -103,52 +103,52 @@ export default {
           body.briefText || null,
         ).run();
 
-        // ─── Send email notification via MailChannels ───
-        try {
-          await fetch("https://api.mailchannels.net/tx/v1/send", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              personalizations: [
-                {
-                  to: [{ email: "hola@cerostudio.ai", name: "Cero Studio" }],
-                },
-              ],
-              from: {
-                email: "intake@cerostudio.ai",
-                name: "Cero Studio Intake",
+        // ─── Send email notification via Resend ───
+        if (env.RESEND_API_KEY) {
+          try {
+            const emailBody = [
+              `NUEVO BRIEF DE PROYECTO: ${briefId}`,
+              `═══════════════════════════════════════`,
+              ``,
+              `Cliente:    ${body.name}`,
+              `Email:      ${body.email}`,
+              `Teléfono:   ${body.phone}`,
+              `Negocio:    ${body.businessName || "—"}`,
+              `Industria:  ${body.industry || "—"}`,
+              `Ubicación:  ${body.location || "—"}`,
+              ``,
+              `Tipo de proyecto: ${(body.projectType || []).join(", ")}`,
+              `Presupuesto:      ${body.budget || "—"}`,
+              `Timeline:         ${body.timeline || "—"}`,
+              ``,
+              `═══════════════════════════════════════`,
+              `Ver brief completo en: https://cerostudio.ai/brief/admin`,
+              ``,
+              body.briefText || "",
+            ].join("\n");
+
+            const res = await fetch("https://api.resend.com/emails", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${env.RESEND_API_KEY}`,
               },
-              subject: `◉ Nuevo Brief ${briefId} — ${body.businessName || body.name}`,
-              content: [
-                {
-                  type: "text/plain",
-                  value: [
-                    `NUEVO BRIEF DE PROYECTO: ${briefId}`,
-                    `═══════════════════════════════════════`,
-                    ``,
-                    `Cliente: ${body.name}`,
-                    `Email: ${body.email}`,
-                    `Teléfono: ${body.phone}`,
-                    `Negocio: ${body.businessName || "—"}`,
-                    `Industria: ${body.industry || "—"}`,
-                    `Ubicación: ${body.location || "—"}`,
-                    ``,
-                    `Tipo de proyecto: ${(body.projectType || []).join(", ")}`,
-                    `Presupuesto: ${body.budget || "—"}`,
-                    `Timeline: ${body.timeline || "—"}`,
-                    ``,
-                    `═══════════════════════════════════════`,
-                    `Ver brief completo en el dashboard o en D1.`,
-                    ``,
-                    body.briefText || "",
-                  ].join("\n"),
-                },
-              ],
-            }),
-          });
-        } catch (emailErr) {
-          // Don't fail the submission if email fails
-          console.error("Email notification failed:", emailErr);
+              body: JSON.stringify({
+                from: "Cero Studio Intake <intake@cerostudio.ai>",
+                to: ["hola@cerostudio.ai"],
+                subject: `◉ Nuevo Brief ${briefId} — ${body.businessName || body.name}`,
+                text: emailBody,
+              }),
+            });
+
+            if (!res.ok) {
+              const errText = await res.text();
+              console.error("Resend error:", res.status, errText);
+            }
+          } catch (emailErr) {
+            // Don't fail the submission if email fails
+            console.error("Email notification failed:", emailErr);
+          }
         }
 
         return Response.json(
