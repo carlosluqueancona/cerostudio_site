@@ -544,8 +544,35 @@ footer {
   .post-card:not(.has-thumb) .post-card-body {
     padding: 30px;
   }
-  
+
   .blog-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ── Load More ── */
+.load-more-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 56px 0 80px;
+}
+
+.load-more-btn {
+  background: transparent;
+  border: 1.5px solid var(--lime);
+  color: var(--lime);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 16px 40px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.load-more-btn:hover {
+  background: var(--lime);
+  color: var(--on-lime);
 }

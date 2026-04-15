@@ -4,21 +4,30 @@
  */
 
 const BLOG_DATA_URL = '/api/posts';
-let posts = [];
+const PER_PAGE = 9;
+
+let currentPage = 1;
+let hasMore = false;
+let isLoadingMore = false;
 
 async function initBlog() {
   const root = document.getElementById('blog-root');
 
   try {
-    const response = await fetch(BLOG_DATA_URL);
-    posts = await response.json();
+    const response = await fetch(`${BLOG_DATA_URL}?page=1&per=${PER_PAGE}`);
+    const firstBatch = await response.json();
+    hasMore = firstBatch.length === PER_PAGE;
+
+    // Seed global posts array for list view
+    window._blogPosts = firstBatch;
+    currentPage = 1;
 
     // Simple router based on pathname
     handleRoute();
-    
+
     // Listen for back/forward navigation
     window.onpopstate = handleRoute;
-    
+
   } catch (error) {
     console.error('Error loading blog data:', error);
     root.innerHTML = `<div class="section-inner" style="padding: 100px 0; text-align: center;">Error al cargar el blog.</div>`;
@@ -51,43 +60,82 @@ function navigate(e, path) {
   window.scrollTo(0, 0);
 }
 
+function postCardHtml(post) {
+  const thumbHtml = post.featured_image
+    ? '<div class="post-card-thumb"><img src="' + post.featured_image + '" alt="' + post.title + '" loading="lazy"></div>'
+    : '';
+  return '<article class="post-card' + (post.featured_image ? ' has-thumb' : '') + '" onclick="navigate(null, \'/blog/' + post.slug + '\')" style="cursor: pointer;">'
+    + thumbHtml
+    + '<div class="post-card-body">'
+    + '<div class="post-card-cat">' + (post.category || 'General') + '</div>'
+    + '<h2 class="post-card-title">' + post.title + '</h2>'
+    + '<p class="post-card-excerpt">' + (post.excerpt || '') + '</p>'
+    + '<div class="post-card-meta">' + formatDate(post.published_at) + '</div>'
+    + '</div>'
+    + '</article>';
+}
+
 function renderList() {
   const root = document.getElementById('blog-root');
-  
-  let html = `
+  const posts = window._blogPosts || [];
+
+  let cardsHtml = posts.map(postCardHtml).join('');
+
+  root.innerHTML = `
     <header class="blog-hero">
       <div class="section-inner">
         <div class="eyebrow">Nuestro Blog</div>
         <h1 class="section-title">Insights sobre diseño <br class="pc-only"> y tecnología</h1>
       </div>
     </header>
-    
+
     <div class="section-inner">
-      <div class="blog-grid">
-  `;
-  
-  posts.forEach(post => {
-    const thumbHtml = post.featured_image
-      ? '<div class="post-card-thumb"><img src="' + post.featured_image + '" alt="' + post.title + '" loading="lazy"></div>'
-      : '';
-    html += '<article class="post-card' + (post.featured_image ? ' has-thumb' : '') + '" onclick="navigate(null, \'/blog/' + post.slug + '\')" style="cursor: pointer;">'
-      + thumbHtml
-      + '<div class="post-card-body">'
-      + '<div class="post-card-cat">' + (post.category || 'General') + '</div>'
-      + '<h2 class="post-card-title">' + post.title + '</h2>'
-      + '<p class="post-card-excerpt">' + (post.excerpt || '') + '</p>'
-      + '<div class="post-card-meta">' + formatDate(post.published_at) + '</div>'
-      + '</div>'
-      + '</article>';
-  });
-  
-  html += `
+      <div class="blog-grid" id="blog-grid">
+        ${cardsHtml}
+      </div>
+      <div class="load-more-wrap" id="load-more-wrap" style="${hasMore ? '' : 'display:none'}">
+        <button class="load-more-btn" id="load-more-btn" onclick="loadMore()">Ver más artículos</button>
       </div>
     </div>
   `;
-  
-  root.innerHTML = html;
+
   document.title = 'Blog — Cero Studio';
+}
+
+async function loadMore() {
+  if (isLoadingMore) return;
+  isLoadingMore = true;
+
+  const btn = document.getElementById('load-more-btn');
+  if (btn) btn.textContent = 'Cargando...';
+
+  try {
+    const nextPage = currentPage + 1;
+    const response = await fetch(`${BLOG_DATA_URL}?page=${nextPage}&per=${PER_PAGE}`);
+    const newPosts = await response.json();
+
+    currentPage = nextPage;
+    hasMore = newPosts.length === PER_PAGE;
+    window._blogPosts = (window._blogPosts || []).concat(newPosts);
+
+    const grid = document.getElementById('blog-grid');
+    if (grid) {
+      newPosts.forEach(post => {
+        grid.insertAdjacentHTML('beforeend', postCardHtml(post));
+      });
+    }
+
+    const wrap = document.getElementById('load-more-wrap');
+    if (wrap) wrap.style.display = hasMore ? '' : 'none';
+
+  } catch (e) {
+    console.error('Error cargando más artículos:', e);
+    if (btn) btn.textContent = 'Error — intentar de nuevo';
+  } finally {
+    isLoadingMore = false;
+    const btn2 = document.getElementById('load-more-btn');
+    if (btn2 && hasMore) btn2.textContent = 'Ver más artículos';
+  }
 }
 
 async function renderPost(slug) {
@@ -144,6 +192,7 @@ function formatDate(dateStr) {
 
 // Global scope for onclick handlers in strings
 window.navigate = navigate;
+window.loadMore = loadMore;
 
 // --- Navigation Logic ---
 function toggleNav() {
