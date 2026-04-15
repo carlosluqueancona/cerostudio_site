@@ -3525,11 +3525,11 @@
           { el: 'scrL3', text: 'VENDE.', delay: 660 },
         ],
         en: [
-          { el: 'scrL1', text: 'DIGITAL', delay: 200 },
-          { el: 'scrL2a', text: 'PRESENCE', delay: 380 },
-          { el: 'scrL2b', text: '', delay: 0 },
-          { el: 'scrL3b', text: 'THAT', delay: 480 },
-          { el: 'scrL3', text: 'SELLS.', delay: 660 },
+          { el: 'scrL1',  text: 'DIGITAL',          delay: 200 },
+          { el: 'scrL2a', text: 'PRESENCE\u00A0',   delay: 380 },
+          { el: 'scrL2b', text: 'THAT',             delay: 420 },
+          { el: 'scrL3b', text: '',                  delay: 0   },
+          { el: 'scrL3',  text: 'SELLS.',            delay: 660 },
         ]
       };
 
@@ -3585,9 +3585,9 @@
           });
         }
 
-        /* Mostrar/ocultar línea "THAT" (solo en inglés) */
+        /* heroLine3b ya no se usa en ningún idioma */
         var line3b = document.getElementById('heroLine3b');
-        if (line3b) line3b.style.display = (lang === 'en') ? 'block' : 'none';
+        if (line3b) line3b.style.display = 'none';
 
         /* Form placeholders */
         var form = CS_FORM[lang];
