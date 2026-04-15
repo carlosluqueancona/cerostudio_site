@@ -919,7 +919,6 @@
     .kinetic-item {
       position: relative;
       width: 400px;
-      height: 252px;
       overflow: hidden;
       flex-shrink: 0;
       display: block;
@@ -929,8 +928,8 @@
 
     .kinetic-item img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
+      display: block;
       transition: transform .6s ease, filter .4s;
       filter: brightness(.55);
     }
