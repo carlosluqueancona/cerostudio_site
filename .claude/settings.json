@@ -6,7 +6,11 @@
       "WebFetch(domain:centro-psibori.framer.website)",
       "WebFetch(domain:avicultura-estrategica.framer.website)",
       "Bash(npx shot-scraper *)",
-      "Bash(npx pageres *)"
+      "Bash(npx pageres *)",
+      "Read(//Users/carlos/.claude/skills/cyber-neo/references/**)"
+    ],
+    "additionalDirectories": [
+      "/Users/carlos/Desktop"
     ]
   }
 }
