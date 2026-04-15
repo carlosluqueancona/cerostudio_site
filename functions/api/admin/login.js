@@ -9,52 +9,65 @@
  *   JWT_SECRET
  */
 
-const CORS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-};
+const ALLOWED_ORIGINS = ['https://cerostudio.ai', 'https://www.cerostudio.ai'];
 
-export async function onRequestOptions() {
-  return new Response(null, { status: 204, headers: CORS });
+function corsHeaders(origin) {
+  const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  return {
+    'Access-Control-Allow-Origin': allowed,
+    'Vary': 'Origin',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
+}
+
+export async function onRequestOptions(context) {
+  const origin = context.request.headers.get('Origin') || '';
+  return new Response(null, { status: 204, headers: corsHeaders(origin) });
 }
 
 export async function onRequestPost(context) {
   const { request, env } = context;
+  const origin = request.headers.get('Origin') || '';
+
+  if (!env.JWT_SECRET) {
+    console.error('[login] JWT_SECRET no configurado');
+    return json({ error: 'Error interno del servidor' }, 500, origin);
+  }
 
   try {
     const { username, password } = await request.json();
 
     if (!username || !password) {
-      return json({ error: 'Credenciales requeridas' }, 400);
+      return json({ error: 'Credenciales requeridas' }, 400, origin);
     }
 
     const validUser = timingSafeEqual(username, env.ADMIN_USERNAME || '');
     const validPass = timingSafeEqual(password, env.ADMIN_PASSWORD || '');
 
     if (!validUser || !validPass) {
-      // Artificial delay to slow brute force
       await new Promise(r => setTimeout(r, 500));
-      return json({ error: 'Usuario o contraseña incorrectos' }, 401);
+      return json({ error: 'Usuario o contraseña incorrectos' }, 401, origin);
     }
 
     const token = await signJWT(
       { sub: username, iat: Date.now(), exp: Date.now() + 86_400_000 }, // 24 h
-      env.JWT_SECRET || 'change-this-secret'
+      env.JWT_SECRET
     );
 
-    return json({ token });
+    return json({ token }, 200, origin);
   } catch (e) {
-    return json({ error: 'Error interno del servidor' }, 500);
+    console.error('[login] Error:', e.message);
+    return json({ error: 'Error interno del servidor' }, 500, origin);
   }
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
-function json(data, status = 200) {
+function json(data, status = 200, origin = '') {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { 'Content-Type': 'application/json', ...CORS },
+    headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) },
   });
 }
 

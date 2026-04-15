@@ -10,11 +10,17 @@
  * POST   /api/admin/posts?action=toggle&id=N → toggle published/draft
  */
 
-const CORS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-};
+const ALLOWED_ORIGINS = ['https://cerostudio.ai', 'https://www.cerostudio.ai'];
+
+function corsHeaders(origin) {
+  const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  return {
+    'Access-Control-Allow-Origin': allowed,
+    'Vary': 'Origin',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  };
+}
 
 // ── Auth ─────────────────────────────────────────────────────────────────────
 
@@ -49,10 +55,10 @@ async function requireAuth(request, env) {
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-function json(data, status = 200) {
+function json(data, status = 200, origin = '') {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { 'Content-Type': 'application/json', ...CORS },
+    headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) },
   });
 }
 
@@ -69,14 +75,16 @@ function slugify(text) {
 
 // ── Route handlers ────────────────────────────────────────────────────────────
 
-export async function onRequestOptions() {
-  return new Response(null, { status: 204, headers: CORS });
+export async function onRequestOptions(context) {
+  const origin = context.request.headers.get('Origin') || '';
+  return new Response(null, { status: 204, headers: corsHeaders(origin) });
 }
 
 /** GET — list all or single post */
 export async function onRequestGet(context) {
   const { request, env } = context;
-  if (!await requireAuth(request, env)) return json({ error: 'No autorizado' }, 401);
+  const origin = request.headers.get('Origin') || '';
+  if (!await requireAuth(request, env)) return json({ error: 'No autorizado' }, 401, origin);
 
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');
@@ -84,38 +92,41 @@ export async function onRequestGet(context) {
   try {
     if (id) {
       const post = await env.DB.prepare('SELECT * FROM posts WHERE id = ?').bind(id).first();
-      return post ? json(post) : json({ error: 'No encontrado' }, 404);
+      return post ? json(post, 200, origin) : json({ error: 'No encontrado' }, 404, origin);
     }
     const { results } = await env.DB.prepare(
       'SELECT * FROM posts ORDER BY created_at DESC'
     ).all();
-    return json(results);
+    return json(results, 200, origin);
   } catch (e) {
-    return json({ error: e.message }, 500);
+    console.error('[posts] GET error:', e.message);
+    return json({ error: 'Error al obtener los posts' }, 500, origin);
   }
 }
 
 /** POST — create post OR toggle status */
 export async function onRequestPost(context) {
   const { request, env } = context;
-  if (!await requireAuth(request, env)) return json({ error: 'No autorizado' }, 401);
+  const origin = request.headers.get('Origin') || '';
+  if (!await requireAuth(request, env)) return json({ error: 'No autorizado' }, 401, origin);
 
   const { searchParams } = new URL(request.url);
 
   // Toggle action
   if (searchParams.get('action') === 'toggle') {
     const id = searchParams.get('id');
-    if (!id) return json({ error: 'ID requerido' }, 400);
+    if (!id) return json({ error: 'ID requerido' }, 400, origin);
     try {
       const post = await env.DB.prepare('SELECT status FROM posts WHERE id = ?').bind(id).first();
-      if (!post) return json({ error: 'No encontrado' }, 404);
+      if (!post) return json({ error: 'No encontrado' }, 404, origin);
       const newStatus = post.status === 'published' ? 'draft' : 'published';
       const pub = newStatus === 'published' ? new Date().toISOString() : null;
       await env.DB.prepare('UPDATE posts SET status = ?, published_at = ? WHERE id = ?')
         .bind(newStatus, pub, id).run();
-      return json({ ok: true, status: newStatus });
+      return json({ ok: true, status: newStatus }, 200, origin);
     } catch (e) {
-      return json({ error: e.message }, 500);
+      console.error('[posts] toggle error:', e.message);
+      return json({ error: 'Error al cambiar el estado' }, 500, origin);
     }
   }
 
@@ -125,7 +136,7 @@ export async function onRequestPost(context) {
     const { title, content, excerpt, category, status,
             featured_image, featured_image_alt, meta_title, meta_description } = body;
 
-    if (!title) return json({ error: 'El título es obligatorio' }, 400);
+    if (!title) return json({ error: 'El título es obligatorio' }, 400, origin);
 
     const slug = slugify(body.slug || title);
     const pub  = status === 'published' ? new Date().toISOString() : null;
@@ -142,29 +153,31 @@ export async function onRequestPost(context) {
       excerpt || '', content || '', pub
     ).run();
 
-    return json({ ok: true, id: result.meta.last_row_id }, 201);
+    return json({ ok: true, id: result.meta.last_row_id }, 201, origin);
   } catch (e) {
-    if (e.message?.includes('UNIQUE')) return json({ error: 'Ya existe un artículo con ese slug' }, 409);
-    return json({ error: e.message }, 500);
+    if (e.message?.includes('UNIQUE')) return json({ error: 'Ya existe un artículo con ese slug' }, 409, origin);
+    console.error('[posts] create error:', e.message);
+    return json({ error: 'Error al crear el post' }, 500, origin);
   }
 }
 
 /** PUT — update post */
 export async function onRequestPut(context) {
   const { request, env } = context;
-  if (!await requireAuth(request, env)) return json({ error: 'No autorizado' }, 401);
+  const origin = request.headers.get('Origin') || '';
+  if (!await requireAuth(request, env)) return json({ error: 'No autorizado' }, 401, origin);
 
   try {
     const body = await request.json();
     const { id, title, content, excerpt, category, status,
             featured_image, featured_image_alt, meta_title, meta_description } = body;
 
-    if (!id)    return json({ error: 'ID requerido' }, 400);
-    if (!title) return json({ error: 'El título es obligatorio' }, 400);
+    if (!id)    return json({ error: 'ID requerido' }, 400, origin);
+    if (!title) return json({ error: 'El título es obligatorio' }, 400, origin);
 
     const slug     = slugify(body.slug || title);
     const existing = await env.DB.prepare('SELECT status, published_at FROM posts WHERE id = ?').bind(id).first();
-    if (!existing) return json({ error: 'No encontrado' }, 404);
+    if (!existing) return json({ error: 'No encontrado' }, 404, origin);
 
     const pub = (status === 'published' && existing.status !== 'published')
       ? new Date().toISOString()
@@ -184,26 +197,29 @@ export async function onRequestPut(context) {
       excerpt || '', content || '', pub, id
     ).run();
 
-    return json({ ok: true });
+    return json({ ok: true }, 200, origin);
   } catch (e) {
-    if (e.message?.includes('UNIQUE')) return json({ error: 'Ya existe un artículo con ese slug' }, 409);
-    return json({ error: e.message }, 500);
+    if (e.message?.includes('UNIQUE')) return json({ error: 'Ya existe un artículo con ese slug' }, 409, origin);
+    console.error('[posts] update error:', e.message);
+    return json({ error: 'Error al actualizar el post' }, 500, origin);
   }
 }
 
 /** DELETE — remove post */
 export async function onRequestDelete(context) {
   const { request, env } = context;
-  if (!await requireAuth(request, env)) return json({ error: 'No autorizado' }, 401);
+  const origin = request.headers.get('Origin') || '';
+  if (!await requireAuth(request, env)) return json({ error: 'No autorizado' }, 401, origin);
 
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');
-  if (!id) return json({ error: 'ID requerido' }, 400);
+  if (!id) return json({ error: 'ID requerido' }, 400, origin);
 
   try {
     await env.DB.prepare('DELETE FROM posts WHERE id = ?').bind(id).run();
-    return json({ ok: true });
+    return json({ ok: true }, 200, origin);
   } catch (e) {
-    return json({ error: e.message }, 500);
+    console.error('[posts] delete error:', e.message);
+    return json({ error: 'Error al eliminar el post' }, 500, origin);
   }
 }
