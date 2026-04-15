@@ -2233,12 +2233,8 @@
       <div class="hero-inner">
         <p class="hero-static-eyebrow" id="heroEyebrow">Agencia Digital Premium · cerostudio.ai</p>
         <h2 class="hero-static-title">
-          <span class="hero-line"><span data-hero-line="scrL1" id="scrL1">PRESENCIA</span></span>
-          <span class="hero-line"><span data-hero-line="scrL2a" id="scrL2a">DIGITAL&nbsp;</span><span class="t-outline"
-              data-hero-line="scrL2b" id="scrL2b">QUE</span></span>
-          <span class="hero-line" id="heroLine3b" style="display:none"><span class="t-outline" data-hero-line="scrL3b"
-              id="scrL3b"></span></span>
-          <span class="hero-line"><span class="t-lime" data-hero-line="scrL3" id="scrL3">VENDE.</span></span>
+          <span class="hero-line"><span data-hero-line="scrL1" id="scrL1">PRESENCIA</span>&nbsp;<span data-hero-line="scrL2a" id="scrL2a">DIGITAL</span></span>
+          <span class="hero-line"><span class="t-outline" data-hero-line="scrL2b" id="scrL2b">QUE</span>&nbsp;<span class="t-lime" data-hero-line="scrL3" id="scrL3">VENDE.</span></span>
         </h2>
         <p class="hero-static-sub" id="heroSub">Desarrollamos sitios web y tiendas online para emprendedores y negocios.
           Diseño de nivel internacional, resultados reales.</p>
@@ -2999,22 +2995,15 @@
         gsap.to('#heroEyebrow', { opacity: 1, duration: .8, ease: 'power2.out' });
 
         var _heroT = (typeof CS_HERO_TEXTS !== 'undefined' && typeof CS_LANG !== 'undefined') ? CS_HERO_TEXTS[CS_LANG] : [
-          { el: 'scrL1', text: 'PRESENCIA', delay: 200 },
-          { el: 'scrL2a', text: 'DIGITAL\u00A0', delay: 380 },
-          { el: 'scrL2b', text: 'QUE', delay: 420 },
-          { el: 'scrL3', text: 'VENDE.', delay: 660 },
+          { el: 'scrL1',  text: 'PRESENCIA', delay: 200 },
+          { el: 'scrL2a', text: 'DIGITAL',   delay: 340 },
+          { el: 'scrL2b', text: 'QUE',       delay: 520 },
+          { el: 'scrL3',  text: 'VENDE.',    delay: 660 },
         ];
         _heroT.forEach(({ el, text, delay }) => {
           var node = typeof el === 'string' ? document.getElementById(el) : el;
           if (node) setTimeout(() => new TextScramble(node).run(text), delay);
         });
-
-        /* Mostrar/ocultar línea "THAT" según idioma activo */
-        var _line3b = document.getElementById('heroLine3b');
-        if (_line3b) {
-          var _has3b = _heroT.some(function (i) { return i.el === 'scrL3b' && i.text; });
-          _line3b.style.display = _has3b ? 'block' : 'none';
-        }
 
         setTimeout(() => {
           gsap.to('#heroSub', { opacity: 1, duration: .85, ease: 'power3.out' });
@@ -3518,18 +3507,16 @@
       /* Hero scramble texts per language */
       var CS_HERO_TEXTS = {
         es: [
-          { el: 'scrL1', text: 'PRESENCIA', delay: 200 },
-          { el: 'scrL2a', text: 'DIGITAL ', delay: 380 },
-          { el: 'scrL2b', text: 'QUE', delay: 420 },
-          { el: 'scrL3b', text: '', delay: 0 },
-          { el: 'scrL3', text: 'VENDE.', delay: 660 },
+          { el: 'scrL1',  text: 'PRESENCIA', delay: 200 },
+          { el: 'scrL2a', text: 'DIGITAL',   delay: 340 },
+          { el: 'scrL2b', text: 'QUE',       delay: 520 },
+          { el: 'scrL3',  text: 'VENDE.',    delay: 660 },
         ],
         en: [
-          { el: 'scrL1',  text: 'DIGITAL',          delay: 200 },
-          { el: 'scrL2a', text: 'PRESENCE\u00A0',   delay: 380 },
-          { el: 'scrL2b', text: 'THAT',             delay: 420 },
-          { el: 'scrL3b', text: '',                  delay: 0   },
-          { el: 'scrL3',  text: 'SELLS.',            delay: 660 },
+          { el: 'scrL1',  text: 'DIGITAL',   delay: 200 },
+          { el: 'scrL2a', text: 'PRESENCE',  delay: 340 },
+          { el: 'scrL2b', text: 'THAT',      delay: 520 },
+          { el: 'scrL3',  text: 'SELLS.',    delay: 660 },
         ]
       };
 
