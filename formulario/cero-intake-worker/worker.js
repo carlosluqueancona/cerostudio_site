@@ -208,8 +208,12 @@ export default {
         );
       }
 
+      const { results: paymentHistory } = await env.DB.prepare(
+        "SELECT id, amount, note, recorded_at FROM payment_history WHERE brief_id = ?1 ORDER BY recorded_at DESC"
+      ).bind(id).all();
+
       return Response.json(
-        { success: true, brief },
+        { success: true, brief, paymentHistory },
         { headers: corsHeaders }
       );
     }
@@ -256,12 +260,12 @@ export default {
       }
 
       const id = url.pathname.split("/briefs/")[1].split("/payment")[0];
-      const { total_amount, paid_amount } = await request.json();
+      const { total_amount, paid_amount, note } = await request.json();
 
       const sets = ["updated_at = datetime('now')"];
       const params = [];
       if (total_amount !== undefined) { sets.push("total_amount = ?"); params.push(total_amount); }
-      if (paid_amount !== undefined)  { sets.push("paid_amount = ?");  params.push(paid_amount);  }
+      if (paid_amount  !== undefined) { sets.push("paid_amount = ?");  params.push(paid_amount);  }
 
       if (params.length === 0) {
         return Response.json(
@@ -270,13 +274,34 @@ export default {
         );
       }
 
+      // Fetch current paid_amount to compute the delta
+      const current = await env.DB.prepare(
+        "SELECT paid_amount FROM briefs WHERE brief_id = ?"
+      ).bind(id).first();
+
       params.push(id);
       await env.DB.prepare(
         `UPDATE briefs SET ${sets.join(", ")} WHERE brief_id = ?`
       ).bind(...params).run();
 
+      // Record payment history entry when paid_amount actually changes
+      if (paid_amount !== undefined) {
+        const prev = current?.paid_amount ?? 0;
+        const delta = paid_amount - prev;
+        if (delta !== 0) {
+          await env.DB.prepare(
+            "INSERT INTO payment_history (brief_id, amount, note) VALUES (?, ?, ?)"
+          ).bind(id, delta, note || null).run();
+        }
+      }
+
+      // Return updated history
+      const { results: paymentHistory } = await env.DB.prepare(
+        "SELECT id, amount, note, recorded_at FROM payment_history WHERE brief_id = ? ORDER BY recorded_at DESC"
+      ).bind(id).all();
+
       return Response.json(
-        { success: true, briefId: id },
+        { success: true, briefId: id, paymentHistory },
         { headers: corsHeaders }
       );
     }

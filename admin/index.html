@@ -987,7 +987,7 @@
             </div>
             <hr class="divider">
           ` : ""}
-          <div class="field-row" style="align-items:end">
+          <div class="field-row" style="align-items:end;margin-bottom:10px">
             <div class="field" style="margin-bottom:0">
               <label>Total acordado (USD)</label>
               <input type="number" id="p-total" value="${b.total_amount != null ? b.total_amount : ""}" placeholder="1200">
@@ -997,7 +997,28 @@
               <input type="number" id="p-paid" value="${b.paid_amount != null ? b.paid_amount : ""}" placeholder="600">
             </div>
           </div>
+          <div class="field" style="margin-bottom:10px">
+            <label>Nota del pago (opcional)</label>
+            <input type="text" id="p-note" placeholder="Ej: Anticipo 50%, transferencia SPEI">
+          </div>
           <button class="btn btn-primary btn-sm btn-full" onclick="updatePayment()">Actualizar pagos</button>
+          ${(data.paymentHistory && data.paymentHistory.length) ? `
+            <hr class="divider">
+            <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray-text);margin-bottom:10px">Historial</div>
+            ${data.paymentHistory.map(p => `
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--gray-border)">
+                <div>
+                  <div style="font-size:14px;font-weight:600;color:${p.amount >= 0 ? 'var(--lime-text)' : 'var(--danger)'}">
+                    ${p.amount >= 0 ? '+' : ''}$${Math.abs(p.amount).toLocaleString()}
+                  </div>
+                  ${p.note ? `<div style="font-size:11px;color:var(--gray-text);margin-top:2px">${p.note}</div>` : ''}
+                </div>
+                <div style="font-size:11px;color:var(--gray-text);white-space:nowrap;margin-left:8px">
+                  ${formatDate(p.recorded_at)}
+                </div>
+              </div>
+            `).join('')}
+          ` : ''}
         </div>
       </div>
     `;
@@ -1191,12 +1212,15 @@
     if (total !== null && !isNaN(total)) body.total_amount = total;
     if (paid  !== null && !isNaN(paid))  body.paid_amount  = paid;
     if (!Object.keys(body).length) { toast("Ingresa al menos un monto", "error"); return; }
+    const note = document.getElementById("p-note")?.value.trim() || null;
+    if (note) body.note = note;
     try {
       const res = await api(`/briefs/${CURRENT_BRIEF_ID}/payment`, "PATCH", body);
       if (res.success) {
         toast("Pagos actualizados ✓");
         if (total !== null) CURRENT_DETAIL.brief.total_amount = total;
         if (paid  !== null) CURRENT_DETAIL.brief.paid_amount  = paid;
+        if (res.paymentHistory) CURRENT_DETAIL.paymentHistory = res.paymentHistory;
         renderDetailRight(CURRENT_DETAIL);
       } else {
         toast(res.error || "Error al guardar", "error");
