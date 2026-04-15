@@ -245,8 +245,44 @@ export default {
       );
     }
 
+    // ─── PATCH /briefs/:id/payment — Update payment amounts (protected) ───
+    if (request.method === "PATCH" && url.pathname.match(/\/briefs\/.*\/payment/)) {
+      const authKey = request.headers.get("X-API-Key");
+      if (authKey !== env.ADMIN_API_KEY) {
+        return Response.json(
+          { error: "No autorizado" },
+          { status: 401, headers: corsHeaders }
+        );
+      }
+
+      const id = url.pathname.split("/briefs/")[1].split("/payment")[0];
+      const { total_amount, paid_amount } = await request.json();
+
+      const sets = ["updated_at = datetime('now')"];
+      const params = [];
+      if (total_amount !== undefined) { sets.push("total_amount = ?"); params.push(total_amount); }
+      if (paid_amount !== undefined)  { sets.push("paid_amount = ?");  params.push(paid_amount);  }
+
+      if (params.length === 0) {
+        return Response.json(
+          { error: "Ingresa al menos un monto" },
+          { status: 400, headers: corsHeaders }
+        );
+      }
+
+      params.push(id);
+      await env.DB.prepare(
+        `UPDATE briefs SET ${sets.join(", ")} WHERE brief_id = ?`
+      ).bind(...params).run();
+
+      return Response.json(
+        { success: true, briefId: id },
+        { headers: corsHeaders }
+      );
+    }
+
     return Response.json(
-      { error: "Not found", endpoints: ["POST /submit", "GET /briefs", "GET /briefs/:id", "PATCH /briefs/:id/status"] },
+      { error: "Not found", endpoints: ["POST /submit", "GET /briefs", "GET /briefs/:id", "PATCH /briefs/:id/status", "PATCH /briefs/:id/payment"] },
       { status: 404, headers: corsHeaders }
     );
   },

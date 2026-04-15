@@ -54,10 +54,18 @@ CREATE TABLE IF NOT EXISTS briefs (
   -- Full brief text
   brief_text    TEXT,
 
+  -- Payments
+  total_amount  REAL,                             -- Total agreed (USD)
+  paid_amount   REAL,                             -- Amount paid to date (USD)
+
   -- Metadata
   submitted_at  TEXT DEFAULT (datetime('now')),
   updated_at    TEXT DEFAULT (datetime('now'))
 );
+
+-- Migration: add payment columns if upgrading from earlier schema
+-- Run: wrangler d1 execute cero-intake --command="ALTER TABLE briefs ADD COLUMN total_amount REAL"
+-- Run: wrangler d1 execute cero-intake --command="ALTER TABLE briefs ADD COLUMN paid_amount REAL"
 
 -- Index for common queries
 CREATE INDEX IF NOT EXISTS idx_briefs_status ON briefs(status);
