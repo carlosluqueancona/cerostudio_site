@@ -11,7 +11,7 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --black: #0a0a0a; --white: #ffffff; --lime: #B8FF00;
+      --black: #0a0a0a; --white: #ffffff; --lime: #b2f700;
       --gray1: #111111; --gray2: #1a1a1a; --gray3: #2a2a2a;
       --gt: #777777; --gl: #aaaaaa;
       --fd: 'Space Grotesk', sans-serif;
@@ -143,7 +143,7 @@
 <body>
 
 <header id="hd">
-  <img src="../images/svg/Cero_Studio_AI_Horizontal.svg" alt="Cero Studio" style="height:28px;width:auto;">
+  <img src="../images/svg/Cero_Studio_AI_Horizontal.svg" alt="Cero Studio" style="height:34px;width:auto;">
   <div id="dots"></div>
 </header>
 
@@ -348,7 +348,7 @@ function render() {
   /* Dots */
   $('dots').innerHTML = STEPS.map((_,i) => {
     const w = i === S.step ? 24 : 6;
-    const bg = i === S.step ? '#B8FF00' : i < S.step ? 'rgba(255,255,255,.3)' : 'rgba(255,255,255,.08)';
+    const bg = i === S.step ? '#b2f700' : i < S.step ? 'rgba(255,255,255,.3)' : 'rgba(255,255,255,.08)';
     return `<div class="dot" style="width:${w}px;background:${bg}"></div>`;
   }).join('');
 

@@ -11,7 +11,7 @@
     :root {
       --black: #0a0a0a;
       --white: #ffffff;
-      --lime: #B8FF00;
+      --lime: #b2f700;
       --gray1: #111111;
       --gray2: #1a1a1a;
       --gray3: #2a2a2a;
@@ -107,10 +107,7 @@
     .header-inner {
       display: flex; align-items: center; justify-content: space-between;
     }
-    .logo { display: flex; align-items: center; gap: 10px; }
-    .logo svg { width: 22px; height: 22px; }
-    .logo-text { font-size: 14px; font-weight: 700; letter-spacing: -0.01em; font-family: var(--fd); }
-    .logo-sub { font-size: 9px; font-weight: 400; letter-spacing: 0.22em; opacity: 0.4; margin-left: 8px; }
+    .logo { display: flex; align-items: center; }
     .header-badge {
       font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
       color: var(--gray-text); font-weight: 600;
@@ -387,12 +384,7 @@
     <header>
       <div class="header-inner">
         <div class="logo">
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="50" r="42" fill="none" stroke="white" stroke-width="7"/>
-            <circle cx="50" cy="50" r="7.5" fill="white"/>
-          </svg>
-          <span class="logo-text">CERO</span>
-          <span class="logo-sub">STUDIO.AI</span>
+          <img src="../images/svg/Cero_Studio_AI_Horizontal.svg" alt="Cero Studio" style="height:34px;width:auto;">
         </div>
         <span class="header-badge">Portal de Proyecto</span>
       </div>
