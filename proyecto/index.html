@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tu Proyecto — Cero Studio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --white: #ffffff;
+      --lime: #B8FF00;
+      --gray1: #111111;
+      --gray2: #1a1a1a;
+      --gray3: #2a2a2a;
+      --gray-text: #777777;
+      --gray-light: #aaaaaa;
+      --gray-border: rgba(255,255,255,0.06);
+      --admin: #FF9500;
+      --admin-bg: rgba(255,149,0,0.06);
+      --admin-border: rgba(255,149,0,0.18);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+
+    /* ── ADMIN BAR ── */
+    .admin-bar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,10,10,0.95); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--admin-border);
+      padding: 10px 20px;
+    }
+    .admin-bar-inner {
+      max-width: 720px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .admin-tag {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--admin);
+    }
+    .admin-tag-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--admin);
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+    .admin-controls {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+    .admin-select {
+      background: var(--gray2); border: 1px solid var(--gray3);
+      color: var(--white); font-family: 'Syne', sans-serif;
+      font-size: 11px; font-weight: 600; padding: 5px 10px;
+      border-radius: 5px; cursor: pointer; letter-spacing: 0.03em;
+      appearance: none; -webkit-appearance: none;
+    }
+    .admin-select:focus { outline: none; border-color: var(--admin); }
+    .admin-btn {
+      padding: 5px 12px; background: transparent;
+      border: 1px solid var(--admin-border); border-radius: 5px;
+      color: var(--admin); font-size: 10px; font-weight: 700;
+      font-family: 'Syne', sans-serif; letter-spacing: 0.1em;
+      text-transform: uppercase; cursor: pointer; transition: all 0.15s;
+    }
+    .admin-btn:hover { background: var(--admin-bg); }
+    .admin-btn.saving { opacity: 0.5; pointer-events: none; }
+    .admin-sep {
+      width: 1px; height: 16px; background: var(--gray3); flex-shrink: 0;
+    }
+
+    /* ── PHASE QUICK BUTTONS ── */
+    .phase-btns {
+      display: flex; align-items: center; gap: 4px;
+    }
+    .phase-btn {
+      width: 22px; height: 22px; border-radius: 4px;
+      background: var(--gray2); border: 1px solid var(--gray3);
+      color: var(--gray-text); font-size: 10px; font-weight: 700;
+      font-family: 'Syne', sans-serif; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .phase-btn:hover { border-color: var(--admin); color: var(--admin); }
+    .phase-btn.current { background: var(--admin-bg); border-color: var(--admin); color: var(--admin); }
+
+    /* ── HEADER ── */
+    header {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--gray-border);
+      margin-bottom: 40px;
+    }
+    .header-inner {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; }
+    .logo svg { width: 22px; height: 22px; }
+    .logo-text { font-size: 14px; font-weight: 800; letter-spacing: -0.01em; }
+    .logo-sub { font-size: 9px; font-weight: 400; letter-spacing: 0.22em; opacity: 0.4; margin-left: 8px; }
+    .header-badge {
+      font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--gray-text); font-weight: 600;
+    }
+
+    /* ── LOADING ── */
+    .loading {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; min-height: 60vh; gap: 24px;
+    }
+    .loading svg { animation: pulse 2s ease-in-out infinite; }
+    .loading p { color: var(--gray-text); font-size: 14px; }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+    /* ── ERROR ── */
+    .error-state {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; min-height: 60vh; gap: 16px; text-align: center;
+    }
+    .error-state h2 { font-size: 24px; font-weight: 800; }
+    .error-state p { color: var(--gray-text); font-size: 14px; max-width: 400px; }
+
+    /* ── PROJECT HEADER ── */
+    .project-header { margin-bottom: 40px; }
+    .project-id {
+      font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--gray-text); margin-bottom: 6px; font-weight: 600;
+    }
+    .project-name {
+      font-size: 32px; font-weight: 800; letter-spacing: -0.035em;
+      line-height: 1.1; margin-bottom: 8px;
+    }
+    .project-client {
+      font-size: 14px; color: var(--gray-text); margin-bottom: 16px;
+    }
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border-radius: 20px;
+      background: rgba(184,255,0,0.06); border: 1px solid rgba(184,255,0,0.15);
+    }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); }
+    .status-text {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--lime);
+    }
+
+    /* ── SECTIONS ── */
+    .section { margin-bottom: 40px; }
+    .section-title {
+      font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--gray-text); margin-bottom: 16px; font-weight: 700;
+      padding-bottom: 8px; border-bottom: 1px solid var(--gray-border);
+    }
+
+    /* ── PHASE TIMELINE ── */
+    .phases {
+      display: flex; gap: 4px; margin-bottom: 24px;
+    }
+    .phase-bar {
+      flex: 1; height: 4px; border-radius: 2px;
+      background: var(--gray3); transition: background 0.4s ease;
+    }
+    .phase-bar.completed { background: var(--lime); }
+    .phase-bar.active { background: var(--lime); opacity: 0.5; }
+
+    .phase-labels {
+      display: flex; justify-content: space-between; margin-bottom: 32px;
+    }
+    .phase-label {
+      font-size: 10px; color: var(--gray-text); text-align: center;
+      flex: 1; letter-spacing: 0.03em;
+    }
+    .phase-label.active { color: var(--lime); font-weight: 700; }
+    .phase-label.completed { color: var(--gray-light); }
+
+    /* ── MILESTONES ── */
+    .milestone {
+      display: flex; gap: 14px; padding: 14px 0;
+      border-bottom: 1px solid var(--gray-border);
+    }
+    .milestone:last-child { border-bottom: none; }
+    .milestone-check {
+      width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+      border: 2px solid var(--gray3); display: flex; align-items: center;
+      justify-content: center; margin-top: 1px;
+    }
+    .milestone-check.done { background: var(--lime); border-color: var(--lime); }
+    .milestone-check.active { border-color: var(--lime); }
+    .milestone-title { font-size: 14px; color: var(--white); font-weight: 500; }
+    .milestone-desc { font-size: 12px; color: var(--gray-text); margin-top: 2px; line-height: 1.4; }
+    .milestone-date { font-size: 11px; color: var(--gray-text); margin-top: 4px; }
+    .milestone.pending .milestone-title { color: var(--gray-text); }
+
+    /* ── FILES ── */
+    .file-card {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px; background: var(--gray2); border-radius: 8px;
+      margin-bottom: 8px; transition: background 0.2s;
+    }
+    .file-card:hover { background: var(--gray3); }
+    .file-info { display: flex; align-items: center; gap: 12px; }
+    .file-icon {
+      width: 36px; height: 36px; border-radius: 6px; background: var(--gray3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0;
+    }
+    .file-name { font-size: 14px; font-weight: 500; }
+    .file-type { font-size: 11px; color: var(--gray-text); margin-top: 1px; }
+    .file-download {
+      padding: 8px 16px; background: transparent;
+      border: 1px solid var(--gray3); border-radius: 6px;
+      color: var(--gray-light); font-size: 12px; font-family: 'Syne', sans-serif;
+      cursor: pointer; text-decoration: none; letter-spacing: 0.04em;
+      text-transform: uppercase; font-weight: 600; transition: all 0.2s;
+    }
+    .file-download:hover { border-color: var(--lime); color: var(--lime); }
+
+    /* ── ACTIVITY ── */
+    .activity-item {
+      display: flex; gap: 14px; padding: 12px 0;
+      border-bottom: 1px solid var(--gray-border);
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-dot-wrap {
+      display: flex; flex-direction: column; align-items: center; gap: 0;
+    }
+    .activity-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--gray3); flex-shrink: 0; margin-top: 5px;
+    }
+    .activity-dot.delivery { background: var(--lime); }
+    .activity-dot.payment { background: #4CAF50; }
+    .activity-dot.approval { background: #2196F3; }
+    .activity-title { font-size: 13px; color: var(--white); font-weight: 500; }
+    .activity-desc { font-size: 12px; color: var(--gray-text); margin-top: 2px; }
+    .activity-date { font-size: 11px; color: var(--gray-text); margin-top: 3px; }
+
+    /* ── PAYMENT ── */
+    .payment-bar-bg {
+      width: 100%; height: 6px; background: var(--gray3);
+      border-radius: 3px; overflow: hidden; margin: 12px 0;
+    }
+    .payment-bar {
+      height: 100%; background: var(--lime); border-radius: 3px;
+      transition: width 0.6s ease;
+    }
+    .payment-info {
+      display: flex; justify-content: space-between; font-size: 13px;
+    }
+    .payment-paid { color: var(--lime); font-weight: 600; }
+    .payment-total { color: var(--gray-text); }
+
+    /* ── WHATSAPP CTA ── */
+    .whatsapp-cta {
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; padding: 16px 32px; background: var(--lime);
+      color: var(--black); border: none; border-radius: 8px;
+      font-size: 13px; font-weight: 800; font-family: 'Syne', sans-serif;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      text-decoration: none; transition: transform 0.15s;
+      margin: 32px 0 60px; width: 100%;
+    }
+    .whatsapp-cta:hover { transform: scale(1.02); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 20px 0; border-top: 1px solid var(--gray-border);
+      text-align: center; margin-bottom: 40px;
+    }
+    footer p { font-size: 11px; color: var(--gray-text); letter-spacing: 0.08em; }
+
+    /* ── EMPTY STATE ── */
+    .empty { text-align: center; padding: 24px; color: var(--gray-text); font-size: 13px; }
+
+    /* ── ADMIN BRIEF SECTION ── */
+    .admin-section {
+      margin-bottom: 40px;
+      border: 1px solid var(--admin-border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .admin-section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 18px;
+      background: var(--admin-bg);
+      cursor: pointer;
+      user-select: none;
+    }
+    .admin-section-header:hover { background: rgba(255,149,0,0.09); }
+    .admin-section-title {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--admin);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .admin-section-chevron {
+      color: var(--admin); font-size: 12px;
+      transition: transform 0.2s;
+    }
+    .admin-section-chevron.open { transform: rotate(180deg); }
+    .admin-section-body {
+      padding: 0 18px;
+      display: none;
+    }
+    .admin-section-body.open {
+      display: block;
+      padding: 18px;
+    }
+
+    /* ── BRIEF FIELDS GRID ── */
+    .brief-group { margin-bottom: 24px; }
+    .brief-group:last-child { margin-bottom: 0; }
+    .brief-group-title {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--admin);
+      margin-bottom: 10px; padding-bottom: 6px;
+      border-bottom: 1px solid var(--admin-border);
+      opacity: 0.7;
+    }
+    .brief-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    .brief-grid.full { grid-template-columns: 1fr; }
+    .brief-field { }
+    .brief-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--gray-text); margin-bottom: 3px;
+    }
+    .brief-value {
+      font-size: 13px; color: var(--gray-light); line-height: 1.5;
+    }
+    .brief-value.empty-val { color: var(--gray3); font-style: italic; font-size: 12px; }
+    .brief-tag {
+      display: inline-block; padding: 2px 8px; background: var(--gray2);
+      border-radius: 4px; font-size: 11px; margin: 2px 2px 2px 0;
+      color: var(--gray-light); border: 1px solid var(--gray3);
+    }
+    .brief-text-block {
+      font-size: 13px; color: var(--gray-light); line-height: 1.6;
+      padding: 12px 14px; background: var(--gray1); border-radius: 6px;
+      border-left: 2px solid var(--admin-border); white-space: pre-wrap;
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px; z-index: 999;
+      padding: 10px 18px; border-radius: 8px;
+      font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
+      opacity: 0; transform: translateY(8px);
+      transition: all 0.2s; pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.success { background: var(--lime); color: var(--black); }
+    .toast.error { background: #ff4444; color: white; }
+
+    @media (max-width: 600px) {
+      .project-name { font-size: 24px; }
+      .phase-labels { display: none; }
+      .brief-grid { grid-template-columns: 1fr; }
+      .admin-controls { gap: 6px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ADMIN BAR (injected by JS) -->
+  <div id="admin-bar" style="display:none"></div>
+
+  <div class="container">
+    <!-- HEADER -->
+    <header>
+      <div class="header-inner">
+        <div class="logo">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="white" stroke-width="7"/>
+            <circle cx="50" cy="50" r="7.5" fill="white"/>
+          </svg>
+          <span class="logo-text">CERO</span>
+          <span class="logo-sub">STUDIO.AI</span>
+        </div>
+        <span class="header-badge">Portal de Proyecto</span>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <main id="app">
+      <div class="loading" id="loading">
+        <svg width="48" height="48" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="white" stroke-width="7"/>
+          <circle cx="50" cy="50" r="7.5" fill="white"/>
+        </svg>
+        <p>Cargando tu proyecto...</p>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>CERO STUDIO — cerostudio.ai</p>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ── CONFIG ──
+    const WORKER_URL = "https://intake.cerostudio.ai";
+    const WHATSAPP = "521XXXXXXXXXX"; // Change to your number
+
+    const PHASES = ["Intake", "Diseño", "Sistema", "Desarrollo", "Entrega"];
+    const STATUS_LABELS = {
+      new: "Brief recibido", reviewed: "En revisión", proposal_sent: "Propuesta enviada",
+      approved: "Aprobado", in_progress: "En desarrollo", delivered: "Entregado", archived: "Archivado",
+    };
+    const FILE_ICONS = {
+      quotation: "💰", contract: "📄", deliverable: "🚀", preview: "👁", other: "📎",
+    };
+    const FILE_LABELS = {
+      quotation: "Cotización", contract: "Contrato", deliverable: "Entregable", preview: "Preview", other: "Archivo",
+    };
+
+    let STATE = { adminKey: null, briefId: null, currentPhase: 0, currentStatus: "" };
+
+    function formatDate(iso) {
+      if (!iso) return "";
+      const d = new Date(iso);
+      return d.toLocaleDateString("es-MX", { day: "numeric", month: "short", year: "numeric" });
+    }
+
+    function toast(msg, type = "success") {
+      const el = document.getElementById("toast");
+      el.textContent = msg;
+      el.className = `toast ${type} show`;
+      setTimeout(() => el.classList.remove("show"), 2400);
+    }
+
+    function val(v, fallback = "—") {
+      if (v === null || v === undefined || v === "") return `<span class="brief-value empty-val">${fallback}</span>`;
+      return `<span class="brief-value">${v}</span>`;
+    }
+
+    function tags(v) {
+      if (!v) return `<span class="brief-value empty-val">—</span>`;
+      let arr = v;
+      try { if (typeof v === "string") arr = JSON.parse(v); } catch (_) {}
+      if (!Array.isArray(arr) || arr.length === 0) return `<span class="brief-value empty-val">—</span>`;
+      return arr.map(t => `<span class="brief-tag">${t}</span>`).join("");
+    }
+
+    function field(label, content) {
+      return `<div class="brief-field"><div class="brief-label">${label}</div>${content}</div>`;
+    }
+
+    function textBlock(v) {
+      if (!v) return `<span class="brief-value empty-val">—</span>`;
+      return `<div class="brief-text-block">${v}</div>`;
+    }
+
+    // ── ADMIN BAR ──
+    function renderAdminBar(phase, status) {
+      const bar = document.getElementById("admin-bar");
+      bar.style.display = "block";
+      bar.className = "admin-bar";
+      bar.innerHTML = `
+        <div class="admin-bar-inner">
+          <div class="admin-tag">
+            <div class="admin-tag-dot"></div>
+            Modo Admin · ${STATE.briefId}
+          </div>
+          <div class="admin-controls">
+            <select class="admin-select" id="status-select" onchange="saveStatus()">
+              <option value="new" ${status==="new"?"selected":""}>Brief recibido</option>
+              <option value="reviewed" ${status==="reviewed"?"selected":""}>En revisión</option>
+              <option value="proposal_sent" ${status==="proposal_sent"?"selected":""}>Propuesta enviada</option>
+              <option value="approved" ${status==="approved"?"selected":""}>Aprobado</option>
+              <option value="in_progress" ${status==="in_progress"?"selected":""}>En desarrollo</option>
+              <option value="delivered" ${status==="delivered"?"selected":""}>Entregado</option>
+              <option value="archived" ${status==="archived"?"selected":""}>Archivado</option>
+            </select>
+            <div class="admin-sep"></div>
+            <div class="phase-btns">
+              ${PHASES.map((name, i) => `
+                <button class="phase-btn ${i === phase ? "current" : ""}" title="${name}" onclick="savePhase(${i})">${i}</button>
+              `).join("")}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ── SAVE STATUS ──
+    async function saveStatus() {
+      const select = document.getElementById("status-select");
+      const newStatus = select.value;
+      const btn = select;
+      btn.disabled = true;
+      try {
+        const res = await fetch(`${WORKER_URL}/briefs/${STATE.briefId}/status`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json", "X-API-Key": STATE.adminKey },
+          body: JSON.stringify({ status: newStatus }),
+        });
+        if (!res.ok) throw new Error();
+        STATE.currentStatus = newStatus;
+        toast("Status actualizado");
+        // Update the visible badge in the project header
+        const badge = document.querySelector(".status-text");
+        if (badge) badge.textContent = STATUS_LABELS[newStatus] || newStatus;
+      } catch {
+        toast("Error al actualizar status", "error");
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    // ── SAVE PHASE ──
+    async function savePhase(newPhase) {
+      try {
+        const res = await fetch(`${WORKER_URL}/briefs/${STATE.briefId}/phase`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json", "X-API-Key": STATE.adminKey },
+          body: JSON.stringify({ phase: newPhase }),
+        });
+        if (!res.ok) throw new Error();
+        STATE.currentPhase = newPhase;
+        toast(`Fase → ${PHASES[newPhase]}`);
+        // Refresh admin bar phase buttons
+        renderAdminBar(newPhase, STATE.currentStatus);
+        // Update phase bars
+        document.querySelectorAll(".phase-bar").forEach((el, i) => {
+          el.className = `phase-bar ${i < newPhase ? "completed" : i === newPhase ? "active" : ""}`;
+        });
+        document.querySelectorAll(".phase-label").forEach((el, i) => {
+          el.className = `phase-label ${i < newPhase ? "completed" : i === newPhase ? "active" : ""}`;
+        });
+      } catch {
+        toast("Error al actualizar fase", "error");
+      }
+    }
+
+    // ── BRIEF PANEL ──
+    function renderBriefPanel(b) {
+      return `
+        <div class="admin-section">
+          <div class="admin-section-header" onclick="toggleBrief(this)">
+            <div class="admin-section-title">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <rect x="1" y="1" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+                <line x1="3" y1="4" x2="9" y2="4" stroke="currentColor" stroke-width="1.2"/>
+                <line x1="3" y1="6.5" x2="9" y2="6.5" stroke="currentColor" stroke-width="1.2"/>
+                <line x1="3" y1="9" x2="6.5" y2="9" stroke="currentColor" stroke-width="1.2"/>
+              </svg>
+              Brief Original
+            </div>
+            <span class="admin-section-chevron" id="brief-chevron">▾</span>
+          </div>
+          <div class="admin-section-body" id="brief-body">
+
+            <div class="brief-group">
+              <div class="brief-group-title">Contacto</div>
+              <div class="brief-grid">
+                ${field("Nombre", val(b.name))}
+                ${field("Email", val(b.email))}
+                ${field("Teléfono", val(b.phone))}
+                ${field("Empresa", val(b.company))}
+              </div>
+            </div>
+
+            <div class="brief-group">
+              <div class="brief-group-title">Negocio</div>
+              <div class="brief-grid">
+                ${field("Nombre del negocio", val(b.business_name))}
+                ${field("Industria", val(b.industry))}
+                ${field("Ubicación", val(b.location))}
+                ${field("Idioma", val(b.lang))}
+              </div>
+              <div class="brief-grid full" style="margin-top:10px">
+                ${field("Audiencia objetivo", val(b.target_audience))}
+                ${field("Competidores", val(b.competitors))}
+                ${field("Propuesta de valor (USP)", val(b.usp))}
+              </div>
+            </div>
+
+            <div class="brief-group">
+              <div class="brief-group-title">Proyecto</div>
+              <div class="brief-grid">
+                ${field("Tipo de proyecto", `<div>${tags(b.project_type)}</div>`)}
+                ${field("Sitio actual", val(b.current_site))}
+              </div>
+              <div class="brief-grid full" style="margin-top:10px">
+                ${field("Problema con sitio actual", val(b.current_site_pain))}
+                ${field("Páginas requeridas", `<div>${tags(b.pages)}</div>`)}
+                ${field("Funcionalidades", `<div>${tags(b.features)}</div>`)}
+                ${b.ecomm_products ? field("Productos e-comm", val(b.ecomm_products)) : ""}
+              </div>
+            </div>
+
+            <div class="brief-group">
+              <div class="brief-group-title">Visual & Contenido</div>
+              <div class="brief-grid">
+                ${field("Dirección visual", `<div>${tags(b.visual_direction)}</div>`)}
+                ${field("Sitios de referencia", val(b.reference_sites))}
+                ${field("¿Qué evitar?", val(b.avoidance))}
+                ${field("¿Tiene logo?", val(b.has_logo))}
+                ${field("¿Tiene colores de marca?", val(b.has_brand_colors))}
+                ${field("Colores de marca", val(b.brand_colors_detail))}
+              </div>
+              <div class="brief-grid" style="margin-top:10px">
+                ${field("Status de contenido", val(b.content_status))}
+                ${field("Status de fotos", val(b.photo_status))}
+                ${field("Contenido existente", `<div>${tags(b.existing_content)}</div>`)}
+              </div>
+              ${b.content_notes ? `<div style="margin-top:10px">${field("Notas de contenido", val(b.content_notes))}</div>` : ""}
+            </div>
+
+            <div class="brief-group">
+              <div class="brief-group-title">Comercial</div>
+              <div class="brief-grid">
+                ${field("Objetivo principal", val(b.goal))}
+                ${field("Presupuesto", val(b.budget))}
+                ${field("Timeline", val(b.timeline))}
+                ${field("Fecha límite", val(b.deadline_detail))}
+                ${field("Mantenimiento", val(b.maintenance))}
+                ${field("Fecha de envío", val(b.submitted_at ? formatDate(b.submitted_at) : null))}
+              </div>
+            </div>
+
+            ${b.additional_notes ? `
+            <div class="brief-group">
+              <div class="brief-group-title">Notas adicionales</div>
+              ${textBlock(b.additional_notes)}
+            </div>` : ""}
+
+            ${b.brief_text ? `
+            <div class="brief-group">
+              <div class="brief-group-title">Brief libre</div>
+              ${textBlock(b.brief_text)}
+            </div>` : ""}
+
+          </div>
+        </div>
+      `;
+    }
+
+    function toggleBrief(header) {
+      const body = document.getElementById("brief-body");
+      const chevron = document.getElementById("brief-chevron");
+      const isOpen = body.classList.contains("open");
+      body.classList.toggle("open", !isOpen);
+      chevron.classList.toggle("open", !isOpen);
+    }
+
+    // ── INIT ──
+    async function init() {
+      const params = new URLSearchParams(window.location.search);
+      const key = params.get("key");
+      const adminKey = params.get("admin");
+
+      if (!key) {
+        showError("Sin acceso", "Necesitas un link válido de proyecto para acceder a esta página. Si crees que es un error, contáctanos por WhatsApp.");
+        return;
+      }
+
+      try {
+        // Always fetch public portal data
+        const portalPromise = fetch(`${WORKER_URL}/portal/${key}`).then(r => r.json());
+
+        // If admin mode, fetch full brief in parallel
+        let briefData = null;
+        if (adminKey) {
+          // Must resolve portal first to get briefId, then fetch admin data
+          const portalRes = await portalPromise;
+          if (!portalRes.success) throw new Error(portalRes.error);
+
+          const briefId = portalRes.project.id;
+          const briefRes = await fetch(`${WORKER_URL}/briefs/${briefId}`, {
+            headers: { "X-API-Key": adminKey }
+          }).then(r => r.ok ? r.json() : null).catch(() => null);
+
+          // If admin key is wrong, briefRes will be null — still show portal but no brief
+          if (briefRes && briefRes.success) {
+            briefData = briefRes.brief;
+          }
+
+          STATE.adminKey = adminKey;
+          STATE.briefId = portalRes.project.id;
+          STATE.currentPhase = portalRes.project.currentPhase || 0;
+          STATE.currentStatus = portalRes.project.status;
+
+          renderAdminBar(STATE.currentPhase, STATE.currentStatus);
+          render(portalRes, briefData);
+        } else {
+          const data = await portalPromise;
+          if (!data.success) throw new Error(data.error);
+          render(data, null);
+        }
+      } catch (err) {
+        showError("Proyecto no encontrado", "El link de acceso no es válido o ha expirado. Contáctanos por WhatsApp si necesitas ayuda.");
+      }
+    }
+
+    function showError(title, msg) {
+      document.getElementById("app").innerHTML = `
+        <div class="error-state">
+          <svg width="48" height="48" viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="#333" stroke-width="7"/><circle cx="50" cy="50" r="7.5" fill="#333"/></svg>
+          <h2>${title}</h2>
+          <p>${msg}</p>
+          <a href="https://wa.me/${WHATSAPP}" class="whatsapp-cta" style="width:auto;margin:16px 0">Contactar por WhatsApp →</a>
+        </div>
+      `;
+    }
+
+    function render(data, brief) {
+      const { project, milestones, files, activity } = data;
+      const phase = project.currentPhase || 0;
+      const payPct = project.totalAmount ? Math.round((project.paidAmount || 0) / project.totalAmount * 100) : 0;
+
+      document.getElementById("app").innerHTML = `
+        <!-- PROJECT HEADER -->
+        <div class="project-header">
+          <div class="project-id">${project.id}</div>
+          <h1 class="project-name">${project.name}</h1>
+          <div class="project-client">Cliente: ${project.clientName}</div>
+          <div class="status-badge">
+            <div class="status-dot"></div>
+            <span class="status-text">${STATUS_LABELS[project.status] || project.status}</span>
+          </div>
+        </div>
+
+        ${brief ? renderBriefPanel(brief) : ""}
+
+        <!-- PHASE PROGRESS -->
+        <div class="section">
+          <div class="section-title">Progreso del Proyecto</div>
+          <div class="phases">
+            ${PHASES.map((_, i) => `<div class="phase-bar ${i < phase ? "completed" : i === phase ? "active" : ""}"></div>`).join("")}
+          </div>
+          <div class="phase-labels">
+            ${PHASES.map((name, i) => `<div class="phase-label ${i < phase ? "completed" : i === phase ? "active" : ""}">${name}</div>`).join("")}
+          </div>
+        </div>
+
+        <!-- MILESTONES -->
+        <div class="section">
+          <div class="section-title">Timeline del Proyecto</div>
+          ${milestones.length ? milestones.map(m => `
+            <div class="milestone ${m.status}">
+              <div class="milestone-check ${m.status === "completed" ? "done" : m.status === "active" ? "active" : ""}">
+                ${m.status === "completed" ? '<svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5l2.5 2.5L8 3" stroke="#0a0a0a" stroke-width="1.5" fill="none"/></svg>' : ""}
+              </div>
+              <div>
+                <div class="milestone-title">${m.title}</div>
+                ${m.description ? `<div class="milestone-desc">${m.description}</div>` : ""}
+                ${m.completed_at ? `<div class="milestone-date">Completado: ${formatDate(m.completed_at)}</div>` : m.target_date ? `<div class="milestone-date">Fecha objetivo: ${formatDate(m.target_date)}</div>` : ""}
+              </div>
+            </div>
+          `).join("") : '<div class="empty">Pronto aparecerán los hitos de tu proyecto</div>'}
+        </div>
+
+        <!-- FILES -->
+        <div class="section">
+          <div class="section-title">Archivos del Proyecto</div>
+          ${files.length ? files.map(f => `
+            <div class="file-card">
+              <div class="file-info">
+                <div class="file-icon">${FILE_ICONS[f.file_type] || "📎"}</div>
+                <div>
+                  <div class="file-name">${f.file_name}</div>
+                  <div class="file-type">${FILE_LABELS[f.file_type] || "Archivo"} · ${formatDate(f.uploaded_at)}</div>
+                </div>
+              </div>
+              <a href="${f.file_url}" target="_blank" rel="noopener" class="file-download">Descargar</a>
+            </div>
+          `).join("") : '<div class="empty">Los archivos de tu proyecto aparecerán aquí</div>'}
+        </div>
+
+        <!-- PAYMENT -->
+        ${project.totalAmount ? `
+        <div class="section">
+          <div class="section-title">Pagos</div>
+          <div class="payment-bar-bg"><div class="payment-bar" style="width:${payPct}%"></div></div>
+          <div class="payment-info">
+            <span class="payment-paid">$${(project.paidAmount||0).toLocaleString()} USD pagados</span>
+            <span class="payment-total">de $${project.totalAmount.toLocaleString()} USD total</span>
+          </div>
+        </div>
+        ` : ""}
+
+        <!-- ACTIVITY LOG -->
+        ${activity.length ? `
+        <div class="section">
+          <div class="section-title">Actividad Reciente</div>
+          ${activity.map(a => `
+            <div class="activity-item">
+              <div class="activity-dot-wrap">
+                <div class="activity-dot ${a.entry_type}"></div>
+              </div>
+              <div>
+                <div class="activity-title">${a.title}</div>
+                ${a.description ? `<div class="activity-desc">${a.description}</div>` : ""}
+                <div class="activity-date">${formatDate(a.date)}</div>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+        ` : ""}
+
+        <!-- WHATSAPP CTA (hidden in admin mode) -->
+        ${!STATE.adminKey ? `
+        <a href="https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Hola, tengo una pregunta sobre mi proyecto ${project.id} (${project.name}).`)}" target="_blank" rel="noopener" class="whatsapp-cta">
+          ¿Tienes preguntas? Escríbenos por WhatsApp →
+        </a>
+        ` : ""}
+      `;
+    }
+
+    init();
+  </script>
+</body>
+</html>
