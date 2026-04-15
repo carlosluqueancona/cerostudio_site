@@ -2984,7 +2984,7 @@
       /* Skip loader on repeat visits — LCP improvement for returning users */
       if (sessionStorage.getItem('cs_v')) {
         document.getElementById('loader').style.display = 'none';
-        runHeroEntrance();
+        setTimeout(runHeroEntrance, 0); /* diferir para que CS_HERO_TEXTS y CS_LANG estén inicializados */
       } else {
         sessionStorage.setItem('cs_v', '1');
         gsap.timeline({ onComplete: runHeroEntrance })
