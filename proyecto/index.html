@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tu Proyecto — Cero Studio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       --black: #0a0a0a;
@@ -19,6 +21,8 @@
       --admin: #FF9500;
       --admin-bg: rgba(255,149,0,0.06);
       --admin-border: rgba(255,149,0,0.18);
+      --fd: 'Space Grotesk', sans-serif;
+      --fb: 'Inter', sans-serif;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -26,7 +30,8 @@
     body {
       background: var(--black);
       color: var(--white);
-      font-family: 'Syne', sans-serif;
+      font-family: var(--fb);
+      font-size: 14px;
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
     }
@@ -59,7 +64,7 @@
     }
     .admin-select {
       background: var(--gray2); border: 1px solid var(--gray3);
-      color: var(--white); font-family: 'Syne', sans-serif;
+      color: var(--white); font-family: var(--fd);
       font-size: 11px; font-weight: 600; padding: 5px 10px;
       border-radius: 5px; cursor: pointer; letter-spacing: 0.03em;
       appearance: none; -webkit-appearance: none;
@@ -69,7 +74,7 @@
       padding: 5px 12px; background: transparent;
       border: 1px solid var(--admin-border); border-radius: 5px;
       color: var(--admin); font-size: 10px; font-weight: 700;
-      font-family: 'Syne', sans-serif; letter-spacing: 0.1em;
+      font-family: var(--fd); letter-spacing: 0.1em;
       text-transform: uppercase; cursor: pointer; transition: all 0.15s;
     }
     .admin-btn:hover { background: var(--admin-bg); }
@@ -86,7 +91,7 @@
       width: 22px; height: 22px; border-radius: 4px;
       background: var(--gray2); border: 1px solid var(--gray3);
       color: var(--gray-text); font-size: 10px; font-weight: 700;
-      font-family: 'Syne', sans-serif; cursor: pointer;
+      font-family: var(--fd); cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       transition: all 0.15s;
     }
@@ -104,7 +109,7 @@
     }
     .logo { display: flex; align-items: center; gap: 10px; }
     .logo svg { width: 22px; height: 22px; }
-    .logo-text { font-size: 14px; font-weight: 800; letter-spacing: -0.01em; }
+    .logo-text { font-size: 14px; font-weight: 700; letter-spacing: -0.01em; font-family: var(--fd); }
     .logo-sub { font-size: 9px; font-weight: 400; letter-spacing: 0.22em; opacity: 0.4; margin-left: 8px; }
     .header-badge {
       font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
@@ -125,18 +130,19 @@
       display: flex; flex-direction: column; align-items: center;
       justify-content: center; min-height: 60vh; gap: 16px; text-align: center;
     }
-    .error-state h2 { font-size: 24px; font-weight: 800; }
+    .error-state h2 { font-size: 24px; font-weight: 700; font-family: var(--fd); }
     .error-state p { color: var(--gray-text); font-size: 14px; max-width: 400px; }
 
     /* ── PROJECT HEADER ── */
     .project-header { margin-bottom: 40px; }
     .project-id {
-      font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+      font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
       color: var(--gray-text); margin-bottom: 6px; font-weight: 600;
+      font-family: var(--fd);
     }
     .project-name {
-      font-size: 32px; font-weight: 800; letter-spacing: -0.035em;
-      line-height: 1.1; margin-bottom: 8px;
+      font-size: 32px; font-weight: 700; letter-spacing: -0.03em;
+      line-height: 1.1; margin-bottom: 8px; font-family: var(--fd);
     }
     .project-client {
       font-size: 14px; color: var(--gray-text); margin-bottom: 16px;
@@ -149,15 +155,16 @@
     .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); }
     .status-text {
       font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
-      text-transform: uppercase; color: var(--lime);
+      text-transform: uppercase; color: var(--lime); font-family: var(--fd);
     }
 
     /* ── SECTIONS ── */
     .section { margin-bottom: 40px; }
     .section-title {
-      font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--gray-text); margin-bottom: 16px; font-weight: 700;
+      font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--gray-text); margin-bottom: 16px; font-weight: 600;
       padding-bottom: 8px; border-bottom: 1px solid var(--gray-border);
+      font-family: var(--fd);
     }
 
     /* ── PHASE TIMELINE ── */
@@ -175,10 +182,10 @@
       display: flex; justify-content: space-between; margin-bottom: 32px;
     }
     .phase-label {
-      font-size: 10px; color: var(--gray-text); text-align: center;
-      flex: 1; letter-spacing: 0.03em;
+      font-size: 11px; color: var(--gray-text); text-align: center;
+      flex: 1; letter-spacing: 0.03em; font-family: var(--fd);
     }
-    .phase-label.active { color: var(--lime); font-weight: 700; }
+    .phase-label.active { color: var(--lime); font-weight: 600; }
     .phase-label.completed { color: var(--gray-light); }
 
     /* ── MILESTONES ── */
@@ -194,9 +201,9 @@
     }
     .milestone-check.done { background: var(--lime); border-color: var(--lime); }
     .milestone-check.active { border-color: var(--lime); }
-    .milestone-title { font-size: 14px; color: var(--white); font-weight: 500; }
-    .milestone-desc { font-size: 12px; color: var(--gray-text); margin-top: 2px; line-height: 1.4; }
-    .milestone-date { font-size: 11px; color: var(--gray-text); margin-top: 4px; }
+    .milestone-title { font-size: 14px; color: var(--white); font-weight: 500; font-family: var(--fd); }
+    .milestone-desc { font-size: 13px; color: var(--gray-text); margin-top: 2px; line-height: 1.5; }
+    .milestone-date { font-size: 12px; color: var(--gray-text); margin-top: 4px; }
     .milestone.pending .milestone-title { color: var(--gray-text); }
 
     /* ── FILES ── */
@@ -212,13 +219,13 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 14px; flex-shrink: 0;
     }
-    .file-name { font-size: 14px; font-weight: 500; }
-    .file-type { font-size: 11px; color: var(--gray-text); margin-top: 1px; }
+    .file-name { font-size: 14px; font-weight: 500; font-family: var(--fd); }
+    .file-type { font-size: 12px; color: var(--gray-text); margin-top: 1px; }
     .file-download {
       padding: 8px 16px; background: transparent;
       border: 1px solid var(--gray3); border-radius: 6px;
-      color: var(--gray-light); font-size: 12px; font-family: 'Syne', sans-serif;
-      cursor: pointer; text-decoration: none; letter-spacing: 0.04em;
+      color: var(--gray-light); font-size: 11px; font-family: var(--fd);
+      cursor: pointer; text-decoration: none; letter-spacing: 0.06em;
       text-transform: uppercase; font-weight: 600; transition: all 0.2s;
     }
     .file-download:hover { border-color: var(--lime); color: var(--lime); }
@@ -239,9 +246,9 @@
     .activity-dot.delivery { background: var(--lime); }
     .activity-dot.payment { background: #4CAF50; }
     .activity-dot.approval { background: #2196F3; }
-    .activity-title { font-size: 13px; color: var(--white); font-weight: 500; }
-    .activity-desc { font-size: 12px; color: var(--gray-text); margin-top: 2px; }
-    .activity-date { font-size: 11px; color: var(--gray-text); margin-top: 3px; }
+    .activity-title { font-size: 14px; color: var(--white); font-weight: 500; font-family: var(--fd); }
+    .activity-desc { font-size: 13px; color: var(--gray-text); margin-top: 2px; }
+    .activity-date { font-size: 12px; color: var(--gray-text); margin-top: 3px; }
 
     /* ── PAYMENT ── */
     .payment-bar-bg {
@@ -254,6 +261,7 @@
     }
     .payment-info {
       display: flex; justify-content: space-between; font-size: 13px;
+      font-family: var(--fd);
     }
     .payment-paid { color: var(--lime); font-weight: 600; }
     .payment-total { color: var(--gray-text); }
@@ -263,7 +271,7 @@
       display: flex; align-items: center; justify-content: center;
       gap: 8px; padding: 16px 32px; background: var(--lime);
       color: var(--black); border: none; border-radius: 8px;
-      font-size: 13px; font-weight: 800; font-family: 'Syne', sans-serif;
+      font-size: 13px; font-weight: 700; font-family: var(--fd);
       letter-spacing: 0.06em; text-transform: uppercase;
       text-decoration: none; transition: transform 0.15s;
       margin: 32px 0 60px; width: 100%;
@@ -296,9 +304,9 @@
     }
     .admin-section-header:hover { background: rgba(255,149,0,0.09); }
     .admin-section-title {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
       text-transform: uppercase; color: var(--admin);
-      display: flex; align-items: center; gap: 8px;
+      font-family: var(--fd); display: flex; align-items: center; gap: 8px;
     }
     .admin-section-chevron {
       color: var(--admin); font-size: 12px;
@@ -318,11 +326,11 @@
     .brief-group { margin-bottom: 24px; }
     .brief-group:last-child { margin-bottom: 0; }
     .brief-group-title {
-      font-size: 9px; font-weight: 700; letter-spacing: 0.2em;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
       text-transform: uppercase; color: var(--admin);
       margin-bottom: 10px; padding-bottom: 6px;
       border-bottom: 1px solid var(--admin-border);
-      opacity: 0.7;
+      opacity: 0.7; font-family: var(--fd);
     }
     .brief-grid {
       display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
@@ -330,16 +338,17 @@
     .brief-grid.full { grid-template-columns: 1fr; }
     .brief-field { }
     .brief-label {
-      font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
       text-transform: uppercase; color: var(--gray-text); margin-bottom: 3px;
+      font-family: var(--fd);
     }
     .brief-value {
-      font-size: 13px; color: var(--gray-light); line-height: 1.5;
+      font-size: 14px; color: var(--gray-light); line-height: 1.5;
     }
-    .brief-value.empty-val { color: var(--gray3); font-style: italic; font-size: 12px; }
+    .brief-value.empty-val { color: var(--gray3); font-style: italic; font-size: 13px; }
     .brief-tag {
       display: inline-block; padding: 2px 8px; background: var(--gray2);
-      border-radius: 4px; font-size: 11px; margin: 2px 2px 2px 0;
+      border-radius: 4px; font-size: 12px; margin: 2px 2px 2px 0;
       color: var(--gray-light); border: 1px solid var(--gray3);
     }
     .brief-text-block {
@@ -353,7 +362,7 @@
       position: fixed; bottom: 24px; right: 24px; z-index: 999;
       padding: 10px 18px; border-radius: 8px;
       font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
-      opacity: 0; transform: translateY(8px);
+      font-family: var(--fd); opacity: 0; transform: translateY(8px);
       transition: all 0.2s; pointer-events: none;
     }
     .toast.show { opacity: 1; transform: translateY(0); }
