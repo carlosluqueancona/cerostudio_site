@@ -987,13 +987,13 @@
             </div>
             <hr class="divider">
           ` : ""}
-          <div class="field-row">
-            <div class="field">
+          <div class="field-row" style="align-items:end">
+            <div class="field" style="margin-bottom:0">
               <label>Total acordado (USD)</label>
               <input type="number" id="p-total" value="${b.total_amount != null ? b.total_amount : ""}" placeholder="1200">
             </div>
-            <div class="field">
-              <label>Pagado hasta hoy (USD)</label>
+            <div class="field" style="margin-bottom:0">
+              <label>Pagado (USD)</label>
               <input type="number" id="p-paid" value="${b.paid_amount != null ? b.paid_amount : ""}" placeholder="600">
             </div>
           </div>
@@ -1182,6 +1182,7 @@
   }
 
   async function updatePayment() {
+    if (!CURRENT_BRIEF_ID) { toast("Sin proyecto seleccionado", "error"); return; }
     const totalVal = document.getElementById("p-total").value;
     const paidVal  = document.getElementById("p-paid").value;
     const total = totalVal !== "" ? parseFloat(totalVal) : null;
@@ -1190,13 +1191,19 @@
     if (total !== null && !isNaN(total)) body.total_amount = total;
     if (paid  !== null && !isNaN(paid))  body.paid_amount  = paid;
     if (!Object.keys(body).length) { toast("Ingresa al menos un monto", "error"); return; }
-    const res = await api(`/briefs/${CURRENT_BRIEF_ID}/payment`, "PATCH", body);
-    if (res.success) {
-      toast("Pagos actualizados");
-      if (total !== null) CURRENT_DETAIL.brief.total_amount = total;
-      if (paid !== null) CURRENT_DETAIL.brief.paid_amount = paid;
-      renderDetailRight(CURRENT_DETAIL);
-    } else toast("Error", "error");
+    try {
+      const res = await api(`/briefs/${CURRENT_BRIEF_ID}/payment`, "PATCH", body);
+      if (res.success) {
+        toast("Pagos actualizados ✓");
+        if (total !== null) CURRENT_DETAIL.brief.total_amount = total;
+        if (paid  !== null) CURRENT_DETAIL.brief.paid_amount  = paid;
+        renderDetailRight(CURRENT_DETAIL);
+      } else {
+        toast(res.error || "Error al guardar", "error");
+      }
+    } catch (err) {
+      toast("Error de conexión", "error");
+    }
   }
 
   // ── THEME ──
