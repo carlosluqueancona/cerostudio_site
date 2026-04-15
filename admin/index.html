@@ -676,8 +676,8 @@
           <div class="brief-row" onclick="loadDetail('${b.brief_id}')">
             <div class="brief-row-id">${b.brief_id}</div>
             <div style="flex:1">
-              <div class="brief-row-name">${b.business_name || b.name}</div>
-              <div class="brief-row-client">${b.name} · ${b.email}</div>
+              <div class="brief-row-name">${esc(b.business_name || b.name)}</div>
+              <div class="brief-row-client">${esc(b.name)} · ${esc(b.email)}</div>
             </div>
             <span class="portal-pill ${b.portal_enabled ? 'active' : ''}">
               ${b.portal_enabled ? 'Portal activo' : 'Sin portal'}
@@ -984,18 +984,23 @@
   }
 
   // ── BRIEF FIELDS RENDERER ──
+  function esc(str) {
+    if (str == null) return '';
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
   function bField(label, val) {
     const empty = !val || (Array.isArray(val) && !val.length);
     const content = empty
       ? `<div class="bf-value none">—</div>`
-      : `<div class="bf-value">${val}</div>`;
-    return `<div><div class="bf-label">${label}</div>${content}</div>`;
+      : `<div class="bf-value">${esc(val)}</div>`;
+    return `<div><div class="bf-label">${esc(label)}</div>${content}</div>`;
   }
 
   function bTags(raw) {
     const arr = parseTags(raw);
     if (!arr.length) return '<div class="bf-value none">—</div>';
-    return `<div>${arr.map(t => `<span class="brief-tag">${t}</span>`).join("")}</div>`;
+    return `<div>${arr.map(t => `<span class="brief-tag">${esc(t)}</span>`).join("")}</div>`;
   }
 
   function renderBriefFields(b) {
@@ -1061,12 +1066,12 @@
       ${b.additional_notes ? `
         <div class="brief-group">
           <div class="brief-group-label">Notas adicionales</div>
-          <div class="brief-text-pre">${b.additional_notes}</div>
+          <div class="brief-text-pre">${esc(b.additional_notes)}</div>
         </div>` : ""}
       ${b.brief_text ? `
         <div class="brief-group">
           <div class="brief-group-label">Brief libre</div>
-          <div class="brief-text-pre">${b.brief_text}</div>
+          <div class="brief-text-pre">${esc(b.brief_text)}</div>
         </div>` : ""}
     `;
   }

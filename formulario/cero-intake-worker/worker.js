@@ -33,31 +33,36 @@ export default {
       try {
         const body = await request.json();
 
-        // ── Verificar Turnstile ──
-        if (env.TURNSTILE_SECRET_KEY) {
-          const tsToken = body.cf_turnstile_response || '';
-          if (!tsToken) {
-            return Response.json(
-              { success: false, error: 'Verificación de seguridad requerida' },
-              { status: 400, headers: corsHeaders }
-            );
-          }
-          const tsRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              secret:   env.TURNSTILE_SECRET_KEY,
-              response: tsToken,
-              remoteip: request.headers.get('CF-Connecting-IP') || undefined,
-            }),
-          });
-          const tsData = await tsRes.json();
-          if (!tsData.success) {
-            return Response.json(
-              { success: false, error: 'Verificación de seguridad fallida' },
-              { status: 403, headers: corsHeaders }
-            );
-          }
+        // ── Verificar Turnstile (obligatorio) ──
+        if (!env.TURNSTILE_SECRET_KEY) {
+          console.error('[intake] TURNSTILE_SECRET_KEY no configurado');
+          return Response.json(
+            { success: false, error: 'Configuración del servidor incorrecta' },
+            { status: 500, headers: corsHeaders }
+          );
+        }
+        const tsToken = body.cf_turnstile_response || '';
+        if (!tsToken) {
+          return Response.json(
+            { success: false, error: 'Verificación de seguridad requerida' },
+            { status: 400, headers: corsHeaders }
+          );
+        }
+        const tsRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            secret:   env.TURNSTILE_SECRET_KEY,
+            response: tsToken,
+            remoteip: request.headers.get('CF-Connecting-IP') || undefined,
+          }),
+        });
+        const tsData = await tsRes.json();
+        if (!tsData.success) {
+          return Response.json(
+            { success: false, error: 'Verificación de seguridad fallida' },
+            { status: 403, headers: corsHeaders }
+          );
         }
 
         // Validate required fields
@@ -66,6 +71,21 @@ export default {
             { success: false, error: "Campos requeridos: name, email, phone" },
             { status: 400, headers: corsHeaders }
           );
+        }
+
+        // Validate input size limits
+        const LIMITS = { name: 200, email: 254, phone: 50, company: 300, businessName: 300,
+          industry: 200, location: 200, targetAudience: 2000, competitors: 2000, usp: 2000,
+          currentSite: 500, currentSitePain: 2000, referenceSites: 2000, avoidance: 2000,
+          brandColorsDetail: 1000, contentNotes: 2000, goal: 2000, deadlineDetail: 500,
+          additionalNotes: 5000, briefText: 10000 };
+        for (const [field, max] of Object.entries(LIMITS)) {
+          if (body[field] && String(body[field]).length > max) {
+            return Response.json(
+              { success: false, error: `Campo '${field}' excede el límite permitido` },
+              { status: 400, headers: corsHeaders }
+            );
+          }
         }
 
         // Generate brief ID

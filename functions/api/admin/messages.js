@@ -44,9 +44,13 @@ async function verifyJWT(token, secret) {
 }
 
 async function requireAuth(request, env) {
+  if (!env.JWT_SECRET) {
+    console.error('[auth] JWT_SECRET no configurado');
+    return null;
+  }
   const header = request.headers.get('Authorization') || '';
   const token  = header.startsWith('Bearer ') ? header.slice(7) : '';
-  return verifyJWT(token, env.JWT_SECRET || 'change-this-secret');
+  return verifyJWT(token, env.JWT_SECRET);
 }
 
 function json(data, status = 200, origin = '') {

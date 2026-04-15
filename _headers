@@ -20,7 +20,7 @@
 
 # Admin panel — más permisivo para permitir uploads a R2
 /blog/admin/*
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; font-src 'self' data:; connect-src 'self' https://cerostudio.ai https://*.r2.dev; object-src 'none'; frame-ancestors 'none'; base-uri 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; font-src 'self' data:; connect-src 'self' https://cerostudio.ai https://*.r2.dev; object-src 'none'; frame-ancestors 'none'; base-uri 'self'
 
 # Portal cliente
 /proyecto/*
@@ -29,6 +29,11 @@
 # Formulario de intake / brief
 /brief/*
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://intake.cerostudio.ai; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://intake.cerostudio.ai
+
+# Admin de briefs — no indexar
+/brief/admin*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
 
 # ── Cache Headers ─────────────────────────────────────────────────────────────
 

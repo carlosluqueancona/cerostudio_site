@@ -52,6 +52,7 @@ export async function onRequestGet(context) {
 
     return json(results);
   } catch (e) {
-    return json({ error: e.message }, 500);
+    console.error('[posts] GET error:', e);
+    return json({ error: 'Error interno del servidor' }, 500);
   }
 }

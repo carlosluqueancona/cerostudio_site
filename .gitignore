@@ -1,10 +1,22 @@
 .DS_Store
 
-# Wrangler configs en subdirectorios (contienen secrets en [vars])
-formulario/cero-intake-worker/wrangler.toml
-portal_cliente/extracted/cero-intake-worker/wrangler.toml
+# Wrangler configs (contienen secrets en [vars])
+**/wrangler.toml
+
+# Wrangler dev artifacts (SQLite local databases)
+.wrangler/
+**/.wrangler/
+**/*.sqlite
+**/*.sqlite-shm
+**/*.sqlite-wal
+
+# Variables de entorno
+.env
+.env.*
+!.env.example
 
 # Backups de base de datos (pueden contener PII de clientes)
 backup-*.sql
 *.dump.sql
 *.backup.sql
+*.sql
