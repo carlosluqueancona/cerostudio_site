@@ -2131,7 +2131,7 @@
       border: none;
       padding: 7px 14px;
       background: var(--surface-high);
-      transition: color .15s ease-out, background .15s ease-out;
+      transition: background .15s ease-out;
       cursor: pointer;
       font-family: var(--fb);
     }
@@ -2157,7 +2157,7 @@
       margin-top: 12px;
       font-family: var(--fb);
       cursor: pointer;
-      transition: color .15s ease-out, background .15s ease-out;
+      transition: background .15s ease-out;
     }
 
     .lang-btn-mobile:hover {
@@ -2934,15 +2934,15 @@
     document.addEventListener('DOMContentLoaded', function () {
       gsap.registerPlugin(ScrollTrigger);
 
-      /* ── LOGO TICKER ───────────────────────────────────────────── */
-      (function () {
+      /* ── LOGO TICKER (setTimeout → no bloquea DOMContentLoaded) ── */
+      setTimeout(function () {
         const track = document.querySelector('.ticker-track');
         if (!track) return;
         gsap.fromTo(track,
           { xPercent: 0 },
           { xPercent: -50, duration: 28, ease: 'none', repeat: -1, force3D: true }
         );
-      })();
+      }, 0);
 
       /* ── TEXT SCRAMBLE ─────────────────────────────────────────── */
       class TextScramble {
@@ -3108,7 +3108,8 @@
 
 
 
-      /* ── HERO — MAGNETIC FIELD LINES ── */
+      /* ── HERO — MAGNETIC FIELD LINES (idle — decorativo) ─────── */
+      (window.requestIdleCallback || (cb => setTimeout(cb, 200)))(function () {
       (function () {
         const canvas = document.getElementById('heroCanvas');
         if (!canvas) return;
@@ -3235,6 +3236,7 @@
         }, { threshold: 0 }).observe(canvas.parentElement);
         window.addEventListener('resize', () => { resize(); buildSeeds(); });
       })();
+      }); /* end requestIdleCallback */
 
 
 
