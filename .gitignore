@@ -1,1 +1,10 @@
 .DS_Store
+
+# Wrangler configs en subdirectorios (contienen secrets en [vars])
+formulario/cero-intake-worker/wrangler.toml
+portal_cliente/extracted/cero-intake-worker/wrangler.toml
+
+# Backups de base de datos (pueden contener PII de clientes)
+backup-*.sql
+*.dump.sql
+*.backup.sql
