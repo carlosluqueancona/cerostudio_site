@@ -593,6 +593,14 @@
     const opts = { method, headers: { "X-API-Key": API_KEY } };
     if (body) { opts.headers["Content-Type"] = "application/json"; opts.body = JSON.stringify(body); }
     const res = await fetch(WORKER_URL + path, opts);
+    if (res.status === 401) {
+      sessionStorage.removeItem("cs_admin_key");
+      API_KEY = "";
+      document.getElementById("app-shell").style.display = "none";
+      document.getElementById("page-login").style.display = "block";
+      toast("Sesión expirada. Vuelve a iniciar sesión.", "error");
+      return {};
+    }
     return res.json();
   }
 
@@ -650,8 +658,12 @@
   // ── BRIEFS LIST ──
   async function loadBriefs() {
     document.getElementById("briefs-list").innerHTML = '<div class="empty">Cargando...</div>';
-    const data = await api("/briefs");
-    renderBriefs(data.briefs || []);
+    try {
+      const data = await api("/briefs");
+      renderBriefs(data.briefs || []);
+    } catch (err) {
+      document.getElementById("briefs-list").innerHTML = '<div class="empty" style="color:#f66">Error de conexión. Verifica tu red.</div>';
+    }
   }
 
   function renderBriefs(briefs) {
