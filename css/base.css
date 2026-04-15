@@ -1,0 +1,27 @@
+/* ── CERO STUDIO — Base CSS ── */
+/* Variables, fonts, and reset shared across all pages */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap');
+
+:root {
+  --black:       #0a0a0a;
+  --white:       #ffffff;
+  --lime:        #b2f700;
+  --gray1:       #111111;
+  --gray2:       #1a1a1a;
+  --gray3:       #2a2a2a;
+  --gray-text:   #777777;
+  --gray-light:  #aaaaaa;
+  --gray-border: rgba(255,255,255,0.06);
+  --fd: 'Space Grotesk', sans-serif;
+  --fb: 'Inter', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--fb);
+  -webkit-font-smoothing: antialiased;
+}
