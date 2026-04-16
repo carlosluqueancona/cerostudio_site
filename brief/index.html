@@ -483,15 +483,14 @@ async function handleSubmit() {
     const result = await res.json();
     if (!result.success) throw new Error(result.error || 'Error');
     S.briefId = result.briefId;
-  } catch {
-    /* Fallback: abrir mailto con el brief */
+    S.sending = false;
+    showSuccess();
+  } catch(err) {
+    S.sending = false;
     const subj = encodeURIComponent(`Nuevo Brief — ${S.data.businessName || S.data.name || ''}`);
     const body = encodeURIComponent(briefText);
     window.location.href = `mailto:hola@cerostudio.ai?subject=${subj}&body=${body}`;
   }
-
-  S.sending = false;
-  showSuccess();
 }
 
 function showSuccess() {
