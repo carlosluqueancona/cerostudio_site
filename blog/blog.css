@@ -298,11 +298,6 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   -webkit-backdrop-filter: blur(40px);
 }
 
-.nav-logo {
-  height: 34px;
-  width: auto;
-}
-
 .nav-links {
   display: flex;
   gap: 36px;
