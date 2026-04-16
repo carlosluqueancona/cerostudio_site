@@ -1,5 +1,8 @@
 .DS_Store
 
+# Claude Code worktrees
+.claude/worktrees/
+
 # Wrangler configs (contienen secrets en [vars])
 **/wrangler.toml
 
