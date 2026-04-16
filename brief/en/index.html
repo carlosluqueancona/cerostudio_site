@@ -480,16 +480,50 @@ async function handleSubmit() {
       body: JSON.stringify({ ...S.data, briefText, cf_turnstile_response: cfToken || '' }),
     });
     const result = await res.json();
-    if (!result.success) throw new Error(result.error || 'Error');
+    if (!result.success) throw new Error(result.error || 'Server error');
     S.briefId = result.briefId;
-  } catch {
-    const subj = encodeURIComponent(`New Brief — ${S.data.businessName || S.data.name || ''}`);
-    const body = encodeURIComponent(briefText);
-    window.open(`mailto:hola@cerostudio.ai?subject=${subj}&body=${body}`, '_blank');
+    S.sending = false;
+    showSuccess();
+  } catch(err) {
+    S.sending = false;
+    showError(briefText, err.message);
   }
+}
 
-  S.sending = false;
-  showSuccess();
+function showError(briefText, errMsg) {
+  const subj = encodeURIComponent(`New Brief — ${S.data.businessName || S.data.name || ''}`);
+  const body = encodeURIComponent(briefText);
+
+  $('hd').style.display = 'none';
+  $('ft').style.display = 'none';
+  $('mn').style.padding = '0';
+
+  $('ct').innerHTML = `
+    <div class="success">
+      <div class="si">
+        <div style="margin-bottom:24px;font-size:40px">⚠️</div>
+        <h1 style="color:var(--white);font-size:26px;font-weight:800;letter-spacing:-.03em;margin:0 0 12px">Something went wrong</h1>
+        <p style="color:var(--gl);font-size:14px;line-height:1.6;margin:0 0 8px">
+          Your information was <strong style="color:var(--white)">not lost</strong>. You have two options to send it to us:
+        </p>
+        <div class="sbox" style="margin:20px 0">
+          <div style="margin-bottom:14px">
+            <div style="font-size:11px;color:var(--lime);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Option 1 — Retry</div>
+            <button onclick="location.reload()" style="padding:12px 28px;background:var(--lime);color:var(--black);border:none;border-radius:8px;font-size:13px;font-family:var(--fd);font-weight:800;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;">
+              Reload and try again
+            </button>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--lime);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Option 2 — Send by email</div>
+            <a href="mailto:hola@cerostudio.ai?subject=${subj}&body=${body}"
+               style="display:inline-block;padding:12px 28px;border:1px solid rgba(255,255,255,.15);border-radius:8px;font-size:13px;font-family:var(--fd);font-weight:600;color:var(--white);text-decoration:none;letter-spacing:.04em;">
+              Open in my email app
+            </a>
+          </div>
+        </div>
+        <p style="color:var(--gt);font-size:11px;margin:0">Technical error: ${esc(errMsg)}</p>
+      </div>
+    </div>`;
 }
 
 function showSuccess() {
