@@ -25,3 +25,8 @@ html, body {
   font-family: var(--fb);
   -webkit-font-smoothing: antialiased;
 }
+
+.nav-logo {
+  height: 34px;
+  width: auto;
+}
