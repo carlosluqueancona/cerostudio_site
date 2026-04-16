@@ -19,7 +19,7 @@
       justify-content: center; padding: 32px;
     }
     .login-box { max-width: 380px; width: 100%; }
-    .login-box img { height: 34px; width: auto; margin-bottom: 40px; display: block; }
+    .login-box img { margin-bottom: 40px; display: block; }
     .login-box h1 { font-family: var(--fd); font-size: 22px; font-weight: 700; margin-bottom: 6px; }
     .login-box p { font-size: 13px; color: var(--gt); margin-bottom: 28px; }
     .login-box input {
@@ -48,7 +48,7 @@
       display: flex; align-items: center; justify-content: space-between;
       border-bottom: 1px solid rgba(255,255,255,.06); background: var(--black);
     }
-    #hd img { height: 34px; width: auto; }
+    #hd img { }
     .hd-right { display: flex; align-items: center; gap: 16px; }
     .badge-live { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--lime); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
     .badge-live::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--lime); animation: pulse 2s infinite; }
@@ -164,7 +164,7 @@
 <!-- LOGIN -->
 <div id="login">
   <div class="login-box">
-    <img src="../images/svg/Cero_Studio_AI_Horizontal.svg" alt="Cero Studio">
+    <img src="../images/svg/Cero_Studio_AI_Horizontal.svg" alt="Cero Studio" class="nav-logo">
     <h1>Panel de Briefs</h1>
     <p>Ingresa tu API key para acceder.</p>
     <input type="password" id="key-input" placeholder="API Key" autocomplete="off">
@@ -176,7 +176,7 @@
 <!-- APP -->
 <div id="app">
   <header id="hd">
-    <img src="../images/svg/Cero_Studio_AI_Horizontal.svg" alt="Cero Studio">
+    <img src="../images/svg/Cero_Studio_AI_Horizontal.svg" alt="Cero Studio" class="nav-logo">
     <div class="hd-right">
       <span class="badge-live">Live</span>
       <button class="btn-logout" onclick="logout()">Salir</button>
