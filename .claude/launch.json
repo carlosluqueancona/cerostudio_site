@@ -1,0 +1,18 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "CeroStudio Site (Pages)",
+      "runtimeExecutable": "wrangler",
+      "runtimeArgs": ["pages", "dev", ".", "--port", "8788"],
+      "port": 8788
+    },
+    {
+      "name": "Cero Intake Worker",
+      "runtimeExecutable": "wrangler",
+      "runtimeArgs": ["dev", "--port", "8787"],
+      "port": 8787,
+      "cwd": "formulario/cero-intake-worker"
+    }
+  ]
+}
