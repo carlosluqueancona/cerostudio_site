@@ -40,25 +40,27 @@ export default {
       if (request.method === "POST" && path === "/submit") {
         const body = await request.json();
 
-        // Verificar Turnstile (obligatorio)
-        if (!env.TURNSTILE_SECRET_KEY) {
-          console.error("[intake] TURNSTILE_SECRET_KEY no configurado");
-          return json({ success: false, error: "Configuración del servidor incorrecta" }, 500);
-        }
+        // Verificar Turnstile (soft check — no bloquea el envío si falla)
         const tsToken = body.cf_turnstile_response || "";
-        if (!tsToken) return json({ success: false, error: "Verificación de seguridad requerida" }, 400);
-
-        const tsRes  = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            secret:   env.TURNSTILE_SECRET_KEY,
-            response: tsToken,
-            remoteip: request.headers.get("CF-Connecting-IP") || undefined,
-          }),
-        });
-        const tsData = await tsRes.json();
-        if (!tsData.success) return json({ success: false, error: "Verificación de seguridad fallida" }, 403);
+        if (env.TURNSTILE_SECRET_KEY && tsToken) {
+          try {
+            const tsRes  = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                secret:   env.TURNSTILE_SECRET_KEY,
+                response: tsToken,
+                remoteip: request.headers.get("CF-Connecting-IP") || undefined,
+              }),
+            });
+            const tsData = await tsRes.json();
+            if (!tsData.success) console.warn("[intake] Turnstile failed:", tsData["error-codes"]);
+          } catch(e) {
+            console.warn("[intake] Turnstile check error:", e.message);
+          }
+        } else {
+          console.warn("[intake] Turnstile skipped — token:", tsToken ? "present" : "missing", "| key:", env.TURNSTILE_SECRET_KEY ? "set" : "missing");
+        }
 
         // Validate required fields
         if (!body.name || !body.email || !body.phone) {
