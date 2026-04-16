@@ -486,10 +486,19 @@ async function handleSubmit() {
     showSuccess();
   } catch(err) {
     S.sending = false;
-    const subj = encodeURIComponent(`New Brief — ${S.data.businessName || S.data.name || ''}`);
-    const body = encodeURIComponent(briefText);
-    window.location.href = `mailto:hola@cerostudio.ai?subject=${subj}&body=${body}`;
+    showSubmitError(briefText, err.message);
   }
+}
+
+function showSubmitError(briefText, errMsg) {
+  const subj = encodeURIComponent(`New Brief — ${S.data.businessName || S.data.name || ''}`);
+  const body = encodeURIComponent(briefText);
+  $('btn-next').textContent = 'Submit Brief →';
+  $('btn-next').disabled = false;
+  const errDiv = document.createElement('div');
+  errDiv.style.cssText = 'margin:16px 0 0;padding:14px 16px;background:rgba(255,60,60,.08);border:1px solid rgba(255,60,60,.2);border-radius:8px;font-size:13px;line-height:1.5;';
+  errDiv.innerHTML = `<strong style="color:#ff6b6b">Submission error:</strong> <span style="color:var(--gl)">${esc(errMsg)}</span><br><a href="mailto:hola@cerostudio.ai?subject=${subj}&body=${body}" style="color:var(--lime);font-size:12px;margin-top:6px;display:inline-block;">Send by email as alternative →</a>`;
+  $('ct').querySelector('.fade')?.appendChild(errDiv) || $('ct').appendChild(errDiv);
 }
 
 function showSuccess() {
