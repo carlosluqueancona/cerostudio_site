@@ -486,7 +486,7 @@ async function handleSubmit() {
     /* Fallback: open mailto with brief */
     const subj = encodeURIComponent(`New Brief — ${S.data.businessName || S.data.name || ''}`);
     const body = encodeURIComponent(briefText);
-    window.open(`mailto:hola@cerostudio.ai?subject=${subj}&body=${body}`, '_blank');
+    window.location.href = `mailto:hola@cerostudio.ai?subject=${subj}&body=${body}`;
   }
 
   S.sending = false;
