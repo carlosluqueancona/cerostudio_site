@@ -1,4 +1,5 @@
 (function () {
+  function init() {
   var navEl = document.getElementById('navbar-placeholder');
   var ftEl = document.getElementById('footer-placeholder');
   if (!navEl && !ftEl) return;
@@ -31,4 +32,11 @@
   }).catch(function (err) {
     console.warn('Component loader failed:', err);
   });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
