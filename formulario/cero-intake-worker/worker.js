@@ -415,6 +415,18 @@ export default {
         return json({ success: true, briefId: id, paidAmount: paid?.paid_amount, paymentHistory });
       }
 
+      // ── DELETE /briefs/:id ──
+      if (request.method === "DELETE" && /^\/briefs\/CS-[A-Z0-9]+$/.test(path)) {
+        if (!isAdmin()) return json({ error: "No autorizado" }, 401);
+        const id = path.split("/briefs/")[1];
+        await env.DB.prepare("DELETE FROM payment_history WHERE brief_id = ?").bind(id).run();
+        await env.DB.prepare("DELETE FROM files WHERE brief_id = ?").bind(id).run();
+        await env.DB.prepare("DELETE FROM milestones WHERE brief_id = ?").bind(id).run();
+        await env.DB.prepare("DELETE FROM activity_log WHERE brief_id = ?").bind(id).run();
+        await env.DB.prepare("DELETE FROM briefs WHERE brief_id = ?").bind(id).run();
+        return json({ success: true });
+      }
+
       return json({ error: "Not found" }, 404);
 
     } catch (err) {

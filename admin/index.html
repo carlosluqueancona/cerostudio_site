@@ -522,6 +522,7 @@
           </div>
           <div class="topbar-actions">
             <button class="btn btn-ghost btn-sm" id="btn-open-portal" onclick="openPortal()" style="display:none">Ver como cliente ↗</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteProject()">Eliminar proyecto</button>
           </div>
         </div>
         <div class="content">
@@ -1138,6 +1139,18 @@
       const data = await api(`/briefs/${CURRENT_BRIEF_ID}`);
       document.getElementById("files-list").innerHTML = renderFiles(data.files || []);
     } else toast("Error al agregar", "error");
+  }
+
+  async function deleteProject() {
+    const id = CURRENT_BRIEF_ID;
+    if (!id) return;
+    if (!confirm(`¿Eliminar el proyecto ${id} y todos sus datos?\n\nEsta acción es irreversible.`)) return;
+    const res = await api(`/briefs/${id}`, "DELETE");
+    if (res.success) {
+      toast(`Proyecto ${id} eliminado`);
+      showPage('briefs');
+      await loadBriefs();
+    } else toast("Error al eliminar", "error");
   }
 
   async function deleteFile(id) {
