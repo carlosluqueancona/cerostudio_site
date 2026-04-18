@@ -2258,7 +2258,7 @@
       ── -->
         <div class="port-grid">
 
-          <!-- 1 — Modelle -->
+          <div id="portfolio-dynamic"><!-- 1 — Modelle -->
           <a href="https://www.agenciamodelle.com.mx/" target="_blank" rel="noopener" class="port-card ht">
             <div class="port-card-img-wrap">
               <img src="images/portafolio/modelle-screenshot.webp" alt="Modelle" class="port-card-img" loading="lazy" width="640" height="400">
@@ -2458,6 +2458,8 @@
               <p class="port-card-desc" id="port-d14">Asesoría especializada en bioseguridad, sanidad animal y optimización de producción avícola.</p>
             </div>
           </a>
+
+          </div><!-- /portfolio-dynamic -->
 
           <!-- 15 — CTA -->
           <a href="#contacto" class="port-card port-cta ht">
@@ -3419,6 +3421,15 @@
         var btn = g('langToggle'), mbtn = g('mnav-lang');
         if (btn) { btn.textContent = lang === 'es' ? 'EN' : 'ES'; btn.classList.toggle('active-en', lang === 'en'); }
         if (mbtn) { mbtn.textContent = lang === 'es' ? 'EN' : 'ES'; }
+
+        /* Portfolio i18n (injected server-side via SSR) */
+        if (window.CS_PORTFOLIO_I18N && window.CS_PORTFOLIO_I18N[lang]) {
+          var portDict = window.CS_PORTFOLIO_I18N[lang];
+          Object.keys(portDict).forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.textContent = portDict[id].t;
+          });
+        }
 
         /* WhatsApp links */
         document.querySelectorAll('[data-wa-es]').forEach(function (el) {

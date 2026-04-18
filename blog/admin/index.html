@@ -273,7 +273,8 @@
       <span>Blog Admin</span>
     </div>
     <div class="topbar-actions">
-      <button class="btn btn-ghost btn-sm" id="tab-posts-btn"   onclick="switchTab('posts')"   style="border-color:var(--lime-50);color:var(--lime);">Artículos</button>
+      <button class="btn btn-ghost btn-sm" id="tab-posts-btn"     onclick="switchTab('posts')"     style="border-color:var(--lime-50);color:var(--lime);">Artículos</button>
+      <button class="btn btn-ghost btn-sm" id="tab-port-btn"     onclick="switchTab('portfolio')">Portafolio</button>
       <button class="btn btn-ghost btn-sm" id="tab-msgs-btn"    onclick="switchTab('messages')">Mensajes <span id="unread-badge" style="display:none;background:var(--lime);color:var(--on-lime);border-radius:99px;padding:1px 7px;font-size:10px;margin-left:4px;"></span></button>
       <a href="/blog/" target="_blank" class="btn btn-ghost btn-sm">Ver blog ↗</a>
       <button class="btn btn-ghost btn-sm" onclick="logout()">Salir</button>
@@ -321,6 +322,87 @@
       </div>
     </div>
     </div><!-- /tab-posts -->
+
+    <!-- ── TAB: PORTAFOLIO ── -->
+    <div id="tab-portfolio" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+        <h2 style="font-family:var(--fd);font-size:18px;font-weight:700;">Portafolio</h2>
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-ghost btn-sm" onclick="openPortItem(null)">+ Agregar proyecto</button>
+          <button class="btn btn-primary btn-sm" onclick="rebuildPortfolio()" id="port-rebuild-btn">↻ Publicar cambios</button>
+        </div>
+      </div>
+
+      <div id="port-loading" class="loading"><span class="spinner"></span></div>
+      <div id="port-list" style="display:none;overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <thead><tr style="border-bottom:1px solid var(--border);color:var(--gt);font-size:11px;text-transform:uppercase;">
+            <th style="padding:8px 12px;text-align:left;">Nombre</th>
+            <th style="padding:8px 12px;text-align:left;">Categoría</th>
+            <th style="padding:8px 12px;text-align:left;">Orden</th>
+            <th style="padding:8px 12px;text-align:left;">Estado</th>
+            <th style="padding:8px 12px;text-align:right;">Acciones</th>
+          </tr></thead>
+          <tbody id="port-list-body"></tbody>
+        </table>
+      </div>
+      <div id="port-empty" style="display:none;padding:48px;text-align:center;color:var(--gt);font-size:14px;">No hay proyectos aún.</div>
+
+      <!-- ── Edit / Create modal ── -->
+      <div id="port-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;overflow-y:auto;padding:32px 16px;">
+        <div style="background:var(--surface-1);max-width:680px;margin:0 auto;padding:32px;border:1px solid var(--border);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+            <h3 style="font-family:var(--fd);font-size:16px;font-weight:700;" id="port-modal-title">Nuevo proyecto</h3>
+            <button onclick="closePortModal()" style="background:none;border:none;color:var(--gt);cursor:pointer;font-size:20px;">×</button>
+          </div>
+          <form id="port-form" onsubmit="savePortItem(event)">
+            <input type="hidden" id="pf-id">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+              <div style="grid-column:1/-1;">
+                <label style="font-size:11px;color:var(--gt);display:block;margin-bottom:4px;">NOMBRE DEL PROYECTO *</label>
+                <input id="pf-name" type="text" required style="width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--white);padding:9px 12px;font-family:var(--fb);font-size:14px;">
+              </div>
+              <div style="grid-column:1/-1;">
+                <label style="font-size:11px;color:var(--gt);display:block;margin-bottom:4px;">URL DEL PROYECTO *</label>
+                <input id="pf-url" type="url" required style="width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--white);padding:9px 12px;font-family:var(--fb);font-size:14px;">
+              </div>
+              <div style="grid-column:1/-1;">
+                <label style="font-size:11px;color:var(--gt);display:block;margin-bottom:4px;">IMAGEN (ruta o URL) *</label>
+                <input id="pf-image" type="text" required placeholder="/images/portafolio/nombre.webp" style="width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--white);padding:9px 12px;font-family:var(--fb);font-size:14px;">
+              </div>
+              <div>
+                <label style="font-size:11px;color:var(--gt);display:block;margin-bottom:4px;">CATEGORÍA ESPAÑOL *</label>
+                <input id="pf-cat-es" type="text" required placeholder="Industria · Tipo" style="width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--white);padding:9px 12px;font-family:var(--fb);font-size:14px;">
+              </div>
+              <div>
+                <label style="font-size:11px;color:var(--gt);display:block;margin-bottom:4px;">CATEGORÍA INGLÉS *</label>
+                <input id="pf-cat-en" type="text" required placeholder="Industry · Type" style="width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--white);padding:9px 12px;font-family:var(--fb);font-size:14px;">
+              </div>
+              <div>
+                <label style="font-size:11px;color:var(--gt);display:block;margin-bottom:4px;">DESCRIPCIÓN ESPAÑOL *</label>
+                <textarea id="pf-desc-es" required rows="3" style="width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--white);padding:9px 12px;font-family:var(--fb);font-size:14px;resize:vertical;"></textarea>
+              </div>
+              <div>
+                <label style="font-size:11px;color:var(--gt);display:block;margin-bottom:4px;">DESCRIPCIÓN INGLÉS *</label>
+                <textarea id="pf-desc-en" required rows="3" style="width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--white);padding:9px 12px;font-family:var(--fb);font-size:14px;resize:vertical;"></textarea>
+              </div>
+              <div>
+                <label style="font-size:11px;color:var(--gt);display:block;margin-bottom:4px;">ORDEN</label>
+                <input id="pf-order" type="number" min="0" value="0" style="width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--white);padding:9px 12px;font-family:var(--fb);font-size:14px;">
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;padding-top:20px;">
+                <label style="font-size:13px;">Visible en el sitio</label>
+                <input id="pf-visible" type="checkbox" checked style="width:16px;height:16px;cursor:pointer;">
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px;">
+              <button type="button" onclick="closePortModal()" class="btn btn-ghost btn-sm">Cancelar</button>
+              <button type="submit" class="btn btn-primary btn-sm" id="pf-save-btn">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 
     <!-- ── TAB: MENSAJES ── -->
     <div id="tab-messages" style="display:none;">
@@ -1012,11 +1094,14 @@ let currentTab = 'posts';
 
 function switchTab(tab) {
   currentTab = tab;
-  document.getElementById('tab-posts').style.display    = tab === 'posts'    ? '' : 'none';
-  document.getElementById('tab-messages').style.display = tab === 'messages' ? '' : 'none';
+  document.getElementById('tab-posts').style.display      = tab === 'posts'     ? '' : 'none';
+  document.getElementById('tab-messages').style.display   = tab === 'messages'  ? '' : 'none';
+  document.getElementById('tab-portfolio').style.display  = tab === 'portfolio' ? '' : 'none';
   document.getElementById('tab-posts-btn').classList.toggle('tab-active',  tab === 'posts');
   document.getElementById('tab-msgs-btn').classList.toggle('tab-active',   tab === 'messages');
+  document.getElementById('tab-port-btn').classList.toggle('tab-active',   tab === 'portfolio');
   if (tab === 'messages') loadMessages();
+  if (tab === 'portfolio') loadPortfolio();
 }
 
 // ── Messages ──────────────────────────────────────────────────────────────────
@@ -1124,6 +1209,151 @@ async function deleteMsg(e, id) {
     if (d.ok) { allMessages = allMessages.filter(m => m.id !== id); renderMessages(); toast('Mensaje eliminado', 'ok'); }
     else toast(d.error || 'Error al eliminar', 'err');
   } catch { toast('Error de conexión', 'err'); }
+}
+
+// ── Portfolio ─────────────────────────────────────────────────────────────────
+const PORT_API = 'https://cerostudio.ai/api/admin/portfolio';
+
+async function portFetch(path, opts = {}) {
+  const token = getToken();
+  return fetch(PORT_API + (path || ''), {
+    ...opts,
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, ...(opts.headers || {}) },
+  });
+}
+
+let portItems = [];
+let editingPortId = null;
+
+async function loadPortfolio() {
+  document.getElementById('port-loading').style.display = '';
+  document.getElementById('port-list').style.display    = 'none';
+  document.getElementById('port-empty').style.display   = 'none';
+  try {
+    const r = await portFetch('');
+    if (r.status === 401) { clearToken(); showView('login'); return; }
+    portItems = await r.json();
+    renderPortList();
+  } catch { toast('Error al cargar portafolio', 'err'); }
+}
+
+function renderPortList() {
+  document.getElementById('port-loading').style.display = 'none';
+  if (!portItems.length) {
+    document.getElementById('port-empty').style.display = '';
+    return;
+  }
+  document.getElementById('port-list').style.display = '';
+  document.getElementById('port-list-body').innerHTML = portItems.map(item => `
+    <tr>
+      <td style="padding:10px 12px;font-weight:600;font-size:13px;">${esc(item.name)}</td>
+      <td style="padding:10px 12px;font-size:12px;color:var(--gt);">${esc(item.cat_es)}</td>
+      <td style="padding:10px 12px;">${item.sort_order}</td>
+      <td style="padding:10px 12px;">
+        <button onclick="togglePortVisible(${item.id})" class="btn btn-sm ${item.visible ? 'btn-primary' : 'btn-ghost'}" style="min-width:72px;">
+          ${item.visible ? 'Visible' : 'Oculto'}
+        </button>
+      </td>
+      <td style="padding:10px 12px;text-align:right;white-space:nowrap;">
+        <button onclick="openPortItem(${item.id})" class="btn btn-ghost btn-sm">Editar</button>
+        <button onclick="deletePortItem(${item.id})" class="btn btn-danger btn-sm" style="margin-left:6px;">Eliminar</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function openPortItem(id) {
+  editingPortId = id || null;
+  const item = id ? portItems.find(p => p.id === id) : null;
+  document.getElementById('port-modal-title').textContent = item ? 'Editar proyecto' : 'Nuevo proyecto';
+  document.getElementById('pf-name').value    = item?.name       || '';
+  document.getElementById('pf-url').value     = item?.url        || '';
+  document.getElementById('pf-image').value   = item?.image      || '';
+  document.getElementById('pf-cat-es').value  = item?.cat_es     || '';
+  document.getElementById('pf-cat-en').value  = item?.cat_en     || '';
+  document.getElementById('pf-desc-es').value = item?.desc_es    || '';
+  document.getElementById('pf-desc-en').value = item?.desc_en    || '';
+  document.getElementById('pf-order').value   = item?.sort_order ?? 0;
+  document.getElementById('pf-visible').checked = item ? !!item.visible : true;
+  document.getElementById('port-modal').style.display = '';
+}
+
+function closePortModal() {
+  document.getElementById('port-modal').style.display = 'none';
+  editingPortId = null;
+}
+
+async function savePortItem(e) {
+  e.preventDefault();
+  const body = {
+    name:       document.getElementById('pf-name').value.trim(),
+    url:        document.getElementById('pf-url').value.trim(),
+    image:      document.getElementById('pf-image').value.trim(),
+    cat_es:     document.getElementById('pf-cat-es').value.trim(),
+    cat_en:     document.getElementById('pf-cat-en').value.trim(),
+    desc_es:    document.getElementById('pf-desc-es').value.trim(),
+    desc_en:    document.getElementById('pf-desc-en').value.trim(),
+    sort_order: parseInt(document.getElementById('pf-order').value) || 0,
+    visible:    document.getElementById('pf-visible').checked ? 1 : 0,
+  };
+  try {
+    const r = editingPortId
+      ? await portFetch(`?id=${editingPortId}`, { method: 'PUT',  body: JSON.stringify(body) })
+      : await portFetch('',                      { method: 'POST', body: JSON.stringify(body) });
+    const d = await r.json();
+    if (d.success || d.id) {
+      toast(editingPortId ? 'Proyecto actualizado' : 'Proyecto creado', 'ok');
+      closePortModal();
+      await loadPortfolio();
+    } else {
+      toast(d.error || 'Error al guardar', 'err');
+    }
+  } catch { toast('Error de conexión', 'err'); }
+}
+
+async function togglePortVisible(id) {
+  try {
+    const r = await portFetch(`?id=${id}`, { method: 'PATCH' });
+    const d = await r.json();
+    if (d.success) {
+      const item = portItems.find(p => p.id === id);
+      if (item) item.visible = d.visible;
+      renderPortList();
+    } else {
+      toast(d.error || 'Error', 'err');
+    }
+  } catch { toast('Error de conexión', 'err'); }
+}
+
+async function deletePortItem(id) {
+  const item = portItems.find(p => p.id === id);
+  if (!confirm(`¿Eliminar "${item?.name || id}"? Esta acción es irreversible.`)) return;
+  try {
+    const r = await portFetch(`?id=${id}`, { method: 'DELETE' });
+    const d = await r.json();
+    if (d.success) {
+      toast('Proyecto eliminado', 'ok');
+      await loadPortfolio();
+    } else {
+      toast(d.error || 'Error al eliminar', 'err');
+    }
+  } catch { toast('Error de conexión', 'err'); }
+}
+
+async function rebuildPortfolio() {
+  const btn = document.getElementById('port-rebuild-btn');
+  btn.disabled = true;
+  btn.textContent = 'Publicando…';
+  try {
+    const r = await portFetch('?action=rebuild', { method: 'POST' });
+    const d = await r.json();
+    if (d.success) {
+      toast(`Publicado: ${d.count} proyecto${d.count !== 1 ? 's' : ''}`, 'ok');
+    } else {
+      toast(d.error || 'Error al publicar', 'err');
+    }
+  } catch { toast('Error de conexión', 'err'); }
+  finally { btn.disabled = false; btn.textContent = '↻ Publicar cambios'; }
 }
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
