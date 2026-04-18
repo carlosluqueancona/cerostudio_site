@@ -1215,7 +1215,6 @@ async function deleteMsg(e, id) {
 const PORT_API = 'https://cerostudio.ai/api/admin/portfolio';
 
 async function portFetch(path, opts = {}) {
-  const token = getToken();
   return fetch(PORT_API + (path || ''), {
     ...opts,
     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, ...(opts.headers || {}) },
