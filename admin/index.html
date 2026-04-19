@@ -565,10 +565,6 @@
         <input class="field" id="nc-phone" type="text" placeholder="+52 55 1234 5678">
       </div>
       <div>
-        <div class="field-label">Empresa</div>
-        <input class="field" id="nc-company" type="text" placeholder="Mi Empresa SA">
-      </div>
-      <div>
         <div class="field-label">URL del sitio actual</div>
         <input class="field" id="nc-url" type="text" placeholder="https://...">
       </div>
@@ -736,7 +732,7 @@
             <div class="brief-row-id">${b.brief_id}</div>
             <div style="flex:1">
               <div class="brief-row-name">${esc(b.business_name || b.name)}</div>
-              <div class="brief-row-client">${esc(b.name)} · ${esc(b.email)}</div>
+              <div class="brief-row-client">${b.business_name ? esc(b.name) + ' · ' : ''}${esc(b.email)}</div>
             </div>
             <span class="portal-pill ${b.portal_enabled ? 'active' : ''}">
               ${b.portal_enabled ? 'Portal activo' : 'Sin portal'}
@@ -810,10 +806,6 @@
             <div>
               <div class="field-label">Teléfono WhatsApp</div>
               <input class="field" id="ci-phone" type="text" value="${esc(b.phone||'')}">
-            </div>
-            <div>
-              <div class="field-label">Empresa</div>
-              <input class="field" id="ci-company" type="text" value="${esc(b.company||'')}">
             </div>
             <div>
               <div class="field-label">URL del sitio actual</div>
@@ -1225,7 +1217,6 @@
     const body = {
       name, email,
       phone:         document.getElementById("nc-phone").value.trim(),
-      company:       document.getElementById("nc-company").value.trim(),
       current_site:  document.getElementById("nc-url").value.trim(),
       business_name: document.getElementById("nc-biz").value.trim(),
       industry:      document.getElementById("nc-industry").value.trim(),
@@ -1260,7 +1251,6 @@
       name:          document.getElementById("ci-name").value.trim(),
       email:         document.getElementById("ci-email").value.trim(),
       phone:         document.getElementById("ci-phone").value.trim(),
-      company:       document.getElementById("ci-company").value.trim(),
       current_site:  document.getElementById("ci-url").value.trim(),
       business_name: document.getElementById("ci-biz").value.trim(),
       industry:      document.getElementById("ci-industry").value.trim(),
