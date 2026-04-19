@@ -51,6 +51,8 @@
     removeBanner();
   };
 
+  window._csShowBanner = showBanner;
+
   function showBanner() {
     if (document.getElementById('cs-cookie-bar')) return;
     var s = T[lang()] || T.es;

@@ -112,6 +112,7 @@
       <div class="consent-actions">
         <button class="btn-accept" onclick="window._csAccept(); updateConsentStatus()">Aceptar cookies de analítica</button>
         <button class="btn-reject" onclick="window._csReject(); updateConsentStatus()">Solo cookies esenciales</button>
+        <button class="btn-reject" onclick="resetConsent()">↺ Mostrar banner de nuevo</button>
       </div>
       <div id="consent-status"></div>
 
@@ -219,6 +220,7 @@
       <div class="consent-actions">
         <button class="btn-accept" onclick="window._csAccept(); updateConsentStatus()">Accept analytics cookies</button>
         <button class="btn-reject" onclick="window._csReject(); updateConsentStatus()">Essential cookies only</button>
+        <button class="btn-reject" onclick="resetConsent()">↺ Show banner again</button>
       </div>
       <div id="consent-status-en"></div>
 
@@ -275,6 +277,14 @@
     document.getElementById('sec-en').classList.toggle('active', l === 'en');
     document.getElementById('btn-es').classList.toggle('active', l === 'es');
     document.getElementById('btn-en').classList.toggle('active', l === 'en');
+  }
+
+  function resetConsent() {
+    try { localStorage.removeItem('cs_cookie_consent'); } catch(e) {}
+    updateConsentStatus();
+    // Re-show banner on current page
+    if (typeof showBanner === 'function') { showBanner(); }
+    else { window._csShowBanner && window._csShowBanner(); }
   }
 
   function updateConsentStatus() {
