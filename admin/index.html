@@ -146,19 +146,31 @@
       letter-spacing: 0.08em; text-transform: uppercase;
       color: var(--gray-text); margin-bottom: 6px; font-family: var(--fd);
     }
-    .field input, .field select, .field textarea {
+    .field input, .field select, .field textarea,
+    input.field, select.field, textarea.field {
       width: 100%; padding: 10px 14px;
       background: var(--gray2); border: 1px solid var(--gray3);
       border-radius: 7px; color: var(--white);
       font-family: var(--fb); font-size: 14px;
       transition: border-color 0.15s; appearance: none;
     }
-    .field input:focus, .field select:focus, .field textarea:focus {
+    .field input:focus, .field select:focus, .field textarea:focus,
+    input.field:focus, select.field:focus, textarea.field:focus {
       outline: none; border-color: rgba(184,255,0,0.4);
     }
     .field textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
     .field select option { background: var(--gray2); }
     .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .field-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--gray-text); margin-bottom: 4px;
+      font-family: var(--fd);
+    }
+    .field-value {
+      font-size: 14px; color: var(--white); font-family: var(--fb);
+      padding: 6px 0; border-bottom: 1px solid var(--gray3); min-height: 30px;
+      word-break: break-all;
+    }
 
     /* ── BUTTONS ── */
     .btn {
@@ -790,11 +802,26 @@
       <div class="card" id="card-client">
         <div class="card-header" style="justify-content:space-between;align-items:center;">
           <div class="card-title">Datos del cliente</div>
-          <button class="btn btn-primary btn-sm" onclick="saveClientInfo()">Guardar</button>
+          <button class="btn btn-ghost btn-sm" id="ci-edit-btn" onclick="editClientInfo()">Editar</button>
         </div>
-        <div class="card-body">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
 
+        <!-- VIEW MODE -->
+        <div class="card-body" id="ci-view">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div><div class="field-label">Nombre</div><div class="field-value">${esc(b.name||'—')}</div></div>
+            <div><div class="field-label">Email</div><div class="field-value">${esc(b.email||'—')}</div></div>
+            <div><div class="field-label">Teléfono WhatsApp</div><div class="field-value">${esc(b.phone||'—')}</div></div>
+            <div><div class="field-label">URL del sitio actual</div><div class="field-value">${esc(b.current_site||'—')}</div></div>
+            <div><div class="field-label">Nombre del negocio</div><div class="field-value">${esc(b.business_name||'—')}</div></div>
+            <div><div class="field-label">Giro / industria</div><div class="field-value">${esc(b.industry||'—')}</div></div>
+            <div><div class="field-label">Ubicación</div><div class="field-value">${esc(b.location||'—')}</div></div>
+            <div><div class="field-label">Idioma</div><div class="field-value">${esc(b.lang||'—')}</div></div>
+          </div>
+        </div>
+
+        <!-- EDIT MODE -->
+        <div class="card-body" id="ci-edit" style="display:none;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
             <div>
               <div class="field-label">Nombre</div>
               <input class="field" id="ci-name" type="text" value="${esc(b.name||'')}">
@@ -823,7 +850,6 @@
               <div class="field-label">Ubicación</div>
               <input class="field" id="ci-location" type="text" value="${esc(b.location||'')}">
             </div>
-
             <div style="grid-column:1/-1;">
               <div class="field-label">Idioma del proyecto</div>
               <div style="display:flex;gap:8px;margin-top:4px;">
@@ -834,7 +860,10 @@
               </div>
               <input type="hidden" id="ci-lang" value="${esc(b.lang||'Español')}">
             </div>
-
+          </div>
+          <div style="display:flex;gap:8px;margin-top:16px;justify-content:flex-end;">
+            <button class="btn btn-ghost btn-sm" onclick="cancelClientEdit()">Cancelar</button>
+            <button class="btn btn-primary btn-sm" onclick="saveClientInfo()">Guardar</button>
           </div>
         </div>
       </div>
@@ -1238,6 +1267,18 @@
   }
 
   // ── CLIENT INFO ──
+  function editClientInfo() {
+    document.getElementById("ci-view").style.display = "none";
+    document.getElementById("ci-edit").style.display = "";
+    document.getElementById("ci-edit-btn").style.display = "none";
+  }
+
+  function cancelClientEdit() {
+    document.getElementById("ci-edit").style.display = "none";
+    document.getElementById("ci-view").style.display = "";
+    document.getElementById("ci-edit-btn").style.display = "";
+  }
+
   function selectLang(val) {
     document.getElementById("ci-lang").value = val;
     ["Español","English","Ambos"].forEach(l => {
@@ -1263,6 +1304,14 @@
       Object.assign(CURRENT_DETAIL.brief, body);
       document.getElementById("detail-topbar-title").textContent = body.business_name || body.name;
       document.getElementById("detail-topbar-sub").textContent = `${CURRENT_BRIEF_ID} · ${body.email}`;
+      // refresh view mode values
+      const viewGrid = document.querySelector("#ci-view > div");
+      if (viewGrid) {
+        const labels = ["Nombre","Email","Teléfono WhatsApp","URL del sitio actual","Nombre del negocio","Giro / industria","Ubicación","Idioma"];
+        const values = [body.name, body.email, body.phone, body.current_site, body.business_name, body.industry, body.location, body.lang];
+        viewGrid.querySelectorAll(".field-value").forEach((el, i) => { el.textContent = values[i] || "—"; });
+      }
+      cancelClientEdit();
     } else {
       toast("Error al guardar", "error");
     }
