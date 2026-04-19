@@ -238,6 +238,19 @@ export default {
         return json({ success: true, briefId: id, status });
       }
 
+      // ── POST /briefs/manual — Admin creates client manually ──
+      if (request.method === "POST" && path === "/briefs/manual") {
+        if (!isAdmin()) return json({ error: "No autorizado" }, 401);
+        const { name, email, phone, company, current_site, business_name, industry, location, lang } = await request.json();
+        if (!name || !email) return json({ error: "Nombre y email son requeridos" }, 400);
+        const briefId = `CS-${Date.now().toString(36).toUpperCase()}`;
+        await env.DB.prepare(
+          `INSERT INTO briefs (brief_id, status, name, email, phone, company, current_site, business_name, industry, location, lang)
+           VALUES (?1,'new',?2,?3,?4,?5,?6,?7,?8,?9,?10)`
+        ).bind(briefId, name, email, phone||null, company||null, current_site||null, business_name||null, industry||null, location||null, lang||'Español').run();
+        return json({ success: true, briefId }, 201);
+      }
+
       // ── PATCH /briefs/:id/client ──
       if (request.method === "PATCH" && /^\/briefs\/CS-[A-Z0-9]+\/client$/.test(path)) {
         if (!isAdmin()) return json({ error: "No autorizado" }, 401);

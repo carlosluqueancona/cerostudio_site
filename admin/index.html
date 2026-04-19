@@ -500,6 +500,7 @@
           </div>
           <div class="topbar-actions">
             <button class="btn btn-ghost btn-sm" onclick="loadBriefs()">↺ Actualizar</button>
+            <button class="btn btn-primary btn-sm" onclick="openNewClient()">+ Nuevo cliente</button>
           </div>
         </div>
         <div class="content">
@@ -540,6 +541,63 @@
       </div>
 
     </main>
+  </div>
+</div>
+
+<!-- ── MODAL: NUEVO CLIENTE ── -->
+<div id="modal-new-client" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;overflow-y:auto;padding:32px 16px;">
+  <div style="background:#111;border:1px solid #222;max-width:620px;margin:0 auto;padding:32px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+      <div style="font-family:var(--fd);font-size:16px;font-weight:700;">Nuevo cliente</div>
+      <button onclick="closeNewClient()" style="background:none;border:none;color:#666;font-size:20px;cursor:pointer;">×</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div>
+        <div class="field-label">Nombre *</div>
+        <input class="field" id="nc-name" type="text" placeholder="Ana García">
+      </div>
+      <div>
+        <div class="field-label">Email *</div>
+        <input class="field" id="nc-email" type="email" placeholder="ana@empresa.com">
+      </div>
+      <div>
+        <div class="field-label">Teléfono WhatsApp</div>
+        <input class="field" id="nc-phone" type="text" placeholder="+52 55 1234 5678">
+      </div>
+      <div>
+        <div class="field-label">Empresa</div>
+        <input class="field" id="nc-company" type="text" placeholder="Mi Empresa SA">
+      </div>
+      <div>
+        <div class="field-label">URL del sitio actual</div>
+        <input class="field" id="nc-url" type="text" placeholder="https://...">
+      </div>
+      <div>
+        <div class="field-label">Nombre del negocio</div>
+        <input class="field" id="nc-biz" type="text" placeholder="Mi Negocio">
+      </div>
+      <div>
+        <div class="field-label">Giro / industria</div>
+        <input class="field" id="nc-industry" type="text" placeholder="Restaurante, Retail...">
+      </div>
+      <div>
+        <div class="field-label">Ubicación</div>
+        <input class="field" id="nc-location" type="text" placeholder="Ciudad de México">
+      </div>
+      <div style="grid-column:1/-1;">
+        <div class="field-label">Idioma del proyecto</div>
+        <div style="display:flex;gap:8px;margin-top:6px;">
+          <button class="btn btn-sm btn-primary"  id="nc-lang-Español" onclick="ncLang('Español')">Español</button>
+          <button class="btn btn-sm btn-ghost"    id="nc-lang-English" onclick="ncLang('English')">English</button>
+          <button class="btn btn-sm btn-ghost"    id="nc-lang-Ambos"   onclick="ncLang('Ambos')">Ambos</button>
+        </div>
+        <input type="hidden" id="nc-lang" value="Español">
+      </div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:24px;">
+      <button class="btn btn-ghost btn-sm" onclick="closeNewClient()">Cancelar</button>
+      <button class="btn btn-primary btn-sm" id="nc-save-btn" onclick="saveNewClient()">Crear cliente</button>
+    </div>
   </div>
 </div>
 
@@ -1135,6 +1193,59 @@
   }
 
   // ── ADMIN ACTIONS ──
+  // ── NEW CLIENT MODAL ──
+  function openNewClient() {
+    ["name","email","phone","company","url","biz","industry","location"].forEach(f => {
+      document.getElementById("nc-" + f).value = "";
+    });
+    ncLang("Español");
+    document.getElementById("modal-new-client").style.display = "";
+    document.getElementById("nc-name").focus();
+  }
+
+  function closeNewClient() {
+    document.getElementById("modal-new-client").style.display = "none";
+  }
+
+  function ncLang(val) {
+    document.getElementById("nc-lang").value = val;
+    ["Español","English","Ambos"].forEach(l => {
+      document.getElementById("nc-lang-" + l).className = "btn btn-sm " + (l === val ? "btn-primary" : "btn-ghost");
+    });
+  }
+
+  async function saveNewClient() {
+    const name  = document.getElementById("nc-name").value.trim();
+    const email = document.getElementById("nc-email").value.trim();
+    if (!name || !email) { toast("Nombre y email son requeridos", "error"); return; }
+
+    const btn = document.getElementById("nc-save-btn");
+    btn.disabled = true; btn.textContent = "Creando...";
+
+    const body = {
+      name, email,
+      phone:         document.getElementById("nc-phone").value.trim(),
+      company:       document.getElementById("nc-company").value.trim(),
+      current_site:  document.getElementById("nc-url").value.trim(),
+      business_name: document.getElementById("nc-biz").value.trim(),
+      industry:      document.getElementById("nc-industry").value.trim(),
+      location:      document.getElementById("nc-location").value.trim(),
+      lang:          document.getElementById("nc-lang").value,
+    };
+
+    const res = await api("/briefs/manual", "POST", body);
+    btn.disabled = false; btn.textContent = "Crear cliente";
+
+    if (res.success) {
+      toast("Cliente creado: " + res.briefId);
+      closeNewClient();
+      await loadBriefs();
+      loadDetail(res.briefId);
+    } else {
+      toast(res.error || "Error al crear", "error");
+    }
+  }
+
   // ── CLIENT INFO ──
   function selectLang(val) {
     document.getElementById("ci-lang").value = val;
