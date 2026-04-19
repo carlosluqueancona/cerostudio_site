@@ -1160,8 +1160,8 @@
     if (res.success) {
       toast("Datos del cliente guardados");
       Object.assign(CURRENT_DETAIL.brief, body);
-      document.getElementById("detail-topbar-sub").textContent =
-        `${CURRENT_BRIEF_ID} · ${body.email}`;
+      document.getElementById("detail-topbar-title").textContent = body.business_name || body.name;
+      document.getElementById("detail-topbar-sub").textContent = `${CURRENT_BRIEF_ID} · ${body.email}`;
     } else {
       toast("Error al guardar", "error");
     }
