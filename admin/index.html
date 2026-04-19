@@ -732,6 +732,63 @@
 
     document.getElementById("detail-left").innerHTML = `
 
+      <!-- Datos del cliente -->
+      <div class="card" id="card-client">
+        <div class="card-header" style="justify-content:space-between;align-items:center;">
+          <div class="card-title">Datos del cliente</div>
+          <button class="btn btn-primary btn-sm" onclick="saveClientInfo()">Guardar</button>
+        </div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+
+            <div>
+              <div class="field-label">Nombre</div>
+              <input class="field" id="ci-name" type="text" value="${esc(b.name||'')}">
+            </div>
+            <div>
+              <div class="field-label">Email</div>
+              <input class="field" id="ci-email" type="email" value="${esc(b.email||'')}">
+            </div>
+            <div>
+              <div class="field-label">Teléfono WhatsApp</div>
+              <input class="field" id="ci-phone" type="text" value="${esc(b.phone||'')}">
+            </div>
+            <div>
+              <div class="field-label">Empresa</div>
+              <input class="field" id="ci-company" type="text" value="${esc(b.company||'')}">
+            </div>
+            <div>
+              <div class="field-label">URL del sitio actual</div>
+              <input class="field" id="ci-url" type="text" value="${esc(b.current_site||'')}">
+            </div>
+            <div>
+              <div class="field-label">Nombre del negocio</div>
+              <input class="field" id="ci-biz" type="text" value="${esc(b.business_name||'')}">
+            </div>
+            <div>
+              <div class="field-label">Giro / industria</div>
+              <input class="field" id="ci-industry" type="text" value="${esc(b.industry||'')}">
+            </div>
+            <div>
+              <div class="field-label">Ubicación</div>
+              <input class="field" id="ci-location" type="text" value="${esc(b.location||'')}">
+            </div>
+
+            <div style="grid-column:1/-1;">
+              <div class="field-label">Idioma del proyecto</div>
+              <div style="display:flex;gap:8px;margin-top:4px;">
+                ${["Español","English","Ambos"].map(l => `
+                  <button class="btn btn-sm ${b.lang===l?"btn-primary":"btn-ghost"}"
+                    id="ci-lang-${l}" onclick="selectLang('${l}')">${l}</button>
+                `).join("")}
+              </div>
+              <input type="hidden" id="ci-lang" value="${esc(b.lang||'Español')}">
+            </div>
+
+          </div>
+        </div>
+      </div>
+
       <!-- Status / Phase quick controls -->
       <div class="card">
         <div class="card-header"><div class="card-title">Estado del proyecto</div></div>
@@ -1078,6 +1135,38 @@
   }
 
   // ── ADMIN ACTIONS ──
+  // ── CLIENT INFO ──
+  function selectLang(val) {
+    document.getElementById("ci-lang").value = val;
+    ["Español","English","Ambos"].forEach(l => {
+      const btn = document.getElementById("ci-lang-" + l);
+      if (btn) { btn.className = "btn btn-sm " + (l === val ? "btn-primary" : "btn-ghost"); }
+    });
+  }
+
+  async function saveClientInfo() {
+    const body = {
+      name:          document.getElementById("ci-name").value.trim(),
+      email:         document.getElementById("ci-email").value.trim(),
+      phone:         document.getElementById("ci-phone").value.trim(),
+      company:       document.getElementById("ci-company").value.trim(),
+      current_site:  document.getElementById("ci-url").value.trim(),
+      business_name: document.getElementById("ci-biz").value.trim(),
+      industry:      document.getElementById("ci-industry").value.trim(),
+      location:      document.getElementById("ci-location").value.trim(),
+      lang:          document.getElementById("ci-lang").value,
+    };
+    const res = await api(`/briefs/${CURRENT_BRIEF_ID}/client`, "PATCH", body);
+    if (res.success) {
+      toast("Datos del cliente guardados");
+      Object.assign(CURRENT_DETAIL.brief, body);
+      document.getElementById("detail-topbar-sub").textContent =
+        `${CURRENT_BRIEF_ID} · ${body.email}`;
+    } else {
+      toast("Error al guardar", "error");
+    }
+  }
+
   async function quickStatus() {
     const status = document.getElementById("qs-status").value;
     const res = await api(`/briefs/${CURRENT_BRIEF_ID}/status`, "PATCH", { status });

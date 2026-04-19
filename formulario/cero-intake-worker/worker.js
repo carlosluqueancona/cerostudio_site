@@ -238,6 +238,21 @@ export default {
         return json({ success: true, briefId: id, status });
       }
 
+      // ── PATCH /briefs/:id/client ──
+      if (request.method === "PATCH" && /^\/briefs\/CS-[A-Z0-9]+\/client$/.test(path)) {
+        if (!isAdmin()) return json({ error: "No autorizado" }, 401);
+        const id = path.split("/briefs/")[1].split("/")[0];
+        const { name, email, phone, company, current_site, business_name, industry, location, lang } = await request.json();
+        await env.DB.prepare(
+          `UPDATE briefs SET
+            name=?1, email=?2, phone=?3, company=?4, current_site=?5,
+            business_name=?6, industry=?7, location=?8, lang=?9,
+            updated_at=datetime('now')
+          WHERE brief_id=?10`
+        ).bind(name, email, phone, company, current_site, business_name, industry, location, lang, id).run();
+        return json({ success: true, briefId: id });
+      }
+
       // ── POST /briefs/:id/portal — Enable portal ──
       if (request.method === "POST" && /^\/briefs\/CS-[A-Z0-9]+\/portal$/.test(path)) {
         if (!isAdmin()) return json({ error: "No autorizado" }, 401);
