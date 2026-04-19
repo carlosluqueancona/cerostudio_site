@@ -330,7 +330,9 @@
   updateConsentStatus();
 
   try {
-    if (localStorage.getItem('cs_lang') === 'en') privLang('en');
+    var urlLang = new URLSearchParams(window.location.search).get('lang');
+    var storedLang = localStorage.getItem('cs-lang');
+    if ((urlLang || storedLang) === 'en') privLang('en');
   } catch(e) {}
 </script>
 </body>

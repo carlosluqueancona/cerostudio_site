@@ -20,7 +20,7 @@
   function save(v)  { try { localStorage.setItem(KEY, v); } catch (e) {} }
   function lang() {
     try {
-      var stored = localStorage.getItem('cs_lang');
+      var stored = localStorage.getItem('cs-lang');
       if (stored) return stored;
       var nav = (navigator.language || navigator.userLanguage || 'es').toLowerCase();
       return nav.startsWith('en') ? 'en' : 'es';

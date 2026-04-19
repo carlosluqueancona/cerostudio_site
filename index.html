@@ -3436,6 +3436,10 @@
         /* html lang attribute */
         document.documentElement.lang = lang;
 
+        /* Privacy link href */
+        var pl = document.getElementById('fnav-privacy');
+        if (pl) pl.href = lang === 'en' ? '/privacidad/?lang=en' : '/privacidad/';
+
         /* Persist */
         try { localStorage.setItem('cs-lang', lang); } catch (e) { }
       }
