@@ -49,7 +49,7 @@
     '<ul class="footer-links">' +
     '<li><a href="mailto:hola@cerostudio.ai">hola@cerostudio.ai</a></li>' +
     '<li><a href="https://instagram.com/cerostudio.ai" target="_blank" rel="noopener">Instagram</a></li>' +
-    '<li><a href="https://linkedin.com/company/cerostudio" target="_blank" rel="noopener">LinkedIn</a></li>' +
+    /* '<li><a href="https://linkedin.com/company/cerostudio" target="_blank" rel="noopener">LinkedIn</a></li>' + */
     '</ul></div>' +
     '</div>' +
     '<div class="footer-bottom">' +
