@@ -4,5 +4,7 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /brief/en/
+Disallow: /proyecto/
+Disallow: /privacidad/
 
 Sitemap: https://cerostudio.ai/sitemap.xml
