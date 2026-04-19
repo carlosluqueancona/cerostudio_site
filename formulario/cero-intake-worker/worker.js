@@ -247,7 +247,7 @@ export default {
         await env.DB.prepare(
           `INSERT INTO briefs (brief_id, status, name, email, phone, company, current_site, business_name, industry, location, lang)
            VALUES (?1,'new',?2,?3,?4,?5,?6,?7,?8,?9,?10)`
-        ).bind(briefId, name, email, phone||null, company||null, current_site||null, business_name||null, industry||null, location||null, lang||'Español').run();
+        ).bind(briefId, name, email, phone||'', company||null, current_site||null, business_name||null, industry||null, location||null, lang||'Español').run();
         return json({ success: true, briefId }, 201);
       }
 
