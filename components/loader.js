@@ -35,6 +35,7 @@
     '<li><a href="/#proceso" id="fnav-proc">Proceso</a></li>' +
     '<li><a href="/#contacto" id="fnav-contact">Contacto</a></li>' +
     '<li><a href="/blog/" id="fnav-blog">Blog</a></li>' +
+    '<li><a href="/privacidad/" id="fnav-privacy">Privacidad y Cookies</a></li>' +
     '</ul></div>' +
     '<div><p class="footer-col-title" id="fcol-srv-title">Servicios</p>' +
     '<ul class="footer-links">' +
