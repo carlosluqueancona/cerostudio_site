@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Política de privacidad y cookies de Cero Studio AI.">
+  <meta name="robots" content="noindex">
+  <title>Privacidad y Cookies — Cero Studio</title>
+  <link rel="icon" href="/images/svg/CS_Favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/blog/blog.css">
+  <script src="/components/cookie-consent.js"></script>
+  <style>
+    body { background: #0a0a0a; color: #e0e0e0; font-family: var(--fb, system-ui, sans-serif); margin: 0; }
+    .priv-wrap { max-width: 760px; margin: 0 auto; padding: 80px 24px 120px; }
+    .priv-wrap h1 { font-family: var(--fd, system-ui); font-size: clamp(28px, 4vw, 42px); font-weight: 900; color: #fff; margin-bottom: 8px; }
+    .priv-wrap .subtitle { font-size: 14px; color: #888; margin-bottom: 56px; }
+    .lang-toggle { display: flex; gap: 8px; margin-bottom: 40px; }
+    .lang-btn { background: transparent; border: 1px solid #333; color: #888; padding: 6px 16px; font-size: 12px; cursor: pointer; font-family: inherit; letter-spacing: .05em; }
+    .lang-btn.active { border-color: #ceff33; color: #ceff33; }
+    .priv-section { display: none; }
+    .priv-section.active { display: block; }
+    .priv-section h2 { font-family: var(--fd, system-ui); font-size: 18px; font-weight: 700; color: #fff; margin: 40px 0 12px; border-bottom: 1px solid #222; padding-bottom: 8px; }
+    .priv-section h3 { font-size: 14px; font-weight: 700; color: #ceff33; margin: 24px 0 8px; text-transform: uppercase; letter-spacing: .05em; }
+    .priv-section p, .priv-section li { font-size: 14px; line-height: 1.75; color: #bbb; }
+    .priv-section ul { padding-left: 20px; }
+    .priv-section a { color: #ceff33; }
+    table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 13px; }
+    th { background: #1a1a1a; color: #fff; text-align: left; padding: 10px 12px; font-weight: 600; }
+    td { padding: 10px 12px; border-bottom: 1px solid #222; color: #bbb; vertical-align: top; }
+    .badge-type { display: inline-block; padding: 2px 8px; font-size: 11px; font-weight: 700; border-radius: 2px; }
+    .badge-essential { background: #1a2a1a; color: #4caf50; }
+    .badge-analytics { background: #2a2a1a; color: #ffd700; }
+    .consent-actions { display: flex; gap: 12px; margin: 24px 0; flex-wrap: wrap; }
+    .btn-accept { background: #ceff33; color: #000; border: none; padding: 10px 24px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; }
+    .btn-reject { background: transparent; border: 1px solid #444; color: #ccc; padding: 10px 24px; font-size: 13px; cursor: pointer; font-family: inherit; }
+    #consent-status { font-size: 13px; color: #888; margin-top: 12px; }
+    #consent-status span { font-weight: 700; }
+    #consent-status .accepted { color: #4caf50; }
+    #consent-status .rejected { color: #ff6b6b; }
+    #consent-status .pending  { color: #ffd700; }
+  </style>
+</head>
+<body>
+<div id="navbar-placeholder"></div>
+
+<main>
+  <div class="priv-wrap">
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btn-es" onclick="privLang('es')">Español</button>
+      <button class="lang-btn"        id="btn-en" onclick="privLang('en')">English</button>
+    </div>
+
+    <!-- ── ESPAÑOL ── -->
+    <div class="priv-section active" id="sec-es">
+      <h1>Privacidad y Cookies</h1>
+      <p class="subtitle">Última actualización: 18 de abril de 2025 · Responsable: Cero Studio AI</p>
+
+      <h2>1. Responsable del tratamiento</h2>
+      <p>
+        <strong>Cero Studio AI</strong> (en adelante, "nosotros" o "la empresa") es la persona moral responsable del
+        tratamiento de tus datos personales. Puedes contactarnos en
+        <a href="mailto:hola@cerostudio.ai">hola@cerostudio.ai</a>.
+      </p>
+
+      <h2>2. Datos que recopilamos</h2>
+      <h3>Formulario de contacto</h3>
+      <p>Cuando usas el formulario de contacto recopilamos: nombre, correo electrónico, empresa, servicio de interés y
+        mensaje. Estos datos se almacenan en nuestra base de datos segura y se usan exclusivamente para responderte.</p>
+      <h3>Cookies y análisis de tráfico</h3>
+      <p>Con tu consentimiento, utilizamos Google Tag Manager y Google Analytics para recopilar datos de navegación
+        anónimos (páginas visitadas, tiempo en sitio, dispositivo, país). No recopilamos datos de tarjetas de crédito ni
+        información financiera.</p>
+
+      <h2>3. Política de Cookies</h2>
+      <table>
+        <thead>
+          <tr><th>Cookie</th><th>Tipo</th><th>Duración</th><th>Propósito</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>cs_cookie_consent</td>
+            <td><span class="badge-type badge-essential">Esencial</span></td>
+            <td>1 año</td>
+            <td>Guarda tu preferencia de cookies para no mostrarte el banner repetidamente.</td>
+          </tr>
+          <tr>
+            <td>cs_lang</td>
+            <td><span class="badge-type badge-essential">Esencial</span></td>
+            <td>Sesión</td>
+            <td>Recuerda el idioma que seleccionaste en el sitio.</td>
+          </tr>
+          <tr>
+            <td>_ga, _ga_*</td>
+            <td><span class="badge-type badge-analytics">Analítica</span></td>
+            <td>2 años</td>
+            <td>Google Analytics — identifica sesiones únicas y mide el tráfico del sitio de forma anónima.</td>
+          </tr>
+          <tr>
+            <td>_gid</td>
+            <td><span class="badge-type badge-analytics">Analítica</span></td>
+            <td>24 horas</td>
+            <td>Google Analytics — distingue usuarios en el día en curso.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Las cookies esenciales se activan siempre porque son necesarias para el funcionamiento del sitio. Las cookies de
+        analítica solo se activan con tu consentimiento.</p>
+
+      <h2>4. Tu elección de cookies</h2>
+      <p>Puedes cambiar tu preferencia en cualquier momento:</p>
+      <div class="consent-actions">
+        <button class="btn-accept" onclick="window._csAccept(); updateConsentStatus()">Aceptar cookies de analítica</button>
+        <button class="btn-reject" onclick="window._csReject(); updateConsentStatus()">Solo cookies esenciales</button>
+      </div>
+      <div id="consent-status"></div>
+
+      <h2>5. Bases legales</h2>
+      <p>Tratamos tus datos con las siguientes bases legales:</p>
+      <ul>
+        <li><strong>Consentimiento</strong> — cookies de analítica (puedes retirarlo en cualquier momento).</li>
+        <li><strong>Interés legítimo</strong> — responder a mensajes de contacto.</li>
+        <li><strong>Cumplimiento legal</strong> — obligaciones fiscales y mercantiles aplicables.</li>
+      </ul>
+
+      <h2>6. Tus derechos (Derechos ARCO)</h2>
+      <p>De conformidad con la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP),
+        tienes derecho a:</p>
+      <ul>
+        <li><strong>Acceso</strong> — conocer qué datos tenemos sobre ti.</li>
+        <li><strong>Rectificación</strong> — corregir datos inexactos.</li>
+        <li><strong>Cancelación</strong> — solicitar la eliminación de tus datos.</li>
+        <li><strong>Oposición</strong> — oponerte al tratamiento de tus datos.</li>
+      </ul>
+      <p>Para ejercer tus derechos, escribe a <a href="mailto:hola@cerostudio.ai">hola@cerostudio.ai</a> indicando tu
+        nombre, datos de contacto y la solicitud específica. Responderemos en un plazo máximo de 20 días hábiles.</p>
+
+      <h2>7. Derechos bajo el RGPD (visitantes de la UE)</h2>
+      <p>Si te encuentras en el Espacio Económico Europeo, además de los derechos ARCO tienes derecho a:</p>
+      <ul>
+        <li>Portabilidad de datos.</li>
+        <li>Retirar el consentimiento en cualquier momento sin que afecte la licitud del tratamiento anterior.</li>
+        <li>Presentar una reclamación ante la autoridad de protección de datos de tu país.</li>
+      </ul>
+
+      <h2>8. Transferencias internacionales</h2>
+      <p>Al aceptar cookies de analítica, tus datos de navegación se transfieren a servidores de Google LLC (EE. UU.).
+        Google participa en el Marco de Privacidad de Datos UE-EE. UU. y ofrece garantías adecuadas conforme al RGPD.
+        Más información: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Política de
+          privacidad de Google</a>.</p>
+
+      <h2>9. Conservación de datos</h2>
+      <ul>
+        <li>Mensajes de contacto: hasta que se resuelva tu consulta y por el tiempo legalmente exigido.</li>
+        <li>Datos de analítica (Google Analytics): 14 meses (configuración predeterminada de GA4).</li>
+      </ul>
+
+      <h2>10. Cambios a esta política</h2>
+      <p>Podemos actualizar esta política ocasionalmente. La fecha de la última modificación siempre aparece al inicio de
+        esta página. Te notificaremos de cambios significativos mostrando de nuevo el banner de consentimiento.</p>
+    </div>
+
+    <!-- ── ENGLISH ── -->
+    <div class="priv-section" id="sec-en">
+      <h1>Privacy &amp; Cookies</h1>
+      <p class="subtitle">Last updated: April 18, 2025 · Controller: Cero Studio AI</p>
+
+      <h2>1. Data Controller</h2>
+      <p>
+        <strong>Cero Studio AI</strong> ("we", "us", or "our") is the entity responsible for processing your personal
+        data. Contact us at <a href="mailto:hola@cerostudio.ai">hola@cerostudio.ai</a>.
+      </p>
+
+      <h2>2. Data We Collect</h2>
+      <h3>Contact form</h3>
+      <p>When you use the contact form we collect: name, email address, company, service of interest, and message. This
+        data is stored in our secure database and used solely to respond to your inquiry.</p>
+      <h3>Cookies and traffic analytics</h3>
+      <p>With your consent, we use Google Tag Manager and Google Analytics to collect anonymous browsing data (pages
+        visited, time on site, device type, country). We do not collect credit card or financial information.</p>
+
+      <h2>3. Cookie Policy</h2>
+      <table>
+        <thead>
+          <tr><th>Cookie</th><th>Type</th><th>Duration</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>cs_cookie_consent</td>
+            <td><span class="badge-type badge-essential">Essential</span></td>
+            <td>1 year</td>
+            <td>Stores your cookie preference so we don't show the banner repeatedly.</td>
+          </tr>
+          <tr>
+            <td>cs_lang</td>
+            <td><span class="badge-type badge-essential">Essential</span></td>
+            <td>Session</td>
+            <td>Remembers the language you selected on the site.</td>
+          </tr>
+          <tr>
+            <td>_ga, _ga_*</td>
+            <td><span class="badge-type badge-analytics">Analytics</span></td>
+            <td>2 years</td>
+            <td>Google Analytics — identifies unique sessions and measures site traffic anonymously.</td>
+          </tr>
+          <tr>
+            <td>_gid</td>
+            <td><span class="badge-type badge-analytics">Analytics</span></td>
+            <td>24 hours</td>
+            <td>Google Analytics — distinguishes users on the current day.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Essential cookies are always active because they are required for the site to function. Analytics cookies are
+        only activated with your consent.</p>
+
+      <h2>4. Your Cookie Choices</h2>
+      <p>You can change your preference at any time:</p>
+      <div class="consent-actions">
+        <button class="btn-accept" onclick="window._csAccept(); updateConsentStatus()">Accept analytics cookies</button>
+        <button class="btn-reject" onclick="window._csReject(); updateConsentStatus()">Essential cookies only</button>
+      </div>
+      <div id="consent-status-en"></div>
+
+      <h2>5. Legal Bases</h2>
+      <ul>
+        <li><strong>Consent</strong> — analytics cookies (you may withdraw at any time).</li>
+        <li><strong>Legitimate interest</strong> — responding to contact messages.</li>
+        <li><strong>Legal obligation</strong> — applicable tax and commercial obligations.</li>
+      </ul>
+
+      <h2>6. Your Rights (ARCO Rights — Mexico)</h2>
+      <p>Under Mexico's Federal Law on Protection of Personal Data Held by Private Parties (LFPDPPP), you have the right
+        to:</p>
+      <ul>
+        <li><strong>Access</strong> — know what data we hold about you.</li>
+        <li><strong>Rectification</strong> — correct inaccurate data.</li>
+        <li><strong>Cancellation</strong> — request deletion of your data.</li>
+        <li><strong>Opposition</strong> — object to the processing of your data.</li>
+      </ul>
+      <p>To exercise your rights, write to <a href="mailto:hola@cerostudio.ai">hola@cerostudio.ai</a> with your name,
+        contact information, and specific request. We will respond within 20 business days.</p>
+
+      <h2>7. Rights under GDPR (EU visitors)</h2>
+      <p>If you are located in the European Economic Area, in addition to ARCO rights you also have the right to:</p>
+      <ul>
+        <li>Data portability.</li>
+        <li>Withdraw consent at any time without affecting the lawfulness of prior processing.</li>
+        <li>Lodge a complaint with your country's data protection authority.</li>
+      </ul>
+
+      <h2>8. International Transfers</h2>
+      <p>By accepting analytics cookies, your browsing data is transferred to Google LLC servers (USA). Google
+        participates in the EU-US Data Privacy Framework and provides adequate safeguards under GDPR. Learn more:
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a>.</p>
+
+      <h2>9. Data Retention</h2>
+      <ul>
+        <li>Contact messages: until your inquiry is resolved and as required by law.</li>
+        <li>Analytics data (Google Analytics): 14 months (default GA4 setting).</li>
+      </ul>
+
+      <h2>10. Changes to This Policy</h2>
+      <p>We may update this policy occasionally. The date of the last revision always appears at the top of this page.
+        We will notify you of significant changes by displaying the consent banner again.</p>
+    </div>
+  </div>
+</main>
+
+<div id="footer-placeholder"></div>
+<script src="/components/loader.js" defer></script>
+<script>
+  function privLang(l) {
+    document.getElementById('sec-es').classList.toggle('active', l === 'es');
+    document.getElementById('sec-en').classList.toggle('active', l === 'en');
+    document.getElementById('btn-es').classList.toggle('active', l === 'es');
+    document.getElementById('btn-en').classList.toggle('active', l === 'en');
+  }
+
+  function updateConsentStatus() {
+    var v;
+    try { v = localStorage.getItem('cs_cookie_consent'); } catch(e) {}
+    var esEl = document.getElementById('consent-status');
+    var enEl = document.getElementById('consent-status-en');
+    var label, cls;
+    if (v === 'accepted')      { label = { es: 'Aceptado', en: 'Accepted' }; cls = 'accepted'; }
+    else if (v === 'rejected') { label = { es: 'Solo esenciales', en: 'Essential only' }; cls = 'rejected'; }
+    else                       { label = { es: 'Sin decisión', en: 'No decision yet' }; cls = 'pending'; }
+    if (esEl) esEl.innerHTML = 'Preferencia actual: <span class="' + cls + '">' + label.es + '</span>';
+    if (enEl) enEl.innerHTML = 'Current preference: <span class="' + cls + '">' + label.en + '</span>';
+  }
+
+  updateConsentStatus();
+
+  // Sync with site language on load
+  try {
+    var l = localStorage.getItem('cs_lang');
+    if (l === 'en') privLang('en');
+  } catch(e) {}
+</script>
+</body>
+</html>
