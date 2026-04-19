@@ -262,7 +262,7 @@ export default {
             business_name=?6, industry=?7, location=?8, lang=?9,
             updated_at=datetime('now')
           WHERE brief_id=?10`
-        ).bind(name, email, phone, company, current_site, business_name, industry, location, lang, id).run();
+        ).bind(name||'', email||'', phone||'', company||null, current_site||null, business_name||null, industry||null, location||null, lang||'Español', id).run();
         return json({ success: true, briefId: id });
       }
 
