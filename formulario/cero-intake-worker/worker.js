@@ -51,6 +51,11 @@ const VALID_STATUSES = [
   "in_progress", "delivered", "archived",
 ];
 
+// ─── Input whitelists for dynamic SQL ───────────────────────────────────────
+const VALID_MILESTONE_STATUSES = ["pending", "in_progress", "completed"];
+const VALID_ENTRY_TYPES        = ["note", "milestone", "payment", "status_change", "file"];
+const VALID_FILE_TYPES         = ["contract", "proposal", "design", "asset", "invoice", "other"];
+
 // ─── CORS helpers ────────────────────────────────────────────────────────────
 function buildCorsHeaders(reqOrigin) {
   const allowed = ALLOWED_ORIGINS.includes(reqOrigin) ? reqOrigin : ALLOWED_ORIGINS[0];
@@ -382,10 +387,13 @@ async function handleMilestoneUpdate({ request, env, params, json }) {
   const body = await request.json();
   const sets = []; const paramsArr = [];
   if (body.status !== undefined) {
+    if (!VALID_MILESTONE_STATUSES.includes(body.status)) {
+      return json({ success: false, error: `Status inválido. Opciones: ${VALID_MILESTONE_STATUSES.join(", ")}` }, 400);
+    }
     sets.push("status=?"); paramsArr.push(body.status);
     if (body.status === "completed") sets.push("completed_at=datetime('now')");
   }
-  if (body.title)       { sets.push("title=?");       paramsArr.push(body.title); }
+  if (body.title)       { sets.push("title=?");       paramsArr.push(String(body.title).slice(0, 200)); }
   if (body.target_date) { sets.push("target_date=?"); paramsArr.push(body.target_date); }
   if (!sets.length) return json({ success: false, error: "Nada que actualizar" }, 400);
   paramsArr.push(mid);
@@ -398,9 +406,10 @@ async function handleFileCreate({ request, env, params, json }) {
   const id = params[1];
   const { file_name, file_type, file_url, description, visible } = await request.json();
   if (!file_name || !file_url) return json({ success: false, error: "file_name y file_url requeridos" }, 400);
+  const safeType = VALID_FILE_TYPES.includes(file_type) ? file_type : "other";
   const r = await env.DB.prepare(
     "INSERT INTO files (brief_id,file_name,file_type,file_url,description,visible) VALUES (?1,?2,?3,?4,?5,?6)"
-  ).bind(id, file_name, file_type || "other", file_url, description || null, visible !== undefined ? visible : 1).run();
+  ).bind(id, String(file_name).slice(0, 300), safeType, file_url, description || null, visible !== undefined ? visible : 1).run();
   return json({ success: true, fileId: r.meta.last_row_id }, 201);
 }
 
@@ -415,9 +424,10 @@ async function handleActivityCreate({ request, env, params, json }) {
   const id = params[1];
   const { entry_type, title, description, date } = await request.json();
   if (!title) return json({ success: false, error: "Title requerido" }, 400);
+  const safeType = VALID_ENTRY_TYPES.includes(entry_type) ? entry_type : "note";
   await env.DB.prepare(
     "INSERT INTO activity_log (brief_id,entry_type,title,description,date) VALUES (?1,?2,?3,?4,?5)"
-  ).bind(id, entry_type || "note", title, description || null, date || new Date().toISOString()).run();
+  ).bind(id, safeType, String(title).slice(0, 300), description ? String(description).slice(0, 2000) : null, date || new Date().toISOString()).run();
   return json({ success: true }, 201);
 }
 
@@ -451,8 +461,12 @@ async function handlePaymentUpdate({ request, env, params, json }) {
   const paymentId = params[2];
   const { amount, note } = await request.json();
   const sets = []; const paramsArr = [];
-  if (amount !== undefined) { sets.push("amount = ?"); paramsArr.push(parseFloat(amount)); }
-  if (note   !== undefined) { sets.push("note = ?");   paramsArr.push(note); }
+  if (amount !== undefined) {
+    const parsed = parseFloat(amount);
+    if (isNaN(parsed)) return json({ error: "Monto inválido" }, 400);
+    sets.push("amount = ?"); paramsArr.push(parsed);
+  }
+  if (note !== undefined) { sets.push("note = ?"); paramsArr.push(note ? String(note).slice(0, 500) : null); }
   if (!sets.length) return json({ error: "Nada que actualizar" }, 400);
   paramsArr.push(paymentId, briefId);
   await env.DB.prepare(`UPDATE payment_history SET ${sets.join(", ")} WHERE id = ? AND brief_id = ?`).bind(...paramsArr).run();

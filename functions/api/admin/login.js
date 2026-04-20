@@ -78,7 +78,24 @@ export async function onRequestPost(context) {
       env.JWT_SECRET
     );
 
-    return json({ token }, 200, origin);
+    // Set httpOnly cookie — invisible to JavaScript, survives XSS
+    const cookie = [
+      `cs_admin_jwt=${token}`,
+      'HttpOnly',
+      'Secure',
+      'SameSite=Strict',
+      'Path=/api/admin',
+      'Max-Age=86400',
+    ].join('; ');
+
+    return new Response(JSON.stringify({ ok: true }), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Set-Cookie': cookie,
+        ...corsHeaders(origin),
+      },
+    });
   } catch (e) {
     console.error('[login] Error:', e.message);
     return json({ error: 'Error interno del servidor' }, 500, origin);

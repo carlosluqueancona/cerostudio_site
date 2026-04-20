@@ -553,15 +553,13 @@
 
 // ── State ────────────────────────────────────────────────────────────────────
 const API    = '/api/admin';
-let token    = localStorage.getItem('cs_admin_token') || '';
 let postId   = null;          // current post being edited
 let slugEdited = false;
 let allPosts = [];
 
 // ── Init ─────────────────────────────────────────────────────────────────────
 async function init() {
-  if (!token) { showView('login'); return; }
-  // Validate token by fetching posts
+  // Cookie handles auth — just probe the API; 401 → show login
   try {
     const r = await apiFetch('/posts');
     if (r.ok) {
@@ -569,9 +567,9 @@ async function init() {
       renderDashboard();
       showView('dashboard');
     } else {
-      clearToken(); showView('login');
+      showView('login');
     }
-  } catch { clearToken(); showView('login'); }
+  } catch { showView('login'); }
 }
 
 // ── Views ────────────────────────────────────────────────────────────────────
@@ -605,9 +603,7 @@ document.getElementById('login-form').addEventListener('submit', async e => {
       }),
     });
     const data = await r.json();
-    if (data.token) {
-      token = data.token;
-      localStorage.setItem('cs_admin_token', token);
+    if (r.ok && data.ok) {
       await refreshDashboard();
       showView('dashboard');
     } else {
@@ -622,14 +618,15 @@ document.getElementById('login-form').addEventListener('submit', async e => {
   }
 });
 
-function logout() {
-  clearToken();
+async function logout() {
+  try { await fetch(API + '/logout', { method: 'POST' }); } catch {}
   showView('login');
 }
 
 function clearToken() {
-  token = '';
-  localStorage.removeItem('cs_admin_token');
+  // Token lives in httpOnly cookie — cleared server-side by /logout.
+  // Called on 401 to return to login without a full logout round-trip.
+  showView('login');
 }
 
 // ── Dashboard ────────────────────────────────────────────────────────────────
@@ -996,14 +993,10 @@ function countChars(inputId, counterId, max) {
 }
 
 // ── API helper ────────────────────────────────────────────────────────────────
+// Cookie cs_admin_jwt is httpOnly and sent automatically by the browser
+// for same-origin requests — no Authorization header needed.
 function apiFetch(path, opts = {}) {
-  return fetch(API + path, {
-    ...opts,
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      ...(opts.headers || {}),
-    },
-  });
+  return fetch(API + path, opts);
 }
 
 // ── Toast ─────────────────────────────────────────────────────────────────────
@@ -1228,7 +1221,7 @@ const PORT_API = 'https://cerostudio.ai/api/admin/portfolio';
 async function portFetch(path, opts = {}) {
   return fetch(PORT_API + (path || ''), {
     ...opts,
-    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, ...(opts.headers || {}) },
+    headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
   });
 }
 
