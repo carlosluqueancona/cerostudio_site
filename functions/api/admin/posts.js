@@ -107,10 +107,22 @@ export async function onRequestGet(context) {
       const post = await env.DB.prepare('SELECT * FROM posts WHERE id = ?').bind(id).first();
       return post ? json(post, 200, origin) : json({ error: 'No encontrado' }, 404, origin);
     }
+    // Pagination: ?limit=200&offset=0 (default 200, max 500)
+    const limit  = Math.min(Math.max(parseInt(searchParams.get('limit') || '200', 10) || 200, 1), 500);
+    const offset = Math.max(parseInt(searchParams.get('offset') || '0', 10) || 0, 0);
     const { results } = await env.DB.prepare(
-      'SELECT * FROM posts ORDER BY created_at DESC'
-    ).all();
-    return json(results, 200, origin);
+      'SELECT * FROM posts ORDER BY created_at DESC LIMIT ? OFFSET ?'
+    ).bind(limit, offset).all();
+    // Keep array shape for backward compat; paging metadata via headers
+    return new Response(JSON.stringify(results), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Pagination-Limit': String(limit),
+        'X-Pagination-Offset': String(offset),
+        ...corsHeaders(origin),
+      },
+    });
   } catch (e) {
     console.error('[posts] GET error:', e.message);
     return json({ error: 'Error al obtener los posts' }, 500, origin);
