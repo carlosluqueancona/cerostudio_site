@@ -47,13 +47,23 @@ async function verifyJWT(token, secret) {
   }
 }
 
+function extractToken(request) {
+  // 1. Cookie cs_admin_jwt (preferred — httpOnly)
+  const cookie = request.headers.get('Cookie') || '';
+  const match  = cookie.match(/(?:^|;\s*)cs_admin_jwt=([^;]+)/);
+  if (match) return match[1];
+  // 2. Authorization: Bearer <token> (backward-compat)
+  const header = request.headers.get('Authorization') || '';
+  if (header.startsWith('Bearer ')) return header.slice(7);
+  return '';
+}
+
 async function requireAuth(request, env) {
   if (!env.JWT_SECRET) {
     console.error('[auth] JWT_SECRET no configurado');
     return null;
   }
-  const header = request.headers.get('Authorization') || '';
-  const token  = header.startsWith('Bearer ') ? header.slice(7) : '';
+  const token = extractToken(request);
   return verifyJWT(token, env.JWT_SECRET);
 }
 

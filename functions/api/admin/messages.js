@@ -43,13 +43,21 @@ async function verifyJWT(token, secret) {
   } catch { return null; }
 }
 
+function extractToken(request) {
+  const cookie = request.headers.get('Cookie') || '';
+  const match  = cookie.match(/(?:^|;\s*)cs_admin_jwt=([^;]+)/);
+  if (match) return match[1];
+  const header = request.headers.get('Authorization') || '';
+  if (header.startsWith('Bearer ')) return header.slice(7);
+  return '';
+}
+
 async function requireAuth(request, env) {
   if (!env.JWT_SECRET) {
     console.error('[auth] JWT_SECRET no configurado');
     return null;
   }
-  const header = request.headers.get('Authorization') || '';
-  const token  = header.startsWith('Bearer ') ? header.slice(7) : '';
+  const token = extractToken(request);
   return verifyJWT(token, env.JWT_SECRET);
 }
 

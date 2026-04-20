@@ -69,6 +69,15 @@ function json(data, status = 200, origin = '') {
   });
 }
 
+function extractToken(request) {
+  const cookie = request.headers.get('Cookie') || '';
+  const match  = cookie.match(/(?:^|;\s*)cs_admin_jwt=([^;]+)/);
+  if (match) return match[1];
+  const header = request.headers.get('Authorization') || '';
+  if (header.startsWith('Bearer ')) return header.slice(7);
+  return '';
+}
+
 export async function onRequestOptions(context) {
   const origin = context.request.headers.get('Origin') || '';
   return new Response(null, { status: 204, headers: corsHeaders(origin) });
@@ -78,8 +87,7 @@ export async function onRequestDelete(context) {
   const { request, env } = context;
   const origin = request.headers.get('Origin') || '';
 
-  const header = request.headers.get('Authorization') || '';
-  const token  = header.startsWith('Bearer ') ? header.slice(7) : '';
+  const token = extractToken(request);
   if (!await verifyJWT(token, env.JWT_SECRET || '')) {
     return json({ ok: false, error: 'No autorizado' }, 401, origin);
   }
@@ -112,8 +120,7 @@ export async function onRequestPost(context) {
   const origin = request.headers.get('Origin') || '';
 
   // Auth
-  const header = request.headers.get('Authorization') || '';
-  const token  = header.startsWith('Bearer ') ? header.slice(7) : '';
+  const token = extractToken(request);
   if (!await verifyJWT(token, env.JWT_SECRET || '')) {
     return json({ ok: false, error: 'No autorizado' }, 401, origin);
   }
