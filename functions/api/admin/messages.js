@@ -8,72 +8,7 @@
  * DELETE /api/admin/messages?id=N     → eliminar mensaje
  */
 
-const ALLOWED_ORIGINS = ['https://cerostudio.ai', 'https://www.cerostudio.ai'];
-
-function corsHeaders(origin) {
-  const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
-  return {
-    'Access-Control-Allow-Origin': allowed,
-    'Vary': 'Origin',
-    'Access-Control-Allow-Methods': 'GET, PATCH, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  };
-}
-
-// ── Auth (mismo patrón que posts.js) ─────────────────────────────────────────
-
-async function verifyJWT(token, secret) {
-  try {
-    const [h, b, s] = token.split('.');
-    if (!h || !b || !s) return null;
-    const enc = new TextEncoder();
-    const key = await crypto.subtle.importKey(
-      'raw', enc.encode(secret),
-      { name: 'HMAC', hash: 'SHA-256' }, false, ['verify']
-    );
-    const rawSig = Uint8Array.from(
-      atob(s.replace(/-/g, '+').replace(/_/g, '/')),
-      c => c.charCodeAt(0)
-    );
-    const valid = await crypto.subtle.verify('HMAC', key, rawSig, enc.encode(`${h}.${b}`));
-    if (!valid) return null;
-    const payload = JSON.parse(atob(b));
-    if (payload.exp < Date.now()) return null;
-    return payload;
-  } catch { return null; }
-}
-
-function extractToken(request) {
-  const cookie = request.headers.get('Cookie') || '';
-  const match  = cookie.match(/(?:^|;\s*)cs_admin_jwt=([^;]+)/);
-  if (match) return match[1];
-  const header = request.headers.get('Authorization') || '';
-  if (header.startsWith('Bearer ')) return header.slice(7);
-  return '';
-}
-
-async function requireAuth(request, env) {
-  if (!env.JWT_SECRET) {
-    console.error('[auth] JWT_SECRET no configurado');
-    return null;
-  }
-  const token = extractToken(request);
-  return verifyJWT(token, env.JWT_SECRET);
-}
-
-/** Parse and validate an integer ID from query params. Returns number or null. */
-function parseId(raw) {
-  if (!raw) return null;
-  const n = parseInt(raw, 10);
-  return Number.isFinite(n) && n > 0 ? n : null;
-}
-
-function json(data, status = 200, origin = '') {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) },
-  });
-}
+import { corsHeaders, json, parseId, requireAuth } from './_shared.js';
 
 // ── Handlers ──────────────────────────────────────────────────────────────────
 
