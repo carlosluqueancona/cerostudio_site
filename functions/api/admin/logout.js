@@ -25,22 +25,29 @@ export async function onRequestOptions(context) {
 export async function onRequestPost(context) {
   const origin = context.request.headers.get('Origin') || '';
 
-  // Expire the cookie immediately by setting Max-Age=0
-  const expiredCookie = [
+  // Expire the cookie immediately by setting Max-Age=0.
+  // We emit multiple Set-Cookie headers to cover Path variants:
+  //   - Path=/api/admin (current — matches login.js)
+  //   - Path=/          (defensive — covers any legacy cookie)
+  const mkExpired = (path) => [
     'cs_admin_jwt=',
     'HttpOnly',
     'Secure',
     'SameSite=Strict',
-    'Path=/api/admin',
+    `Path=${path}`,
     'Max-Age=0',
+    'Expires=Thu, 01 Jan 1970 00:00:00 GMT',
   ].join('; ');
+
+  const headers = new Headers({
+    'Content-Type': 'application/json',
+    ...corsHeaders(origin),
+  });
+  headers.append('Set-Cookie', mkExpired('/api/admin'));
+  headers.append('Set-Cookie', mkExpired('/'));
 
   return new Response(JSON.stringify({ ok: true }), {
     status: 200,
-    headers: {
-      'Content-Type': 'application/json',
-      'Set-Cookie': expiredCookie,
-      ...corsHeaders(origin),
-    },
+    headers,
   });
 }

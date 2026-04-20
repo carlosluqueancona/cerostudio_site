@@ -231,11 +231,23 @@
     @media(max-width:900px) {
       .stats { grid-template-columns:1fr 1fr; }
       .editor-grid { grid-template-columns:1fr; }
-      .topbar { padding:0 20px; }
+      .topbar {
+        padding:12px 16px; height:auto; min-height:60px;
+        flex-wrap:wrap; gap:10px;
+      }
+      .topbar-brand { flex:1 1 auto; }
+      .topbar-brand img { height:20px; }
+      .topbar-actions {
+        flex:1 1 100%; gap:6px; flex-wrap:wrap;
+        justify-content:flex-start;
+      }
+      .topbar-actions .btn-sm { padding:6px 10px; font-size:10px; }
       .main { padding:20px; }
     }
     @media(max-width:480px) {
       .stats { grid-template-columns:1fr; }
+      .topbar-brand span { display:none; }
+      .topbar-actions .btn-sm { padding:6px 8px; font-size:10px; letter-spacing:.04em; }
     }
   </style>
 </head>
@@ -619,7 +631,13 @@ document.getElementById('login-form').addEventListener('submit', async e => {
 });
 
 async function logout() {
-  try { await fetch(API + '/logout', { method: 'POST' }); } catch {}
+  try {
+    await fetch(API + '/logout', {
+      method: 'POST',
+      credentials: 'same-origin',
+      cache: 'no-store',
+    });
+  } catch {}
   showView('login');
 }
 
@@ -996,7 +1014,7 @@ function countChars(inputId, counterId, max) {
 // Cookie cs_admin_jwt is httpOnly and sent automatically by the browser
 // for same-origin requests — no Authorization header needed.
 function apiFetch(path, opts = {}) {
-  return fetch(API + path, opts);
+  return fetch(API + path, { credentials: 'same-origin', ...opts });
 }
 
 // ── Toast ─────────────────────────────────────────────────────────────────────
