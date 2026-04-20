@@ -35,7 +35,15 @@ function corsHeaders(origin) {
 }
 
 function applyCors(response, origin) {
+  // Preserve multiple Set-Cookie headers (login issues one, logout clears
+  // multiple Path variants). Headers.getSetCookie() returns them as an array;
+  // we re-append each one so none are lost.
   const h = new Headers(response.headers);
+  const setCookies = typeof h.getSetCookie === 'function' ? h.getSetCookie() : [];
+  if (setCookies.length > 1) {
+    h.delete('Set-Cookie');
+    for (const sc of setCookies) h.append('Set-Cookie', sc);
+  }
   const c = corsHeaders(origin);
   for (const k in c) h.set(k, c[k]);
   return new Response(response.body, {
