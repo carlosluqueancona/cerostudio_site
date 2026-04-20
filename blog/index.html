@@ -9,7 +9,13 @@
   <link rel="icon" href="/images/svg/CS_Favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <!-- Fonts loaded asynchronously to avoid render-blocking -->
+  <link rel="preload"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
+    as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  </noscript>
   <link rel="stylesheet" href="/css/base.css">
   <link rel="stylesheet" href="/blog/blog.css">
 </head>
@@ -29,7 +35,7 @@
     <div id="navbar-placeholder"></div>
 
     <!-- Main Content Root -->
-    <main id="blog-root">
+    <main id="blog-root" role="main"><a id="main-content" tabindex="-1"></a>
       <div id="blog-loader" style="padding: 200px 48px; text-align: center; font-family: 'Space Grotesk', sans-serif; letter-spacing: 0.2em; color: var(--lime);">
         CARGANDO BLOG...
       </div>

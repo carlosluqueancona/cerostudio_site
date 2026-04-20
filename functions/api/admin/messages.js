@@ -103,10 +103,21 @@ export async function onRequestGet(context) {
       return json(msg, 200, origin);
     }
 
+    // Pagination: ?limit=200&offset=0 (default 200, max 500)
+    const limit  = Math.min(Math.max(parseInt(searchParams.get('limit') || '200', 10) || 200, 1), 500);
+    const offset = Math.max(parseInt(searchParams.get('offset') || '0', 10) || 0, 0);
     const { results } = await env.DB.prepare(
-      'SELECT * FROM contact_submissions ORDER BY created_at DESC'
-    ).all();
-    return json(results, 200, origin);
+      'SELECT * FROM contact_submissions ORDER BY created_at DESC LIMIT ? OFFSET ?'
+    ).bind(limit, offset).all();
+    return new Response(JSON.stringify(results), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Pagination-Limit': String(limit),
+        'X-Pagination-Offset': String(offset),
+        ...corsHeaders(origin),
+      },
+    });
   } catch (e) {
     console.error('[messages] GET error:', e.message);
     return json({ error: 'Error al obtener los mensajes' }, 500, origin);
