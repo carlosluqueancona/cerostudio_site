@@ -332,7 +332,10 @@ async function openBrief(id) {
   }
 }
 
+let currentBrief = null;
+
 function renderDetail(b) {
+  currentBrief = b;
   if (!b) { document.getElementById('detail').innerHTML = '<div class="loading">Brief no encontrado.</div>'; return; }
 
   const parseArr = v => { try { const p = JSON.parse(v); return Array.isArray(p) ? p : [v]; } catch { return v ? [v] : []; } };
@@ -406,14 +409,63 @@ async function updateStatus(id, status) {
 }
 
 /* ── COPY BRIEF ── */
+function buildBriefText(b) {
+  if (!b) return '';
+  const parseArr = v => { try { const p = JSON.parse(v); return Array.isArray(p) ? p : [v]; } catch { return v ? [v] : []; } };
+  const lines = [];
+  lines.push(`BRIEF ${b.brief_id}`);
+  lines.push(`Nombre: ${b.name || '—'}`);
+  lines.push(`Empresa: ${b.business_name || b.company || '—'}`);
+  lines.push(`Email: ${b.email || '—'}`);
+  lines.push(`Teléfono: ${b.phone || '—'}`);
+  lines.push(`Recibido: ${formatDate(b.submitted_at)}`);
+  lines.push('');
+  for (const [sId, keys] of Object.entries(SECTIONS)) {
+    lines.push(`── ${SECTION_LABELS[sId].toUpperCase()} ──`);
+    for (const k of keys) {
+      const raw = b[k];
+      let val = raw;
+      if (typeof raw === 'string' && (raw.startsWith('[') || raw.startsWith('{'))) {
+        const arr = parseArr(raw);
+        val = arr.length ? arr.join(' · ') : null;
+      }
+      const empty = !val || String(val).trim() === '';
+      lines.push(`${FIELD_LABELS[k] || k}: ${empty ? '—' : String(val)}`);
+    }
+    lines.push('');
+  }
+  if (b.brief_text) {
+    lines.push('── BRIEF COMPLETO ──');
+    lines.push(b.brief_text);
+  }
+  return lines.join('\n');
+}
+
 function copyBrief() {
   const el = document.getElementById('brief-text-content');
-  if (!el) return;
-  navigator.clipboard.writeText(el.textContent).then(() => {
-    const btn = document.querySelector('.btn-copy');
+  const text = el ? el.textContent : buildBriefText(currentBrief);
+  if (!text) return;
+  const btn = document.querySelector('.btn-copy');
+  const done = () => {
     btn.textContent = '¡Copiado!';
     setTimeout(() => btn.textContent = 'Copiar brief', 1800);
-  });
+  };
+  const fail = () => {
+    btn.textContent = 'Error al copiar';
+    setTimeout(() => btn.textContent = 'Copiar brief', 1800);
+  };
+  // Fallback if Clipboard API not available (http, old browsers)
+  if (!navigator.clipboard) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); done(); } catch { fail(); }
+    document.body.removeChild(ta);
+    return;
+  }
+  navigator.clipboard.writeText(text).then(done).catch(fail);
 }
 
 /* ── HELPERS ── */
