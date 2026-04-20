@@ -886,6 +886,17 @@ function insertCode() {
   t.focus();
 }
 
+function sanitizeHTML(html) {
+  // Strip dangerous tags: script, iframe, object, embed, form, link, style, base, meta
+  const STRIP_TAGS = /<\s*\/?\s*(script|iframe|object|embed|form|link|style|base|meta)\b[^>]*>/gi;
+  let clean = html.replace(STRIP_TAGS, '');
+  // Strip event handlers (onclick, onerror, onload, etc.)
+  clean = clean.replace(/\s+on\w+\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, '');
+  // Strip javascript: and data: URIs in href/src/action
+  clean = clean.replace(/(href|src|action)\s*=\s*(?:"[^"]*(?:javascript|data):[^"]*"|'[^']*(?:javascript|data):[^']*')/gi, '');
+  return clean;
+}
+
 function togglePreview() {
   const pane = document.getElementById('preview-pane');
   const btn  = document.getElementById('preview-btn');
@@ -893,7 +904,7 @@ function togglePreview() {
     pane.classList.remove('visible');
     btn.textContent = 'Vista previa';
   } else {
-    pane.innerHTML = ta().value;
+    pane.innerHTML = sanitizeHTML(ta().value);
     pane.classList.add('visible');
     btn.textContent = 'Ocultar previa';
   }

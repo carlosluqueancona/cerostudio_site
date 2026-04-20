@@ -15,8 +15,12 @@
 export default {
   async fetch(request, env) {
     // ─── CORS headers ───
+    const ALLOWED_ORIGINS = ["https://cerostudio.ai", "https://www.cerostudio.ai", "https://intake.cerostudio.ai"];
+    const reqOrigin = request.headers.get("Origin") || "";
+    const allowedOrigin = ALLOWED_ORIGINS.includes(reqOrigin) ? reqOrigin : ALLOWED_ORIGINS[0];
     const corsHeaders = {
-      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Origin": allowedOrigin,
+      "Vary": "Origin",
       "Access-Control-Allow-Methods": "POST, GET, PATCH, DELETE, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type, X-API-Key",
     };
@@ -30,6 +34,23 @@ export default {
     const json = (data, status = 200) => Response.json(data, { status, headers: corsHeaders });
     const isAdmin = () => request.headers.get("X-API-Key") === env.ADMIN_API_KEY;
 
+    // ─── Rate limiting helper (in-memory per isolate, 10 req/min per IP) ───
+    const RATE_LIMIT_WINDOW = 60_000; // 1 minute
+    const RATE_LIMIT_MAX = 10;
+
+    async function checkRateLimit(ip) {
+      if (!ip) return false; // no IP = allow
+      if (!globalThis._rateLimits) globalThis._rateLimits = new Map();
+      const now = Date.now();
+      const entry = globalThis._rateLimits.get(ip);
+      if (!entry || now - entry.start > RATE_LIMIT_WINDOW) {
+        globalThis._rateLimits.set(ip, { start: now, count: 1 });
+        return false;
+      }
+      entry.count++;
+      return entry.count > RATE_LIMIT_MAX;
+    }
+
     try {
 
       // ══════════════════════════════════════════
@@ -38,13 +59,22 @@ export default {
 
       // ── POST /submit ──
       if (request.method === "POST" && path === "/submit") {
+        // Rate limit public submissions
+        const clientIP = request.headers.get("CF-Connecting-IP") || "";
+        if (await checkRateLimit(clientIP)) {
+          return json({ success: false, error: "Demasiadas solicitudes. Intenta de nuevo en un minuto." }, 429);
+        }
+
         const body = await request.json();
 
-        // Verificar Turnstile (soft check — no bloquea el envío si falla)
+        // Verificar Turnstile (hard check — bloquea si falla)
         const tsToken = body.cf_turnstile_response || "";
-        if (env.TURNSTILE_SECRET_KEY && tsToken) {
+        if (env.TURNSTILE_SECRET_KEY) {
+          if (!tsToken) {
+            return json({ success: false, error: "Verificación de seguridad requerida (Turnstile token faltante)" }, 403);
+          }
           try {
-            const tsRes  = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+            const tsRes = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
@@ -54,12 +84,14 @@ export default {
               }),
             });
             const tsData = await tsRes.json();
-            if (!tsData.success) console.warn("[intake] Turnstile failed:", tsData["error-codes"]);
+            if (!tsData.success) {
+              console.warn("[intake] Turnstile failed:", tsData["error-codes"]);
+              return json({ success: false, error: "Verificación de seguridad fallida. Recarga la página e intenta de nuevo." }, 403);
+            }
           } catch(e) {
-            console.warn("[intake] Turnstile check error:", e.message);
+            // Si Turnstile API está caído, loguear pero permitir (graceful degradation)
+            console.error("[intake] Turnstile API error:", e.message);
           }
-        } else {
-          console.warn("[intake] Turnstile skipped — token:", tsToken ? "present" : "missing", "| key:", env.TURNSTILE_SECRET_KEY ? "set" : "missing");
         }
 
         // Validate required fields

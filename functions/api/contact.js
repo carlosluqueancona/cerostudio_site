@@ -8,34 +8,42 @@
  *   RESEND_API_KEY = re_xxxxxxxxxxxx   (obtenido en resend.com)
  */
 
-const CORS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-};
+const ALLOWED_ORIGINS = ['https://cerostudio.ai', 'https://www.cerostudio.ai'];
+
+function corsHeaders(origin) {
+  const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  return {
+    'Access-Control-Allow-Origin': allowed,
+    'Vary': 'Origin',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
+}
 
 const DEST_EMAIL = 'cerostudiomx@gmail.com';
 const FROM_EMAIL = 'noreply@cerostudio.ai';
 
-export async function onRequestOptions() {
-  return new Response(null, { status: 204, headers: CORS });
+export async function onRequestOptions(context) {
+  const origin = context.request.headers.get('Origin') || '';
+  return new Response(null, { status: 204, headers: corsHeaders(origin) });
 }
 
 export async function onRequestPost(context) {
   const { request, env } = context;
+  const origin = request.headers.get('Origin') || '';
 
   try {
     const body = await request.json();
     const { nombre, email, empresa, servicio, mensaje, _gotcha } = body;
 
     // Honeypot — bots rellenan este campo
-    if (_gotcha) return json({ ok: true });
+    if (_gotcha) return json({ ok: true }, 200, origin);
 
     // Validación
-    if (!nombre?.trim())  return json({ error: 'El nombre es requerido' }, 400);
+    if (!nombre?.trim())  return json({ error: 'El nombre es requerido' }, 400, origin);
     if (!email?.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
-      return json({ error: 'Email inválido' }, 400);
-    if (!mensaje?.trim()) return json({ error: 'El mensaje es requerido' }, 400);
+      return json({ error: 'Email inválido' }, 400, origin);
+    if (!mensaje?.trim()) return json({ error: 'El mensaje es requerido' }, 400, origin);
 
     const now = new Date().toISOString();
 
@@ -62,19 +70,19 @@ export async function onRequestPost(context) {
       }
     }
 
-    return json({ ok: true });
+    return json({ ok: true }, 200, origin);
   } catch (e) {
     console.error('[contact] Error:', e.message);
-    return json({ error: 'Error interno del servidor' }, 500);
+    return json({ error: 'Error interno del servidor' }, 500, origin);
   }
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-function json(data, status = 200) {
+function json(data, status = 200, origin = '') {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { 'Content-Type': 'application/json', ...CORS },
+    headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) },
   });
 }
 
