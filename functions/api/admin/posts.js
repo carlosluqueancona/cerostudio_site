@@ -59,6 +59,13 @@ async function requireAuth(request, env) {
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
+/** Parse and validate an integer ID from query params. Returns number or null. */
+function parseId(raw) {
+  if (!raw) return null;
+  const n = parseInt(raw, 10);
+  return Number.isFinite(n) && n > 0 ? n : null;
+}
+
 function json(data, status = 200, origin = '') {
   return new Response(JSON.stringify(data), {
     status,
@@ -91,10 +98,12 @@ export async function onRequestGet(context) {
   if (!await requireAuth(request, env)) return json({ error: 'No autorizado' }, 401, origin);
 
   const { searchParams } = new URL(request.url);
-  const id = searchParams.get('id');
+  const rawId = searchParams.get('id');
 
   try {
-    if (id) {
+    if (rawId) {
+      const id = parseId(rawId);
+      if (!id) return json({ error: 'ID inválido' }, 400, origin);
       const post = await env.DB.prepare('SELECT * FROM posts WHERE id = ?').bind(id).first();
       return post ? json(post, 200, origin) : json({ error: 'No encontrado' }, 404, origin);
     }
@@ -118,8 +127,8 @@ export async function onRequestPost(context) {
 
   // Toggle action
   if (searchParams.get('action') === 'toggle') {
-    const id = searchParams.get('id');
-    if (!id) return json({ error: 'ID requerido' }, 400, origin);
+    const id = parseId(searchParams.get('id'));
+    if (!id) return json({ error: 'ID requerido o inválido' }, 400, origin);
     try {
       const post = await env.DB.prepare('SELECT status FROM posts WHERE id = ?').bind(id).first();
       if (!post) return json({ error: 'No encontrado' }, 404, origin);
@@ -216,8 +225,8 @@ export async function onRequestDelete(context) {
   if (!await requireAuth(request, env)) return json({ error: 'No autorizado' }, 401, origin);
 
   const { searchParams } = new URL(request.url);
-  const id = searchParams.get('id');
-  if (!id) return json({ error: 'ID requerido' }, 400, origin);
+  const id = parseId(searchParams.get('id'));
+  if (!id) return json({ error: 'ID requerido o inválido' }, 400, origin);
 
   try {
     await env.DB.prepare('DELETE FROM posts WHERE id = ?').bind(id).run();

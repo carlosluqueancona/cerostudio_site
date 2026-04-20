@@ -11,6 +11,23 @@
 
 const ALLOWED_ORIGINS = ['https://cerostudio.ai', 'https://www.cerostudio.ai'];
 
+// ── Rate limiting: 5 login attempts per IP per 15 minutes ───────────────────
+const LOGIN_RATE_LIMIT_WINDOW = 15 * 60_000; // 15 minutes
+const LOGIN_RATE_LIMIT_MAX = 5;
+
+function checkLoginRateLimit(ip) {
+  if (!ip) return false;
+  if (!globalThis._loginRateLimits) globalThis._loginRateLimits = new Map();
+  const now = Date.now();
+  const entry = globalThis._loginRateLimits.get(ip);
+  if (!entry || now - entry.start > LOGIN_RATE_LIMIT_WINDOW) {
+    globalThis._loginRateLimits.set(ip, { start: now, count: 1 });
+    return false;
+  }
+  entry.count++;
+  return entry.count > LOGIN_RATE_LIMIT_MAX;
+}
+
 function corsHeaders(origin) {
   const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
   return {
@@ -33,6 +50,12 @@ export async function onRequestPost(context) {
   if (!env.JWT_SECRET) {
     console.error('[login] JWT_SECRET no configurado');
     return json({ error: 'Error interno del servidor' }, 500, origin);
+  }
+
+  // Rate limit login attempts
+  const clientIP = request.headers.get('CF-Connecting-IP') || '';
+  if (checkLoginRateLimit(clientIP)) {
+    return json({ error: 'Demasiados intentos. Intenta de nuevo en 15 minutos.' }, 429, origin);
   }
 
   try {

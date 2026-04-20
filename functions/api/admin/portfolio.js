@@ -47,6 +47,13 @@ async function requireAuth(request, env) {
   return verifyJWT(token, env.JWT_SECRET);
 }
 
+/** Parse and validate an integer ID from query params. Returns number or null. */
+function parseId(raw) {
+  if (!raw) return null;
+  const n = parseInt(raw, 10);
+  return Number.isFinite(n) && n > 0 ? n : null;
+}
+
 function json(data, status = 200, origin = '') {
   return new Response(JSON.stringify(data), {
     status,
@@ -167,8 +174,8 @@ export async function onRequestPut(context) {
   if (!await requireAuth(request, env)) return json({ error: 'No autorizado' }, 401, origin);
 
   const { searchParams } = new URL(request.url);
-  const id = searchParams.get('id');
-  if (!id) return json({ error: 'ID requerido' }, 400, origin);
+  const id = parseId(searchParams.get('id'));
+  if (!id) return json({ error: 'ID requerido o inválido' }, 400, origin);
 
   try {
     const { name, url, image, cat_es, cat_en, desc_es, desc_en, sort_order, visible } = await request.json();
@@ -187,8 +194,8 @@ export async function onRequestDelete(context) {
   if (!await requireAuth(request, env)) return json({ error: 'No autorizado' }, 401, origin);
 
   const { searchParams } = new URL(request.url);
-  const id = searchParams.get('id');
-  if (!id) return json({ error: 'ID requerido' }, 400, origin);
+  const id = parseId(searchParams.get('id'));
+  if (!id) return json({ error: 'ID requerido o inválido' }, 400, origin);
 
   try {
     await env.DB.prepare('DELETE FROM portfolio_items WHERE id = ?').bind(id).run();
@@ -204,8 +211,8 @@ export async function onRequestPatch(context) {
   if (!await requireAuth(request, env)) return json({ error: 'No autorizado' }, 401, origin);
 
   const { searchParams } = new URL(request.url);
-  const id = searchParams.get('id');
-  if (!id) return json({ error: 'ID requerido' }, 400, origin);
+  const id = parseId(searchParams.get('id'));
+  if (!id) return json({ error: 'ID requerido o inválido' }, 400, origin);
 
   try {
     const item = await env.DB.prepare('SELECT visible FROM portfolio_items WHERE id = ?').bind(id).first();
