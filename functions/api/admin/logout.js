@@ -4,29 +4,18 @@
  * No auth required — clearing an already-invalid cookie is harmless.
  */
 
-const ALLOWED_ORIGINS = ['https://cerostudio.ai', 'https://www.cerostudio.ai'];
-
-function corsHeaders(origin) {
-  const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
-  return {
-    'Access-Control-Allow-Origin': allowed,
-    'Vary': 'Origin',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Credentials': 'true',
-  };
-}
+import { corsHeaders } from './_shared.js';
 
 export async function onRequestOptions(context) {
   const origin = context.request.headers.get('Origin') || '';
-  return new Response(null, { status: 204, headers: corsHeaders(origin) });
+  return new Response(null, { status: 204, headers: corsHeaders(origin, 'POST, OPTIONS') });
 }
 
 export async function onRequestPost(context) {
   const origin = context.request.headers.get('Origin') || '';
 
   // Expire the cookie immediately by setting Max-Age=0.
-  // We emit multiple Set-Cookie headers to cover Path variants:
+  // Emit two Set-Cookie headers to cover Path variants:
   //   - Path=/api/admin (current — matches login.js)
   //   - Path=/          (defensive — covers any legacy cookie)
   const mkExpired = (path) => [
@@ -41,13 +30,10 @@ export async function onRequestPost(context) {
 
   const headers = new Headers({
     'Content-Type': 'application/json',
-    ...corsHeaders(origin),
+    ...corsHeaders(origin, 'POST, OPTIONS'),
   });
   headers.append('Set-Cookie', mkExpired('/api/admin'));
   headers.append('Set-Cookie', mkExpired('/'));
 
-  return new Response(JSON.stringify({ ok: true }), {
-    status: 200,
-    headers,
-  });
+  return new Response(JSON.stringify({ ok: true }), { status: 200, headers });
 }
