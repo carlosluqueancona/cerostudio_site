@@ -25,3 +25,19 @@ backup-*.sql
 *.sql
 # Added by code-review-graph
 .code-review-graph/
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+.gitignore
+.cursorrules
+.gitignore
+.mcp.json
+.opencode.json
+.windsurfrules
+.claude/skills/debug-issue.md
+.claude/skills/explore-codebase.md
+.claude/skills/refactor-safely.md
+.claude/skills/review-changes.md
+.cursor/mcp.json
+.kiro/settings/mcp.json
+.kiro/steering/code-review-graph.md
