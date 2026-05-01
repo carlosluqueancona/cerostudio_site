@@ -26,8 +26,10 @@
       --red:      #ff4444;
       --amber:    #FFA600;
       --amber-10: rgba(255,166,0,.1);
-      --fd: 'Space Grotesk', sans-serif;
-      --fb: 'Inter', sans-serif;
+      /* System-font fallback stack — kicks in cleanly when ad-blockers
+         (uBlock, Brave shield, AdGuard) block fonts.googleapis.com. */
+      --fd: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      --fb: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
       /* ── Alpha tokens ── */
       --lime-03:  rgba(178,247,0,.03);
       --lime-08:  rgba(178,247,0,.08);
@@ -251,6 +253,23 @@
       .stats { grid-template-columns:1fr; }
       .topbar-brand span { display:none; }
       .topbar-actions .btn-sm { padding:6px 8px; font-size:10px; letter-spacing:.04em; }
+      /* Mobile polish — tighter padding, smaller fonts, single-column where it makes sense */
+      .main { padding:14px; }
+      .card { padding:16px; }
+      th, td { padding:10px 8px; font-size:12px; }
+      th { font-size:9px; }
+      .table-wrap { margin:0 -14px; }              /* extend to edge for swipe */
+      .stat       { padding:14px 16px; }
+      .stat-num   { font-size:24px; }
+      .msg-card   { padding:14px 16px; }
+      .msg-card-header { gap:10px; flex-direction:column; align-items:flex-start; }
+      .msg-card-meta   { white-space:normal; }
+      .badge { font-size:9px; padding:2px 6px; }
+      /* Portfolio modal: 2-col field grids (cat-es/cat-en, desc-es/desc-en) → 1 col */
+      .port-modal-grid,
+      [style*="grid-template-columns:1fr 1fr"] { grid-template-columns:1fr !important; }
+      /* Login form keeps usable padding */
+      .login-box { padding:0 16px; }
     }
   </style>
 </head>
@@ -611,6 +630,8 @@ document.getElementById('login-form').addEventListener('submit', async e => {
   try {
     const r = await fetch(API + '/login', {
       method: 'POST',
+      credentials: 'same-origin',
+      cache: 'no-store',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         username: document.getElementById('username').value,
