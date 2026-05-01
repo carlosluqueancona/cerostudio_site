@@ -38,12 +38,18 @@ const ALLOWED_ORIGINS = [
 const RATE_LIMIT_WINDOW = 60_000; // 1 minute
 const RATE_LIMIT_MAX    = 10;
 
+// Field length ceilings. Calibrated against the longest real-world brief on file
+// (Sergio Luque 2026-04-28 had competitors = 5475 chars). Generous enough that
+// no legitimate user should hit them; defensive enough to block abuse.
+//
+// IMPORTANT: these values are also surfaced to the frontend via GET /limits so
+// the form's character counters match exactly. Keep both ends in sync.
 const SUBMIT_FIELD_LIMITS = {
-  name: 200, email: 254, phone: 50, company: 300, businessName: 300,
-  industry: 200, location: 200, targetAudience: 2000, competitors: 2000, usp: 2000,
-  currentSite: 500, currentSitePain: 2000, referenceSites: 2000, avoidance: 2000,
-  brandColorsDetail: 1000, contentNotes: 2000, goal: 2000, deadlineDetail: 500,
-  additionalNotes: 5000, briefText: 10000,
+  name: 200, email: 254, phone: 50, company: 500, businessName: 500,
+  industry: 300, location: 500, targetAudience: 5000, competitors: 10000, usp: 5000,
+  currentSite: 500, currentSitePain: 5000, referenceSites: 5000, avoidance: 5000,
+  brandColorsDetail: 2000, contentNotes: 5000, goal: 3000, deadlineDetail: 1000,
+  additionalNotes: 8000, briefText: 30000,
 };
 
 const VALID_STATUSES = [
@@ -150,10 +156,22 @@ async function handleSubmit({ request, env, json }) {
   if (!body.name || !body.email || !body.phone) {
     return json({ success: false, error: "Campos requeridos: name, email, phone" }, 400);
   }
+
+  // Save EVERYTHING the client sends. If a field exceeds its ceiling we truncate
+  // (with a marker + warning) instead of rejecting — losing a brief because the
+  // user pasted a long reference list is unacceptable. The frontend mirrors
+  // these same limits in its char counters so users get a heads-up first.
+  const truncated = [];
   for (const [field, max] of Object.entries(SUBMIT_FIELD_LIMITS)) {
-    if (body[field] && String(body[field]).length > max) {
-      return json({ success: false, error: `Campo '${field}' excede el límite permitido` }, 400);
+    const v = body[field];
+    if (typeof v === "string" && v.length > max) {
+      body[field] = v.slice(0, max - 80) +
+        `\n\n[…texto truncado: ${v.length - (max - 80)} chars adicionales perdidos por límite de ${max}…]`;
+      truncated.push(`${field}(${v.length}/${max})`);
     }
+  }
+  if (truncated.length) {
+    console.warn(`[intake] Truncated fields for ${body.email || "?"}: ${truncated.join(", ")}`);
   }
 
   const briefId = `CS-${Date.now().toString(36).toUpperCase()}`;
