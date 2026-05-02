@@ -1,10 +1,15 @@
 User-agent: *
 Allow: /
 
+# Functional areas without user-facing HTML — block crawl entirely.
+# (The _headers file also adds X-Robots-Tag: noindex on /admin/.)
 Disallow: /admin/
 Disallow: /api/
-Disallow: /brief/en/
-Disallow: /proyecto/
-Disallow: /privacidad/
+
+# Pages with `<meta name="robots" content="noindex">` are NOT blocked here.
+# Blocking them in robots.txt would prevent Google from reading the meta tag,
+# which would defeat the noindex (Google could still show URL-only SERP entries).
+# Pages currently relying on meta noindex:
+#   /brief/, /brief/en/, /proyecto/, /privacidad/, /portal_cliente/portal_preview.html
 
 Sitemap: https://cerostudio.ai/sitemap.xml
