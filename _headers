@@ -48,6 +48,17 @@
 /blog/blog.js
   Cache-Control: public, max-age=604800, stale-while-revalidate=86400
 
+# Shared components (navbar, footer, cursor, cookie consent) — short cache
+# These inject layout HTML on every page. A long cache means content/footer
+# updates take hours to propagate. 5 min hard cache + 1 day SWR keeps it
+# fast on repeat hits but updates roll out quickly.
+/components/*
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
+
+# Shared CSS — same logic
+/css/*
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
+
 # SVG/font assets: 1 year
 /images/svg/*
   Cache-Control: public, max-age=31536000, immutable
