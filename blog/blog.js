@@ -14,6 +14,21 @@ let isLoadingMore = false;
 async function initBlog() {
   const root = document.getElementById('blog-root');
 
+  // ── SSR fast path ────────────────────────────────────────────────────────
+  // If the server already rendered this post (data-ssr-slug attribute is set
+  // by functions/blog/[slug].js), skip the initial fetch+render to avoid the
+  // "Cargando artículo..." flash and double work. We still warm up the post
+  // list cache in the background so clicking "Volver al blog" feels instant.
+  if (root && root.getAttribute('data-ssr-slug')) {
+    fetch(`${BLOG_DATA_URL}?page=1&per=${INITIAL_LOAD}`)
+      .then(r => r.ok ? r.json() : [])
+      .then(arr => { window._blogPosts = Array.isArray(arr) ? arr : []; })
+      .catch(() => { window._blogPosts = []; });
+    window.onpopstate = handleRoute;
+    return;
+  }
+
+  // ── Normal path: list view (or SPA-navigated post views) ─────────────────
   try {
     const response = await fetch(`${BLOG_DATA_URL}?page=1&per=${INITIAL_LOAD}`);
     if (!response.ok) {
@@ -88,9 +103,25 @@ function postCardHtml(post) {
     + '</article>';
 }
 
-function renderList() {
+async function renderList() {
   const root = document.getElementById('blog-root');
-  const posts = Array.isArray(window._blogPosts) ? window._blogPosts : [];
+  let posts = Array.isArray(window._blogPosts) ? window._blogPosts : null;
+
+  // Lazy-fetch the list if it hasn't been loaded yet — happens when the user
+  // arrives via an SSR'd post page and then clicks "Volver al blog" before
+  // the background warm-up completes.
+  if (posts === null) {
+    root.innerHTML = `<div class="section-inner" style="padding: 100px 0; text-align: center;">Cargando blog...</div>`;
+    try {
+      const r = await fetch(`${BLOG_DATA_URL}?page=1&per=${INITIAL_LOAD}`);
+      const data = r.ok ? await r.json() : [];
+      posts = Array.isArray(data) ? data : [];
+      window._blogPosts = posts;
+      hasMore = posts.length === INITIAL_LOAD;
+    } catch {
+      posts = [];
+    }
+  }
 
   const cardsHtml = posts.length
     ? posts.map(postCardHtml).join('')
