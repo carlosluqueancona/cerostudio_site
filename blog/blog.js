@@ -16,12 +16,21 @@ async function initBlog() {
 
   try {
     const response = await fetch(`${BLOG_DATA_URL}?page=1&per=${INITIAL_LOAD}`);
+    if (!response.ok) {
+      throw new Error('API responded with status ' + response.status);
+    }
     const firstBatch = await response.json();
+
+    // Defensive: the list endpoint should always return an array. If the API
+    // returned an error object (or anything else), fall back to an empty list
+    // instead of letting `.map()` blow up later.
+    const posts = Array.isArray(firstBatch) ? firstBatch : [];
+
     // hasMore solo es true si llegamos al límite inicial (50+)
-    hasMore = firstBatch.length === INITIAL_LOAD;
+    hasMore = posts.length === INITIAL_LOAD;
 
     // Seed global posts array for list view
-    window._blogPosts = firstBatch;
+    window._blogPosts = posts;
     currentPage = 1;
 
     // Simple router based on pathname
@@ -32,7 +41,9 @@ async function initBlog() {
 
   } catch (error) {
     console.error('Error loading blog data:', error);
-    root.innerHTML = `<div class="section-inner" style="padding: 100px 0; text-align: center;">Error al cargar el blog.</div>`;
+    if (root) {
+      root.innerHTML = `<div class="section-inner" style="padding: 100px 0; text-align: center;">Error al cargar el blog.</div>`;
+    }
   }
 }
 
@@ -79,9 +90,11 @@ function postCardHtml(post) {
 
 function renderList() {
   const root = document.getElementById('blog-root');
-  const posts = window._blogPosts || [];
+  const posts = Array.isArray(window._blogPosts) ? window._blogPosts : [];
 
-  let cardsHtml = posts.map(postCardHtml).join('');
+  const cardsHtml = posts.length
+    ? posts.map(postCardHtml).join('')
+    : '<p style="grid-column: 1 / -1; text-align: center; padding: 60px 0; color: rgba(255,255,255,.6);">Próximamente nuevos artículos.</p>';
 
   root.innerHTML = `
     <header class="blog-hero">
@@ -114,7 +127,9 @@ async function loadMore() {
   try {
     const nextPage = currentPage + 1;
     const response = await fetch(`${BLOG_DATA_URL}?page=${nextPage}&per=${INITIAL_LOAD}`);
-    const newPosts = await response.json();
+    if (!response.ok) throw new Error('API responded with status ' + response.status);
+    const raw = await response.json();
+    const newPosts = Array.isArray(raw) ? raw : [];
 
     currentPage = nextPage;
     hasMore = newPosts.length === INITIAL_LOAD;
