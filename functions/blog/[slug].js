@@ -1,10 +1,42 @@
 /**
  * Cloudflare Pages Function: /blog/[slug]
- * Serves /blog/index.html for any blog post URL so the SPA
- * can handle client-side routing.
- * Static files (blog.js, blog.css, admin/) take precedence
- * over this function automatically.
+ *
+ * Serves /blog/index.html for any blog post URL so the SPA can render content
+ * client-side, BUT first injects per-post SEO meta tags + BlogPosting JSON-LD
+ * via HTMLRewriter — so Google, social previews and AI search engines see the
+ * correct title, description, canonical, OG image and structured data without
+ * waiting for client-side hydration.
+ *
+ * Static files (blog.js, blog.css, admin/) take precedence over this function
+ * automatically.
  */
+
+const BASE_URL = 'https://cerostudio.ai';
+const DEFAULT_OG_IMAGE = `${BASE_URL}/images/CERO_Studio_SocialShare.png`;
+const PUBLISHER_LOGO = `${BASE_URL}/images/svg/Cero_Studio_AI_Horizontal.svg`;
+
+function escAttr(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+  ));
+}
+
+function toIsoDate(d) {
+  if (!d) return new Date().toISOString();
+  // SQLite default format is "YYYY-MM-DD HH:MM:SS" (no T, no Z)
+  const normalized = typeof d === 'string'
+    ? (d.includes('T') ? d : d.replace(' ', 'T')) + (/Z$|[+-]\d{2}:?\d{2}$/.test(d) ? '' : 'Z')
+    : d;
+  const parsed = new Date(normalized);
+  return isNaN(parsed) ? new Date().toISOString() : parsed.toISOString();
+}
+
+function absoluteUrl(maybeRelative) {
+  if (!maybeRelative) return null;
+  if (/^https?:\/\//i.test(maybeRelative)) return maybeRelative;
+  return BASE_URL + (maybeRelative.startsWith('/') ? '' : '/') + maybeRelative;
+}
+
 export async function onRequest(context) {
   const slug = context.params.slug;
 
@@ -20,8 +52,132 @@ export async function onRequest(context) {
     return context.env.ASSETS.fetch(url.toString());
   }
 
-  // Serve blog SPA for post slugs
-  const url = new URL(context.request.url);
-  url.pathname = '/blog/index.html';
-  return context.env.ASSETS.fetch(url.toString());
+  // Best-effort: look up the post in D1. If D1 is unavailable (local dev
+  // without binding) or query fails, fall through and serve the SPA shell —
+  // the client-side blog.js will still render content from /api/posts.
+  let post = null;
+  let dbAvailable = false;
+  try {
+    if (context.env?.DB?.prepare) {
+      post = await context.env.DB.prepare(
+        `SELECT title, slug, category, meta_title, meta_description,
+                featured_image, featured_image_alt, excerpt,
+                published_at, created_at
+           FROM posts
+          WHERE slug = ? AND status = 'published'
+          LIMIT 1`
+      ).bind(slug).first();
+      dbAvailable = true;
+    }
+  } catch (_) {
+    dbAvailable = false;
+  }
+
+  // Fetch the SPA shell
+  const shellUrl = new URL(context.request.url);
+  shellUrl.pathname = '/blog/index.html';
+  const assetResponse = await context.env.ASSETS.fetch(shellUrl.toString());
+
+  // Post not found AND D1 is reachable → return 404 status
+  // (body still has the SPA shell so users see a graceful message)
+  if (dbAvailable && !post) {
+    return new Response(assetResponse.body, {
+      status: 404,
+      headers: { ...Object.fromEntries(assetResponse.headers), 'X-Cero-SSR': 'not-found' },
+    });
+  }
+
+  // No post data (D1 unavailable in dev) → return SPA shell as-is
+  if (!post) {
+    return new Response(assetResponse.body, {
+      status: assetResponse.status,
+      headers: { ...Object.fromEntries(assetResponse.headers), 'X-Cero-SSR': 'fallback' },
+    });
+  }
+
+  // ── Build per-post SEO data ──────────────────────────────────────────────
+  const fullUrl = `${BASE_URL}/blog/${post.slug}`;
+  const title = post.meta_title || `${post.title} | Blog Cero Studio`;
+  const description = post.meta_description
+    || post.excerpt
+    || `Lee ${post.title} en el blog de Cero Studio.`;
+  const image = absoluteUrl(post.featured_image) || DEFAULT_OG_IMAGE;
+  const imageAlt = post.featured_image_alt || post.title;
+  const publishedDate = toIsoDate(post.published_at || post.created_at);
+
+  const blogPostingLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    'mainEntityOfPage': { '@type': 'WebPage', '@id': fullUrl },
+    'headline': post.title,
+    'description': description,
+    'image': image,
+    'author': {
+      '@type': 'Organization',
+      'name': 'Cero Studio',
+      'url': BASE_URL,
+    },
+    'publisher': {
+      '@type': 'Organization',
+      'name': 'Cero Studio',
+      'logo': { '@type': 'ImageObject', 'url': PUBLISHER_LOGO },
+    },
+    'datePublished': publishedDate,
+    'dateModified': publishedDate,
+    'inLanguage': 'es-MX',
+    ...(post.category && { 'articleSection': post.category }),
+  };
+
+  // ── Rewrite the SPA shell head ────────────────────────────────────────────
+  const rewriter = new HTMLRewriter()
+    .on('title', {
+      element(el) { el.setInnerContent(title); },
+    })
+    .on('meta[name="description"]', {
+      element(el) { el.setAttribute('content', description); },
+    })
+    .on('link[rel="canonical"]', {
+      element(el) { el.setAttribute('href', fullUrl); },
+    })
+    .on('meta[property="og:type"]', {
+      element(el) { el.setAttribute('content', 'article'); },
+    })
+    .on('meta[property="og:url"]', {
+      element(el) { el.setAttribute('content', fullUrl); },
+    })
+    .on('meta[property="og:title"]', {
+      element(el) { el.setAttribute('content', title); },
+    })
+    .on('meta[property="og:description"]', {
+      element(el) { el.setAttribute('content', description); },
+    })
+    .on('meta[property="og:image"]', {
+      element(el) { el.setAttribute('content', image); },
+    })
+    .on('meta[name="twitter:card"]', {
+      element(el) {
+        const articleSection = post.category
+          ? `\n  <meta property="article:section" content="${escAttr(post.category)}">`
+          : '';
+        el.after(
+          `\n  <meta name="twitter:title" content="${escAttr(title)}">` +
+          `\n  <meta name="twitter:description" content="${escAttr(description)}">` +
+          `\n  <meta name="twitter:image" content="${escAttr(image)}">` +
+          `\n  <meta property="og:image:alt" content="${escAttr(imageAlt)}">` +
+          `\n  <meta property="og:locale" content="es_MX">` +
+          `\n  <meta property="article:published_time" content="${publishedDate}">` +
+          `\n  <meta property="article:modified_time" content="${publishedDate}">` +
+          articleSection +
+          `\n  <script type="application/ld+json">${JSON.stringify(blogPostingLd)}</script>`,
+          { html: true }
+        );
+      },
+    });
+
+  const transformed = rewriter.transform(assetResponse);
+  // Mark response so SSR is verifiable in tests + production debugging
+  return new Response(transformed.body, {
+    status: transformed.status,
+    headers: { ...Object.fromEntries(transformed.headers), 'X-Cero-SSR': 'ok' },
+  });
 }

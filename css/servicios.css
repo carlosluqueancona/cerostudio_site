@@ -1,0 +1,239 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+ * Cero Studio · Servicios (landings)
+ * Estilos compartidos para /servicios/* — usa tokens definidos en base.css.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+
+/* ── Hero ────────────────────────────────────────────────────────────────── */
+.srv-hero {
+  position: relative;
+  padding: 140px 24px 80px;
+  max-width: 1100px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+.srv-hero-inner { position: relative; z-index: 2; }
+.srv-hero-grid {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(206,255,51,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(206,255,51,0.06) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+}
+
+.srv-hero canvas#heroCanvas {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  z-index: 0; opacity: .35;
+}
+
+.breadcrumb {
+  font-size: 12px;
+  color: rgba(255,255,255,.5);
+  letter-spacing: .05em;
+  margin-bottom: 32px;
+}
+.breadcrumb a { color: rgba(255,255,255,.7); text-decoration: none; }
+.breadcrumb a:hover { color: var(--lime, #ceff33); }
+.breadcrumb .sep { margin: 0 8px; color: rgba(255,255,255,.3); }
+
+.srv-hero .eyebrow {
+  font-size: 12px; font-weight: 500; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--lime, #ceff33);
+  margin-bottom: 24px; display: inline-flex; align-items: center; gap: 12px;
+}
+.srv-hero .eyebrow::before {
+  content: ""; width: 32px; height: 1px; background: var(--lime, #ceff33);
+}
+
+.srv-hero h1 {
+  font-family: var(--fd, 'Space Grotesk', system-ui);
+  font-size: clamp(40px, 7vw, 84px);
+  font-weight: 800; line-height: 1.02;
+  color: #fff; margin: 0 0 28px;
+  letter-spacing: -.02em;
+}
+
+.srv-hero-lead {
+  font-size: clamp(16px, 1.6vw, 20px);
+  line-height: 1.6;
+  color: rgba(255,255,255,.78);
+  max-width: 720px;
+  margin-bottom: 36px;
+}
+
+.srv-hero-actions {
+  display: flex; gap: 16px; flex-wrap: wrap;
+}
+
+/* ── Sections ────────────────────────────────────────────────────────────── */
+.srv-section {
+  padding: 80px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.srv-section-title {
+  font-family: var(--fd, 'Space Grotesk', system-ui);
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 40px;
+  line-height: 1.15;
+  letter-spacing: -.01em;
+}
+
+.srv-divider {
+  border: 0;
+  border-top: 1px solid rgba(255,255,255,.06);
+  margin: 0 24px;
+  max-width: 1100px;
+  margin-left: auto; margin-right: auto;
+}
+
+/* ── Cards grid (Qué incluye) ────────────────────────────────────────────── */
+.srv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+.srv-card {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px;
+  padding: 32px;
+  transition: border-color .3s ease, transform .3s ease;
+}
+.srv-card:hover {
+  border-color: var(--lime, #ceff33);
+  transform: translateY(-2px);
+}
+.srv-card-num {
+  font-family: var(--fd, monospace);
+  font-size: 14px; font-weight: 700;
+  color: var(--lime, #ceff33);
+  letter-spacing: .1em;
+  margin: 0 0 16px;
+}
+.srv-card h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 12px;
+}
+.srv-card p {
+  font-size: 14px;
+  line-height: 1.65;
+  color: rgba(255,255,255,.7);
+  margin: 0;
+}
+
+/* ── Two-column section (¿Por qué + ¿Cuándo/Quién) ───────────────────────── */
+.srv-two-col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 56px;
+}
+.srv-two-col h2 { margin-bottom: 24px; }
+.srv-why-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.srv-why-list li {
+  position: relative;
+  padding: 12px 0 12px 28px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(255,255,255,.78);
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.srv-why-list li::before {
+  content: "→";
+  position: absolute;
+  left: 0; top: 12px;
+  color: var(--lime, #ceff33);
+  font-weight: 600;
+}
+.srv-why-list li:last-child { border-bottom: 0; }
+.srv-why-list strong { color: #fff; font-weight: 600; }
+
+/* ── CTA banner ──────────────────────────────────────────────────────────── */
+.srv-cta {
+  text-align: center;
+  padding: 100px 24px;
+  background: radial-gradient(ellipse at center, rgba(206,255,51,.08), transparent 60%);
+  border-top: 1px solid rgba(255,255,255,.06);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.srv-cta h2 {
+  font-family: var(--fd, 'Space Grotesk', system-ui);
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 16px;
+  line-height: 1.15;
+}
+.srv-cta p {
+  font-size: 17px;
+  color: rgba(255,255,255,.72);
+  margin: 0 0 32px;
+}
+.srv-cta-actions {
+  display: inline-flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ── Servicios relacionados ──────────────────────────────────────────────── */
+.srv-related {
+  padding: 80px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.srv-related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 32px;
+}
+.srv-related-card {
+  display: block;
+  padding: 28px;
+  background: rgba(255,255,255,.02);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 10px;
+  text-decoration: none;
+  color: #fff;
+  transition: border-color .3s ease, transform .3s ease, background .3s ease;
+}
+.srv-related-card:hover {
+  border-color: var(--lime, #ceff33);
+  background: rgba(206,255,51,.04);
+  transform: translateY(-2px);
+}
+.srv-rc-label {
+  display: block;
+  font-family: var(--fd, monospace);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--lime, #ceff33);
+  letter-spacing: .15em;
+  margin-bottom: 8px;
+}
+.srv-related-card p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+}
+
+/* ── Mobile tweaks ───────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .srv-hero { padding-top: 120px; padding-bottom: 56px; }
+  .srv-section { padding: 56px 24px; }
+  .srv-related { padding: 56px 24px; }
+  .srv-cta { padding: 72px 24px; }
+  .srv-two-col { gap: 40px; }
+}
