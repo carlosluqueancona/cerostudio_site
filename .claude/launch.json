@@ -4,7 +4,7 @@
     {
       "name": "CeroStudio Site (Pages)",
       "runtimeExecutable": "wrangler",
-      "runtimeArgs": ["pages", "dev", ".", "--port", "8788"],
+      "runtimeArgs": ["pages", "dev", ".", "--port", "8788", "--d1=DB=cerostudio-blog"],
       "port": 8788
     },
     {

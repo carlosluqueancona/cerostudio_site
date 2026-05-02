@@ -5,10 +5,17 @@
 
 const BASE = 'https://cerostudio.ai';
 
+// Only indexable URLs belong in the sitemap.
+// /brief/, /proyecto/, /portal_cliente/ y /privacidad/ son noindex y se omiten.
 const STATIC_PAGES = [
-  { loc: '/',        priority: '1.0', changefreq: 'weekly'  },
-  { loc: '/blog/',   priority: '0.9', changefreq: 'daily'   },
-  { loc: '/brief/',  priority: '0.7', changefreq: 'monthly' },
+  { loc: '/',                                     priority: '1.0', changefreq: 'weekly'  },
+  { loc: '/blog/',                                priority: '0.9', changefreq: 'daily'   },
+  { loc: '/servicios/desarrollo-web/',            priority: '0.8', changefreq: 'monthly' },
+  { loc: '/servicios/tiendas-ecommerce/',         priority: '0.8', changefreq: 'monthly' },
+  { loc: '/servicios/branding-digital/',          priority: '0.8', changefreq: 'monthly' },
+  { loc: '/servicios/seo/',                       priority: '0.8', changefreq: 'monthly' },
+  { loc: '/servicios/mantenimiento/',             priority: '0.8', changefreq: 'monthly' },
+  { loc: '/diseno-web-para-clinicas/',            priority: '0.8', changefreq: 'monthly' },
 ];
 
 function urlEntry({ loc, lastmod, priority = '0.6', changefreq = 'monthly' }) {
@@ -23,33 +30,45 @@ function urlEntry({ loc, lastmod, priority = '0.6', changefreq = 'monthly' }) {
 }
 
 export async function onRequestGet({ env }) {
+  const today = new Date().toISOString().slice(0, 10);
+
+  // Best-effort fetch of published posts. If D1 is unavailable (local dev,
+  // outage, etc.) we still serve a valid sitemap with the static pages.
+  let results = [];
   try {
-    const { results } = await env.DB.prepare(
-      "SELECT slug, published_at FROM posts WHERE status = 'published' ORDER BY published_at DESC"
-    ).all();
+    if (env?.DB?.prepare) {
+      const r = await env.DB.prepare(
+        "SELECT slug, published_at FROM posts WHERE status = 'published' ORDER BY published_at DESC"
+      ).all();
+      results = r?.results || [];
+    }
+  } catch {
+    results = [];
+  }
 
-    const staticEntries = STATIC_PAGES.map(urlEntry).join('\n');
+  const latestPostDate = results[0]?.published_at?.slice(0, 10) || today;
 
-    const postEntries = (results || []).map(p => urlEntry({
-      loc:        `/blog/${p.slug}`,
-      lastmod:    p.published_at ? p.published_at.slice(0, 10) : undefined,
-      priority:   '0.8',
-      changefreq: 'monthly',
-    })).join('\n');
+  const staticEntries = STATIC_PAGES.map(p =>
+    urlEntry({ ...p, lastmod: p.loc === '/blog/' ? latestPostDate : today })
+  ).join('\n');
 
-    const xml = `<?xml version="1.0" encoding="UTF-8"?>
+  const postEntries = results.map(p => urlEntry({
+    loc:        `/blog/${p.slug}`,
+    lastmod:    p.published_at ? p.published_at.slice(0, 10) : undefined,
+    priority:   '0.8',
+    changefreq: 'monthly',
+  })).join('\n');
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${staticEntries}
-${postEntries}
+${postEntries ? '\n' + postEntries : ''}
 </urlset>`;
 
-    return new Response(xml, {
-      headers: {
-        'Content-Type': 'application/xml; charset=utf-8',
-        'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
-      },
-    });
-  } catch (err) {
-    return new Response('Error generating sitemap', { status: 500 });
-  }
+  return new Response(xml, {
+    headers: {
+      'Content-Type': 'application/xml; charset=utf-8',
+      'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
+    },
+  });
 }

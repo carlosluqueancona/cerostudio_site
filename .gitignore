@@ -23,6 +23,11 @@ backup-*.sql
 *.dump.sql
 *.backup.sql
 *.sql
+# Excepciones: schema y seeds versionados del blog
+!blog/schema.sql
+!blog/seed.sql
+!blog/seeds/
+!blog/seeds/*.sql
 # Added by code-review-graph
 .code-review-graph/
 AGENTS.md
