@@ -37,6 +37,50 @@ function absoluteUrl(maybeRelative) {
   return BASE_URL + (maybeRelative.startsWith('/') ? '' : '/') + maybeRelative;
 }
 
+function formatDateEsMx(d) {
+  if (!d) return '';
+  const normalized = typeof d === 'string'
+    ? (d.includes('T') ? d : d.replace(' ', 'T')) + (/Z$|[+-]\d{2}:?\d{2}$/.test(d) ? '' : 'Z')
+    : d;
+  const date = new Date(normalized);
+  if (isNaN(date)) return '';
+  try {
+    return new Intl.DateTimeFormat('es-MX', { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
+  } catch {
+    return date.toISOString().slice(0, 10);
+  }
+}
+
+/**
+ * Build the full <article> body that mirrors what blog.js renderPost() would
+ * produce client-side. post.content is already trusted HTML stored in D1, so
+ * it's emitted verbatim. Other fields (title, category, alt, etc.) are
+ * escaped because they go into text or attribute positions.
+ */
+function buildArticleHtml(post) {
+  const heroImg = post.featured_image
+    ? `<div class="article-featured-image"><img src="${escAttr(absoluteUrl(post.featured_image) || post.featured_image)}" alt="${escAttr(post.featured_image_alt || post.title)}"></div>`
+    : '';
+
+  return [
+    '<a id="main-content" tabindex="-1"></a>',
+    '<article class="article-container">',
+    `  <a href="/blog/" onclick="navigate(event, '/blog/')" class="back-link">← Volver al blog</a>`,
+    '  <header class="article-header">',
+    `    <div class="post-card-cat" style="margin-bottom: 24px;">${escAttr(post.category || 'General')}</div>`,
+    `    <h1 class="article-title">${escAttr(post.title)}</h1>`,
+    '    <div class="article-meta">',
+    `      Publicado el ${escAttr(formatDateEsMx(post.published_at || post.created_at))} • Cero Studio`,
+    '    </div>',
+    '    ' + heroImg,
+    '  </header>',
+    '  <div class="article-content">',
+    '    ' + (post.content || ''),
+    '  </div>',
+    '</article>',
+  ].join('\n');
+}
+
 export async function onRequest(context) {
   const slug = context.params.slug;
 
@@ -61,7 +105,7 @@ export async function onRequest(context) {
     if (context.env?.DB?.prepare) {
       post = await context.env.DB.prepare(
         `SELECT title, slug, category, meta_title, meta_description,
-                featured_image, featured_image_alt, excerpt,
+                featured_image, featured_image_alt, excerpt, content,
                 published_at, created_at
            FROM posts
           WHERE slug = ? AND status = 'published'
@@ -171,6 +215,15 @@ export async function onRequest(context) {
           `\n  <script type="application/ld+json">${JSON.stringify(blogPostingLd)}</script>`,
           { html: true }
         );
+      },
+    })
+    // ── Replace the SPA shell body with the full server-rendered article ──
+    // Sets data-ssr-slug so blog.js knows to skip its own initial render
+    // (avoids "CARGANDO BLOG..." flash and double work).
+    .on('main#blog-root', {
+      element(el) {
+        el.setAttribute('data-ssr-slug', post.slug);
+        el.setInnerContent(buildArticleHtml(post), { html: true });
       },
     });
 
