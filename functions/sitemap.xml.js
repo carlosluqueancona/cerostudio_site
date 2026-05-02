@@ -15,6 +15,7 @@ const STATIC_PAGES = [
   { loc: '/servicios/branding-digital/',          priority: '0.8', changefreq: 'monthly' },
   { loc: '/servicios/seo/',                       priority: '0.8', changefreq: 'monthly' },
   { loc: '/servicios/mantenimiento/',             priority: '0.8', changefreq: 'monthly' },
+  { loc: '/servicios/consultoria-digital/',       priority: '0.8', changefreq: 'monthly' },
   { loc: '/diseno-web-para-clinicas/',            priority: '0.8', changefreq: 'monthly' },
 ];
 
