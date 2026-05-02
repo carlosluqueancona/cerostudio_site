@@ -39,11 +39,11 @@
     '</ul></div>' +
     '<div><p class="footer-col-title" id="fcol-srv-title">Servicios</p>' +
     '<ul class="footer-links">' +
-    '<li><a href="/#servicios" id="fsrv-1">Desarrollo Web</a></li>' +
-    '<li><a href="/#servicios" id="fsrv-2">Tiendas eCommerce</a></li>' +
-    '<li><a href="/#servicios" id="fsrv-3">Branding Digital</a></li>' +
-    '<li><a href="/#servicios" id="fsrv-4">SEO &amp; Visibilidad</a></li>' +
-    '<li><a href="/#servicios" id="fsrv-5">Mantenimiento</a></li>' +
+    '<li><a href="/servicios/desarrollo-web/" id="fsrv-1">Desarrollo Web</a></li>' +
+    '<li><a href="/servicios/tiendas-ecommerce/" id="fsrv-2">Tiendas eCommerce</a></li>' +
+    '<li><a href="/servicios/branding-digital/" id="fsrv-3">Branding Digital</a></li>' +
+    '<li><a href="/servicios/seo/" id="fsrv-4">SEO &amp; Visibilidad</a></li>' +
+    '<li><a href="/servicios/mantenimiento/" id="fsrv-5">Mantenimiento</a></li>' +
     '</ul></div>' +
     '<div><p class="footer-col-title" id="fcol-contact-title">Contacto</p>' +
     '<ul class="footer-links">' +
