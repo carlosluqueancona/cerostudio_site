@@ -44,6 +44,7 @@
     '<li><a href="/servicios/branding-digital/" id="fsrv-3">Branding Digital</a></li>' +
     '<li><a href="/servicios/seo/" id="fsrv-4">SEO &amp; Visibilidad</a></li>' +
     '<li><a href="/servicios/mantenimiento/" id="fsrv-5">Mantenimiento</a></li>' +
+    '<li><a href="/servicios/consultoria-digital/" id="fsrv-6">Consultoría Digital</a></li>' +
     '</ul></div>' +
     '<div><p class="footer-col-title" id="fcol-contact-title">Contacto</p>' +
     '<ul class="footer-links">' +
