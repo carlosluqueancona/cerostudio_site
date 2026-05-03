@@ -19,7 +19,7 @@
     '<li><a href="/blog/" class="ht" id="nav-blog">Blog</a></li>' +
     '</ul>' +
     '<button id="langToggle" class="lang-btn ht" onclick="toggleLang()">EN</button>' +
-    '<a href="/#contacto" class="nav-cta ht" id="nav-cta">Hablemos</a>' +
+    '<a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="nav-cta ht" id="nav-cta">Hablemos</a>' +
     '<div class="nav-ham ht" id="navHam" onclick="toggleNav()"><span></span><span></span><span></span></div>' +
     '</nav>';
 
@@ -48,6 +48,8 @@
     '</ul></div>' +
     '<div><p class="footer-col-title" id="fcol-contact-title">Contacto</p>' +
     '<ul class="footer-links">' +
+    '<li><a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener">Agendar llamada</a></li>' +
+    '<li><a href="https://wa.me/525531007101?text=Hola%2C%20me%20interesa%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20servicios." target="_blank" rel="noopener" id="ffoot-wa">WhatsApp</a></li>' +
     '<li><a href="mailto:hola@cerostudio.ai">hola@cerostudio.ai</a></li>' +
     /* '<li><a href="https://instagram.com/cerostudio.ai" target="_blank" rel="noopener">Instagram</a></li>' + */
     /* '<li><a href="https://linkedin.com/company/cerostudio" target="_blank" rel="noopener">LinkedIn</a></li>' + */
