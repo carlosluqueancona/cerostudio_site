@@ -83,6 +83,16 @@
       });
     }
 
+    /* Navbar scroll microanimation (transparent → blurred bg after 60px) */
+    var navEl2 = document.getElementById('navbar');
+    if (navEl2) {
+      var applyScrolled = function () {
+        navEl2.classList.toggle('scrolled', window.scrollY > 60);
+      };
+      applyScrolled();
+      window.addEventListener('scroll', applyScrolled, { passive: true });
+    }
+
     document.dispatchEvent(new CustomEvent('csComponentsReady'));
   }
 
