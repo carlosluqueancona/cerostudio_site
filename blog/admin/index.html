@@ -475,7 +475,7 @@
           <input type="text" id="media-search" placeholder="Buscar por nombre…" oninput="renderMedia()" style="background:var(--surface-2);border:1px solid var(--border);color:var(--white);padding:7px 10px;font-family:var(--fb);font-size:12px;min-width:220px;">
           <button class="btn btn-ghost btn-sm" onclick="loadMedia()">↻ Actualizar</button>
           <button class="btn btn-primary btn-sm" onclick="document.getElementById('media-file-input').click()">+ Subir imagen</button>
-          <input type="file" id="media-file-input" accept="image/jpeg,image/png,image/webp,image/gif" multiple onchange="mediaUploadFiles(this.files)" style="display:none;">
+          <input type="file" id="media-file-input" accept="image/jpeg,image/png,image/webp,image/gif" multiple onchange="mediaUploadFiles(this.files)" style="position:absolute;left:-9999px;opacity:0;">
         </div>
       </div>
 
@@ -497,13 +497,18 @@
          esté oculta (el padre con display:none ocultaría también position:fixed). -->
     <div id="media-picker-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10000;overflow-y:auto;padding:32px 16px;">
       <div style="background:var(--surface-1);max-width:960px;margin:0 auto;padding:28px;border:1px solid var(--border);">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:12px;flex-wrap:wrap;">
           <h3 style="font-family:var(--fd);font-size:16px;font-weight:700;">Elegir imagen de la biblioteca</h3>
-          <button onclick="closeMediaPicker()" style="background:none;border:none;color:var(--gt);cursor:pointer;font-size:20px;">×</button>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <button class="btn btn-ghost btn-sm" type="button" onclick="document.getElementById('media-picker-file-input').click()">↑ Subir nueva</button>
+            <input type="file" id="media-picker-file-input" accept="image/jpeg,image/png,image/webp,image/gif" multiple onchange="mediaPickerUpload(this.files)" style="position:absolute;left:-9999px;opacity:0;">
+            <button onclick="closeMediaPicker()" type="button" style="background:none;border:none;color:var(--gt);cursor:pointer;font-size:20px;line-height:1;">×</button>
+          </div>
         </div>
-        <input type="text" id="media-picker-search" placeholder="Buscar…" oninput="renderMediaPicker()" style="width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--white);padding:9px 12px;font-family:var(--fb);font-size:14px;margin-bottom:14px;">
+        <input type="text" id="media-picker-search" placeholder="Buscar…" oninput="renderMediaPicker()" style="width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--white);padding:9px 12px;font-family:var(--fb);font-size:14px;margin-bottom:8px;">
+        <div id="media-picker-status" style="font-size:11px;margin-bottom:10px;color:var(--gt);min-height:14px;"></div>
         <div id="media-picker-grid" class="media-grid" style="max-height:60vh;overflow-y:auto;"></div>
-        <div id="media-picker-empty" style="display:none;padding:32px;text-align:center;color:var(--gt);font-size:13px;">Sin resultados.</div>
+        <div id="media-picker-empty" style="display:none;padding:32px;text-align:center;color:var(--gt);font-size:13px;">Sin resultados. Subí una imagen con "↑ Subir nueva".</div>
       </div>
     </div>
 
@@ -1669,25 +1674,59 @@ function mediaOnDrop(e) {
   mediaUploadFiles(e.dataTransfer.files);
 }
 
+// Algunos browsers/sistemas no llenan f.type para .webp. Validamos por extensión
+// como respaldo para no rechazar archivos válidos en silencio.
+function detectImageMime(f) {
+  if (f.type) return f.type;
+  const m = (f.name || '').toLowerCase().match(/\.(jpe?g|png|webp|gif)$/);
+  if (!m) return '';
+  return { jpg:'image/jpeg', jpeg:'image/jpeg', png:'image/png', webp:'image/webp', gif:'image/gif' }[m[1]] || '';
+}
+
 async function mediaUploadFiles(fileList) {
   const files = Array.from(fileList || []);
   if (!files.length) return;
   const status = document.getElementById('media-zone-status');
   let ok = 0, fail = 0;
+  const errors = [];
   for (const f of files) {
     status.textContent = `Subiendo ${f.name}… (${ok + fail + 1}/${files.length})`;
     status.style.color = 'var(--gt)';
+    const mime = detectImageMime(f);
     const allowed = ['image/jpeg','image/png','image/webp','image/gif'];
-    if (!allowed.includes(f.type) || f.size > 5 * 1024 * 1024) { fail++; continue; }
+    if (!allowed.includes(mime)) {
+      fail++; errors.push(`${f.name}: tipo no permitido (${f.type || 'desconocido'})`);
+      continue;
+    }
+    if (f.size > 5 * 1024 * 1024) {
+      fail++; errors.push(`${f.name}: supera 5 MB (${(f.size / 1024 / 1024).toFixed(1)} MB)`);
+      continue;
+    }
     const fd = new FormData();
     fd.append('file', f);
     try {
       const r = await apiFetch('/upload', { method: 'POST', body: fd });
-      const d = await r.json();
-      if (d.ok) ok++; else fail++;
-    } catch { fail++; }
+      const d = await r.json().catch(() => ({}));
+      if (d.ok) {
+        ok++;
+      } else {
+        fail++;
+        errors.push(`${f.name}: ${d.error || `HTTP ${r.status}`}`);
+        console.error('[media upload]', f.name, r.status, d);
+      }
+    } catch (err) {
+      fail++;
+      errors.push(`${f.name}: ${err?.message || 'error de red'}`);
+      console.error('[media upload]', f.name, err);
+    }
   }
-  status.textContent = `✓ ${ok} subido${ok === 1 ? '' : 's'}` + (fail ? ` · ✗ ${fail} con error` : '');
+  if (fail && errors.length) {
+    // Mostrar primer error en el status + toast detallado
+    status.textContent = `✓ ${ok} · ✗ ${fail}: ${errors[0]}`;
+    toast(errors[0], 'err');
+  } else {
+    status.textContent = `✓ ${ok} subido${ok === 1 ? '' : 's'}`;
+  }
   status.style.color = fail ? 'var(--red)' : 'var(--lime)';
   document.getElementById('media-file-input').value = '';
   await loadMedia();
@@ -1744,6 +1783,57 @@ function pickMedia(url) {
     }
   }
   closeMediaPicker();
+}
+
+// Subida de archivos desde el picker (cuando el portafolio editor abre la
+// biblioteca y no hay imagen apta — sube directo y refresca el grid).
+async function mediaPickerUpload(fileList) {
+  const files = Array.from(fileList || []);
+  if (!files.length) return;
+  const status = document.getElementById('media-picker-status');
+  let ok = 0, fail = 0;
+  let lastUrl = null;
+  const errors = [];
+  for (const f of files) {
+    status.textContent = `Subiendo ${f.name}… (${ok + fail + 1}/${files.length})`;
+    status.style.color = 'var(--gt)';
+    const mime = detectImageMime(f);
+    const allowed = ['image/jpeg','image/png','image/webp','image/gif'];
+    if (!allowed.includes(mime)) {
+      fail++; errors.push(`${f.name}: tipo no permitido (${f.type || 'desconocido'})`);
+      continue;
+    }
+    if (f.size > 5 * 1024 * 1024) {
+      fail++; errors.push(`${f.name}: supera 5 MB`);
+      continue;
+    }
+    const fd = new FormData();
+    fd.append('file', f);
+    try {
+      const r = await apiFetch('/upload', { method: 'POST', body: fd });
+      const d = await r.json().catch(() => ({}));
+      if (d.ok) { ok++; lastUrl = d.url; }
+      else { fail++; errors.push(`${f.name}: ${d.error || `HTTP ${r.status}`}`); console.error('[media picker upload]', f.name, r.status, d); }
+    } catch (err) {
+      fail++; errors.push(`${f.name}: ${err?.message || 'error de red'}`);
+      console.error('[media picker upload]', f.name, err);
+    }
+  }
+  if (fail && errors.length) {
+    status.textContent = `✓ ${ok} · ✗ ${fail}: ${errors[0]}`;
+    status.style.color = 'var(--red)';
+    toast(errors[0], 'err');
+  } else {
+    status.textContent = `✓ ${ok} subido${ok === 1 ? '' : 's'}`;
+    status.style.color = 'var(--lime)';
+  }
+  document.getElementById('media-picker-file-input').value = '';
+  await loadMedia();
+  renderMediaPicker();
+  // Si subió exactamente una y no hubo errores, autoseleccionarla.
+  if (ok === 1 && !fail && lastUrl) {
+    pickMedia(lastUrl);
+  }
 }
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
