@@ -34,11 +34,16 @@ export function corsHeaders(origin, methods = DEFAULT_METHODS) {
 }
 
 // ── JSON response helper ────────────────────────────────────────────────────
+// Cache-Control: no-store evita que el browser sirva una lista de portafolio
+// (u otra respuesta admin) desde caché tras una mutación. Sin este header
+// el browser aplica heurística y puede reusar la respuesta vieja, ocultando
+// el row recién creado/actualizado en el listado.
 export function json(data, status = 200, origin = '', methods) {
   return new Response(JSON.stringify(data), {
     status,
     headers: {
       'Content-Type': 'application/json',
+      'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
       ...corsHeaders(origin, methods),
     },
   });
