@@ -189,6 +189,25 @@
     .upload-progress { display:none; height:3px; background:var(--surface-3); margin-top:6px; }
     .upload-progress-bar { height:100%; background:var(--lime); width:0; transition:width .3s; }
     .upload-status { font-size:11px; margin-top:6px; color:var(--gt); min-height:16px; }
+
+    /* ── Media library ── */
+    .media-zone {
+      border:2px dashed var(--border); padding:24px 16px;
+      text-align:center; cursor:pointer; transition:border-color .2s, background .2s;
+      font-size:12px; color:var(--gt);
+    }
+    .media-zone:hover, .media-zone.drag { border-color:var(--lime-50); background:var(--lime-03); color:var(--white); }
+    .media-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:14px; }
+    .media-card { background:var(--surface-1); border:1px solid var(--border); display:flex; flex-direction:column; }
+    .media-thumb { aspect-ratio:16/10; background:var(--surface-2); display:flex; align-items:center; justify-content:center; overflow:hidden; }
+    .media-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+    .media-meta { padding:10px 12px; border-top:1px solid var(--border); }
+    .media-name { font-size:12px; font-weight:600; color:var(--white); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .media-sub { font-size:10px; color:var(--gt); margin-top:2px; }
+    .media-actions { display:flex; gap:6px; padding:8px 12px; border-top:1px solid var(--border); }
+    .media-actions .btn { flex:1; }
+    .media-card.pickable { cursor:pointer; }
+    .media-card.pickable:hover { border-color:var(--lime-50); }
     .preview-pane { display:none; padding:24px; background:var(--surface-1); border:1px solid var(--border); min-height:200px; font-size:16px; line-height:1.8; max-height:500px; overflow-y:auto; margin-top:8px; }
     .preview-pane.visible { display:block; }
 
@@ -309,6 +328,7 @@
     <div class="topbar-actions">
       <button class="btn btn-ghost btn-sm" id="tab-posts-btn"     onclick="switchTab('posts')"     style="border-color:var(--lime-50);color:var(--lime);">Artículos</button>
       <button class="btn btn-ghost btn-sm" id="tab-port-btn"     onclick="switchTab('portfolio')">Portafolio</button>
+      <button class="btn btn-ghost btn-sm" id="tab-media-btn"   onclick="switchTab('media')">Media</button>
       <button class="btn btn-ghost btn-sm" id="tab-msgs-btn"    onclick="switchTab('messages')">Mensajes <span id="unread-badge" style="display:none;background:var(--lime);color:var(--on-lime);border-radius:99px;padding:1px 7px;font-size:10px;margin-left:4px;"></span></button>
       <a href="/blog/" target="_blank" class="btn btn-ghost btn-sm">Ver blog ↗</a>
       <button class="btn btn-ghost btn-sm" onclick="logout()">Salir</button>
@@ -402,7 +422,16 @@
               </div>
               <div style="grid-column:1/-1;">
                 <label style="font-size:11px;color:var(--gt);display:block;margin-bottom:4px;">IMAGEN (ruta o URL) *</label>
-                <input id="pf-image" type="text" required placeholder="/images/portafolio/nombre.webp" style="width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--white);padding:9px 12px;font-family:var(--fb);font-size:14px;">
+                <div style="display:flex;gap:8px;align-items:stretch;">
+                  <input id="pf-image" type="text" required placeholder="/images/portafolio/nombre.webp" oninput="pfUpdateImagePreview()" style="flex:1;min-width:0;background:var(--surface-2);border:1px solid var(--border);color:var(--white);padding:9px 12px;font-family:var(--fb);font-size:14px;">
+                  <button type="button" class="btn btn-ghost btn-sm" onclick="document.getElementById('pf-image-file').click()" style="white-space:nowrap;">↑ Subir</button>
+                  <button type="button" class="btn btn-ghost btn-sm" onclick="openMediaPicker()" style="white-space:nowrap;" title="Elegir de la biblioteca">⊞ Media</button>
+                  <input type="file" id="pf-image-file" accept="image/jpeg,image/png,image/webp,image/gif" onchange="pfUploadImage(this.files[0])" style="display:none;">
+                </div>
+                <div id="pf-image-status" style="font-size:11px;margin-top:6px;color:var(--gt);min-height:16px;"></div>
+                <div id="pf-image-preview-wrap" style="display:none;margin-top:8px;">
+                  <img id="pf-image-preview" src="" alt="" style="max-width:240px;max-height:140px;border:1px solid var(--border);background:var(--surface-2);object-fit:cover;">
+                </div>
               </div>
               <div>
                 <label style="font-size:11px;color:var(--gt);display:block;margin-bottom:4px;">CATEGORÍA ESPAÑOL *</label>
@@ -437,6 +466,43 @@
         </div>
       </div>
     </div>
+
+    <!-- ── TAB: MEDIA ── -->
+    <div id="tab-media" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+        <h2 style="font-family:var(--fd);font-size:18px;font-weight:700;">Biblioteca de medios</h2>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <input type="text" id="media-search" placeholder="Buscar por nombre…" oninput="renderMedia()" style="background:var(--surface-2);border:1px solid var(--border);color:var(--white);padding:7px 10px;font-family:var(--fb);font-size:12px;min-width:220px;">
+          <button class="btn btn-ghost btn-sm" onclick="loadMedia()">↻ Actualizar</button>
+          <button class="btn btn-primary btn-sm" onclick="document.getElementById('media-file-input').click()">+ Subir imagen</button>
+          <input type="file" id="media-file-input" accept="image/jpeg,image/png,image/webp,image/gif" multiple onchange="mediaUploadFiles(this.files)" style="display:none;">
+        </div>
+      </div>
+
+      <div class="media-zone" id="media-zone" ondragover="mediaOnDragOver(event)" ondragleave="mediaOnDragLeave(event)" ondrop="mediaOnDrop(event)" onclick="document.getElementById('media-file-input').click()">
+        <div style="font-size:18px;margin-bottom:4px;">↑</div>
+        <div>Arrastra imágenes aquí o haz clic para subir</div>
+        <div style="margin-top:4px;font-size:10px;opacity:.5;">JPG · PNG · WebP · GIF · máx 5 MB c/u</div>
+      </div>
+      <div id="media-zone-status" style="font-size:11px;margin:6px 0 14px;color:var(--gt);min-height:16px;"></div>
+
+      <div id="media-loading" class="loading"><span class="spinner"></span></div>
+      <div id="media-grid" class="media-grid" style="display:none;"></div>
+      <div id="media-empty" style="display:none;padding:48px;text-align:center;color:var(--gt);font-size:14px;">No hay archivos en el bucket. Sube tu primera imagen.</div>
+
+      <!-- ── Picker modal (reutilizable: portafolio elige imagen de la biblioteca) ── -->
+      <div id="media-picker-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10000;overflow-y:auto;padding:32px 16px;">
+        <div style="background:var(--surface-1);max-width:960px;margin:0 auto;padding:28px;border:1px solid var(--border);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+            <h3 style="font-family:var(--fd);font-size:16px;font-weight:700;">Elegir imagen de la biblioteca</h3>
+            <button onclick="closeMediaPicker()" style="background:none;border:none;color:var(--gt);cursor:pointer;font-size:20px;">×</button>
+          </div>
+          <input type="text" id="media-picker-search" placeholder="Buscar…" oninput="renderMediaPicker()" style="width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--white);padding:9px 12px;font-family:var(--fb);font-size:14px;margin-bottom:14px;">
+          <div id="media-picker-grid" class="media-grid" style="max-height:60vh;overflow-y:auto;"></div>
+          <div id="media-picker-empty" style="display:none;padding:32px;text-align:center;color:var(--gt);font-size:13px;">Sin resultados.</div>
+        </div>
+      </div>
+    </div><!-- /tab-media -->
 
     <!-- ── TAB: MENSAJES ── -->
     <div id="tab-messages" style="display:none;">
@@ -1143,11 +1209,14 @@ function switchTab(tab) {
   document.getElementById('tab-posts').style.display      = tab === 'posts'     ? '' : 'none';
   document.getElementById('tab-messages').style.display   = tab === 'messages'  ? '' : 'none';
   document.getElementById('tab-portfolio').style.display  = tab === 'portfolio' ? '' : 'none';
+  document.getElementById('tab-media').style.display      = tab === 'media'     ? '' : 'none';
   document.getElementById('tab-posts-btn').classList.toggle('tab-active',  tab === 'posts');
   document.getElementById('tab-msgs-btn').classList.toggle('tab-active',   tab === 'messages');
   document.getElementById('tab-port-btn').classList.toggle('tab-active',   tab === 'portfolio');
+  document.getElementById('tab-media-btn').classList.toggle('tab-active',  tab === 'media');
   if (tab === 'messages') loadMessages();
   if (tab === 'portfolio') loadPortfolio();
+  if (tab === 'media') loadMedia();
 }
 
 // ── Messages ──────────────────────────────────────────────────────────────────
@@ -1258,10 +1327,10 @@ async function deleteMsg(e, id) {
 }
 
 // ── Portfolio ─────────────────────────────────────────────────────────────────
-const PORT_API = 'https://cerostudio.ai/api/admin/portfolio';
-
-async function portFetch(path, opts = {}) {
-  return fetch(PORT_API + (path || ''), {
+// Auth: usa apiFetch (relative + same-origin cookie). Antes hardcodeaba
+// https://cerostudio.ai sin credentials → 401 fuera de prod.
+function portFetch(path, opts = {}) {
+  return apiFetch('/portfolio' + (path || ''), {
     ...opts,
     headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
   });
@@ -1271,13 +1340,32 @@ let portItems = [];
 let editingPortId = null;
 
 async function loadPortfolio() {
-  document.getElementById('port-loading').style.display = '';
-  document.getElementById('port-list').style.display    = 'none';
-  document.getElementById('port-empty').style.display   = 'none';
+  const loading = document.getElementById('port-loading');
+  const list    = document.getElementById('port-list');
+  const empty   = document.getElementById('port-empty');
+  loading.style.display = '';
+  list.style.display    = 'none';
+  empty.style.display   = 'none';
   try {
     const r = await portFetch('');
     if (r.status === 401) { clearToken(); showView('login'); return; }
-    portItems = await r.json();
+    if (!r.ok) {
+      const d = await r.json().catch(() => ({}));
+      portItems = [];
+      loading.style.display = 'none';
+      empty.style.display = '';
+      toast(d.error || `Error al cargar portafolio (${r.status})`, 'err');
+      return;
+    }
+    const data = await r.json();
+    if (!Array.isArray(data)) {
+      portItems = [];
+      loading.style.display = 'none';
+      empty.style.display = '';
+      toast('Respuesta inesperada del servidor', 'err');
+      return;
+    }
+    portItems = data;
     renderPortList();
   } catch { toast('Error al cargar portafolio', 'err'); }
 }
@@ -1320,6 +1408,9 @@ function openPortItem(id) {
   document.getElementById('pf-desc-en').value = item?.desc_en    || '';
   document.getElementById('pf-order').value   = item?.sort_order ?? 0;
   document.getElementById('pf-visible').checked = item ? !!item.visible : true;
+  document.getElementById('pf-image-status').textContent = '';
+  document.getElementById('pf-image-file').value = '';
+  pfUpdateImagePreview();
   document.getElementById('port-modal').style.display = '';
 }
 
@@ -1341,33 +1432,61 @@ async function savePortItem(e) {
     sort_order: parseInt(document.getElementById('pf-order').value) || 0,
     visible:    document.getElementById('pf-visible').checked ? 1 : 0,
   };
+
+  // Validar imagen: debe ser URL absoluta o ruta absoluta. Bloquea valores
+  // tipo "sergioluque.webp" que rompen el render del sitio público.
+  if (!/^(https?:\/\/|\/)/i.test(body.image)) {
+    toast('La imagen debe ser una URL (https://…) o una ruta que empiece con /', 'err');
+    document.getElementById('pf-image').focus();
+    return;
+  }
+
+  const btn = document.getElementById('pf-save-btn');
+  const originalLabel = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = editingPortId ? 'Actualizando…' : 'Guardando…';
+
   try {
     const r = editingPortId
       ? await portFetch(`?id=${editingPortId}`, { method: 'PUT',  body: JSON.stringify(body) })
       : await portFetch('',                      { method: 'POST', body: JSON.stringify(body) });
     const d = await r.json();
     if (d.success || d.id) {
-      toast(editingPortId ? 'Proyecto actualizado' : 'Proyecto creado', 'ok');
+      const action = editingPortId ? 'actualizado' : 'creado';
+      const pubInfo = (d.published_count != null) ? ` · publicado (${d.published_count})` : '';
+      toast(`Proyecto ${action}${pubInfo}`, 'ok');
       closePortModal();
       await loadPortfolio();
     } else {
       toast(d.error || 'Error al guardar', 'err');
     }
   } catch { toast('Error de conexión', 'err'); }
+  finally {
+    btn.disabled = false;
+    btn.textContent = originalLabel;
+  }
 }
 
 async function togglePortVisible(id) {
+  const item = portItems.find(p => p.id === id);
+  const prevVisible = item?.visible;
+  // Optimistic UI
+  if (item) { item.visible = item.visible ? 0 : 1; renderPortList(); }
   try {
     const r = await portFetch(`?id=${id}`, { method: 'PATCH' });
     const d = await r.json();
     if (d.success) {
-      const item = portItems.find(p => p.id === id);
-      if (item) item.visible = d.visible;
+      if (item && typeof d.visible === 'number') item.visible = d.visible;
       renderPortList();
     } else {
-      toast(d.error || 'Error', 'err');
+      // Rollback
+      if (item) { item.visible = prevVisible; renderPortList(); }
+      toast(d.error || 'Error al cambiar visibilidad', 'err');
     }
-  } catch { toast('Error de conexión', 'err'); }
+  } catch {
+    if (item) { item.visible = prevVisible; renderPortList(); }
+    toast('Error de conexión', 'err');
+  }
 }
 
 async function deletePortItem(id) {
@@ -1377,7 +1496,8 @@ async function deletePortItem(id) {
     const r = await portFetch(`?id=${id}`, { method: 'DELETE' });
     const d = await r.json();
     if (d.success) {
-      toast('Proyecto eliminado', 'ok');
+      const pubInfo = (d.published_count != null) ? ` · publicado (${d.published_count})` : '';
+      toast(`Proyecto eliminado${pubInfo}`, 'ok');
       await loadPortfolio();
     } else {
       toast(d.error || 'Error al eliminar', 'err');
@@ -1399,6 +1519,228 @@ async function rebuildPortfolio() {
     }
   } catch { toast('Error de conexión', 'err'); }
   finally { btn.disabled = false; btn.textContent = '↻ Publicar cambios'; }
+}
+
+// ── Portfolio image upload (modal) ────────────────────────────────────────────
+function pfUpdateImagePreview() {
+  const url  = document.getElementById('pf-image').value.trim();
+  const wrap = document.getElementById('pf-image-preview-wrap');
+  const img  = document.getElementById('pf-image-preview');
+  if (!url) { wrap.style.display = 'none'; img.removeAttribute('src'); return; }
+  img.src = url;
+  wrap.style.display = '';
+}
+
+async function pfUploadImage(file) {
+  if (!file) return;
+  const status = document.getElementById('pf-image-status');
+  const allowed = ['image/jpeg','image/png','image/webp','image/gif'];
+  if (!allowed.includes(file.type)) {
+    status.textContent = '✗ Tipo no permitido. Usa JPG, PNG, WebP o GIF.';
+    status.style.color = 'var(--red)';
+    return;
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    status.textContent = '✗ El archivo supera 5 MB.';
+    status.style.color = 'var(--red)';
+    return;
+  }
+  status.textContent = 'Subiendo…';
+  status.style.color = 'var(--gt)';
+
+  const fd = new FormData();
+  fd.append('file', file);
+  try {
+    const r = await apiFetch('/upload', { method: 'POST', body: fd });
+    const d = await r.json();
+    if (d.ok) {
+      document.getElementById('pf-image').value = d.url;
+      pfUpdateImagePreview();
+      status.textContent = '✓ Imagen subida';
+      status.style.color = 'var(--lime)';
+    } else {
+      status.textContent = '✗ ' + (d.error || 'Error al subir');
+      status.style.color = 'var(--red)';
+    }
+  } catch {
+    status.textContent = '✗ Error de conexión';
+    status.style.color = 'var(--red)';
+  }
+  document.getElementById('pf-image-file').value = '';
+}
+
+// ── Media library ─────────────────────────────────────────────────────────────
+let mediaItems = [];
+
+async function loadMedia() {
+  const loading = document.getElementById('media-loading');
+  const grid    = document.getElementById('media-grid');
+  const empty   = document.getElementById('media-empty');
+  loading.style.display = '';
+  grid.style.display    = 'none';
+  empty.style.display   = 'none';
+  try {
+    const r = await apiFetch('/media');
+    if (!r.ok) {
+      if (r.status === 401) { clearToken(); showView('login'); return; }
+      const d = await r.json().catch(() => ({}));
+      toast(d.error || 'Error al cargar media', 'err');
+      loading.style.display = 'none';
+      empty.style.display = '';
+      return;
+    }
+    const d = await r.json();
+    mediaItems = (d.items || []);
+    renderMedia();
+  } catch { toast('Error al cargar media', 'err'); }
+}
+
+function fmtBytes(n) {
+  if (n == null) return '—';
+  if (n < 1024) return n + ' B';
+  if (n < 1024 * 1024) return (n / 1024).toFixed(1) + ' KB';
+  return (n / 1024 / 1024).toFixed(2) + ' MB';
+}
+
+function renderMedia() {
+  const loading = document.getElementById('media-loading');
+  const grid    = document.getElementById('media-grid');
+  const empty   = document.getElementById('media-empty');
+  loading.style.display = 'none';
+  if (!mediaItems.length) {
+    empty.style.display = '';
+    grid.style.display  = 'none';
+    return;
+  }
+  const q = (document.getElementById('media-search')?.value || '').toLowerCase().trim();
+  const filtered = q ? mediaItems.filter(m => m.key.toLowerCase().includes(q)) : mediaItems;
+  if (!filtered.length) {
+    empty.style.display = '';
+    grid.style.display  = 'none';
+    return;
+  }
+  empty.style.display = 'none';
+  grid.style.display  = '';
+  grid.innerHTML = filtered.map(m => `
+    <div class="media-card">
+      <div class="media-thumb"><img src="${esc(m.url)}" alt="${esc(m.key)}" loading="lazy"></div>
+      <div class="media-meta">
+        <div class="media-name" title="${esc(m.key)}">${esc(m.key.split('/').pop())}</div>
+        <div class="media-sub">${fmtBytes(m.size)} · ${fmtDate(m.uploaded)}</div>
+      </div>
+      <div class="media-actions">
+        <button class="btn btn-ghost btn-sm" onclick="mediaCopyUrl('${esc(m.url)}')">Copiar URL</button>
+        <button class="btn btn-danger btn-sm" onclick="mediaDelete('${esc(m.url)}')">Eliminar</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function mediaCopyUrl(url) {
+  try {
+    await navigator.clipboard.writeText(url);
+    toast('URL copiada', 'ok');
+  } catch { toast('No se pudo copiar', 'err'); }
+}
+
+async function mediaDelete(url) {
+  if (!confirm('¿Eliminar este archivo? Esta acción es irreversible.')) return;
+  try {
+    const r = await apiFetch('/upload?url=' + encodeURIComponent(url), { method: 'DELETE' });
+    const d = await r.json();
+    if (d.ok) {
+      toast('Archivo eliminado', 'ok');
+      mediaItems = mediaItems.filter(m => m.url !== url);
+      renderMedia();
+    } else {
+      toast(d.error || 'Error al eliminar', 'err');
+    }
+  } catch { toast('Error de conexión', 'err'); }
+}
+
+function mediaOnDragOver(e)  { e.preventDefault(); document.getElementById('media-zone').classList.add('drag'); }
+function mediaOnDragLeave(e) { document.getElementById('media-zone').classList.remove('drag'); }
+function mediaOnDrop(e) {
+  e.preventDefault();
+  document.getElementById('media-zone').classList.remove('drag');
+  mediaUploadFiles(e.dataTransfer.files);
+}
+
+async function mediaUploadFiles(fileList) {
+  const files = Array.from(fileList || []);
+  if (!files.length) return;
+  const status = document.getElementById('media-zone-status');
+  let ok = 0, fail = 0;
+  for (const f of files) {
+    status.textContent = `Subiendo ${f.name}… (${ok + fail + 1}/${files.length})`;
+    status.style.color = 'var(--gt)';
+    const allowed = ['image/jpeg','image/png','image/webp','image/gif'];
+    if (!allowed.includes(f.type) || f.size > 5 * 1024 * 1024) { fail++; continue; }
+    const fd = new FormData();
+    fd.append('file', f);
+    try {
+      const r = await apiFetch('/upload', { method: 'POST', body: fd });
+      const d = await r.json();
+      if (d.ok) ok++; else fail++;
+    } catch { fail++; }
+  }
+  status.textContent = `✓ ${ok} subido${ok === 1 ? '' : 's'}` + (fail ? ` · ✗ ${fail} con error` : '');
+  status.style.color = fail ? 'var(--red)' : 'var(--lime)';
+  document.getElementById('media-file-input').value = '';
+  await loadMedia();
+}
+
+// ── Media picker (called from portfolio modal) ────────────────────────────────
+let mediaPickerOpen = false;
+
+async function openMediaPicker() {
+  mediaPickerOpen = true;
+  document.getElementById('media-picker-modal').style.display = '';
+  document.getElementById('media-picker-search').value = '';
+  document.getElementById('media-picker-grid').innerHTML = '<div style="padding:32px;text-align:center;color:var(--gt);font-size:13px;">Cargando…</div>';
+  if (!mediaItems.length) await loadMedia();
+  renderMediaPicker();
+}
+
+function closeMediaPicker() {
+  mediaPickerOpen = false;
+  document.getElementById('media-picker-modal').style.display = 'none';
+}
+
+function renderMediaPicker() {
+  const grid  = document.getElementById('media-picker-grid');
+  const empty = document.getElementById('media-picker-empty');
+  const q = (document.getElementById('media-picker-search')?.value || '').toLowerCase().trim();
+  const filtered = q ? mediaItems.filter(m => m.key.toLowerCase().includes(q)) : mediaItems;
+  if (!filtered.length) {
+    empty.style.display = '';
+    grid.innerHTML = '';
+    return;
+  }
+  empty.style.display = 'none';
+  grid.innerHTML = filtered.map(m => `
+    <div class="media-card pickable" onclick="pickMedia('${esc(m.url)}')">
+      <div class="media-thumb"><img src="${esc(m.url)}" alt="${esc(m.key)}" loading="lazy"></div>
+      <div class="media-meta">
+        <div class="media-name" title="${esc(m.key)}">${esc(m.key.split('/').pop())}</div>
+        <div class="media-sub">${fmtBytes(m.size)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function pickMedia(url) {
+  const target = document.getElementById('pf-image');
+  if (target) {
+    target.value = url;
+    pfUpdateImagePreview();
+    const status = document.getElementById('pf-image-status');
+    if (status) {
+      status.textContent = '✓ Imagen seleccionada de la biblioteca';
+      status.style.color = 'var(--lime)';
+    }
+  }
+  closeMediaPicker();
 }
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
