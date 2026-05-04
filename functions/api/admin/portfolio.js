@@ -29,17 +29,19 @@ function esc(str) {
 function buildPortfolioHTML(items) {
   return items.map((item, i) => {
     const n = i + 1;
-    return `<a href="${esc(item.url)}" target="_blank" rel="noopener" class="port-card ht">
-  <div class="port-card-img-wrap">
-    <img src="${esc(item.image)}" alt="${esc(item.name)}" class="port-card-img" loading="lazy" width="640" height="400">
-    <div class="port-card-badge"><span data-i18n="port-badge">Ver Proyecto →</span></div>
+    const showLink = item.show_link == null ? 1 : item.show_link;
+    const inner = `  <div class="port-card-img-wrap">
+    <img src="${esc(item.image)}" alt="${esc(item.name)}" class="port-card-img" loading="lazy" width="640" height="400">${showLink ? `
+    <div class="port-card-badge"><span data-i18n="port-badge">Ver Proyecto →</span></div>` : ''}
   </div>
   <div class="port-card-info">
     <span class="port-card-cat" id="port-c${n}">${esc(item.cat_es)}</span>
     <div class="port-card-name">${esc(item.name)}</div>
     <p class="port-card-desc" id="port-d${n}">${esc(item.desc_es)}</p>
-  </div>
-</a>`;
+  </div>`;
+    return showLink
+      ? `<a href="${esc(item.url)}" target="_blank" rel="noopener" class="port-card ht">\n${inner}\n</a>`
+      : `<div class="port-card port-card--no-link">\n${inner}\n</div>`;
   }).join('\n');
 }
 
@@ -91,14 +93,17 @@ async function tryRebuild(env) {
 
 // Validación común de payload de proyecto
 function validateProject(body) {
-  const { name, url, image, cat_es, cat_en, desc_es, desc_en } = body || {};
-  if (!name || !url || !image || !cat_es || !cat_en || !desc_es || !desc_en) {
+  const { name, url, image, cat_es, cat_en, desc_es, desc_en, show_link } = body || {};
+  // URL es opcional cuando show_link=0 (la card no se renderiza como enlace).
+  const linkOn = show_link == null ? 1 : Number(show_link);
+  const requireUrl = linkOn === 1;
+  if (!name || !image || !cat_es || !cat_en || !desc_es || !desc_en || (requireUrl && !url)) {
     return 'Faltan campos requeridos';
   }
   if (!/^(https?:\/\/|\/)/i.test(image)) {
     return 'La imagen debe ser una URL (https://…) o una ruta que empiece con /';
   }
-  if (!/^https?:\/\//i.test(url)) {
+  if (url && !/^https?:\/\//i.test(url)) {
     return 'La URL del proyecto debe empezar con http:// o https://';
   }
   return null;
@@ -154,10 +159,10 @@ export async function onRequestPost(context) {
   if (validationError) return json({ error: validationError }, 400, origin);
 
   try {
-    const { name, url, image, cat_es, cat_en, desc_es, desc_en, sort_order, visible } = body;
+    const { name, url, image, cat_es, cat_en, desc_es, desc_en, sort_order, visible, show_link } = body;
     const r = await env.DB.prepare(
-      'INSERT INTO portfolio_items (name, url, image, cat_es, cat_en, desc_es, desc_en, sort_order, visible) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
-    ).bind(name, url, image, cat_es, cat_en, desc_es, desc_en, sort_order ?? 0, visible ?? 1).run();
+      'INSERT INTO portfolio_items (name, url, image, cat_es, cat_en, desc_es, desc_en, sort_order, visible, show_link) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    ).bind(name, url || '', image, cat_es, cat_en, desc_es, desc_en, sort_order ?? 0, visible ?? 1, show_link ?? 1).run();
     const rebuildInfo = await tryRebuild(env);
     return json({ success: true, id: r.meta.last_row_id, ...rebuildInfo }, 201, origin);
   } catch (e) {
@@ -182,10 +187,10 @@ export async function onRequestPut(context) {
   if (validationError) return json({ error: validationError }, 400, origin);
 
   try {
-    const { name, url, image, cat_es, cat_en, desc_es, desc_en, sort_order, visible } = body;
+    const { name, url, image, cat_es, cat_en, desc_es, desc_en, sort_order, visible, show_link } = body;
     const res = await env.DB.prepare(
-      'UPDATE portfolio_items SET name=?, url=?, image=?, cat_es=?, cat_en=?, desc_es=?, desc_en=?, sort_order=?, visible=? WHERE id=?'
-    ).bind(name, url, image, cat_es, cat_en, desc_es, desc_en, sort_order ?? 0, visible ?? 1, id).run();
+      'UPDATE portfolio_items SET name=?, url=?, image=?, cat_es=?, cat_en=?, desc_es=?, desc_en=?, sort_order=?, visible=?, show_link=? WHERE id=?'
+    ).bind(name, url || '', image, cat_es, cat_en, desc_es, desc_en, sort_order ?? 0, visible ?? 1, show_link ?? 1, id).run();
     if (!res.meta.changes) return json({ error: 'No encontrado' }, 404, origin);
     const rebuildInfo = await tryRebuild(env);
     return json({ success: true, ...rebuildInfo }, 200, origin);
