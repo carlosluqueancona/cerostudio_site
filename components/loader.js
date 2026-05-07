@@ -74,8 +74,17 @@
     var navEl = document.getElementById('navbar-placeholder');
     var ftEl  = document.getElementById('footer-placeholder');
 
-    inject(navEl, NAVBAR_HTML);
-    inject(ftEl,  FOOTER_HTML);
+    // Skip injection if the server-side middleware already inlined the
+    // partials (visible as non-empty content inside the placeholder, or as
+    // an existing <nav id="navbar"> / <footer> in the DOM). This prevents
+    // double navbars/footers when SSR + client both run.
+    var navAlreadyRendered = document.getElementById('navbar') ||
+      (navEl && navEl.children.length > 0);
+    var footerAlreadyRendered = document.querySelector('footer .footer-inner') ||
+      (ftEl && ftEl.children.length > 0);
+
+    if (!navAlreadyRendered) inject(navEl, NAVBAR_HTML);
+    if (!footerAlreadyRendered) inject(ftEl, FOOTER_HTML);
 
     /* On the homepage, convert /# links to # so navigation stays in-page */
     var isHome = window.location.pathname === '/' || window.location.pathname === '/index.html';

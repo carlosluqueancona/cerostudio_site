@@ -122,6 +122,23 @@ export async function onRequest(context) {
   shellUrl.pathname = '/blog/index.html';
   const assetResponse = await context.env.ASSETS.fetch(shellUrl.toString());
 
+  // Fetch navbar + footer partials in parallel so we can inline them server-side.
+  // Without this, Googlebot sees an orphan page (no nav, no footer, no internal
+  // links beyond the article itself) and flags it as Soft 404. Inlining gives
+  // crawlers full site context + ~30 internal links per blog post.
+  const navbarUrl = new URL(context.request.url);
+  navbarUrl.pathname = '/components/navbar.html';
+  const footerUrl = new URL(context.request.url);
+  footerUrl.pathname = '/components/footer.html';
+  const [navbarHtml, footerHtml] = await Promise.all([
+    context.env.ASSETS.fetch(navbarUrl.toString())
+      .then(r => (r.ok ? r.text() : ''))
+      .catch(() => ''),
+    context.env.ASSETS.fetch(footerUrl.toString())
+      .then(r => (r.ok ? r.text() : ''))
+      .catch(() => ''),
+  ]);
+
   // Post not found AND D1 is reachable → return 404 status
   // (body still has the SPA shell so users see a graceful message)
   if (dbAvailable && !post) {
@@ -224,6 +241,20 @@ export async function onRequest(context) {
       element(el) {
         el.setAttribute('data-ssr-slug', post.slug);
         el.setInnerContent(buildArticleHtml(post), { html: true });
+      },
+    })
+    // ── Inline navbar + footer for crawlers ────────────────────────────────
+    // Replaces empty placeholders with actual <nav> and <footer> markup so
+    // Googlebot sees a complete page (header + article + footer with internal
+    // links) instead of an orphan article. Fixes Soft 404 on blog posts.
+    .on('#navbar-placeholder', {
+      element(el) {
+        if (navbarHtml) el.setInnerContent(navbarHtml, { html: true });
+      },
+    })
+    .on('#footer-placeholder', {
+      element(el) {
+        if (footerHtml) el.setInnerContent(footerHtml, { html: true });
       },
     });
 
