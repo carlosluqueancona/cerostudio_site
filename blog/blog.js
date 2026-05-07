@@ -14,7 +14,7 @@ let isLoadingMore = false;
 async function initBlog() {
   const root = document.getElementById('blog-root');
 
-  // ── SSR fast path ────────────────────────────────────────────────────────
+  // ── SSR fast path: individual post ───────────────────────────────────────
   // If the server already rendered this post (data-ssr-slug attribute is set
   // by functions/blog/[slug].js), skip the initial fetch+render to avoid the
   // "Cargando artículo..." flash and double work. We still warm up the post
@@ -23,6 +23,25 @@ async function initBlog() {
     fetch(`${BLOG_DATA_URL}?page=1&per=${INITIAL_LOAD}`)
       .then(r => r.ok ? r.json() : [])
       .then(arr => { window._blogPosts = Array.isArray(arr) ? arr : []; })
+      .catch(() => { window._blogPosts = []; });
+    window.onpopstate = handleRoute;
+    return;
+  }
+
+  // ── SSR fast path: blog list ─────────────────────────────────────────────
+  // If functions/blog/index.js already rendered the post grid, skip the
+  // initial fetch+render. Warm up the cache in the background so client-side
+  // pagination ("Ver más artículos") and SPA navigation back to the list
+  // still work without a roundtrip.
+  if (root && root.getAttribute('data-ssr-list') === 'true') {
+    fetch(`${BLOG_DATA_URL}?page=1&per=${INITIAL_LOAD}`)
+      .then(r => r.ok ? r.json() : [])
+      .then(arr => {
+        const posts = Array.isArray(arr) ? arr : [];
+        window._blogPosts = posts;
+        hasMore = posts.length === INITIAL_LOAD;
+        currentPage = 1;
+      })
       .catch(() => { window._blogPosts = []; });
     window.onpopstate = handleRoute;
     return;
