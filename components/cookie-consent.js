@@ -75,11 +75,11 @@
     ].join(';');
     bar.innerHTML =
       '<p id="cs-bar-msg" style="margin:0;font-size:13px;color:#bbb;max-width:680px;line-height:1.5;">' +
-        s.msg + ' <a id="cs-bar-link" href="/privacidad/" style="color:#ceff33;text-decoration:underline;">' + s.link + '</a>' +
+        s.msg + ' <a id="cs-bar-link" href="/privacidad/" style="color:#b2f700;text-decoration:underline;">' + s.link + '</a>' +
       '</p>' +
       '<div style="display:flex;gap:10px;flex-shrink:0;">' +
         '<button id="cs-bar-reject" onclick="window._csReject()" style="background:transparent;border:1px solid #444;color:#ccc;padding:8px 18px;font-size:13px;cursor:pointer;font-family:inherit;white-space:nowrap;">' + s.reject + '</button>' +
-        '<button id="cs-bar-accept" onclick="window._csAccept()" style="background:#ceff33;border:none;color:#000;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;">' + s.accept + '</button>' +
+        '<button id="cs-bar-accept" onclick="window._csAccept()" style="background:#b2f700;border:none;color:#000;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;">' + s.accept + '</button>' +
       '</div>';
     document.body.appendChild(bar);
   }
