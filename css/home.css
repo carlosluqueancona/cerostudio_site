@@ -1961,7 +1961,15 @@
       }
 
       .stats-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      }
+
+      .stat-item {
+        padding: 22px 18px;
+      }
+
+      .stat-num {
+        font-size: 40px;
       }
 
       .port-grid {
