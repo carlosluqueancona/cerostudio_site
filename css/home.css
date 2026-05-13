@@ -539,10 +539,6 @@
       border-right: 1px solid rgba(0, 0, 0, .18);
     }
 
-    .ticker-item:last-child {
-      border-right: none;
-    }
-
     .ticker-item img {
       height: 60px;
       width: auto;
