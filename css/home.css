@@ -536,7 +536,18 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      border-right: 1px solid rgba(0, 0, 0, .18);
+      position: relative;
+    }
+
+    .ticker-item::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 56px;
+      width: 1px;
+      background: rgba(0, 0, 0, .18);
     }
 
     .ticker-item img {
@@ -561,6 +572,10 @@
         padding: 0 28px;
       }
 
+      .ticker-item::after {
+        height: 40px;
+      }
+
       .ticker-item img {
         height: 44px;
         max-width: 160px;
@@ -574,6 +589,10 @@
     @media (max-width: 480px) {
       .ticker-item {
         padding: 0 20px;
+      }
+
+      .ticker-item::after {
+        height: 32px;
       }
 
       .ticker-item img {
