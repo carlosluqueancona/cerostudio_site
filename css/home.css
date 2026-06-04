@@ -2091,15 +2091,39 @@
       background: var(--lime);
     }
 
-    /* ── MOBILE/TOUCH fallback: misma animación que :hover para cards del
-       home, disparada por IntersectionObserver via /components/reveal-cards.js
-       (añade clase .in-view a la card al entrar al viewport, one-shot). ── */
+    /* ── MOBILE/TOUCH fallback: animación visible vía @keyframes (no via
+       transform-on-class porque transition .35s suele disparar antes de que
+       el usuario lo perciba al scroll). Animation explícita .8s garantiza
+       animación visible incluso al cargar above-the-fold. ── */
+    @keyframes ceroLineSlide {
+      from { transform: scaleX(0); }
+      to   { transform: scaleX(1); }
+    }
     @media (hover: none) {
-      .srv-card.in-view { background: var(--surface-low); }
-      .srv-card.in-view::after { transform: scaleX(1); }
-      .proc-step.in-view { background: var(--g2); }
-      .proc-step.in-view::before { transform: scaleX(1); }
-      .proc-step.in-view .proc-title { color: var(--lime); }
-      .plan-card.in-view:not(.plan-featured) { background: var(--surface-low); }
-      .plan-card.plan-featured.in-view { background: var(--surface-high); }
+      .srv-card.in-view {
+        background: var(--surface-low);
+        transition: background .6s ease;
+      }
+      .srv-card.in-view::after {
+        animation: ceroLineSlide .8s cubic-bezier(.16,1,.3,1) forwards;
+      }
+      .proc-step.in-view {
+        background: var(--g2);
+        transition: background .6s ease;
+      }
+      .proc-step.in-view::before {
+        animation: ceroLineSlide .8s cubic-bezier(.16,1,.3,1) forwards;
+      }
+      .proc-step.in-view .proc-title {
+        color: var(--lime);
+        transition: color .6s ease;
+      }
+      .plan-card.in-view:not(.plan-featured) {
+        background: var(--surface-low);
+        transition: background .6s ease;
+      }
+      .plan-card.plan-featured.in-view {
+        background: var(--surface-high);
+        transition: background .6s ease;
+      }
     }
