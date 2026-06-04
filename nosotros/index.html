@@ -122,13 +122,8 @@
     .ab-cta{text-align:center;padding:0 24px 140px}
     .ab-cta-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(32px,4.6vw,56px);font-weight:600;letter-spacing:-.025em;line-height:1.1;margin:0 auto 20px;max-width:22ch}
     .ab-cta-sub{font-family:Inter,sans-serif;font-size:16px;font-weight:300;color:rgba(255,255,255,.7);margin:0 auto 36px;max-width:52ch}
-    .ab-cta-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-    .ab-btn{display:inline-block;padding:14px 28px;border-radius:999px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;letter-spacing:.05em;text-decoration:none;transition:transform .2s,background .2s,color .2s}
-    .ab-btn:hover{transform:translateY(-2px)}
-    .ab-btn-primary{background:var(--lime,#b2f700);color:#131313}
-    .ab-btn-primary:hover{background:#fff}
-    .ab-btn-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.2)}
-    .ab-btn-ghost:hover{border-color:var(--lime,#b2f700);color:var(--lime,#b2f700)}
+    .ab-cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+    /* Buttons usan .btn-primary y .btn-ghost del home.css (homologados con CTAs del home) */
 
     @media (max-width:900px){
       .ab-hero{grid-template-columns:1fr;gap:48px;margin-bottom:80px}
@@ -144,7 +139,7 @@
     @media (max-width:520px){
       .ab-wrap{padding-top:100px}
       .ab-cta{padding-bottom:80px}
-      .ab-cta-actions .ab-btn{width:100%;text-align:center}
+      .ab-cta-actions .btn-primary,.ab-cta-actions .btn-ghost{width:100%;text-align:center}
     }
   </style>
 
@@ -245,8 +240,8 @@
             <h1 class="ab-h1">Construyo sitios web que <em>venden.</em> Llevo haciéndolo desde antes que Google existiera.</h1>
             <p class="ab-lead">Soy <strong style="color:#fff;font-weight:500">Carlos Luque Ancona</strong> — pionero de radio por internet en México desde 1994, fundador de Cero Studio, con 25+ años convirtiendo visitas en clientes para 150+ negocios en México y LATAM.</p>
             <div class="ab-cta-row">
-              <a href="/#contacto" class="ab-btn ab-btn-primary">Agendar consulta gratis</a>
-              <a href="#proceso" class="ab-btn ab-btn-ghost">Ver mi proceso</a>
+              <a href="/#contacto" class="btn-primary ht">Agendar consulta gratis</a>
+              <a href="#proceso" class="btn-ghost ht">Ver mi proceso</a>
             </div>
           </div>
           <figure class="ab-portrait">
@@ -339,8 +334,8 @@
         <h2 class="ab-cta-h">¿Te suena? Hablemos sin compromiso.</h2>
         <p class="ab-cta-sub">Primera consulta gratis. Respondo en menos de 24 horas. Sin promesas vacías, sin compromiso de contratar.</p>
         <div class="ab-cta-actions">
-          <a href="/#contacto" class="ab-btn ab-btn-primary">Solicitar Cotización</a>
-          <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="ab-btn ab-btn-ghost">Agendar Llamada</a>
+          <a href="/#contacto" class="btn-primary ht">Solicitar Cotización</a>
+          <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-ghost ht">Agendar Llamada</a>
         </div>
       </section>
     </main>

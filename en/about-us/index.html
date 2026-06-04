@@ -116,13 +116,8 @@
     .ab-cta{text-align:center;padding:0 24px 140px}
     .ab-cta-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(32px,4.6vw,56px);font-weight:600;letter-spacing:-.025em;line-height:1.1;margin:0 auto 20px;max-width:22ch}
     .ab-cta-sub{font-family:Inter,sans-serif;font-size:16px;font-weight:300;color:rgba(255,255,255,.7);margin:0 auto 36px;max-width:52ch}
-    .ab-cta-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-    .ab-btn{display:inline-block;padding:14px 28px;border-radius:999px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;letter-spacing:.05em;text-decoration:none;transition:transform .2s,background .2s,color .2s}
-    .ab-btn:hover{transform:translateY(-2px)}
-    .ab-btn-primary{background:var(--lime,#b2f700);color:#131313}
-    .ab-btn-primary:hover{background:#fff}
-    .ab-btn-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.2)}
-    .ab-btn-ghost:hover{border-color:var(--lime,#b2f700);color:var(--lime,#b2f700)}
+    .ab-cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+    /* Buttons usan .btn-primary y .btn-ghost del home.css (homologados con CTAs del home) */
 
     /* Footer EN inline */
     .en-footer{background:var(--surface-lowest,#0e0e0e);padding:56px 48px;margin-top:0;border-top:1px solid rgba(255,255,255,.06)}
@@ -146,7 +141,7 @@
     @media (max-width:520px){
       .ab-wrap{padding-top:100px}
       .ab-cta{padding-bottom:80px}
-      .ab-cta-actions .ab-btn{width:100%;text-align:center}
+      .ab-cta-actions .btn-primary,.ab-cta-actions .btn-ghost{width:100%;text-align:center}
       .en-footer{padding:40px 24px}
       .en-footer-inner{flex-direction:column;align-items:flex-start}
     }
@@ -258,8 +253,8 @@
             <h1 class="ab-h1">I build websites that <em>sell.</em> I've been doing it since before Google existed.</h1>
             <p class="ab-lead">I'm <strong style="color:#fff;font-weight:500">Carlos Luque Ancona</strong> — internet radio pioneer in Mexico since 1994, founder of Cero Studio, with 25+ years converting visits into customers for 150+ businesses across Mexico and Latin America.</p>
             <div class="ab-cta-row">
-              <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="ab-btn ab-btn-primary">Schedule a free call</a>
-              <a href="#process" class="ab-btn ab-btn-ghost">See my process</a>
+              <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Schedule a free call</a>
+              <a href="#process" class="btn-ghost ht">See my process</a>
             </div>
           </div>
           <figure class="ab-portrait">
@@ -352,8 +347,8 @@
         <h2 class="ab-cta-h">Sound right? Let's talk, no commitment.</h2>
         <p class="ab-cta-sub">First consultation free. I respond in under 24 hours. No empty promises, no obligation to hire.</p>
         <div class="ab-cta-actions">
-          <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="ab-btn ab-btn-primary">Schedule a Call</a>
-          <a href="mailto:hola@cerostudio.ai" class="ab-btn ab-btn-ghost">Email Me</a>
+          <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Schedule a Call</a>
+          <a href="mailto:hola@cerostudio.ai" class="btn-ghost ht">Email Me</a>
         </div>
       </section>
     </main>
