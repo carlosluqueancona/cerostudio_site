@@ -122,16 +122,22 @@
     .ab-step-t{font-family:'Space Grotesk',sans-serif;font-size:clamp(22px,2.2vw,28px);font-weight:800;text-transform:uppercase;letter-spacing:.005em;color:#fff;margin:0 0 18px;line-height:1.15;transition:color .3s ease}
     .ab-step-d{font-family:Inter,sans-serif;font-size:14px;line-height:1.8;color:rgba(255,255,255,.65);font-weight:300;margin:0}
 
-    .ab-stakes-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;max-width:1000px}
-    .ab-stakes-card{padding:32px 0;border-top:2px solid;position:relative}
-    .ab-stakes-card.stakes{border-top-color:rgba(255,100,100,.5)}
-    .ab-stakes-card.success{border-top-color:var(--lime,#b2f700)}
-    .ab-stakes-label{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.28em;text-transform:uppercase;margin:0 0 16px}
-    .stakes .ab-stakes-label{color:rgba(255,100,100,.8)}
-    .success .ab-stakes-label{color:var(--lime,#b2f700)}
-    .ab-stakes-h{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:600;color:#fff;margin:0 0 14px;letter-spacing:-.01em;line-height:1.25}
-    .ab-stakes-p{font-family:Inter,sans-serif;font-size:15px;line-height:1.7;color:rgba(255,255,255,.75);font-weight:300;margin:0}
-    .ab-stakes-p strong{font-weight:500;color:#fff}
+    /* STAKES + SUCCESS — bento dual-card */
+    .ab-stakes-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+    .ab-stakes-card{background:var(--surface-lowest,#0e0e0e);padding:48px 40px 56px;position:relative;overflow:hidden;transition:background .3s ease}
+    .ab-stakes-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;transform:scaleX(0);transform-origin:left;transition:transform .45s ease}
+    .ab-stakes-card.stakes::before{background:#ff6464}
+    .ab-stakes-card.success::before{background:var(--lime,#b2f700)}
+    .ab-stakes-card:hover{background:var(--surface-low,#1b1b1c)}
+    .ab-stakes-card:hover::before{transform:scaleX(1)}
+    .ab-stakes-label{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.28em;text-transform:uppercase;font-weight:700;margin:0 0 32px;display:inline-flex;align-items:center;gap:10px;padding:7px 14px}
+    .ab-stakes-label::before{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
+    .stakes .ab-stakes-label{color:#ff6464;background:rgba(255,100,100,.08);border:1px solid rgba(255,100,100,.2)}
+    .success .ab-stakes-label{color:var(--lime,#b2f700);background:rgba(178,247,0,.08);border:1px solid rgba(178,247,0,.25)}
+    .ab-stakes-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(24px,2.6vw,32px);font-weight:800;text-transform:uppercase;color:#fff;margin:0 0 22px;letter-spacing:.005em;line-height:1.15}
+    .ab-stakes-p{font-family:Inter,sans-serif;font-size:15px;line-height:1.8;color:rgba(255,255,255,.65);font-weight:300;margin:0}
+    .stakes .ab-stakes-p strong{color:#ff8080;font-weight:500}
+    .success .ab-stakes-p strong{color:var(--lime,#b2f700);font-weight:500}
 
     .ab-cta{text-align:center;padding:64px 24px 120px}  /* explicit override del home.css */
     .ab-cta-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(32px,4.6vw,56px);font-weight:600;letter-spacing:-.025em;line-height:1.1;margin:0 auto 20px;max-width:22ch}
