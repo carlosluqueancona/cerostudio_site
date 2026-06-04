@@ -325,3 +325,406 @@
 .breadcrumb .sep { margin: 0 8px; color: rgba(255,255,255,.3); }
 .srv-section { padding: 80px 24px; max-width: 1100px; margin: 0 auto; }
 .srv-section-title { font-family: var(--fd, 'Space Grotesk', system-ui); font-size: clamp(28px, 4vw, 48px); font-weight: 700; color: #fff; margin: 0 0 40px; line-height: 1.15; letter-spacing: -.01em; }
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * BRUTALIST UPGRADE — Cero Studio kinetic brutalism para /servicios/*.
+ * Mismo design language pulido en /nosotros/ y /en/about-us/ junio 2026:
+ *   sharp corners, bento 2px gaps, surface-lowest bg con hover lift,
+ *   lime accent slide al hover, UPPERCASE Space Grotesk headlines,
+ *   BIG NUMBER stats pull-out. Las reglas van al final del file para
+ *   override de los .lp-* legacy via cascade.
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* ── Hero typography más BOLD ─────────────────────────────────────────── */
+.lp-h1 {
+  font-size: clamp(40px, 6vw, 84px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -.035em;
+}
+.lp-lead {
+  font-size: clamp(16px, 1.4vw, 19px);
+  line-height: 1.6;
+  font-weight: 300;
+  color: rgba(255,255,255,.78);
+  max-width: 56ch;
+}
+.lp-eyebrow {
+  font-size: 11px;
+  letter-spacing: .28em;
+  margin-bottom: 28px;
+}
+
+/* ── BIG NUMBER pull-out (75% Stanford, 73% Pew, etc.) ────────────────── */
+.lp-bignum-wrap {
+  margin-bottom: 40px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.lp-bignum {
+  font-family: var(--fd, 'Space Grotesk', sans-serif);
+  font-size: clamp(68px, 10.5vw, 132px);
+  font-weight: 800;
+  color: #ff6464;
+  line-height: .85;
+  letter-spacing: -.045em;
+  margin: 8px 0 16px;
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+.lp-bignum .pct,
+.lp-bignum .x {
+  font-size: .58em;
+  font-weight: 700;
+  opacity: .7;
+}
+.lp-bignum-meta {
+  font-family: var(--fd, 'Space Grotesk', sans-serif);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.55);
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  line-height: 1.4;
+}
+.lp-bignum-meta::before {
+  content: '';
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: #ff6464;
+  flex-shrink: 0;
+}
+
+/* ── Section h2 más BOLD ──────────────────────────────────────────────── */
+.lp-section h2 {
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 800;
+  letter-spacing: -.025em;
+  line-height: 1.05;
+  margin-bottom: 28px;
+}
+
+/* ── Benefit-grid: bento brutalist ────────────────────────────────────── */
+.benefit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2px;
+  margin-top: 48px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.08);
+}
+.benefit-card {
+  background: var(--surface-lowest, #0e0e0e);
+  border: 0;
+  border-radius: 0;
+  padding: 40px 32px 44px;
+  position: relative;
+  overflow: hidden;
+  transition: background .3s ease;
+}
+.benefit-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--lime, #b2f700);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .45s ease;
+}
+.benefit-card:hover {
+  background: var(--surface-low, #1b1b1c);
+  transform: none;
+  border-color: transparent;
+}
+.benefit-card:hover::before { transform: scaleX(1); }
+.benefit-card:hover h3 { color: var(--lime, #b2f700); }
+.benefit-card h3 {
+  font-family: var(--fd, 'Space Grotesk', sans-serif);
+  font-size: clamp(18px, 1.8vw, 22px);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .005em;
+  margin: 0 0 14px;
+  color: #fff;
+  line-height: 1.2;
+  transition: color .3s ease;
+}
+.benefit-card p {
+  color: rgba(255,255,255,.65);
+  line-height: 1.7;
+  font-size: 14.5px;
+  font-weight: 300;
+  margin: 0;
+}
+
+/* ── Includes-grid: bento brutalist con side accent ───────────────────── */
+.includes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2px;
+  margin-top: 40px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.08);
+}
+.includes-item {
+  background: var(--surface-lowest, #0e0e0e);
+  border-left: 0;
+  border-radius: 0;
+  padding: 28px 28px;
+  display: flex;
+  gap: 18px;
+  position: relative;
+  overflow: hidden;
+  transition: background .3s ease;
+}
+.includes-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: var(--lime, #b2f700);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform .45s ease;
+}
+.includes-item:hover {
+  background: var(--surface-low, #1b1b1c);
+}
+.includes-item:hover::before { transform: scaleY(1); }
+.includes-item:hover h3 { color: var(--lime, #b2f700); }
+.includes-item .num {
+  font-family: var(--fd, 'Space Grotesk', sans-serif);
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--lime, #b2f700);
+  min-width: 32px;
+  letter-spacing: -.01em;
+}
+.includes-item h3 {
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .01em;
+  color: #fff;
+  margin: 0 0 6px;
+  font-family: var(--fd, 'Space Grotesk', sans-serif);
+  transition: color .3s ease;
+}
+.includes-item p {
+  color: rgba(255,255,255,.6);
+  font-size: 13.5px;
+  line-height: 1.55;
+  font-weight: 300;
+  margin: 0;
+}
+
+/* ── Process-grid: bento brutalist (mirror .ab-step de /nosotros/) ────── */
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2px;
+  margin-top: 48px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.08);
+}
+.process-step {
+  background: var(--surface-lowest, #0e0e0e);
+  border-top: 0;
+  border-radius: 0;
+  padding: 40px 32px 48px;
+  position: relative;
+  overflow: hidden;
+  transition: background .3s ease;
+}
+.process-step::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--lime, #b2f700);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .45s ease;
+}
+.process-step:hover {
+  background: var(--surface-low, #1b1b1c);
+}
+.process-step:hover::before { transform: scaleX(1); }
+.process-step:hover h3 { color: var(--lime, #b2f700); }
+.process-step .step-num {
+  font-family: var(--fd, 'Space Grotesk', sans-serif);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .22em;
+  color: var(--lime, #b2f700);
+  text-transform: uppercase;
+  margin: 0 0 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.process-step h3 {
+  font-family: var(--fd, 'Space Grotesk', sans-serif);
+  font-size: clamp(18px, 1.8vw, 22px);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .005em;
+  margin: 0 0 12px;
+  color: #fff;
+  line-height: 1.15;
+  transition: color .3s ease;
+}
+.process-step p {
+  color: rgba(255,255,255,.65);
+  line-height: 1.7;
+  font-size: 13.5px;
+  font-weight: 300;
+  margin: 0;
+}
+
+/* ── FAQ items más limpio, brutalist ──────────────────────────────────── */
+.faq-item {
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  padding: 28px 0;
+}
+.faq-item summary {
+  font-family: var(--fd, 'Space Grotesk', sans-serif);
+  font-size: clamp(17px, 1.6vw, 20px);
+  font-weight: 600;
+  letter-spacing: -.005em;
+  line-height: 1.3;
+  position: relative;
+  cursor: pointer;
+  padding-right: 40px;
+  transition: color .25s ease;
+  list-style: none;
+}
+.faq-item summary:hover {
+  color: var(--lime, #b2f700);
+}
+.faq-item summary::after {
+  color: var(--lime, #b2f700);
+  font-weight: 400;
+  font-size: 28px;
+  top: -4px;
+}
+.faq-item p {
+  font-size: 15px;
+  line-height: 1.75;
+  margin-top: 18px;
+  color: rgba(255,255,255,.7);
+  font-weight: 300;
+}
+
+/* ── Final CTA stronger ───────────────────────────────────────────────── */
+.lp-final-cta {
+  padding: 100px 24px 120px;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+.lp-final-cta h2 {
+  font-size: clamp(32px, 5vw, 64px);
+  font-weight: 800;
+  letter-spacing: -.025em;
+  line-height: 1.05;
+  margin: 0 auto 24px;
+  max-width: 22ch;
+}
+.lp-final-cta p {
+  font-size: clamp(16px, 1.4vw, 19px);
+  margin: 0 auto 40px;
+  max-width: 50ch;
+}
+
+/* ── Related services: bento brutalist ────────────────────────────────── */
+.lp-related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 2px;
+  margin-top: 36px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.08);
+}
+.lp-related-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 28px 24px;
+  background: var(--surface-lowest, #0e0e0e);
+  border: 0;
+  border-radius: 0;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  overflow: hidden;
+  transition: background .3s ease;
+  transform: none;
+}
+.lp-related-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--lime, #b2f700);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .45s ease;
+}
+.lp-related-card:hover {
+  background: var(--surface-low, #1b1b1c);
+  border-color: transparent;
+  transform: none;
+}
+.lp-related-card:hover::before { transform: scaleX(1); }
+.lp-related-card:hover p { color: var(--lime, #b2f700); }
+.lp-related-card .label {
+  font-family: var(--fd, 'Space Grotesk', sans-serif);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .28em;
+  color: var(--lime, #b2f700);
+  text-transform: uppercase;
+  margin: 0;
+}
+.lp-related-card p {
+  font-family: var(--fd, 'Space Grotesk', sans-serif);
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: -.005em;
+  margin: 0;
+  line-height: 1.2;
+  transition: color .3s ease;
+}
+
+/* ── lp-related h2 bigger ─────────────────────────────────────────────── */
+.lp-related h2 {
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 800;
+  letter-spacing: -.02em;
+  text-transform: uppercase;
+}
+
+/* ── Mobile tweaks override ───────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .lp-bignum { font-size: clamp(60px, 18vw, 90px); }
+  .benefit-card, .process-step { padding: 32px 24px 36px; }
+  .includes-item { padding: 24px 22px; }
+  .lp-related-card { padding: 24px 22px; }
+}
