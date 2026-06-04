@@ -466,6 +466,20 @@
                   Mostrar como enlace
                 </label>
               </div>
+              <!-- Service tags: define en qué páginas de servicio aparece este proyecto -->
+              <div style="grid-column:1/-1;">
+                <label style="font-size:11px;color:var(--gt);display:block;margin-bottom:8px;">MOSTRAR EN PÁGINAS DE SERVICIO <span style="color:var(--gt);font-weight:normal;text-transform:none;letter-spacing:0;">(múltiple)</span></label>
+                <div id="pf-tags-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;padding:14px;background:var(--surface-2);border:1px solid var(--border);">
+                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" class="pf-tag" value="desarrollo-web"   style="width:14px;height:14px;cursor:pointer;"> Desarrollo Web</label>
+                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" class="pf-tag" value="ecommerce"        style="width:14px;height:14px;cursor:pointer;"> Tiendas eCommerce</label>
+                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" class="pf-tag" value="seo"              style="width:14px;height:14px;cursor:pointer;"> SEO</label>
+                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" class="pf-tag" value="branding"         style="width:14px;height:14px;cursor:pointer;"> Branding Digital</label>
+                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" class="pf-tag" value="consultoria"      style="width:14px;height:14px;cursor:pointer;"> Consultoría Digital</label>
+                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" class="pf-tag" value="mantenimiento"    style="width:14px;height:14px;cursor:pointer;"> Mantenimiento</label>
+                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" class="pf-tag" value="clinicas"         style="width:14px;height:14px;cursor:pointer;"> Clínicas (Medical)</label>
+                </div>
+                <div style="font-size:11px;color:var(--gt);margin-top:6px;">Si no marcas ninguno, este proyecto solo aparecerá en el portafolio principal del home.</div>
+              </div>
             </div>
             <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px;">
               <button type="button" onclick="closePortModal()" class="btn btn-ghost btn-sm">Cancelar</button>
@@ -1426,6 +1440,11 @@ function openPortItem(id) {
   document.getElementById('pf-order').value   = item?.sort_order ?? 0;
   document.getElementById('pf-visible').checked = item ? !!item.visible : true;
   document.getElementById('pf-show-link').checked = item ? (item.show_link == null ? true : !!item.show_link) : true;
+  // Service tags: marcar checkboxes según CSV en item.service_tags
+  const activeTags = (item?.service_tags || '').split(',').map(s => s.trim()).filter(Boolean);
+  document.querySelectorAll('#pf-tags-grid input.pf-tag').forEach(cb => {
+    cb.checked = activeTags.includes(cb.value);
+  });
   pfToggleUrlRequired();
   document.getElementById('pf-image-status').textContent = '';
   document.getElementById('pf-image-file').value = '';
@@ -1449,17 +1468,20 @@ function closePortModal() {
 
 async function savePortItem(e) {
   e.preventDefault();
+  const selectedTags = Array.from(document.querySelectorAll('#pf-tags-grid input.pf-tag:checked'))
+    .map(cb => cb.value);
   const body = {
-    name:       document.getElementById('pf-name').value.trim(),
-    url:        document.getElementById('pf-url').value.trim(),
-    image:      document.getElementById('pf-image').value.trim(),
-    cat_es:     document.getElementById('pf-cat-es').value.trim(),
-    cat_en:     document.getElementById('pf-cat-en').value.trim(),
-    desc_es:    document.getElementById('pf-desc-es').value.trim(),
-    desc_en:    document.getElementById('pf-desc-en').value.trim(),
-    sort_order: parseInt(document.getElementById('pf-order').value) || 0,
-    visible:    document.getElementById('pf-visible').checked ? 1 : 0,
-    show_link:  document.getElementById('pf-show-link').checked ? 1 : 0,
+    name:          document.getElementById('pf-name').value.trim(),
+    url:           document.getElementById('pf-url').value.trim(),
+    image:         document.getElementById('pf-image').value.trim(),
+    cat_es:        document.getElementById('pf-cat-es').value.trim(),
+    cat_en:        document.getElementById('pf-cat-en').value.trim(),
+    desc_es:       document.getElementById('pf-desc-es').value.trim(),
+    desc_en:       document.getElementById('pf-desc-en').value.trim(),
+    sort_order:    parseInt(document.getElementById('pf-order').value) || 0,
+    visible:       document.getElementById('pf-visible').checked ? 1 : 0,
+    show_link:     document.getElementById('pf-show-link').checked ? 1 : 0,
+    service_tags:  selectedTags.join(','),
   };
 
   // Validar imagen: debe ser URL absoluta o ruta absoluta. Bloquea valores

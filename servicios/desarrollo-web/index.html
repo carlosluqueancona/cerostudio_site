@@ -189,6 +189,20 @@
         </div>
       </section>
 
+      <!-- ── Casos · En producción ──
+           Cards inyectados server-side por /functions/_middleware.js desde el
+           CMS de portafolio (service_tags='desarrollo-web'). Editable en /blog/admin/. -->
+      <section class="lp-section" id="casos">
+        <div class="section-inner" id="service-portfolio-wrapper">
+          <p class="eyebrow">Casos · En producción</p>
+          <h2>Sitios en producción, <span class="t-lime">no maquetas.</span></h2>
+          <p>Cada sitio aquí es un negocio real funcionando hoy. Distintas industrias, mismo enfoque: que el sitio trabaje, no que se vea bonito.</p>
+          <div class="port-grid" id="service-portfolio-grid" style="grid-template-columns:repeat(2,1fr);margin-top:48px">
+            <!-- SSR-injected from CMS -->
+          </div>
+        </div>
+      </section>
+
       <!-- ── Lo que incluye ──────────────────────────────────────── -->
       <section class="lp-section">
         <div class="section-inner">
@@ -316,6 +330,7 @@
     <div id="footer-placeholder"></div>
   </div>
   <script src="/components/reveal-cards.js" defer></script>
+  <script src="/components/lang-toggle.js" defer></script>
 </body>
 
 </html>

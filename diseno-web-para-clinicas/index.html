@@ -291,30 +291,15 @@
       </section>
 
       <!-- ═════════════════════════════ CASOS ════════════════════════════ -->
+      <!-- Inyectado server-side desde CMS portfolio (service_tags='clinicas').
+           Editable en /blog/admin/ → tab Portafolio. -->
       <section class="lp-section" id="casos">
-        <div class="section-inner">
+        <div class="section-inner" id="service-portfolio-wrapper">
           <p class="eyebrow">Casos reales</p>
-          <h2>Clínicas que ya trabajan con Cero Studio.</h2>
-          <p>Sitios desarrollados para clínicas y profesionales de la salud en México.</p>
-
-          <div class="cases-grid">
-            <article class="case-card">
-              <img src="/images/portafolio/centro-psibori-screenshot.webp" alt="Sitio web Centro Psibori — Clínica de psicología" loading="lazy" width="640" height="400">
-              <div class="case-card-body">
-                <p class="specialty">Psicología clínica</p>
-                <h3>Centro Psibori</h3>
-                <p>Clínica de psicología con perfiles de especialistas, terapias por categoría y sistema de citas.</p>
-              </div>
-            </article>
-
-            <article class="case-card">
-              <img src="/images/portafolio/respiraresvivir-screenshot.webp" alt="Sitio web Dr. César Salas Mártir — Respirar es Vivir" loading="lazy" width="640" height="400">
-              <div class="case-card-body">
-                <p class="specialty">Neumología</p>
-                <h3>Dr. César Salas Mártir</h3>
-                <p>Sitio personal de especialista en neumología con consulta privada, padecimientos y agendamiento directo.</p>
-              </div>
-            </article>
+          <h2>Clínicas que ya trabajan con <span class="t-lime">Cero Studio.</span></h2>
+          <p>Sitios desarrollados para clínicas y profesionales de la salud en México. Pacientes reales agendando hoy.</p>
+          <div class="port-grid" id="service-portfolio-grid" style="grid-template-columns:repeat(2,1fr);margin-top:48px">
+            <!-- SSR-injected from CMS -->
           </div>
         </div>
       </section>
@@ -413,6 +398,7 @@
     <div id="footer-placeholder"></div>
   </div>
   <script src="/components/reveal-cards.js" defer></script>
+  <script src="/components/lang-toggle.js" defer></script>
 </body>
 
 </html>

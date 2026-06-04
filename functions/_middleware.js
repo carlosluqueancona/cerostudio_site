@@ -37,9 +37,55 @@ const _cache = {
   en: { navbar: null, footer: null },
 };
 
+// Mapeo de path → service_tag para SSR injection del CMS portfolio.
+// Cada página de servicio define qué subset del CMS mostrar via tag.
+// Match exacto del path (sin trailing slash normalizado).
+const SERVICE_TAG_BY_PATH = {
+  '/servicios/desarrollo-web':       'desarrollo-web',
+  '/servicios/tiendas-ecommerce':    'ecommerce',
+  '/servicios/seo':                  'seo',
+  '/servicios/branding-digital':     'branding',
+  '/servicios/consultoria-digital':  'consultoria',
+  '/servicios/mantenimiento':        'mantenimiento',
+  '/diseno-web-para-clinicas':       'clinicas',
+};
+
+// Cache per-tag de HTML + i18n para evitar D1 query en cada request.
+// Reseteado en cada deploy (Worker isolate).
+const _portfolioCache = {}; // { [tag]: { html, i18n, fetchedAt } }
+const PORTFOLIO_CACHE_TTL_MS = 60 * 1000; // 60s — balance entre freshness y D1 cost
+
 function detectLang(pathname) {
   // /en/* (including /en, /en/, /en/anything) → English. Everything else → Spanish.
   return (pathname === '/en' || pathname === '/en/' || pathname.startsWith('/en/')) ? 'en' : 'es';
+}
+
+function detectServiceTag(pathname) {
+  // Normaliza trailing slash y matches contra el mapping.
+  const normalized = pathname.replace(/\/$/, '') || '/';
+  return SERVICE_TAG_BY_PATH[normalized] || null;
+}
+
+async function loadServicePortfolio(env, tag) {
+  const cached = _portfolioCache[tag];
+  if (cached && (Date.now() - cached.fetchedAt) < PORTFOLIO_CACHE_TTL_MS) {
+    return cached;
+  }
+  try {
+    const [htmlRow, i18nRow] = await Promise.all([
+      env.DB.prepare("SELECT value FROM site_cache WHERE key = ?").bind(`portfolio_html_tag_${tag}`).first(),
+      env.DB.prepare("SELECT value FROM site_cache WHERE key = ?").bind(`portfolio_i18n_tag_${tag}`).first(),
+    ]);
+    const result = {
+      html: htmlRow?.value || '',
+      i18n: i18nRow?.value || '',
+      fetchedAt: Date.now(),
+    };
+    _portfolioCache[tag] = result;
+    return result;
+  } catch {
+    return { html: '', i18n: '', fetchedAt: Date.now() };
+  }
 }
 
 async function loadPartial(env, baseUrl, path, cache) {
@@ -75,21 +121,26 @@ export async function onRequest(context) {
 
   // Pick partials by request URL so /en/* gets English navbar/footer in the
   // initial HTML (crawlers and no-JS users), not the Spanish version.
-  const lang = detectLang(new URL(context.request.url).pathname);
+  const pathname = new URL(context.request.url).pathname;
+  const lang = detectLang(pathname);
   const paths = PARTIALS[lang];
   const navbarCache = { value: _cache[lang].navbar };
   const footerCache = { value: _cache[lang].footer };
 
-  const [navbarHtml, footerHtml] = await Promise.all([
+  // Detectar si esta page necesita SSR injection de service portfolio.
+  const serviceTag = detectServiceTag(pathname);
+
+  const [navbarHtml, footerHtml, servicePortfolio] = await Promise.all([
     loadPartial(context.env, context.request.url, paths.navbar, navbarCache),
     loadPartial(context.env, context.request.url, paths.footer, footerCache),
+    serviceTag ? loadServicePortfolio(context.env, serviceTag) : Promise.resolve(null),
   ]);
 
   // Persist cache for subsequent requests on the same isolate
   _cache[lang].navbar = navbarCache.value;
   _cache[lang].footer = footerCache.value;
 
-  if (!navbarHtml && !footerHtml) return response;
+  if (!navbarHtml && !footerHtml && !servicePortfolio?.html) return response;
 
   const rewriter = new HTMLRewriter()
     .on('#navbar-placeholder', {
@@ -103,9 +154,35 @@ export async function onRequest(context) {
       },
     });
 
+  // Service portfolio: rellenar #service-portfolio-grid con cards de cache
+  // y append <script>window.CS_PORTFOLIO_I18N</script> al body para que el
+  // toggleLang client-side traduzca los port-c*/port-d* IDs.
+  if (servicePortfolio?.html) {
+    rewriter.on('#service-portfolio-grid', {
+      element(el) {
+        el.setInnerContent(servicePortfolio.html, { html: true });
+      },
+    });
+    rewriter.on('#service-portfolio-wrapper', {
+      // Si hay 0 items para este tag, ocultar wrapper para evitar sección vacía.
+      element(el) {
+        if (!servicePortfolio.html.trim()) el.setAttribute('hidden', '');
+      },
+    });
+    if (servicePortfolio.i18n) {
+      rewriter.on('body', {
+        element(el) {
+          el.append(`<script>window.CS_PORTFOLIO_I18N=${servicePortfolio.i18n};</script>`, { html: true });
+        },
+      });
+    }
+  }
+
   const transformed = rewriter.transform(response);
+  const extraHeaders = { 'X-Cero-Partials': `inlined-${lang}` };
+  if (serviceTag) extraHeaders['X-Cero-Service-Tag'] = serviceTag;
   return new Response(transformed.body, {
     status: transformed.status,
-    headers: { ...Object.fromEntries(transformed.headers), 'X-Cero-Partials': `inlined-${lang}` },
+    headers: { ...Object.fromEntries(transformed.headers), ...extraHeaders },
   });
 }
