@@ -109,12 +109,18 @@
     .ab-role{font-family:Inter,sans-serif;font-size:15px;line-height:1.65;font-weight:300;color:rgba(255,255,255,.7)}
     .ab-role strong{display:block;font-family:'Space Grotesk',sans-serif;font-size:clamp(18px,1.6vw,22px);font-weight:700;color:#fff;margin:0 0 12px;letter-spacing:.005em;text-transform:uppercase;line-height:1.2;transition:color .25s ease}
 
-    .ab-plan{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1000px}
-    .ab-step{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:36px 32px;position:relative;transition:border-color .25s,transform .25s}
-    .ab-step:hover{border-color:rgba(184,255,0,.35);transform:translateY(-2px)}
-    .ab-step-num{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;letter-spacing:.18em;color:var(--lime,#b2f700);margin:0 0 24px}
-    .ab-step-t{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:600;color:#fff;margin:0 0 12px;letter-spacing:-.01em}
-    .ab-step-d{font-family:Inter,sans-serif;font-size:14px;line-height:1.65;color:rgba(255,255,255,.72);font-weight:300;margin:0}
+    /* PLAN — 3 steps using .proc-step pattern from home.css */
+    .ab-plan{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+    .ab-step{background:var(--surface-lowest,#0e0e0e);padding:44px 36px 52px;position:relative;overflow:hidden;transition:background .3s ease}
+    .ab-step::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--lime,#b2f700);transform:scaleX(0);transform-origin:left;transition:transform .45s ease}
+    .ab-step:hover{background:var(--surface-low,#1b1b1c)}
+    .ab-step:hover::before{transform:scaleX(1)}
+    .ab-step:hover .ab-step-t{color:var(--lime,#b2f700)}
+    .ab-step-top{display:flex;align-items:center;gap:20px;margin:0 0 48px}
+    .ab-step-num{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;letter-spacing:.18em;color:var(--lime,#b2f700);margin:0;text-transform:uppercase;white-space:nowrap}
+    .ab-step-dash{flex:1;height:1px;background:rgba(255,255,255,.12)}
+    .ab-step-t{font-family:'Space Grotesk',sans-serif;font-size:clamp(22px,2.2vw,28px);font-weight:800;text-transform:uppercase;letter-spacing:.005em;color:#fff;margin:0 0 18px;line-height:1.15;transition:color .3s ease}
+    .ab-step-d{font-family:Inter,sans-serif;font-size:14px;line-height:1.8;color:rgba(255,255,255,.65);font-weight:300;margin:0}
 
     .ab-stakes-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;max-width:1000px}
     .ab-stakes-card{padding:32px 0;border-top:2px solid;position:relative}
@@ -329,18 +335,27 @@
           <h2 class="ab-section-h2">Three steps. No surprises. No fine print.</h2>
           <div class="ab-plan">
             <div class="ab-step">
-              <p class="ab-step-num">01 · Discovery</p>
-              <p class="ab-step-t">Audit what you have today</p>
+              <div class="ab-step-top">
+                <span class="ab-step-num">01 · Discovery</span>
+                <span class="ab-step-dash"></span>
+              </div>
+              <h3 class="ab-step-t">Audit what you have today</h3>
               <p class="ab-step-d">Your current site, market, competition. We identify exactly what's costing you money — and what would need to happen to stop it.</p>
             </div>
             <div class="ab-step">
-              <p class="ab-step-num">02 · Strategy</p>
-              <p class="ab-step-t">Define what to do and in what order</p>
+              <div class="ab-step-top">
+                <span class="ab-step-num">02 · Strategy</span>
+                <span class="ab-step-dash"></span>
+              </div>
+              <h3 class="ab-step-t">Define what to do and in what order</h3>
               <p class="ab-step-d">What you need (and what you don't), what budget, and how to recover your investment in the first quarter. Not a 50-page plan — an actionable roadmap.</p>
             </div>
             <div class="ab-step">
-              <p class="ab-step-num">03 · Execution</p>
-              <p class="ab-step-t">Design, code, launch</p>
+              <div class="ab-step-top">
+                <span class="ab-step-num">03 · Execution</span>
+                <span class="ab-step-dash"></span>
+              </div>
+              <h3 class="ab-step-t">Design, code, launch</h3>
               <p class="ab-step-d">You approve, we deliver on time. What I quote is what you pay. No scope surprises, no last-minute charges.</p>
             </div>
           </div>

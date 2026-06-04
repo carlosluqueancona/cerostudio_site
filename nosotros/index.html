@@ -115,13 +115,22 @@
     .ab-role{font-family:Inter,sans-serif;font-size:15px;line-height:1.65;font-weight:300;color:rgba(255,255,255,.7)}
     .ab-role strong{display:block;font-family:'Space Grotesk',sans-serif;font-size:clamp(18px,1.6vw,22px);font-weight:700;color:#fff;margin:0 0 12px;letter-spacing:.005em;text-transform:uppercase;line-height:1.2;transition:color .25s ease}
 
-    /* PLAN — 3 pasos (SB7 Element 4: Process Plan) */
-    .ab-plan{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1000px}
-    .ab-step{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:36px 32px;position:relative;transition:border-color .25s,transform .25s}
-    .ab-step:hover{border-color:rgba(184,255,0,.35);transform:translateY(-2px)}
-    .ab-step-num{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;letter-spacing:.18em;color:var(--lime,#b2f700);margin:0 0 24px}
-    .ab-step-t{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:600;color:#fff;margin:0 0 12px;letter-spacing:-.01em}
-    .ab-step-d{font-family:Inter,sans-serif;font-size:14px;line-height:1.65;color:rgba(255,255,255,.72);font-weight:300;margin:0}
+    /* PLAN — 3 pasos (SB7 Element 4: Process Plan).
+       Estilo .proc-step del home.css: sharp corners + lime line slide
+       desde top en hover + UPPERCASE titles + dash separator + bigger num */
+    .ab-plan{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+    .ab-step{background:var(--surface-lowest,#0e0e0e);padding:44px 36px 52px;position:relative;overflow:hidden;transition:background .3s ease}
+    .ab-step::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--lime,#b2f700);transform:scaleX(0);transform-origin:left;transition:transform .45s ease}
+    .ab-step:hover{background:var(--surface-low,#1b1b1c)}
+    .ab-step:hover::before{transform:scaleX(1)}
+    .ab-step:hover .ab-step-t{color:var(--lime,#b2f700)}
+    /* Top row: num + dash (signature CS pattern) */
+    .ab-step-top{display:flex;align-items:center;gap:20px;margin:0 0 48px}
+    .ab-step-num{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;letter-spacing:.18em;color:var(--lime,#b2f700);margin:0;text-transform:uppercase;white-space:nowrap}
+    .ab-step-dash{flex:1;height:1px;background:rgba(255,255,255,.12)}
+    /* BIG UPPERCASE title */
+    .ab-step-t{font-family:'Space Grotesk',sans-serif;font-size:clamp(22px,2.2vw,28px);font-weight:800;text-transform:uppercase;letter-spacing:.005em;color:#fff;margin:0 0 18px;line-height:1.15;transition:color .3s ease}
+    .ab-step-d{font-family:Inter,sans-serif;font-size:14px;line-height:1.8;color:rgba(255,255,255,.65);font-weight:300;margin:0}
 
     /* STAKES + SUCCESS — dos columnas (avoid failure / end in success) */
     .ab-stakes-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;max-width:1000px}
@@ -338,18 +347,27 @@
           <h2 class="ab-section-h2">Tres pasos. Sin sorpresas. Sin letra chica.</h2>
           <div class="ab-plan">
             <div class="ab-step">
-              <p class="ab-step-num">01 · Diagnóstico</p>
-              <p class="ab-step-t">Auditamos lo que tienes hoy</p>
+              <div class="ab-step-top">
+                <span class="ab-step-num">01 · Diagnóstico</span>
+                <span class="ab-step-dash"></span>
+              </div>
+              <h3 class="ab-step-t">Auditamos lo que tienes hoy</h3>
               <p class="ab-step-d">Sitio actual, mercado, competencia. Identificamos exactamente qué te está costando dinero — y qué tendría que pasar para que deje de costártelo.</p>
             </div>
             <div class="ab-step">
-              <p class="ab-step-num">02 · Estrategia</p>
-              <p class="ab-step-t">Definimos qué hacer y en qué orden</p>
+              <div class="ab-step-top">
+                <span class="ab-step-num">02 · Estrategia</span>
+                <span class="ab-step-dash"></span>
+              </div>
+              <h3 class="ab-step-t">Definimos qué hacer y en qué orden</h3>
               <p class="ab-step-d">Qué necesitas (y qué no), con qué presupuesto, y cómo recuperar la inversión en el primer trimestre. No es plan de 50 páginas — es un roadmap accionable.</p>
             </div>
             <div class="ab-step">
-              <p class="ab-step-num">03 · Ejecución</p>
-              <p class="ab-step-t">Diseño, código, lanzamiento</p>
+              <div class="ab-step-top">
+                <span class="ab-step-num">03 · Ejecución</span>
+                <span class="ab-step-dash"></span>
+              </div>
+              <h3 class="ab-step-t">Diseño, código, lanzamiento</h3>
               <p class="ab-step-d">Tú apruebas, nosotros entregamos en tiempo. Lo que cotizo es lo que cobras. Sin sorpresas de scope ni cargos de última hora.</p>
             </div>
           </div>
