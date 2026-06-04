@@ -1,0 +1,26 @@
+<a href="#main-content" class="skip-to-content">Skip to content</a>
+
+<div id="mobileNav" role="dialog" aria-label="Navigation menu" aria-modal="true">
+  <a href="/#servicios" onclick="closeNav()" id="mnav-servicios">Services</a>
+  <a href="/#portafolio" onclick="closeNav()" id="mnav-portafolio">Portfolio</a>
+  <a href="/en/about-us/" onclick="closeNav()" id="mnav-nosotros">About</a>
+  <a href="/#precios" onclick="closeNav()" id="mnav-precios">Pricing</a>
+  <a href="/#contacto" onclick="closeNav()" id="mnav-contacto">Contact</a>
+  <a href="/blog/" onclick="closeNav()" id="mnav-blog">Blog</a>
+  <button id="mnav-lang" class="lang-btn-mobile ht" onclick="toggleLang();closeNav();">ES</button>
+</div>
+
+<nav id="navbar" aria-label="Main navigation">
+  <a href="/" class="ht" aria-label="Cero Studio — Home"><img src="/images/svg/Cero_Studio_AI_Horizontal.svg" alt="Cero Studio" class="nav-logo"></a>
+  <ul class="nav-links">
+    <li><a href="/#servicios" class="ht" id="nav-servicios">Services</a></li>
+    <li><a href="/#portafolio" class="ht" id="nav-portafolio">Portfolio</a></li>
+    <li><a href="/en/about-us/" class="ht" id="nav-nosotros">About</a></li>
+    <li><a href="/#precios" class="ht" id="nav-precios">Pricing</a></li>
+    <li><a href="/#contacto" class="ht" id="nav-contacto">Contact</a></li>
+    <li><a href="/blog/" class="ht" id="nav-blog">Blog</a></li>
+  </ul>
+  <button id="langToggle" class="lang-btn ht active-en" onclick="toggleLang()" aria-label="Switch language">ES</button>
+  <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="nav-cta ht" id="nav-cta">Let's Talk</a>
+  <button type="button" class="nav-ham ht" id="navHam" onclick="toggleNav()" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
+</nav>

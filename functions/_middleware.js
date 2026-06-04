@@ -24,13 +24,23 @@
  * assets that pass through unchanged.
  */
 
-const NAVBAR_PATH = '/components/navbar.html';
-const FOOTER_PATH = '/components/footer.html';
+const PARTIALS = {
+  es: { navbar: '/components/navbar.html',    footer: '/components/footer.html'    },
+  en: { navbar: '/components/navbar-en.html', footer: '/components/footer-en.html' },
+};
 
-// In-memory cache per Worker isolate. Components rarely change, so we avoid
-// re-fetching them on every request. Cache is reset on deploy.
-let _navbarCache = null;
-let _footerCache = null;
+// In-memory cache per Worker isolate, keyed by language. Components rarely
+// change, so we avoid re-fetching them on every request. Cache is reset on
+// deploy.
+const _cache = {
+  es: { navbar: null, footer: null },
+  en: { navbar: null, footer: null },
+};
+
+function detectLang(pathname) {
+  // /en/* (including /en, /en/, /en/anything) → English. Everything else → Spanish.
+  return (pathname === '/en' || pathname === '/en/' || pathname.startsWith('/en/')) ? 'en' : 'es';
+}
 
 async function loadPartial(env, baseUrl, path, cache) {
   if (cache.value !== null) return cache.value;
@@ -63,17 +73,21 @@ export async function onRequest(context) {
   // itself, so re-running the rewriter would be redundant work.
   if (response.headers.get('X-Cero-SSR')) return response;
 
-  const navbarCache = { value: _navbarCache };
-  const footerCache = { value: _footerCache };
+  // Pick partials by request URL so /en/* gets English navbar/footer in the
+  // initial HTML (crawlers and no-JS users), not the Spanish version.
+  const lang = detectLang(new URL(context.request.url).pathname);
+  const paths = PARTIALS[lang];
+  const navbarCache = { value: _cache[lang].navbar };
+  const footerCache = { value: _cache[lang].footer };
 
   const [navbarHtml, footerHtml] = await Promise.all([
-    loadPartial(context.env, context.request.url, NAVBAR_PATH, navbarCache),
-    loadPartial(context.env, context.request.url, FOOTER_PATH, footerCache),
+    loadPartial(context.env, context.request.url, paths.navbar, navbarCache),
+    loadPartial(context.env, context.request.url, paths.footer, footerCache),
   ]);
 
   // Persist cache for subsequent requests on the same isolate
-  _navbarCache = navbarCache.value;
-  _footerCache = footerCache.value;
+  _cache[lang].navbar = navbarCache.value;
+  _cache[lang].footer = footerCache.value;
 
   if (!navbarHtml && !footerHtml) return response;
 
@@ -92,6 +106,6 @@ export async function onRequest(context) {
   const transformed = rewriter.transform(response);
   return new Response(transformed.body, {
     status: transformed.status,
-    headers: { ...Object.fromEntries(transformed.headers), 'X-Cero-Partials': 'inlined' },
+    headers: { ...Object.fromEntries(transformed.headers), 'X-Cero-Partials': `inlined-${lang}` },
   });
 }
