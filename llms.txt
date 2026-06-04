@@ -1,0 +1,39 @@
+# Cero Studio — Agencia Digital Premium en México
+
+> Diseñamos y desarrollamos sitios web, tiendas eCommerce, branding digital y SEO para emprendedores y negocios en México. Diseño que vende, sin letra chica.
+
+URL: https://cerostudio.ai
+Language: es-MX
+Contact: https://cerostudio.ai/#contacto
+
+## Servicios principales
+
+- [Desarrollo Web Premium](https://cerostudio.ai/servicios/desarrollo-web/): Sitios profesionales que convierten visitas en clientes. Entrega 5–21 días hábiles.
+- [Tiendas eCommerce](https://cerostudio.ai/servicios/tiendas-ecommerce/): Tiendas online de alto impacto.
+- [Branding Digital](https://cerostudio.ai/servicios/branding-digital/): Identidad visual, paleta, tipografía y guidelines.
+- [SEO y Visibilidad](https://cerostudio.ai/servicios/seo/): Optimización para Google y AI search.
+- [Mantenimiento](https://cerostudio.ai/servicios/mantenimiento/): Soporte mensual desde $49 USD/mes.
+- [Consultoría Digital](https://cerostudio.ai/servicios/consultoria-digital/): Diagnóstico, estrategia y roadmap.
+
+## Verticales
+
+- [Diseño Web para Clínicas](https://cerostudio.ai/diseno-web-para-clinicas/): Sitios para clínicas y consultorios que convierten visitas en pacientes.
+
+## Blog
+
+- [¿Cuánto cuesta una página web para clínica en México 2026?](https://cerostudio.ai/blog/cuanto-cuesta-pagina-web-clinica-mexico-2026)
+- [¿Cuánto cuesta una página web en México?](https://cerostudio.ai/blog/cuanto-cuesta-pagina-web-mexico)
+- [Cómo elegir agencia de diseño web en México](https://cerostudio.ai/blog/como-elegir-agencia-diseno-web-mexico)
+- [Cómo crear tienda en línea en México](https://cerostudio.ai/blog/como-crear-tienda-en-linea-mexico)
+- [Framer vs WordPress en México](https://cerostudio.ai/blog/framer-vs-wordpress-mexico)
+- [SEO PyMEs: cómo aparecer en Google gratis](https://cerostudio.ai/blog/seo-pymes-aparecer-google-gratis)
+- [Qué es Google Ads para negocios en México](https://cerostudio.ai/blog/que-es-google-ads-negocio-mexico)
+- [Elementos de un sitio web profesional](https://cerostudio.ai/blog/elementos-sitio-web-profesional)
+- [Caso de éxito Mainoflex: +40% en ventas](https://cerostudio.ai/blog/caso-exito-mainoflex-ventas-40-porciento)
+- [Por qué tu tienda online no vende](https://cerostudio.ai/blog/por-que-tienda-online-no-vende)
+- [Señales de que tu sitio web pierde clientes](https://cerostudio.ai/blog/senales-sitio-web-pierde-clientes)
+
+## Sitemaps
+
+- https://cerostudio.ai/sitemap.xml
+- https://cerostudio.ai/robots.txt

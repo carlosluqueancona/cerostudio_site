@@ -79,6 +79,36 @@
   text-transform: uppercase; color: var(--lime, #ceff33);
   margin: 0 0 16px;
 }
+.lp-cite {
+  font-size: 13px !important;
+  font-weight: 400;
+  color: rgba(255,255,255,.72) !important;
+  margin: -4px 0 28px !important;
+  line-height: 1.55 !important;
+  letter-spacing: .005em;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(255,255,255,.04);
+  border-left: 2px solid var(--lime, #ceff33);
+  border-radius: 0 4px 4px 0;
+}
+.lp-cite::before {
+  content: '↳';
+  color: var(--lime, #ceff33);
+  font-weight: 600;
+  margin-right: 2px;
+}
+.lp-cite a {
+  color: rgba(255,255,255,.85);
+  text-decoration: underline;
+  text-decoration-color: rgba(206,255,51,.5);
+  text-underline-offset: 3px;
+  transition: color .2s, text-decoration-color .2s;
+}
+.lp-cite a:hover { color: var(--lime, #ceff33); text-decoration-color: currentColor; }
+.lp-cite cite { font-style: italic; font-weight: 500; }
 
 /* ── Benefit grid (problem framing / why) ────────────────────────────────── */
 .benefit-grid {
@@ -188,7 +218,7 @@
 
 /* ── Final CTA banner ────────────────────────────────────────────────────── */
 .lp-final-cta {
-  padding: 100px 24px;
+  padding: 120px 24px;
   text-align: center;
   background: radial-gradient(ellipse at center, rgba(206,255,51,.08), transparent 60%);
   border-top: 1px solid rgba(255,255,255,.06);
@@ -198,13 +228,25 @@
   font-size: clamp(32px, 5vw, 56px);
   font-weight: 700;
   color: #fff;
-  margin: 0 0 16px;
-  line-height: 1.15;
+  margin: 0 auto 24px;
+  line-height: 1.1;
+  letter-spacing: -.025em;
+  max-width: 20ch;
 }
 .lp-final-cta p {
-  font-size: 17px;
-  color: rgba(255,255,255,.7);
-  margin: 0 0 32px;
+  font-size: clamp(16px, 1.4vw, 18px);
+  color: rgba(255,255,255,.72);
+  margin: 0 auto 40px;
+  max-width: 52ch;
+  line-height: 1.55;
+}
+.lp-final-cta .lp-cta-row {
+  justify-content: center;
+}
+@media (max-width: 520px) {
+  .lp-final-cta { padding: 80px 24px; }
+  .lp-final-cta .lp-cta-row .btn-primary,
+  .lp-final-cta .lp-cta-row .btn-ghost { width: 100%; text-align: center; }
 }
 
 /* ── Servicios relacionados (cross-link grid) ────────────────────────────── */
