@@ -21,8 +21,9 @@
   // Mapeo bidireccional de paths con versión multilingüe.
   // Añade entradas conforme creas nuevas páginas en /en/.
   var ES_TO_EN = {
-    '/':            '/en/',
-    '/nosotros/':   '/en/about-us/',
+    '/':                                '/en/',
+    '/nosotros/':                       '/en/about-us/',
+    '/servicios/desarrollo-web/':       '/en/services/web-development/',
   };
   // Invertir el mapa para EN → ES.
   var EN_TO_ES = {};
