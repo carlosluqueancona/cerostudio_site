@@ -164,13 +164,8 @@
     .ab-cta-row .btn-primary,.ab-cta-row .btn-ghost,
     .ab-cta-actions .btn-primary,.ab-cta-actions .btn-ghost{border-radius:0}
 
-    /* Footer EN inline */
-    .en-footer{background:var(--surface-lowest,#0e0e0e);padding:56px 48px;margin-top:0;border-top:1px solid rgba(255,255,255,.06)}
-    .en-footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap}
-    .en-footer-copy{font-family:Inter,sans-serif;font-size:12px;color:rgba(255,255,255,.45);font-weight:300}
-    .en-footer-links{display:flex;gap:24px;flex-wrap:wrap}
-    .en-footer-links a{font-family:Inter,sans-serif;font-size:13px;color:rgba(255,255,255,.65);text-decoration:none;transition:color .2s}
-    .en-footer-links a:hover{color:var(--lime,#b2f700)}
+    /* Navbar + footer EN ahora vienen del middleware path-aware
+       (.en-footer styles removidos — middleware inyecta full footer-en.html) */
 
     @media (max-width:900px){
       .ab-hero{grid-template-columns:1fr;gap:40px;margin-bottom:64px}
@@ -188,8 +183,6 @@
       .ab-wrap{padding-top:100px}
       .ab-cta{padding-bottom:80px}
       .ab-cta-actions .btn-primary,.ab-cta-actions .btn-ghost{width:100%;text-align:center}
-      .en-footer{padding:40px 24px}
-      .en-footer-inner{flex-direction:column;align-items:flex-start}
     }
   </style>
 
@@ -271,20 +264,32 @@
     ]
   }
   </script>
+
+  <!-- Navbar handlers for buttons injected by path-aware middleware.
+       Since /en/about-us/ does NOT load /js/home.js (which defines
+       these), provide minimal local implementations. toggleLang
+       navigates to the Spanish counterpart /nosotros/. -->
+  <script>
+    window.toggleLang = function () { window.location.href = '/nosotros/'; };
+    window.toggleNav = function () {
+      var m = document.getElementById('mobileNav');
+      var h = document.getElementById('navHam');
+      if (m) m.classList.toggle('open');
+      if (h) h.classList.toggle('open');
+    };
+    window.closeNav = function () {
+      var m = document.getElementById('mobileNav');
+      var h = document.getElementById('navHam');
+      if (m) m.classList.remove('open');
+      if (h) h.classList.remove('open');
+    };
+  </script>
 </head>
 
 <body>
   <div class="site-wrapper">
-    <!-- Navbar EN inline (no middleware injection: omitimos #navbar-placeholder) -->
-    <nav id="navbar" aria-label="Main navigation">
-      <a href="/" class="ht" aria-label="Cero Studio — Home"><img src="/images/svg/Cero_Studio_AI_Horizontal.svg" alt="Cero Studio" class="nav-logo"></a>
-      <ul class="nav-links">
-        <li><a href="/en/about-us/" class="ht" style="color:#fff">About</a></li>
-        <li><a href="/blog/" class="ht">Blog</a></li>
-      </ul>
-      <a href="/nosotros/" class="lang-btn ht" aria-label="Cambiar a español" style="color:var(--gt);text-decoration:none;font-family:var(--fb);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:7px 14px;background:var(--surface-high,#2a2a2a);transition:background .15s ease-out;cursor:pointer">ES</a>
-      <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="nav-cta ht">Let's Talk</a>
-    </nav>
+    <!-- Navbar EN inyectado por middleware path-aware (/components/navbar-en.html) -->
+    <div id="navbar-placeholder"></div>
 
     <main id="main-content">
       <div class="ab-wrap">
@@ -424,17 +429,8 @@
       </section>
     </main>
 
-    <!-- Footer EN inline (sin middleware injection: omitimos #footer-placeholder) -->
-    <footer class="en-footer">
-      <div class="en-footer-inner">
-        <p class="en-footer-copy">© 2026 Cero Studio. All rights reserved.</p>
-        <div class="en-footer-links">
-          <a href="/nosotros/">Versión en español</a>
-          <a href="mailto:hola@cerostudio.ai">hola@cerostudio.ai</a>
-          <a href="/privacidad/?lang=en">Privacy &amp; Cookies</a>
-        </div>
-      </div>
-    </footer>
+    <!-- Footer EN inyectado por middleware path-aware (/components/footer-en.html) -->
+    <div id="footer-placeholder"></div>
   </div>
 
   <script defer crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
