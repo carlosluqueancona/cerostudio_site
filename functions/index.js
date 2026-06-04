@@ -15,10 +15,17 @@ export async function onRequest(context) {
   if (!ct.includes('text/html')) return response;
 
   try {
-    const [htmlCache, i18nCache] = await Promise.all([
+    // Prefiere cache filtrado por tag 'home' (Carlos elige qué featurear);
+    // fallback a cache global legacy si tag aún no existe.
+    const [tagHtml, tagI18n, globalHtml, globalI18n] = await Promise.all([
+      env.DB.prepare("SELECT value FROM site_cache WHERE key = 'portfolio_html_tag_home'").first(),
+      env.DB.prepare("SELECT value FROM site_cache WHERE key = 'portfolio_i18n_tag_home'").first(),
       env.DB.prepare("SELECT value FROM site_cache WHERE key = 'portfolio_html'").first(),
       env.DB.prepare("SELECT value FROM site_cache WHERE key = 'portfolio_i18n'").first(),
     ]);
+
+    const htmlCache = tagHtml?.value ? tagHtml : globalHtml;
+    const i18nCache = tagI18n?.value ? tagI18n : globalI18n;
 
     // No cache yet — serve static HTML as-is
     if (!htmlCache?.value) return response;

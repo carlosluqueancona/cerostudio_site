@@ -18,10 +18,14 @@
 
 import { corsHeaders, json, parseId, requireAuth } from './_shared.js';
 
-// Tags válidos para filtrado por página de servicio. Un item puede pertenecer
-// a varios. Editar aquí + actualizar admin UI checkboxes + crear/actualizar
+// Tags válidos para filtrado por página. Un item puede pertenecer a varios.
+// 'home' es especial: controla si aparece en la home (/) además de
+// las service pages. Sin el tag 'home', el item solo aparece en las
+// service pages donde tenga tag asignado.
+// Editar aquí + actualizar admin UI checkboxes + crear/actualizar
 // /functions/servicios/{slug}/ correspondiente al añadir tags nuevos.
 const VALID_SERVICE_TAGS = [
+  'home',
   'desarrollo-web',
   'ecommerce',
   'seo',
