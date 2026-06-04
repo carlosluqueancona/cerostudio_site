@@ -153,11 +153,23 @@
     /* Strong tags: rojo en stakes (warning), lime en success (proof) */
     .stakes .ab-stakes-p strong{color:#ff8080;font-weight:500}
     .success .ab-stakes-p strong{color:var(--lime,#b2f700);font-weight:500}
-    /* BIG NUMBER stat: pull-out del 3x de IMVEC.MX como hero del success card */
-    .ab-stakes-bignum{font-family:'Space Grotesk',sans-serif;font-size:clamp(64px,9.5vw,118px);font-weight:800;color:var(--lime,#b2f700);line-height:.85;letter-spacing:-.045em;margin:8px 0 16px;display:flex;align-items:baseline;gap:4px}
-    .ab-stakes-bignum .x{font-size:.62em;font-weight:700;opacity:.7}
-    .ab-stakes-meta{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.55);margin:0 0 32px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-    .ab-stakes-meta::before{content:'';display:inline-block;width:24px;height:1px;background:var(--lime,#b2f700);flex-shrink:0}
+    /* BIG NUMBER stat: pull-out del 3x (success) y 75% (stakes) — parallel structure */
+    .ab-stakes-bignum{font-family:'Space Grotesk',sans-serif;font-size:clamp(58px,8.5vw,108px);font-weight:800;line-height:.9;letter-spacing:-.045em;margin:8px 0 16px;display:flex;align-items:baseline;gap:2px}
+    .ab-stakes-bignum .x,.ab-stakes-bignum .pct{font-size:.62em;font-weight:700;opacity:.7}
+    .success .ab-stakes-bignum{color:var(--lime,#b2f700)}
+    .stakes .ab-stakes-bignum{color:#ff6464}
+    .ab-stakes-meta{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.55);margin:0 0 32px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px;flex-wrap:wrap;line-height:1.4}
+    .ab-stakes-meta::before{content:'';display:inline-block;width:24px;height:1px;flex-shrink:0}
+    .success .ab-stakes-meta::before{background:var(--lime,#b2f700)}
+    .stakes .ab-stakes-meta::before{background:#ff6464}
+
+    /* TIMELINE CODA: dots-connecting reflection AL FINAL del timeline.
+       Estilo CS con eyebrow "REFLEXIÓN" notch + border-left lime */
+    .ab-timeline-coda{position:relative;margin:48px 0 0;padding:48px 40px 44px;background:var(--surface-lowest,#0e0e0e);border-left:3px solid var(--lime,#b2f700)}
+    .ab-timeline-coda::before{content:'Reflexión';position:absolute;top:-11px;left:24px;font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--lime,#b2f700);background:var(--bg,#131313);padding:3px 12px}
+    .ab-timeline-coda-body{font-family:Inter,sans-serif;font-size:16px;line-height:1.75;color:rgba(255,255,255,.7);font-weight:300;margin:0 0 24px;max-width:64ch}
+    .ab-timeline-coda-punch{font-family:'Space Grotesk',sans-serif;font-size:clamp(22px,2.4vw,30px);font-weight:700;color:#fff;letter-spacing:-.015em;line-height:1.25;margin:0;max-width:30ch}
+    .ab-timeline-coda-punch em{font-style:normal;color:var(--lime,#b2f700)}
 
     /* CTA FINAL */
     .ab-cta{text-align:center;padding:64px 24px 120px}  /* explicit override del home.css */
@@ -352,6 +364,12 @@
               <div class="ab-role"><strong>Pionero en Radio por Internet · Televisa Radio WFM, IMER, Tomate.MX | Radio</strong>Cuando aún cabía un servidor en un cuarto. Aprendí que la audiencia se gana, no se compra.</div>
             </div>
           </div>
+
+          <!-- CODA: dots-connecting reflection (idea de Jobs sin citarlo, voz CS) -->
+          <div class="ab-timeline-coda">
+            <p class="ab-timeline-coda-body">En 1994 no pensé que ser pionero de radio por internet me serviría para algo más. Tampoco lo pensé del wireframe del INEGI, ni de programar para Neurótica.FM. Hoy cada uno sirve cuando construyo tu sitio.</p>
+            <p class="ab-timeline-coda-punch">Mirando para atrás, todo cuadra. <em>Hacia adelante nunca cuadra — y está bien.</em></p>
+          </div>
         </div>
       </section>
 
@@ -396,6 +414,8 @@
           <div class="ab-stakes-grid">
             <div class="ab-stakes-card stakes">
               <p class="ab-stakes-label">Si no haces nada</p>
+              <div class="ab-stakes-bignum">75<span class="pct">%</span></div>
+              <p class="ab-stakes-meta">Te juzga por tu sitio · Stanford Web Credibility</p>
               <p class="ab-stakes-h">Cada mes pagas el costo invisible</p>
               <p class="ab-stakes-p">Leads que se van a la competencia. Prospectos que dudan al verte. Búsquedas de Google donde simplemente no apareces. <strong>La pregunta no es si invertir en tu sitio, sino cuánto más vas a esperar.</strong></p>
             </div>
