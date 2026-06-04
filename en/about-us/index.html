@@ -83,12 +83,17 @@
     .ab-section-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.32em;text-transform:uppercase;opacity:.55;margin:0 0 24px}
     .ab-section-eyebrow::before{content:'↳';margin-right:10px;opacity:.6}
     .ab-section-h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,3.4vw,42px);font-weight:600;letter-spacing:-.02em;line-height:1.15;margin:0 0 48px;max-width:22ch}
-    .ab-timeline{display:grid;grid-template-columns:1fr;gap:0;max-width:880px}
-    .ab-row{display:grid;grid-template-columns:200px 1fr;gap:48px;padding:32px 0;border-bottom:1px solid rgba(255,255,255,.08)}
-    .ab-row:last-child{border-bottom:0}
-    .ab-year{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:500;letter-spacing:.04em;color:var(--lime,#b2f700)}
-    .ab-role{font-family:Inter,sans-serif;font-size:16px;line-height:1.55;font-weight:400;color:rgba(255,255,255,.85)}
-    .ab-role strong{font-weight:500;color:#fff}
+    /* Timeline Cero Studio style (kinetic brutalism: cards, sharp, lime accent slide) */
+    .ab-timeline{display:grid;grid-template-columns:1fr;gap:2px;max-width:1000px;background:rgba(255,255,255,.06)}
+    .ab-row{display:grid;grid-template-columns:minmax(160px,.32fr) 1fr;gap:48px;padding:44px 40px;background:var(--surface-lowest,#0e0e0e);position:relative;overflow:hidden;transition:background .25s ease}
+    .ab-row::before{content:'';position:absolute;top:0;left:0;height:2px;width:100%;background:var(--lime,#b2f700);transform:scaleX(0);transform-origin:left;transition:transform .4s ease}
+    .ab-row:hover{background:var(--surface-low,#1b1b1c)}
+    .ab-row:hover::before{transform:scaleX(1)}
+    .ab-row:hover .ab-role strong{color:var(--lime,#b2f700)}
+    .ab-year{font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,2.2vw,28px);font-weight:800;letter-spacing:-.005em;color:var(--lime,#b2f700);text-transform:uppercase;line-height:1.15;display:flex;flex-direction:column;gap:10px}
+    .ab-year::before{content:attr(data-num);font-size:11px;font-weight:700;letter-spacing:.32em;color:rgba(178,247,0,.4);font-family:'Space Grotesk',sans-serif}
+    .ab-role{font-family:Inter,sans-serif;font-size:15px;line-height:1.65;font-weight:300;color:rgba(255,255,255,.7)}
+    .ab-role strong{display:block;font-family:'Space Grotesk',sans-serif;font-size:clamp(18px,1.6vw,22px);font-weight:700;color:#fff;margin:0 0 12px;letter-spacing:.005em;text-transform:uppercase;line-height:1.2;transition:color .25s ease}
 
     .ab-plan{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1000px}
     .ab-step{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:36px 32px;position:relative;transition:border-color .25s,transform .25s}
@@ -132,8 +137,9 @@
       .ab-portrait{max-width:420px;margin:0 auto;aspect-ratio:4/5}
       .ab-portrait::after{display:none}
       .ab-empathy{padding:32px 24px;margin-bottom:80px}
-      .ab-row{grid-template-columns:1fr;gap:8px;padding:24px 0}
-      .ab-year{font-size:12px}
+      .ab-row{grid-template-columns:1fr;gap:16px;padding:32px 24px}
+      .ab-year{font-size:22px;flex-direction:row;align-items:center;gap:16px}
+      .ab-year::before{font-size:10px}
       .ab-plan{grid-template-columns:1fr;gap:16px}
       .ab-stakes-grid{grid-template-columns:1fr;gap:32px}
     }
@@ -278,20 +284,20 @@
           <h2 class="ab-section-h2">Every role taught something you'll benefit from when you hire me.</h2>
           <div class="ab-timeline">
             <div class="ab-row">
-              <div class="ab-year">2000 — Current</div>
-              <div class="ab-role"><strong>Founder · Cero Studio.</strong> Websites, eCommerce and digital branding for entrepreneurs and established businesses across Mexico and Latin America.</div>
+              <div class="ab-year" data-num="04 · Today">2000 — Current</div>
+              <div class="ab-role"><strong>Founder · Cero Studio</strong>Websites, eCommerce and digital branding for entrepreneurs and established businesses across Mexico and Latin America.</div>
             </div>
             <div class="ab-row">
-              <div class="ab-year">2010 — 2022</div>
-              <div class="ab-role"><strong>Digital Imagery Producer · INEGI</strong> (National Institute of Statistics and Geography). Designed the wireframe of the institutional website. Learned that data matters more than opinion.</div>
+              <div class="ab-year" data-num="03 · Government">2010 — 2022</div>
+              <div class="ab-role"><strong>Digital Imagery Producer · INEGI</strong>National Institute of Statistics and Geography. Designed the wireframe of the institutional website. Learned that data matters more than opinion.</div>
             </div>
             <div class="ab-row">
-              <div class="ab-year">2004 — 2009</div>
-              <div class="ab-role"><strong>Web Developer & Webmaster · Neurótica.FM.</strong> Internet radio stations. Code isn't art — it's plumbing. It has to work before it looks pretty.</div>
+              <div class="ab-year" data-num="02 · Media">2004 — 2009</div>
+              <div class="ab-role"><strong>Web Developer & Webmaster · Neurótica.FM</strong>Internet radio stations. Code isn't art — it's plumbing. It has to work before it looks pretty.</div>
             </div>
             <div class="ab-row">
-              <div class="ab-year">1994 — 2003</div>
-              <div class="ab-role"><strong>Internet Radio Pioneer · Televisa Radio WFM, IMER, Tomate.MX | Radio.</strong> Back when a server still fit in a room. Learned that audiences are earned, not bought.</div>
+              <div class="ab-year" data-num="01 · Pioneer">1994 — 2003</div>
+              <div class="ab-role"><strong>Internet Radio Pioneer · Televisa Radio WFM, IMER, Tomate.MX | Radio</strong>Back when a server still fit in a room. Learned that audiences are earned, not bought.</div>
             </div>
           </div>
         </div>
