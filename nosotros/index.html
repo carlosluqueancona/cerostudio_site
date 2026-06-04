@@ -60,7 +60,7 @@
     .ab-breadcrumb span{margin:0 8px;opacity:.5}
 
     /* HERO — promesa centrada en cliente (SB7: héroe = cliente) */
-    .ab-hero{display:grid;grid-template-columns:1.2fr 1fr;gap:80px;align-items:center;margin:0 0 120px}
+    .ab-hero{display:grid;grid-template-columns:1.2fr 1fr;gap:64px;align-items:center;margin:0 0 80px}
     .ab-hero-content{}
     .ab-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--lime,#b2f700);margin:0 0 20px;display:inline-flex;align-items:center;gap:12px}
     .ab-eyebrow::before{content:"";display:block;width:32px;height:1px;background:var(--lime,#b2f700)}
@@ -69,11 +69,11 @@
     .ab-lead{font-family:Inter,sans-serif;font-size:clamp(16px,1.4vw,18px);line-height:1.65;font-weight:300;color:rgba(255,255,255,.78);margin:0 0 32px;max-width:50ch}
     .ab-cta-row{display:flex;gap:14px;flex-wrap:wrap}
     .ab-portrait{position:relative;border-radius:16px;overflow:hidden;background:#0b0b0b;aspect-ratio:3/4}
-    .ab-portrait img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+    .ab-portrait img{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block}
     .ab-portrait::after{content:"";position:absolute;bottom:-12px;right:-12px;width:48px;height:48px;background:var(--lime,#b2f700);pointer-events:none}
 
     /* EMPATÍA — guía con voz humana (SB7 Element 3 + Cuddy empathy) */
-    .ab-empathy{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:48px 56px;margin:0 0 120px;max-width:780px}
+    .ab-empathy{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:40px 48px;margin:0 0 80px;max-width:820px}
     .ab-empathy-q{font-family:'Space Grotesk',sans-serif;font-size:clamp(22px,2.5vw,32px);font-weight:600;line-height:1.25;letter-spacing:-.015em;color:#fff;margin:0 0 20px;font-style:italic}
     .ab-empathy-q::before{content:"\201C";color:var(--lime,#b2f700);margin-right:8px}
     .ab-empathy-q::after{content:"\201D";color:var(--lime,#b2f700);margin-left:4px}
@@ -82,7 +82,7 @@
     .ab-empathy strong{font-weight:500;color:#fff}
 
     /* TIMELINE — autoridad por experiencia (Pioneer + Builder) */
-    .ab-section{padding:0 0 120px}
+    .ab-section{padding:0 0 80px}
     .ab-section-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.32em;text-transform:uppercase;opacity:.55;margin:0 0 24px}
     .ab-section-eyebrow::before{content:'↳';margin-right:10px;opacity:.6}
     .ab-section-h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,3.4vw,42px);font-weight:600;letter-spacing:-.02em;line-height:1.15;margin:0 0 48px;max-width:22ch}
@@ -129,10 +129,10 @@
     .ab-cta-actions .btn-primary,.ab-cta-actions .btn-ghost{border-radius:0}
 
     @media (max-width:900px){
-      .ab-hero{grid-template-columns:1fr;gap:48px;margin-bottom:80px}
+      .ab-hero{grid-template-columns:1fr;gap:40px;margin-bottom:64px}
       .ab-portrait{max-width:420px;margin:0 auto;aspect-ratio:4/5}
       .ab-portrait::after{display:none}
-      .ab-empathy{padding:32px 24px;margin-bottom:80px}
+      .ab-empathy{padding:32px 24px;margin-bottom:64px}
       .ab-row{grid-template-columns:1fr;gap:16px;padding:32px 24px}
       .ab-year{font-size:22px;flex-direction:row;align-items:center;gap:16px}
       .ab-year::before{font-size:10px}
