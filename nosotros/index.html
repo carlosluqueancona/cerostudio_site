@@ -123,7 +123,10 @@
     .ab-cta-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(32px,4.6vw,56px);font-weight:600;letter-spacing:-.025em;line-height:1.1;margin:0 auto 20px;max-width:22ch}
     .ab-cta-sub{font-family:Inter,sans-serif;font-size:16px;font-weight:300;color:rgba(255,255,255,.7);margin:0 auto 36px;max-width:52ch}
     .ab-cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-    /* Buttons usan .btn-primary y .btn-ghost del home.css (homologados con CTAs del home) */
+    /* Buttons usan .btn-primary y .btn-ghost del home.css (homologados con CTAs del HERO).
+       border-radius:0 explícito como guard contra browser/cache que pueda heredar radius. */
+    .ab-cta-row .btn-primary,.ab-cta-row .btn-ghost,
+    .ab-cta-actions .btn-primary,.ab-cta-actions .btn-ghost{border-radius:0}
 
     @media (max-width:900px){
       .ab-hero{grid-template-columns:1fr;gap:48px;margin-bottom:80px}
@@ -323,7 +326,7 @@
             <div class="ab-stakes-card success">
               <p class="ab-stakes-label">Si trabajamos juntos</p>
               <p class="ab-stakes-h">Tu sitio deja de ser un costo</p>
-              <p class="ab-stakes-p">Se vuelve el vendedor más predecible de tu negocio. Un cliente reciente <strong>(Mainoflex) subió ventas +40% en 6 meses</strong>. Otros bajan costo por lead y dejan de pelear por precio.</p>
+              <p class="ab-stakes-p">Se vuelve el vendedor más predecible de tu negocio. <strong>IMVEC.MX (metalmecánica) triplicó el valor de su inversión</strong> en 2026. <strong>Mainoflex subió ventas +40% en 6 meses</strong>. Otros bajan costo por lead y dejan de pelear por precio.</p>
             </div>
           </div>
         </div>

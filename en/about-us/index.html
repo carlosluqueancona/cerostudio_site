@@ -117,7 +117,10 @@
     .ab-cta-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(32px,4.6vw,56px);font-weight:600;letter-spacing:-.025em;line-height:1.1;margin:0 auto 20px;max-width:22ch}
     .ab-cta-sub{font-family:Inter,sans-serif;font-size:16px;font-weight:300;color:rgba(255,255,255,.7);margin:0 auto 36px;max-width:52ch}
     .ab-cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-    /* Buttons usan .btn-primary y .btn-ghost del home.css (homologados con CTAs del home) */
+    /* Buttons usan .btn-primary y .btn-ghost del home.css (homologados con CTAs del HERO).
+       border-radius:0 explícito como guard contra browser/cache que pueda heredar radius. */
+    .ab-cta-row .btn-primary,.ab-cta-row .btn-ghost,
+    .ab-cta-actions .btn-primary,.ab-cta-actions .btn-ghost{border-radius:0}
 
     /* Footer EN inline */
     .en-footer{background:var(--surface-lowest,#0e0e0e);padding:56px 48px;margin-top:0;border-top:1px solid rgba(255,255,255,.06)}
@@ -336,7 +339,7 @@
             <div class="ab-stakes-card success">
               <p class="ab-stakes-label">If we work together</p>
               <p class="ab-stakes-h">Your site stops being a cost</p>
-              <p class="ab-stakes-p">It becomes the most predictable salesperson in your business. A recent client <strong>(Mainoflex) raised sales +40% in 6 months</strong>. Others lower cost-per-lead and stop competing on price alone.</p>
+              <p class="ab-stakes-p">It becomes the most predictable salesperson in your business. <strong>IMVEC.MX (precision metalwork) tripled the value of their investment</strong> in 2026. <strong>Mainoflex raised sales +40% in 6 months</strong>. Others lower cost-per-lead and stop competing on price alone.</p>
             </div>
           </div>
         </div>
