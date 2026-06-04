@@ -138,6 +138,11 @@
     .ab-stakes-p{font-family:Inter,sans-serif;font-size:15px;line-height:1.8;color:rgba(255,255,255,.65);font-weight:300;margin:0}
     .stakes .ab-stakes-p strong{color:#ff8080;font-weight:500}
     .success .ab-stakes-p strong{color:var(--lime,#b2f700);font-weight:500}
+    /* BIG NUMBER stat: IMVEC.MX 3x pull-out */
+    .ab-stakes-bignum{font-family:'Space Grotesk',sans-serif;font-size:clamp(64px,9.5vw,118px);font-weight:800;color:var(--lime,#b2f700);line-height:.85;letter-spacing:-.045em;margin:8px 0 16px;display:flex;align-items:baseline;gap:4px}
+    .ab-stakes-bignum .x{font-size:.62em;font-weight:700;opacity:.7}
+    .ab-stakes-meta{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.55);margin:0 0 32px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .ab-stakes-meta::before{content:'';display:inline-block;width:24px;height:1px;background:var(--lime,#b2f700);flex-shrink:0}
 
     .ab-cta{text-align:center;padding:64px 24px 120px}  /* explicit override del home.css */
     .ab-cta-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(32px,4.6vw,56px);font-weight:600;letter-spacing:-.025em;line-height:1.1;margin:0 auto 20px;max-width:22ch}
@@ -380,8 +385,10 @@
             </div>
             <div class="ab-stakes-card success">
               <p class="ab-stakes-label">If we work together</p>
+              <div class="ab-stakes-bignum">3<span class="x">x</span></div>
+              <p class="ab-stakes-meta">Documented ROI · IMVEC.MX · 2026</p>
               <p class="ab-stakes-h">Your site stops being a cost</p>
-              <p class="ab-stakes-p">It becomes the most predictable salesperson in your business. <strong>IMVEC.MX (precision metalwork) tripled the value of their investment</strong> in 2026. <strong>Mainoflex raised sales +40% in 6 months</strong>. Others lower cost-per-lead and stop competing on price alone.</p>
+              <p class="ab-stakes-p">It becomes the most predictable salesperson in your business. <strong>Mainoflex raised sales +40% in 6 months</strong>. Others lower cost-per-lead and stop competing on price alone.</p>
             </div>
           </div>
         </div>

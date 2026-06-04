@@ -153,6 +153,11 @@
     /* Strong tags: rojo en stakes (warning), lime en success (proof) */
     .stakes .ab-stakes-p strong{color:#ff8080;font-weight:500}
     .success .ab-stakes-p strong{color:var(--lime,#b2f700);font-weight:500}
+    /* BIG NUMBER stat: pull-out del 3x de IMVEC.MX como hero del success card */
+    .ab-stakes-bignum{font-family:'Space Grotesk',sans-serif;font-size:clamp(64px,9.5vw,118px);font-weight:800;color:var(--lime,#b2f700);line-height:.85;letter-spacing:-.045em;margin:8px 0 16px;display:flex;align-items:baseline;gap:4px}
+    .ab-stakes-bignum .x{font-size:.62em;font-weight:700;opacity:.7}
+    .ab-stakes-meta{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.55);margin:0 0 32px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .ab-stakes-meta::before{content:'';display:inline-block;width:24px;height:1px;background:var(--lime,#b2f700);flex-shrink:0}
 
     /* CTA FINAL */
     .ab-cta{text-align:center;padding:64px 24px 120px}  /* explicit override del home.css */
@@ -396,8 +401,10 @@
             </div>
             <div class="ab-stakes-card success">
               <p class="ab-stakes-label">Si trabajamos juntos</p>
+              <div class="ab-stakes-bignum">3<span class="x">x</span></div>
+              <p class="ab-stakes-meta">ROI documentado · IMVEC.MX · 2026</p>
               <p class="ab-stakes-h">Tu sitio deja de ser un costo</p>
-              <p class="ab-stakes-p">Se vuelve el vendedor más predecible de tu negocio. <strong>IMVEC.MX (metalmecánica) triplicó el valor de su inversión</strong> en 2026. <strong>Mainoflex subió ventas +40% en 6 meses</strong>. Otros bajan costo por lead y dejan de pelear por precio.</p>
+              <p class="ab-stakes-p">Se vuelve el vendedor más predecible de tu negocio. <strong>Mainoflex subió ventas +40% en 6 meses</strong>. Otros bajan costo por lead y dejan de pelear por precio.</p>
             </div>
           </div>
         </div>
