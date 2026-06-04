@@ -412,6 +412,15 @@
   margin-bottom: 28px;
 }
 
+/* ── Service portfolio (sección #casos inyectada desde CMS) ─────────────
+   Si no hay items con el tag de la página, el middleware setea hidden +
+   inline style en el wrapper interno. Esta regla colapsa también la
+   SECTION padre para que no quede padding/border-top vacío. */
+section#casos:has(> .section-inner[hidden]),
+section#casos:has(> #service-portfolio-wrapper[hidden]) {
+  display: none !important;
+}
+
 /* ── Benefit-grid: bento brutalist ──────────────────────────────────────
    2x2 fix: todas las 7 service pages tienen 4 benefits. 3-col daba
    orphan en row 2. 2-col → 2x2 simétrico, cards más anchas, mejor mobile

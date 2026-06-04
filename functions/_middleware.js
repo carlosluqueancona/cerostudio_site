@@ -154,25 +154,34 @@ export async function onRequest(context) {
       },
     });
 
-  // Service portfolio: rellenar #service-portfolio-grid con cards de cache
-  // y append <script>window.CS_PORTFOLIO_I18N</script> al body para que el
-  // toggleLang client-side traduzca los port-c*/port-d* IDs.
-  if (servicePortfolio?.html) {
+  // Service portfolio: aplicar SIEMPRE si la página es de servicio, no solo
+  // cuando hay HTML. Si el cache está vacío (0 items con ese tag), poner
+  // 'hidden' en el wrapper para que la sección entera colapse via CSS
+  // .lp-section:has(> [hidden]) { display: none }.
+  if (serviceTag) {
+    const html = servicePortfolio?.html || '';
+    const i18n = servicePortfolio?.i18n || '';
+    const isEmpty = !html.trim();
+
     rewriter.on('#service-portfolio-grid', {
       element(el) {
-        el.setInnerContent(servicePortfolio.html, { html: true });
+        el.setInnerContent(html, { html: true });
       },
     });
     rewriter.on('#service-portfolio-wrapper', {
-      // Si hay 0 items para este tag, ocultar wrapper para evitar sección vacía.
       element(el) {
-        if (!servicePortfolio.html.trim()) el.setAttribute('hidden', '');
+        if (isEmpty) {
+          el.setAttribute('hidden', '');
+          // Defensive: hidden attribute puede ser overrideado por CSS display:flex/grid.
+          // Inline style con !important garantiza ocultamiento.
+          el.setAttribute('style', 'display:none !important');
+        }
       },
     });
-    if (servicePortfolio.i18n) {
+    if (i18n) {
       rewriter.on('body', {
         element(el) {
-          el.append(`<script>window.CS_PORTFOLIO_I18N=${servicePortfolio.i18n};</script>`, { html: true });
+          el.append(`<script>window.CS_PORTFOLIO_I18N=${i18n};</script>`, { html: true });
         },
       });
     }
