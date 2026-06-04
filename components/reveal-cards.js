@@ -23,17 +23,23 @@
   // Solo aplicar en touch devices — desktop ya tiene :hover
   if (!window.matchMedia('(hover: none)').matches) return;
 
-  // Selectors de cards brutalist que tienen :hover treatment
+  // Selectors de cards brutalist/hover-treatment en todo el sitio
   var SELECTORS = [
+    // /nosotros/ + /en/about-us/
     '.ab-step',
     '.ab-row',
     '.ab-stakes-card',
     '.ab-empathy',
     '.ab-timeline-coda',
+    // /servicios/* + /diseno-web-para-clinicas/
     '.benefit-card',
     '.process-step',
     '.includes-item',
-    '.lp-related-card'
+    '.lp-related-card',
+    // Home (/)
+    '.srv-card',
+    '.proc-step',
+    '.plan-card'
   ].join(',');
 
   function init() {

@@ -2090,3 +2090,16 @@
       color: var(--on-lime);
       background: var(--lime);
     }
+
+    /* ── MOBILE/TOUCH fallback: misma animación que :hover para cards del
+       home, disparada por IntersectionObserver via /components/reveal-cards.js
+       (añade clase .in-view a la card al entrar al viewport, one-shot). ── */
+    @media (hover: none) {
+      .srv-card.in-view { background: var(--surface-low); }
+      .srv-card.in-view::after { transform: scaleX(1); }
+      .proc-step.in-view { background: var(--g2); }
+      .proc-step.in-view::before { transform: scaleX(1); }
+      .proc-step.in-view .proc-title { color: var(--lime); }
+      .plan-card.in-view:not(.plan-featured) { background: var(--surface-low); }
+      .plan-card.plan-featured.in-view { background: var(--surface-high); }
+    }
