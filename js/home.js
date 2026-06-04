@@ -436,6 +436,7 @@
           'stat-l3': { t: 'Proyectos entregados' },
           'stat-l4': { t: 'Satisfacción garantizada' },
           'nos-btn': { t: 'Trabajemos Juntos' },
+          'nos-historia': { t: 'Mi historia completa →' },
           'nos-quote': { h: 'Un sitio web no es un gasto. Es el vendedor más trabajador que nunca te pide vacaciones.' },
           /* ── PROCESO */
           'proc-eyebrow': { t: 'Cómo Trabajamos' },
@@ -572,6 +573,7 @@
           'stat-l3': { t: 'Projects delivered' },
           'stat-l4': { t: 'Satisfaction guaranteed' },
           'nos-btn': { t: "Let's Work Together" },
+          'nos-historia': { t: 'Read My Full Story →' },
           'nos-quote': { h: "A website isn't an expense. It's the hardest-working employee you'll never have to pay overtime." },
           /* ── PROCESO */
           'proc-eyebrow': { t: 'How We Work' },
@@ -735,6 +737,11 @@
         /* WhatsApp links */
         document.querySelectorAll('[data-wa-es]').forEach(function (el) {
           el.href = lang === 'en' ? el.dataset.waEn : el.dataset.waEs;
+        });
+
+        /* Lang-aware internal links (e.g. /nosotros/ ↔ /en/about-us/) */
+        document.querySelectorAll('[data-href-es]').forEach(function (el) {
+          el.href = lang === 'en' ? el.dataset.hrefEn : el.dataset.hrefEs;
         });
 
         /* html lang attribute */
