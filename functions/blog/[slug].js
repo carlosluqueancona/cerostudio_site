@@ -174,9 +174,8 @@ export async function onRequest(context) {
     'description': description,
     'image': image,
     'author': {
-      '@type': 'Organization',
-      'name': 'Cero Studio',
-      'url': BASE_URL,
+      '@type': 'Person',
+      'name': 'Carlos Luque Ancona',
     },
     'publisher': {
       '@type': 'Organization',

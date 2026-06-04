@@ -79,6 +79,23 @@
   text-transform: uppercase; color: var(--lime, #ceff33);
   margin: 0 0 16px;
 }
+.lp-cite {
+  font-size: 12px !important;
+  font-weight: 300;
+  color: rgba(255,255,255,.45) !important;
+  margin: -8px 0 24px !important;
+  line-height: 1.5 !important;
+  letter-spacing: .01em;
+}
+.lp-cite a {
+  color: rgba(255,255,255,.65);
+  text-decoration: underline;
+  text-decoration-color: rgba(255,255,255,.25);
+  text-underline-offset: 3px;
+  transition: color .2s, text-decoration-color .2s;
+}
+.lp-cite a:hover { color: var(--lime, #ceff33); text-decoration-color: currentColor; }
+.lp-cite cite { font-style: italic; font-weight: 400; }
 
 /* ── Benefit grid (problem framing / why) ────────────────────────────────── */
 .benefit-grid {
