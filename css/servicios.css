@@ -80,22 +80,35 @@
   margin: 0 0 16px;
 }
 .lp-cite {
-  font-size: 12px !important;
-  font-weight: 300;
-  color: rgba(255,255,255,.45) !important;
-  margin: -8px 0 24px !important;
-  line-height: 1.5 !important;
-  letter-spacing: .01em;
+  font-size: 13px !important;
+  font-weight: 400;
+  color: rgba(255,255,255,.72) !important;
+  margin: -4px 0 28px !important;
+  line-height: 1.55 !important;
+  letter-spacing: .005em;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(255,255,255,.04);
+  border-left: 2px solid var(--lime, #ceff33);
+  border-radius: 0 4px 4px 0;
+}
+.lp-cite::before {
+  content: '↳';
+  color: var(--lime, #ceff33);
+  font-weight: 600;
+  margin-right: 2px;
 }
 .lp-cite a {
-  color: rgba(255,255,255,.65);
+  color: rgba(255,255,255,.85);
   text-decoration: underline;
-  text-decoration-color: rgba(255,255,255,.25);
+  text-decoration-color: rgba(206,255,51,.5);
   text-underline-offset: 3px;
   transition: color .2s, text-decoration-color .2s;
 }
 .lp-cite a:hover { color: var(--lime, #ceff33); text-decoration-color: currentColor; }
-.lp-cite cite { font-style: italic; font-weight: 400; }
+.lp-cite cite { font-style: italic; font-weight: 500; }
 
 /* ── Benefit grid (problem framing / why) ────────────────────────────────── */
 .benefit-grid {
