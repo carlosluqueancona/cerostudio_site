@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <script src="/components/cookie-consent.js" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Carlos Luque Ancona — fundador de Cero Studio. 25+ años haciendo que sitios web vendan. Pionero de radio por internet en 1994, productor en INEGI, fundador de Tomate.MX desde 2000.">
+  <title>Nosotros — Carlos Luque Ancona, Fundador | Cero Studio</title>
+  <link rel="canonical" href="https://cerostudio.ai/nosotros/">
+  <link rel="alternate" hreflang="es-MX" href="https://cerostudio.ai/nosotros/">
+  <link rel="alternate" hreflang="en" href="https://cerostudio.ai/en/about-us/">
+  <link rel="alternate" hreflang="x-default" href="https://cerostudio.ai/nosotros/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="profile">
+  <meta property="og:url" content="https://cerostudio.ai/nosotros/">
+  <meta property="og:title" content="Nosotros — Carlos Luque Ancona, Fundador | Cero Studio">
+  <meta property="og:description"
+    content="25+ años haciendo que sitios web vendan. Pionero de radio por internet, fundador de Cero Studio.">
+  <meta property="og:image" content="https://cerostudio.ai/images/Carlos_Luque_Ancona_2026-Retrato.webp">
+  <meta property="og:image:width" content="731">
+  <meta property="og:image:height" content="1000">
+  <meta property="og:image:alt" content="Carlos Luque Ancona — Fundador de Cero Studio">
+  <meta property="og:locale" content="es_MX">
+  <meta property="og:site_name" content="Cero Studio">
+  <meta property="profile:first_name" content="Carlos">
+  <meta property="profile:last_name" content="Luque Ancona">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nosotros — Carlos Luque Ancona, Fundador | Cero Studio">
+  <meta name="twitter:description"
+    content="25+ años haciendo que sitios web vendan. Pionero de radio por internet, fundador de Cero Studio.">
+  <meta name="twitter:image" content="https://cerostudio.ai/images/Carlos_Luque_Ancona_2026-Retrato.webp">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
+    as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
+      rel="stylesheet"></noscript>
+  <link rel="stylesheet" href="/css/base.css">
+  <!-- home.css aporta navbar+footer styles del middleware -->
+  <link rel="stylesheet" href="/css/home.css?v=20260512a">
+
+  <style>
+    /* ── Page-specific styles ── */
+    .ab-wrap{max-width:1180px;margin:0 auto;padding:140px 24px 0}
+    .ab-breadcrumb{font-family:Inter,sans-serif;font-size:13px;opacity:.55;margin:0 0 48px;letter-spacing:.02em}
+    .ab-breadcrumb a{color:inherit;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}
+    .ab-breadcrumb a:hover{border-bottom-color:currentColor}
+    .ab-breadcrumb span{margin:0 8px;opacity:.5}
+
+    /* HERO — promesa centrada en cliente (SB7: héroe = cliente) */
+    .ab-hero{display:grid;grid-template-columns:1.2fr 1fr;gap:80px;align-items:center;margin:0 0 120px}
+    .ab-hero-content{}
+    .ab-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--lime,#b2f700);margin:0 0 20px;display:inline-flex;align-items:center;gap:12px}
+    .ab-eyebrow::before{content:"";display:block;width:32px;height:1px;background:var(--lime,#b2f700)}
+    .ab-h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(38px,5.5vw,68px);font-weight:700;line-height:1.05;letter-spacing:-.025em;margin:0 0 24px;color:#fff}
+    .ab-h1 em{font-style:normal;color:var(--lime,#b2f700)}
+    .ab-lead{font-family:Inter,sans-serif;font-size:clamp(16px,1.4vw,18px);line-height:1.65;font-weight:300;color:rgba(255,255,255,.78);margin:0 0 32px;max-width:50ch}
+    .ab-cta-row{display:flex;gap:14px;flex-wrap:wrap}
+    .ab-portrait{position:relative;border-radius:16px;overflow:hidden;background:#0b0b0b;aspect-ratio:3/4}
+    .ab-portrait img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+    .ab-portrait::after{content:"";position:absolute;bottom:-12px;right:-12px;width:48px;height:48px;background:var(--lime,#b2f700);pointer-events:none}
+
+    /* EMPATÍA — guía con voz humana (SB7 Element 3 + Cuddy empathy) */
+    .ab-empathy{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:48px 56px;margin:0 0 120px;max-width:780px}
+    .ab-empathy-q{font-family:'Space Grotesk',sans-serif;font-size:clamp(22px,2.5vw,32px);font-weight:600;line-height:1.25;letter-spacing:-.015em;color:#fff;margin:0 0 20px;font-style:italic}
+    .ab-empathy-q::before{content:"\201C";color:var(--lime,#b2f700);margin-right:8px}
+    .ab-empathy-q::after{content:"\201D";color:var(--lime,#b2f700);margin-left:4px}
+    .ab-empathy p{font-family:Inter,sans-serif;font-size:16px;line-height:1.75;font-weight:300;color:rgba(255,255,255,.78);margin:0 0 16px}
+    .ab-empathy p:last-child{margin:0}
+    .ab-empathy strong{font-weight:500;color:#fff}
+
+    /* TIMELINE — autoridad por experiencia (Pioneer + Builder) */
+    .ab-section{padding:0 0 120px}
+    .ab-section-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.32em;text-transform:uppercase;opacity:.55;margin:0 0 24px}
+    .ab-section-eyebrow::before{content:'↳';margin-right:10px;opacity:.6}
+    .ab-section-h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,3.4vw,42px);font-weight:600;letter-spacing:-.02em;line-height:1.15;margin:0 0 48px;max-width:22ch}
+    .ab-timeline{display:grid;grid-template-columns:1fr;gap:0;max-width:880px}
+    .ab-row{display:grid;grid-template-columns:200px 1fr;gap:48px;padding:32px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+    .ab-row:last-child{border-bottom:0}
+    .ab-year{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:500;letter-spacing:.04em;color:var(--lime,#b2f700)}
+    .ab-role{font-family:Inter,sans-serif;font-size:16px;line-height:1.55;font-weight:400;color:rgba(255,255,255,.85)}
+    .ab-role strong{font-weight:500;color:#fff}
+
+    /* PLAN — 3 pasos (SB7 Element 4: Process Plan) */
+    .ab-plan{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1000px}
+    .ab-step{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:36px 32px;position:relative;transition:border-color .25s,transform .25s}
+    .ab-step:hover{border-color:rgba(184,255,0,.35);transform:translateY(-2px)}
+    .ab-step-num{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;letter-spacing:.18em;color:var(--lime,#b2f700);margin:0 0 24px}
+    .ab-step-t{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:600;color:#fff;margin:0 0 12px;letter-spacing:-.01em}
+    .ab-step-d{font-family:Inter,sans-serif;font-size:14px;line-height:1.65;color:rgba(255,255,255,.72);font-weight:300;margin:0}
+
+    /* STAKES + SUCCESS — dos columnas (avoid failure / end in success) */
+    .ab-stakes-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;max-width:1000px}
+    .ab-stakes-card{padding:32px 0;border-top:2px solid;position:relative}
+    .ab-stakes-card.stakes{border-top-color:rgba(255,100,100,.5)}
+    .ab-stakes-card.success{border-top-color:var(--lime,#b2f700)}
+    .ab-stakes-label{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.28em;text-transform:uppercase;margin:0 0 16px}
+    .stakes .ab-stakes-label{color:rgba(255,100,100,.8)}
+    .success .ab-stakes-label{color:var(--lime,#b2f700)}
+    .ab-stakes-h{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:600;color:#fff;margin:0 0 14px;letter-spacing:-.01em;line-height:1.25}
+    .ab-stakes-p{font-family:Inter,sans-serif;font-size:15px;line-height:1.7;color:rgba(255,255,255,.75);font-weight:300;margin:0}
+    .ab-stakes-p strong{font-weight:500;color:#fff}
+
+    /* CTA FINAL */
+    .ab-cta{text-align:center;padding:0 24px 140px}
+    .ab-cta-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(32px,4.6vw,56px);font-weight:600;letter-spacing:-.025em;line-height:1.1;margin:0 auto 20px;max-width:22ch}
+    .ab-cta-sub{font-family:Inter,sans-serif;font-size:16px;font-weight:300;color:rgba(255,255,255,.7);margin:0 auto 36px;max-width:52ch}
+    .ab-cta-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+    .ab-btn{display:inline-block;padding:14px 28px;border-radius:999px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;letter-spacing:.05em;text-decoration:none;transition:transform .2s,background .2s,color .2s}
+    .ab-btn:hover{transform:translateY(-2px)}
+    .ab-btn-primary{background:var(--lime,#b2f700);color:#131313}
+    .ab-btn-primary:hover{background:#fff}
+    .ab-btn-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.2)}
+    .ab-btn-ghost:hover{border-color:var(--lime,#b2f700);color:var(--lime,#b2f700)}
+
+    @media (max-width:900px){
+      .ab-hero{grid-template-columns:1fr;gap:48px;margin-bottom:80px}
+      .ab-portrait{max-width:420px;margin:0 auto;aspect-ratio:4/5}
+      .ab-portrait::after{display:none}
+      .ab-empathy{padding:32px 24px;margin-bottom:80px}
+      .ab-row{grid-template-columns:1fr;gap:8px;padding:24px 0}
+      .ab-year{font-size:12px}
+      .ab-plan{grid-template-columns:1fr;gap:16px}
+      .ab-stakes-grid{grid-template-columns:1fr;gap:32px}
+    }
+    @media (max-width:520px){
+      .ab-wrap{padding-top:100px}
+      .ab-cta{padding-bottom:80px}
+      .ab-cta-actions .ab-btn{width:100%;text-align:center}
+    }
+  </style>
+
+  <!-- ── Structured Data: Person + AboutPage + BreadcrumbList ── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://cerostudio.ai/nosotros/#carlos",
+        "name": "Carlos Luque Ancona",
+        "givenName": "Carlos",
+        "familyName": "Luque Ancona",
+        "jobTitle": "Fundador",
+        "image": "https://cerostudio.ai/images/Carlos_Luque_Ancona_2026-Retrato.webp",
+        "url": "https://cerostudio.ai/nosotros/",
+        "worksFor": { "@id": "https://cerostudio.ai/#organization" },
+        "sameAs": [
+          "https://www.instagram.com/cerostudioai",
+          "https://www.linkedin.com/in/carlosluque/"
+        ],
+        "knowsAbout": [
+          "Diseño web",
+          "Desarrollo web",
+          "eCommerce",
+          "SEO",
+          "Branding digital",
+          "Estrategia digital",
+          "Radio por internet",
+          "Producción multimedia"
+        ],
+        "hasOccupation": [
+          {
+            "@type": "Role",
+            "startDate": "2000",
+            "roleName": "Director",
+            "worksFor": { "@type": "Organization", "name": "Tomate.MX — Agencia Digital" }
+          },
+          {
+            "@type": "Role",
+            "startDate": "2010", "endDate": "2022",
+            "roleName": "Productor de Imagen Digital",
+            "worksFor": { "@type": "Organization", "name": "INEGI — Instituto Nacional de Estadística y Geografía" }
+          },
+          {
+            "@type": "Role",
+            "startDate": "2004", "endDate": "2009",
+            "roleName": "Desarrollador Web y Webmaster",
+            "worksFor": { "@type": "Organization", "name": "Neurótica.FM" }
+          },
+          {
+            "@type": "Role",
+            "startDate": "1994", "endDate": "2003",
+            "roleName": "Pionero en Radio por Internet",
+            "worksFor": { "@type": "Organization", "name": "Televisa Radio WFM, IMER, Tomate.MX | Radio" }
+          }
+        ]
+      },
+      {
+        "@type": "AboutPage",
+        "@id": "https://cerostudio.ai/nosotros/",
+        "url": "https://cerostudio.ai/nosotros/",
+        "name": "Nosotros — Carlos Luque Ancona, Fundador",
+        "inLanguage": "es-MX",
+        "isPartOf": { "@id": "https://cerostudio.ai/#website" },
+        "about": { "@id": "https://cerostudio.ai/nosotros/#carlos" },
+        "mainEntity": { "@id": "https://cerostudio.ai/nosotros/#carlos" },
+        "breadcrumb": { "@id": "https://cerostudio.ai/nosotros/#breadcrumb" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://cerostudio.ai/nosotros/#breadcrumb",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://cerostudio.ai/" },
+          { "@type": "ListItem", "position": 2, "name": "Nosotros", "item": "https://cerostudio.ai/nosotros/" }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <div class="site-wrapper">
+    <div id="navbar-placeholder"></div>
+
+    <main id="main-content">
+      <div class="ab-wrap">
+        <nav class="ab-breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Inicio</a><span>/</span>Nosotros
+        </nav>
+
+        <!-- HERO: Cliente como héroe. Promesa CS directa + autoridad pionero+builder -->
+        <section class="ab-hero">
+          <div class="ab-hero-content">
+            <p class="ab-eyebrow">Nosotros</p>
+            <h1 class="ab-h1">Construyo sitios web que <em>venden.</em> Llevo haciéndolo desde antes que Google existiera.</h1>
+            <p class="ab-lead">Soy <strong style="color:#fff;font-weight:500">Carlos Luque Ancona</strong> — pionero de radio por internet en México desde 1994, fundador de Tomate.MX desde 2000, y al frente de Cero Studio convirtiendo visitas en clientes para 150+ negocios en México y LATAM.</p>
+            <div class="ab-cta-row">
+              <a href="/#contacto" class="ab-btn ab-btn-primary">Agendar consulta gratis</a>
+              <a href="#proceso" class="ab-btn ab-btn-ghost">Ver mi proceso</a>
+            </div>
+          </div>
+          <figure class="ab-portrait">
+            <img src="/images/Carlos_Luque_Ancona_2026-Retrato.webp"
+                 alt="Carlos Luque Ancona — Fundador de Cero Studio"
+                 width="731" height="1000" fetchpriority="high">
+          </figure>
+        </section>
+
+        <!-- EMPATÍA: guía con voz humana. Ataca los 3 villanos del cliente -->
+        <section class="ab-empathy">
+          <p class="ab-empathy-q">Sé lo que es pagar por un sitio que no te trajo ni un solo lead.</p>
+          <p>He visto cientos de empresarios buenos con sitios que no les hacen justicia. <strong>Plantillas baratas que un primo armó.</strong> Agencias grandes que cobraron seis meses y entregaron un PDF. <strong>Un Wix que se ve barato cuando tu negocio ya no lo es.</strong></p>
+          <p>Si esto te suena familiar, estás en el lugar correcto.</p>
+        </section>
+      </div>
+
+      <!-- TIMELINE: autoridad por experiencia -->
+      <section class="ab-section">
+        <div class="ab-wrap" style="padding-top:0">
+          <p class="ab-section-eyebrow">Experiencia</p>
+          <h2 class="ab-section-h2">Cada rol enseñó algo que hoy usás cuando me contratas.</h2>
+          <div class="ab-timeline">
+            <div class="ab-row">
+              <div class="ab-year">2000 — Actual</div>
+              <div class="ab-role"><strong>Director · Tomate.MX</strong> · Fundador de Cero Studio. Sitios web, eCommerce y branding digital para emprendedores y negocios establecidos.</div>
+            </div>
+            <div class="ab-row">
+              <div class="ab-year">2010 — 2022</div>
+              <div class="ab-role"><strong>Productor de Imagen Digital · INEGI</strong> (Instituto Nacional de Estadística y Geografía). Aprendí que los datos importan más que la opinión.</div>
+            </div>
+            <div class="ab-row">
+              <div class="ab-year">2004 — 2009</div>
+              <div class="ab-role"><strong>Desarrollador Web y Webmaster · Neurótica.FM.</strong> El código no es arte, es plomería. Tiene que funcionar antes que verse bonito.</div>
+            </div>
+            <div class="ab-row">
+              <div class="ab-year">1994 — 2003</div>
+              <div class="ab-role"><strong>Pionero en Radio por Internet · Televisa Radio WFM, IMER, Tomate.MX | Radio.</strong> Cuando aún cabía un servidor en un cuarto. Aprendí que la audiencia se gana, no se compra.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PLAN: 3 pasos (SB7 Process Plan) -->
+      <section class="ab-section" id="proceso">
+        <div class="ab-wrap" style="padding-top:0">
+          <p class="ab-section-eyebrow">Cómo trabajamos</p>
+          <h2 class="ab-section-h2">Tres pasos. Sin sorpresas. Sin letra chica.</h2>
+          <div class="ab-plan">
+            <div class="ab-step">
+              <p class="ab-step-num">01 · Diagnóstico</p>
+              <p class="ab-step-t">Auditamos lo que tienes hoy</p>
+              <p class="ab-step-d">Sitio actual, mercado, competencia. Identificamos exactamente qué te está costando dinero — y qué tendría que pasar para que deje de costártelo.</p>
+            </div>
+            <div class="ab-step">
+              <p class="ab-step-num">02 · Estrategia</p>
+              <p class="ab-step-t">Definimos qué hacer y en qué orden</p>
+              <p class="ab-step-d">Qué necesitas (y qué no), con qué presupuesto, y cómo recuperar la inversión en el primer trimestre. No es plan de 50 páginas — es un roadmap accionable.</p>
+            </div>
+            <div class="ab-step">
+              <p class="ab-step-num">03 · Ejecución</p>
+              <p class="ab-step-t">Diseño, código, lanzamiento</p>
+              <p class="ab-step-d">Tú apruebas, nosotros entregamos en tiempo. Lo que cotizo es lo que cobras. Sin sorpresas de scope ni cargos de última hora.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STAKES + SUCCESS: avoid failure + end in success (SB7 #6 + #7) -->
+      <section class="ab-section">
+        <div class="ab-wrap" style="padding-top:0">
+          <p class="ab-section-eyebrow">Lo que está en juego</p>
+          <div class="ab-stakes-grid">
+            <div class="ab-stakes-card stakes">
+              <p class="ab-stakes-label">Si no haces nada</p>
+              <p class="ab-stakes-h">Cada mes pagas el costo invisible</p>
+              <p class="ab-stakes-p">Leads que se van a la competencia. Prospectos que dudan al verte. Búsquedas de Google donde simplemente no apareces. <strong>La pregunta no es si invertir en tu sitio, sino cuánto más vas a esperar.</strong></p>
+            </div>
+            <div class="ab-stakes-card success">
+              <p class="ab-stakes-label">Si trabajamos juntos</p>
+              <p class="ab-stakes-h">Tu sitio deja de ser un costo</p>
+              <p class="ab-stakes-p">Se vuelve el vendedor más predecible de tu negocio. Un cliente reciente <strong>(Mainoflex) subió ventas +40% en 6 meses</strong>. Otros bajan costo por lead y dejan de pelear por precio.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA FINAL: direct + transitional (SB7 #5) -->
+      <section class="ab-cta">
+        <h2 class="ab-cta-h">¿Te suena? Hablemos sin compromiso.</h2>
+        <p class="ab-cta-sub">Primera consulta gratis. Respondo en menos de 24 horas. Sin promesas vacías, sin compromiso de contratar.</p>
+        <div class="ab-cta-actions">
+          <a href="/#contacto" class="ab-btn ab-btn-primary">Solicitar Cotización</a>
+          <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="ab-btn ab-btn-ghost">Agendar Llamada</a>
+        </div>
+      </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+  </div>
+
+  <script defer crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script defer crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="/components/loader.js" defer></script>
+  <script src="/components/cursor.js" defer></script>
+</body>
+
+</html>
