@@ -155,6 +155,19 @@
     .ab-timeline-coda-punch{font-family:'Space Grotesk',sans-serif;font-size:clamp(22px,2.4vw,30px);font-weight:700;color:#fff;letter-spacing:-.015em;line-height:1.25;margin:0;max-width:32ch}
     .ab-timeline-coda-punch em{font-style:normal;color:var(--lime,#b2f700)}
 
+    /* MOBILE/TOUCH fallback: same animation as :hover triggered by
+       IntersectionObserver via /components/reveal-cards.js */
+    @media (hover: none) {
+      .ab-step.in-view{background:var(--surface-low,#1b1b1c)}
+      .ab-step.in-view::before{transform:scaleX(1)}
+      .ab-step.in-view .ab-step-t{color:var(--lime,#b2f700)}
+      .ab-row.in-view{background:var(--surface-low,#1b1b1c)}
+      .ab-row.in-view::before{transform:scaleX(1)}
+      .ab-row.in-view .ab-role strong{color:var(--lime,#b2f700)}
+      .ab-stakes-card.in-view{background:var(--surface-low,#1b1b1c)}
+      .ab-stakes-card.in-view::before{transform:scaleX(1)}
+    }
+
     .ab-cta{text-align:center;padding:64px 24px 120px}  /* explicit override del home.css */
     .ab-cta-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(32px,4.6vw,56px);font-weight:600;letter-spacing:-.025em;line-height:1.1;margin:0 auto 20px;max-width:22ch}
     .ab-cta-sub{font-family:Inter,sans-serif;font-size:16px;font-weight:300;color:rgba(255,255,255,.7);margin:0 auto 36px;max-width:52ch}
@@ -436,6 +449,7 @@
   <script defer crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="/components/cursor.js" defer></script>
+  <script src="/components/reveal-cards.js" defer></script>
 </body>
 
 </html>

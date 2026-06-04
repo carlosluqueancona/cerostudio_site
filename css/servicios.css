@@ -728,3 +728,20 @@
   .includes-item { padding: 24px 22px; }
   .lp-related-card { padding: 24px 22px; }
 }
+
+/* ── MOBILE/TOUCH fallback: misma animación que :hover disparada por
+   IntersectionObserver via /components/reveal-cards.js (.in-view class) ─ */
+@media (hover: none) {
+  .benefit-card.in-view { background: var(--surface-low, #1b1b1c); }
+  .benefit-card.in-view::before { transform: scaleX(1); }
+  .benefit-card.in-view h3 { color: var(--lime, #b2f700); }
+  .includes-item.in-view { background: var(--surface-low, #1b1b1c); }
+  .includes-item.in-view::before { transform: scaleY(1); }
+  .includes-item.in-view h3 { color: var(--lime, #b2f700); }
+  .process-step.in-view { background: var(--surface-low, #1b1b1c); }
+  .process-step.in-view::before { transform: scaleX(1); }
+  .process-step.in-view h3 { color: var(--lime, #b2f700); }
+  .lp-related-card.in-view { background: var(--surface-low, #1b1b1c); }
+  .lp-related-card.in-view::before { transform: scaleX(1); }
+  .lp-related-card.in-view p { color: var(--lime, #b2f700); }
+}
