@@ -412,14 +412,20 @@
   margin-bottom: 28px;
 }
 
-/* ── Benefit-grid: bento brutalist ────────────────────────────────────── */
+/* ── Benefit-grid: bento brutalist ──────────────────────────────────────
+   2x2 fix: todas las 7 service pages tienen 4 benefits. 3-col daba
+   orphan en row 2. 2-col → 2x2 simétrico, cards más anchas, mejor mobile
+   collapse. Si añades una 5ª benefit, regresa el orphan — eval entonces. */
 .benefit-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 2px;
   margin-top: 48px;
   background: rgba(255,255,255,.06);
   border: 1px solid rgba(255,255,255,.08);
+}
+@media (max-width: 760px) {
+  .benefit-grid { grid-template-columns: 1fr; }
 }
 .benefit-card {
   background: var(--surface-lowest, #0e0e0e);
