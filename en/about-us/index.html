@@ -54,18 +54,24 @@
 
   <style>
     /* Page-specific styles (mismas .ab-* del nosotros ES) */
-    .ab-wrap{max-width:1180px;margin:0 auto;padding:140px 24px 0}
-    .ab-breadcrumb{font-family:Inter,sans-serif;font-size:13px;opacity:.55;margin:0 0 48px;letter-spacing:.02em}
-    .ab-breadcrumb a{color:inherit;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}
-    .ab-breadcrumb a:hover{border-bottom-color:currentColor}
-    .ab-breadcrumb span{margin:0 8px;opacity:.5}
+    /* CRITICAL: reset padding heredado de home.css "section { padding:120px 48px }". */
+    .ab-wrap{max-width:1180px;margin:0 auto;padding:96px 24px 0}
+    .ab-breadcrumb{font-family:Inter,sans-serif;font-size:12px;opacity:.5;margin:0 0 28px;letter-spacing:.04em;text-transform:uppercase}
+    .ab-breadcrumb a{color:inherit;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s,color .2s}
+    .ab-breadcrumb a:hover{border-bottom-color:var(--lime,#b2f700);color:var(--lime,#b2f700)}
+    .ab-breadcrumb span{margin:0 10px;opacity:.4}
 
-    .ab-hero{display:grid;grid-template-columns:1.2fr 1fr;gap:64px;align-items:start;margin:0 0 48px;padding-bottom:20px}
+    .ab-hero{display:grid;grid-template-columns:1.15fr 1fr;gap:56px;align-items:start;margin:0 0 56px;padding:0 0 24px}
     .ab-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--lime,#b2f700);margin:0 0 20px;display:inline-flex;align-items:center;gap:12px}
     .ab-eyebrow::before{content:"";display:block;width:32px;height:1px;background:var(--lime,#b2f700)}
-    .ab-h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(38px,5.5vw,68px);font-weight:700;line-height:1.05;letter-spacing:-.025em;margin:0 0 24px;color:#fff}
+    .ab-h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(42px,6.2vw,80px);font-weight:700;line-height:1;letter-spacing:-.035em;margin:0 0 28px;color:#fff}
     .ab-h1 em{font-style:normal;color:var(--lime,#b2f700)}
-    .ab-lead{font-family:Inter,sans-serif;font-size:clamp(16px,1.4vw,18px);line-height:1.65;font-weight:300;color:rgba(255,255,255,.78);margin:0 0 32px;max-width:50ch}
+    .ab-lead{font-family:Inter,sans-serif;font-size:clamp(16px,1.4vw,18px);line-height:1.6;font-weight:300;color:rgba(255,255,255,.78);margin:0 0 28px;max-width:52ch}
+    /* Stats strip */
+    .ab-hero-stats{list-style:none;display:flex;gap:36px;margin:0 0 32px;padding:20px 0;border-top:1px solid rgba(255,255,255,.1);flex-wrap:wrap}
+    .ab-hero-stats li{display:flex;flex-direction:column;gap:6px}
+    .ab-hero-stats .num{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:800;color:var(--lime,#b2f700);letter-spacing:-.02em;line-height:1}
+    .ab-hero-stats .lbl{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.55)}
     .ab-cta-row{display:flex;gap:14px;flex-wrap:wrap}
     .ab-portrait{position:relative;border-radius:16px;overflow:hidden;background:#0b0b0b;aspect-ratio:3/4}
     .ab-portrait img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
@@ -87,7 +93,7 @@
     .ab-empathy .ab-empathy-out{font-family:'Space Grotesk',sans-serif;font-size:clamp(17px,1.6vw,20px);font-weight:600;color:#fff;letter-spacing:-.005em;line-height:1.4;margin:32px 0 0;padding:24px 0 0;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:14px;max-width:none}
     .ab-empathy .ab-empathy-out::before{content:"→";color:var(--lime,#b2f700);font-weight:700;font-size:22px;flex-shrink:0}
 
-    .ab-section{padding:0 0 80px}
+    .ab-section{padding:0 0 72px}  /* explicit override del home.css section padding */
     .ab-section-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.32em;text-transform:uppercase;opacity:.55;margin:0 0 24px}
     .ab-section-eyebrow::before{content:'↳';margin-right:10px;opacity:.6}
     .ab-section-h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,3.4vw,42px);font-weight:600;letter-spacing:-.02em;line-height:1.15;margin:0 0 48px;max-width:22ch}
@@ -121,7 +127,7 @@
     .ab-stakes-p{font-family:Inter,sans-serif;font-size:15px;line-height:1.7;color:rgba(255,255,255,.75);font-weight:300;margin:0}
     .ab-stakes-p strong{font-weight:500;color:#fff}
 
-    .ab-cta{text-align:center;padding:0 24px 140px}
+    .ab-cta{text-align:center;padding:64px 24px 120px}  /* explicit override del home.css */
     .ab-cta-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(32px,4.6vw,56px);font-weight:600;letter-spacing:-.025em;line-height:1.1;margin:0 auto 20px;max-width:22ch}
     .ab-cta-sub{font-family:Inter,sans-serif;font-size:16px;font-weight:300;color:rgba(255,255,255,.7);margin:0 auto 36px;max-width:52ch}
     .ab-cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
@@ -263,7 +269,12 @@
           <div class="ab-hero-content">
             <p class="ab-eyebrow">About Us</p>
             <h1 class="ab-h1">I build websites that <em>sell.</em> I've been doing it since before Google existed.</h1>
-            <p class="ab-lead">I'm <strong style="color:#fff;font-weight:500">Carlos Luque Ancona</strong> — internet radio pioneer in Mexico since 1994, founder of Cero Studio, with 25+ years converting visits into customers for 150+ businesses across Mexico and Latin America.</p>
+            <p class="ab-lead">I'm <strong style="color:#fff;font-weight:500">Carlos Luque Ancona</strong> — internet radio pioneer in Mexico, founder of Cero Studio, converting visits into customers for entrepreneurs and businesses across Mexico and Latin America.</p>
+            <ul class="ab-hero-stats">
+              <li><span class="num">1994</span><span class="lbl">Pioneer</span></li>
+              <li><span class="num">25+</span><span class="lbl">Years</span></li>
+              <li><span class="num">150+</span><span class="lbl">Businesses</span></li>
+            </ul>
             <div class="ab-cta-row">
               <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Schedule a free call</a>
               <a href="#process" class="btn-ghost ht">See my process</a>
