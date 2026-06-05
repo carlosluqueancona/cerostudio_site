@@ -767,7 +767,16 @@
             var url = '/components/' + kind + (lang === 'en' ? '-en' : '') + '.html';
             fetch(url, { credentials: 'omit' })
               .then(function (r) { return r.ok ? r.text() : null; })
-              .then(function (html) { if (html) ph.innerHTML = html; })
+              .then(function (html) {
+                if (!html) return;
+                ph.innerHTML = html;
+                /* Re-aplicar estado de scroll al navbar nuevo (sino el bg
+                   transparente desaparece hasta que el user vuelve a scrollear). */
+                if (kind === 'navbar') {
+                  var nb = document.getElementById('navbar');
+                  if (nb) nb.classList.toggle('scrolled', window.scrollY > 60);
+                }
+              })
               .catch(function () { /* no-op */ });
           });
         }
