@@ -28,6 +28,8 @@
     '/servicios/seo/':                  '/en/services/seo/',
     '/servicios/branding-digital/':     '/en/services/digital-branding/',
     '/servicios/consultoria-digital/':  '/en/services/digital-consulting/',
+    '/servicios/mantenimiento/':        '/en/services/web-maintenance/',
+    '/diseno-web-para-clinicas/':       '/en/services/clinic-website-design/',
   };
   // Invertir el mapa para EN → ES.
   var EN_TO_ES = {};
