@@ -476,6 +476,7 @@
           'contact-title': { h: '¿Listo para el<br><span class="t-outline">siguiente</span> nivel?' },
           'contact-sub': { t: 'Cuéntanos sobre tu proyecto. Respondemos en menos de 24 horas y la primera consulta es completamente gratis.' },
           'submitBtnLabel': { t: 'Enviar Mensaje' },
+          'agenda-link': { t: 'O agenda una llamada →' },
           /* ── FOOTER */
           'footer-tagline': { t: 'Diseñamos el futuro digital de tu negocio.' },
           'fcol-nav-title': { t: 'Navegación' },
@@ -613,6 +614,7 @@
           'contact-title': { h: 'Ready for the<br><span class="t-outline">next</span> level?' },
           'contact-sub': { t: 'Tell us about your project. We respond in under 24 hours and the first consultation is completely free.' },
           'submitBtnLabel': { t: 'Send Message' },
+          'agenda-link': { t: 'Or schedule a call →' },
           /* ── FOOTER */
           'footer-tagline': { t: 'We design the digital future of your business.' },
           'fcol-nav-title': { t: 'Navigation' },
