@@ -39,15 +39,24 @@ const _cache = {
 
 // Mapeo de path → service_tag para SSR injection del CMS portfolio.
 // Cada página de servicio define qué subset del CMS mostrar via tag.
-// Match exacto del path (sin trailing slash normalizado).
+// Match exacto del path (sin trailing slash normalizado). Incluye paths ES y EN.
 const SERVICE_TAG_BY_PATH = {
-  '/servicios/desarrollo-web':       'desarrollo-web',
-  '/servicios/tiendas-ecommerce':    'ecommerce',
-  '/servicios/seo':                  'seo',
-  '/servicios/branding-digital':     'branding',
-  '/servicios/consultoria-digital':  'consultoria',
-  '/servicios/mantenimiento':        'mantenimiento',
-  '/diseno-web-para-clinicas':       'clinicas',
+  // Español
+  '/servicios/desarrollo-web':           'desarrollo-web',
+  '/servicios/tiendas-ecommerce':        'ecommerce',
+  '/servicios/seo':                      'seo',
+  '/servicios/branding-digital':         'branding',
+  '/servicios/consultoria-digital':      'consultoria',
+  '/servicios/mantenimiento':            'mantenimiento',
+  '/diseno-web-para-clinicas':           'clinicas',
+  // Inglés
+  '/en/services/web-development':        'desarrollo-web',
+  '/en/services/online-stores':          'ecommerce',
+  '/en/services/seo':                    'seo',
+  '/en/services/digital-branding':       'branding',
+  '/en/services/digital-consulting':     'consultoria',
+  '/en/services/web-maintenance':        'mantenimiento',
+  '/en/services/clinic-website-design':  'clinicas',
 };
 
 // Cache per-tag de HTML + i18n para evitar D1 query en cada request.
@@ -66,14 +75,16 @@ function detectServiceTag(pathname) {
   return SERVICE_TAG_BY_PATH[normalized] || null;
 }
 
-async function loadServicePortfolio(env, tag) {
-  const cached = _portfolioCache[tag];
+async function loadServicePortfolio(env, tag, lang) {
+  const cacheKey = `${tag}_${lang}`;
+  const cached = _portfolioCache[cacheKey];
   if (cached && (Date.now() - cached.fetchedAt) < PORTFOLIO_CACHE_TTL_MS) {
     return cached;
   }
+  const suffix = lang === 'en' ? '_en' : '';
   try {
     const [htmlRow, i18nRow] = await Promise.all([
-      env.DB.prepare("SELECT value FROM site_cache WHERE key = ?").bind(`portfolio_html_tag_${tag}`).first(),
+      env.DB.prepare("SELECT value FROM site_cache WHERE key = ?").bind(`portfolio_html_tag_${tag}${suffix}`).first(),
       env.DB.prepare("SELECT value FROM site_cache WHERE key = ?").bind(`portfolio_i18n_tag_${tag}`).first(),
     ]);
     const result = {
@@ -81,7 +92,7 @@ async function loadServicePortfolio(env, tag) {
       i18n: i18nRow?.value || '',
       fetchedAt: Date.now(),
     };
-    _portfolioCache[tag] = result;
+    _portfolioCache[cacheKey] = result;
     return result;
   } catch {
     return { html: '', i18n: '', fetchedAt: Date.now() };
@@ -133,7 +144,7 @@ export async function onRequest(context) {
   const [navbarHtml, footerHtml, servicePortfolio] = await Promise.all([
     loadPartial(context.env, context.request.url, paths.navbar, navbarCache),
     loadPartial(context.env, context.request.url, paths.footer, footerCache),
-    serviceTag ? loadServicePortfolio(context.env, serviceTag) : Promise.resolve(null),
+    serviceTag ? loadServicePortfolio(context.env, serviceTag, lang) : Promise.resolve(null),
   ]);
 
   // Persist cache for subsequent requests on the same isolate

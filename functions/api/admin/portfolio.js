@@ -61,18 +61,21 @@ function esc(str) {
     .replace(/"/g, '&quot;');
 }
 
-function buildPortfolioHTML(items) {
+function buildPortfolioHTML(items, lang = 'es') {
+  const catKey = lang === 'en' ? 'cat_en' : 'cat_es';
+  const descKey = lang === 'en' ? 'desc_en' : 'desc_es';
+  const badgeLabel = lang === 'en' ? 'View Project →' : 'Ver Proyecto →';
   return items.map((item, i) => {
     const n = i + 1;
     const showLink = item.show_link == null ? 1 : item.show_link;
     const inner = `  <div class="port-card-img-wrap">
     <img src="${esc(item.image)}" alt="${esc(item.name)}" class="port-card-img" loading="lazy" width="640" height="400">${showLink ? `
-    <div class="port-card-badge"><span data-i18n="port-badge">Ver Proyecto →</span></div>` : ''}
+    <div class="port-card-badge"><span data-i18n="port-badge">${badgeLabel}</span></div>` : ''}
   </div>
   <div class="port-card-info">
-    <span class="port-card-cat" id="port-c${n}">${esc(item.cat_es)}</span>
+    <span class="port-card-cat" id="port-c${n}">${esc(item[catKey])}</span>
     <div class="port-card-name">${esc(item.name)}</div>
-    <p class="port-card-desc" id="port-d${n}">${esc(item.desc_es)}</p>
+    <p class="port-card-desc" id="port-d${n}">${esc(item[descKey])}</p>
   </div>`;
     return showLink
       ? `<a href="${esc(item.url)}" target="_blank" rel="noopener" class="port-card ht">\n${inner}\n</a>`
@@ -113,18 +116,25 @@ async function rebuild(env) {
   // 2) Cache per-service-tag (cada página de servicio) ─────────────────────
   // Para cada tag, filtra items que lo contienen en service_tags (CSV).
   // Match por includes() después de split — más seguro que LIKE con %.
+  // Generamos cache ES (key sin sufijo) y EN (key con _en) para que el
+  // middleware pueda servir SSR HTML en el idioma de la página.
   const perTagCounts = {};
   for (const tag of VALID_SERVICE_TAGS) {
     const tagItems = results.filter(item => {
       const tags = (item.service_tags || '').split(',').map(t => t.trim()).filter(Boolean);
       return tags.includes(tag);
     });
-    const tagHtml = buildPortfolioHTML(tagItems);
-    const tagI18n = buildI18nJSON(tagItems);
+    const tagHtmlEs = buildPortfolioHTML(tagItems, 'es');
+    const tagHtmlEn = buildPortfolioHTML(tagItems, 'en');
+    const tagI18n   = buildI18nJSON(tagItems);
 
     await env.DB.prepare(
       "INSERT OR REPLACE INTO site_cache (key, value, updated_at) VALUES (?, ?, ?)"
-    ).bind(`portfolio_html_tag_${tag}`, tagHtml, now).run();
+    ).bind(`portfolio_html_tag_${tag}`, tagHtmlEs, now).run();
+
+    await env.DB.prepare(
+      "INSERT OR REPLACE INTO site_cache (key, value, updated_at) VALUES (?, ?, ?)"
+    ).bind(`portfolio_html_tag_${tag}_en`, tagHtmlEn, now).run();
 
     await env.DB.prepare(
       "INSERT OR REPLACE INTO site_cache (key, value, updated_at) VALUES (?, ?, ?)"

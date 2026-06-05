@@ -192,10 +192,19 @@
         </div>
       </section>
 
-      <!-- ── Cases section TODO: SSR injection for EN pages requires either
-           pre-generating portfolio_html_tag_{tag}_en caches with cat_en/desc_en
-           in the rebuild logic, OR adding /en/ path detection to middleware
-           SERVICE_TAG_BY_PATH. Omitted for now to avoid empty section. -->
+      <!-- ── Cases · In production ──
+           Cards SSR-injected by /functions/_middleware.js from the CMS
+           (service_tags='desarrollo-web', EN variant from cat_en/desc_en). -->
+      <section class="lp-section" id="casos">
+        <div class="section-inner" id="service-portfolio-wrapper">
+          <p class="eyebrow">Cases · In production</p>
+          <h2>Sites in production, <span class="t-lime">not mockups.</span></h2>
+          <p>Every site here is a real business running today. Different industries, same approach: a site that works, not just one that looks pretty.</p>
+          <div class="port-grid" id="service-portfolio-grid" style="grid-template-columns:repeat(2,1fr);margin-top:48px">
+            <!-- SSR-injected from CMS -->
+          </div>
+        </div>
+      </section>
 
       <!-- ── What's included ──────────────────────────────────────── -->
       <section class="lp-section">
