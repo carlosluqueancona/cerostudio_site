@@ -24,6 +24,10 @@
     '/':                                '/en/',
     '/nosotros/':                       '/en/about-us/',
     '/servicios/desarrollo-web/':       '/en/services/web-development/',
+    '/servicios/tiendas-ecommerce/':    '/en/services/online-stores/',
+    '/servicios/seo/':                  '/en/services/seo/',
+    '/servicios/branding-digital/':     '/en/services/digital-branding/',
+    '/servicios/consultoria-digital/':  '/en/services/digital-consulting/',
   };
   // Invertir el mapa para EN → ES.
   var EN_TO_ES = {};
