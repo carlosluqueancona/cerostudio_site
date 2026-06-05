@@ -753,6 +753,25 @@
 
         /* Persist */
         try { localStorage.setItem('cs-lang', lang); } catch (e) { }
+
+        /* Re-inject navbar + footer partials in the target language.
+           El middleware SSR los inyectó al cargar según URL; cuando el user
+           togglea en HOME el footer/navbar quedan en el idioma original y los
+           hrefs (e.g. /servicios/* vs /en/services/*) no se actualizan con
+           el i18n loop. Re-fetch y replace garantiza labels + hrefs correctos.
+           Skip en initial load (window._csLangReady true después del primer toggle). */
+        if (window._csLangReady) {
+          ['navbar', 'footer'].forEach(function (kind) {
+            var ph = document.getElementById(kind + '-placeholder');
+            if (!ph) return;
+            var url = '/components/' + kind + (lang === 'en' ? '-en' : '') + '.html';
+            fetch(url, { credentials: 'omit' })
+              .then(function (r) { return r.ok ? r.text() : null; })
+              .then(function (html) { if (html) ph.innerHTML = html; })
+              .catch(function () { /* no-op */ });
+          });
+        }
+        window._csLangReady = true;
       }
 
       function toggleLang() {
