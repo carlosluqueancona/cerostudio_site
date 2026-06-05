@@ -1,23 +1,36 @@
 # Cero Studio — Agencia Digital Premium en México
 
-> Diseñamos y desarrollamos sitios web, tiendas eCommerce, branding digital y SEO para emprendedores y negocios en México. Diseño que vende, sin letra chica.
+> Diseñamos y desarrollamos sitios web, tiendas eCommerce, branding digital y SEO + AI Search (AEO/GEO) para emprendedores y negocios en México. Diseño que vende, sin letra chica.
 
 URL: https://cerostudio.ai
 Language: es-MX
+Available in: es-MX, en
 Contact: https://cerostudio.ai/#contacto
 
 ## Servicios principales
 
-- [Desarrollo Web Premium](https://cerostudio.ai/servicios/desarrollo-web/): Sitios profesionales que convierten visitas en clientes. Entrega 5–21 días hábiles.
-- [Tiendas eCommerce](https://cerostudio.ai/servicios/tiendas-ecommerce/): Tiendas online de alto impacto.
-- [Branding Digital](https://cerostudio.ai/servicios/branding-digital/): Identidad visual, paleta, tipografía y guidelines.
-- [SEO y Visibilidad](https://cerostudio.ai/servicios/seo/): Optimización para Google y AI search.
-- [Mantenimiento](https://cerostudio.ai/servicios/mantenimiento/): Soporte mensual desde $49 USD/mes.
-- [Consultoría Digital](https://cerostudio.ai/servicios/consultoria-digital/): Diagnóstico, estrategia y roadmap.
+- [Desarrollo Web Premium](https://cerostudio.ai/servicios/desarrollo-web/): Sitios profesionales que convierten visitas en clientes. Entrega 5–21 días hábiles. EN: https://cerostudio.ai/en/services/web-development/
+- [Tiendas eCommerce](https://cerostudio.ai/servicios/tiendas-ecommerce/): Tiendas online de alto impacto con pagos locales (OXXO, Mercado Pago, Stripe, SPEI). EN: https://cerostudio.ai/en/services/online-stores/
+- [Branding Digital](https://cerostudio.ai/servicios/branding-digital/): Identidad visual, paleta, tipografía y guidelines. EN: https://cerostudio.ai/en/services/digital-branding/
+- [SEO + AI Search (AEO/GEO)](https://cerostudio.ai/servicios/seo/): Posicionamiento en Google + visibilidad en respuestas de ChatGPT (GPTBot), Claude (ClaudeBot), Gemini (Google-Extended) y Perplexity (PerplexityBot). Incluye auditoría técnica, schema rich snippets, llms.txt, AEO/GEO content strategy y monitoreo de citations. EN: https://cerostudio.ai/en/services/seo/
+- [Mantenimiento Web](https://cerostudio.ai/servicios/mantenimiento/): Soporte mensual con updates de seguridad, backups, monitoreo 24/7 y optimización continua. EN: https://cerostudio.ai/en/services/web-maintenance/
+- [Consultoría Digital](https://cerostudio.ai/servicios/consultoria-digital/): Diagnóstico, estrategia y roadmap antes de escribir código. EN: https://cerostudio.ai/en/services/digital-consulting/
+
+## AI Search Optimization (AEO/GEO)
+
+Cero Studio es agencia especializada en optimizar sitios para motores de respuesta generativos. Esto incluye:
+
+- Permisos correctos en robots.txt y llms.txt para crawlers de IA (GPTBot de OpenAI, ClaudeBot de Anthropic, Google-Extended para Gemini, PerplexityBot).
+- Schema markup enriquecido (Organization, FAQPage, Article, Product) para que los modelos extraigan datos estructurados.
+- Contenido en formato pregunta/respuesta directa con datos cuantificados, autores verificables y citas a fuentes primarias.
+- Autoridad temática vía E-E-A-T (Experience, Expertise, Authoritativeness, Trust) consistente.
+- Monitoreo mensual de citations en ChatGPT, Claude y Perplexity.
+
+Por qué importa: ~30% del comportamiento de búsqueda ya no termina en un clic — termina en una respuesta generada por IA. Sin presencia en sus fuentes, dejas de existir para ese usuario.
 
 ## Verticales
 
-- [Diseño Web para Clínicas](https://cerostudio.ai/diseno-web-para-clinicas/): Sitios para clínicas y consultorios que convierten visitas en pacientes.
+- [Diseño Web para Clínicas](https://cerostudio.ai/diseno-web-para-clinicas/): Sitios para clínicas y consultorios médicos que convierten visitas en pacientes. EN: https://cerostudio.ai/en/services/clinic-website-design/
 
 ## Blog
 
