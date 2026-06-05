@@ -1977,6 +1977,8 @@
     @media (max-width: 520px) {
       .proc-grid {
         grid-template-columns: 1fr;
+        gap: 0;
+        background: transparent;
       }
 
       .stats-grid {
