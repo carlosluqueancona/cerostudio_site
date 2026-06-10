@@ -101,10 +101,6 @@ export async function onRequestPost(context) {
     if (!detectedMime) {
       return json({ ok: false, error: 'Tipo de archivo no permitido. Usa JPG, PNG, WebP o GIF.' }, 400, origin);
     }
-    const claimedMime = file.type || '';
-    if (claimedMime && claimedMime !== detectedMime) {
-      return json({ ok: false, error: 'El tipo de archivo declarado no coincide con su contenido real.' }, 400, origin);
-    }
     const mime = detectedMime;
 
     // Nombre único: blog/2026/04/uuid.ext

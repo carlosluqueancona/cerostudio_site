@@ -638,6 +638,7 @@
             <div class="upload-status" id="upload-status"></div>
           </div>
           <div>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="openMediaPickerFor('featured')" style="width:100%;margin-bottom:4px;">⊞ Elegir de biblioteca</button>
             <label for="f-featured-url">O pega una URL directamente</label>
             <input type="text" id="f-featured-url" placeholder="https://…" oninput="updateImgPreview(this.value)" />
           </div>
@@ -1779,6 +1780,13 @@ async function mediaUploadFiles(fileList) {
 // ── Media picker (called from portfolio modal) ────────────────────────────────
 let mediaPickerOpen = false;
 
+let mediaPickerContext = 'portfolio'; // 'portfolio' | 'featured'
+
+async function openMediaPickerFor(ctx) {
+  mediaPickerContext = ctx;
+  await openMediaPicker();
+}
+
 async function openMediaPicker() {
   mediaPickerOpen = true;
   document.getElementById('media-picker-modal').style.display = '';
@@ -1816,14 +1824,27 @@ function renderMediaPicker() {
 }
 
 function pickMedia(url) {
-  const target = document.getElementById('pf-image');
-  if (target) {
-    target.value = url;
-    pfUpdateImagePreview();
-    const status = document.getElementById('pf-image-status');
-    if (status) {
-      status.textContent = '✓ Imagen seleccionada de la biblioteca';
-      status.style.color = 'var(--lime)';
+  if (mediaPickerContext === 'featured') {
+    const urlInput = document.getElementById('f-featured-url');
+    if (urlInput) {
+      urlInput.value = url;
+      updateImgPreview(url);
+      const status = document.getElementById('upload-status');
+      if (status) {
+        status.textContent = '✓ Imagen seleccionada de la biblioteca';
+        status.style.color = 'var(--lime)';
+      }
+    }
+  } else {
+    const target = document.getElementById('pf-image');
+    if (target) {
+      target.value = url;
+      pfUpdateImagePreview();
+      const status = document.getElementById('pf-image-status');
+      if (status) {
+        status.textContent = '✓ Imagen seleccionada de la biblioteca';
+        status.style.color = 'var(--lime)';
+      }
     }
   }
   closeMediaPicker();
