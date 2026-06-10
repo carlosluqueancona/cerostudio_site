@@ -1,2 +1,17 @@
 # Blog post SPA routing is handled by functions/blog/[slug].js
 
+# ── Migración brief/portal/CRM → cero-prospector (2026-06-09) ──────────
+# El brief, el portal de cliente y el admin viven ahora en el monorepo
+# cero-prospector (tu.cerostudio.ai + app.cerostudio.ai). Los query
+# strings (?key=...) se preservan automáticamente en los redirects de
+# Cloudflare Pages, así que los links de portal ya compartidos con
+# clientes siguen funcionando.
+# NOTA: estas reglas tienen precedencia sobre los archivos estáticos —
+# desplegar este archivo ES el corte. Hacerlo solo cuando tu.cerostudio.ai
+# /brief y /proyecto estén verificados en producción.
+/brief/admin https://app.cerostudio.ai/clientes 301
+/brief/en/* https://tu.cerostudio.ai/brief/en 301
+/brief/* https://tu.cerostudio.ai/brief 301
+/proyecto/* https://tu.cerostudio.ai/proyecto 301
+/admin/* https://app.cerostudio.ai/clientes 301
+

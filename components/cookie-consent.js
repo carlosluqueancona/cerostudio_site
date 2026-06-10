@@ -2,6 +2,23 @@
   var KEY = 'cs_cookie_consent';
   var GTM_ID = 'GTM-PDS8GXPB';
 
+  // ── Google Consent Mode v2 (2026-06-09) ────────────────────────────
+  // Antes GTM solo se cargaba TRAS aceptar cookies → el verificador de
+  // Google nunca acepta el banner y reportaba "Etiqueta GTM-PDS8GXPB no
+  // se ha encontrado". Ahora GTM carga SIEMPRE pero con consentimiento
+  // DENEGADO por default; aceptar el banner lo actualiza a granted.
+  // Cumplimiento intacto: sin consentimiento, GA no setea cookies de
+  // analytics ni ads (los tags respetan los flags de consent mode).
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { window.dataLayer.push(arguments); }
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    wait_for_update: 500,
+  });
+
   function loadGTM() {
     if (window._gtmLoaded) return;
     window._gtmLoaded = true;
@@ -14,6 +31,15 @@
       j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
       f.parentNode.insertBefore(j, f);
     })(window, document, 'script', 'dataLayer', GTM_ID);
+  }
+
+  function grantConsent() {
+    gtag('consent', 'update', {
+      ad_storage: 'granted',
+      ad_user_data: 'granted',
+      ad_personalization: 'granted',
+      analytics_storage: 'granted',
+    });
   }
 
   function stored() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
@@ -50,12 +76,15 @@
   window._csAccept = function () {
     save('accepted');
     removeBanner();
+    grantConsent();
     loadGTM();
   };
 
   window._csReject = function () {
     save('rejected');
     removeBanner();
+    // GTM ya está cargado, pero el consent queda denied — los tags de
+    // analytics/ads no setean cookies.
   };
 
   window._csShowBanner = showBanner;
@@ -86,7 +115,7 @@
 
   var consent = stored();
   if (consent === 'accepted') {
-    loadGTM();
+    grantConsent();
   } else if (!consent) {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', showBanner);
@@ -94,5 +123,7 @@
       showBanner();
     }
   }
-  // 'rejected' → no GTM, no banner
+  // GTM carga SIEMPRE (consent mode controla qué pueden hacer los tags).
+  // 'rejected' → GTM cargado con consent denied, sin banner.
+  loadGTM();
 })();
