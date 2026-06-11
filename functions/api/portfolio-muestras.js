@@ -34,10 +34,15 @@ function json(data, status = 200) {
 export async function onRequestGet(context) {
   const { env } = context;
   try {
+    // La URL de la muestra es la "URL del proyecto" estándar (campo url);
+    // url_sitio quedó como override opcional vía API (la UI ya no lo
+    // expone — era redundante, feedback de Carlos 2026-06-11).
     const { results } = await env.DB.prepare(
-      `SELECT name, giros, url_sitio
+      `SELECT name, giros, COALESCE(NULLIF(url_sitio, ''), url) AS url_muestra
        FROM portfolio_items
-       WHERE usar_como_muestra = 1 AND url_sitio IS NOT NULL AND url_sitio != ''
+       WHERE usar_como_muestra = 1
+         AND COALESCE(NULLIF(url_sitio, ''), url) IS NOT NULL
+         AND COALESCE(NULLIF(url_sitio, ''), url) != ''
        ORDER BY orden_muestra ASC, id ASC`
     ).all();
 
@@ -50,7 +55,7 @@ export async function onRequestGet(context) {
         if (typeof giro !== 'string' || !giro) continue;
         if (!muestras[giro]) muestras[giro] = [];
         if (muestras[giro].length >= MAX_POR_GIRO) continue;
-        muestras[giro].push({ nombre: item.name, url: item.url_sitio });
+        muestras[giro].push({ nombre: item.name, url: item.url_muestra });
       }
     }
 

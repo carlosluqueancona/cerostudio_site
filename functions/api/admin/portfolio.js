@@ -44,6 +44,7 @@ const VALID_GIROS = [
   'legal_finanzas',
   'restaurante',
   'retail',
+  'ecommerce',
   'inmobiliaria',
   'educacion',
   'industrial',

@@ -496,22 +496,19 @@
                   <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" class="pf-giro" value="legal_finanzas" style="width:14px;height:14px;cursor:pointer;"> Legal / Finanzas</label>
                   <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" class="pf-giro" value="restaurante"    style="width:14px;height:14px;cursor:pointer;"> Restaurante</label>
                   <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" class="pf-giro" value="retail"         style="width:14px;height:14px;cursor:pointer;"> Retail</label>
+                  <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" class="pf-giro" value="ecommerce"      style="width:14px;height:14px;cursor:pointer;"> Tienda en línea</label>
                   <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" class="pf-giro" value="inmobiliaria"   style="width:14px;height:14px;cursor:pointer;"> Inmobiliaria</label>
                   <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" class="pf-giro" value="educacion"      style="width:14px;height:14px;cursor:pointer;"> Educación</label>
                   <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" class="pf-giro" value="industrial"     style="width:14px;height:14px;cursor:pointer;"> Industrial</label>
                   <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" class="pf-giro" value="generico"       style="width:14px;height:14px;cursor:pointer;"> Genérico</label>
                 </div>
-                <div style="display:grid;grid-template-columns:1fr 140px;gap:12px;margin-top:12px;">
-                  <div>
-                    <label style="font-size:11px;color:var(--gt);display:block;margin-bottom:4px;">URL DEL SITIO VIVO</label>
-                    <input id="pf-url-sitio" type="url" placeholder="https://…" style="width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--white);padding:9px 12px;font-family:var(--fb);font-size:14px;">
-                  </div>
+                <div style="display:grid;grid-template-columns:140px;gap:12px;margin-top:12px;">
                   <div>
                     <label style="font-size:11px;color:var(--gt);display:block;margin-bottom:4px;">ORDEN MUESTRA</label>
                     <input id="pf-orden-muestra" type="number" min="0" value="0" title="Prioridad dentro del giro (menor = primero)" style="width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--white);padding:9px 12px;font-family:var(--fb);font-size:14px;">
                   </div>
                 </div>
-                <div style="font-size:11px;color:var(--gt);margin-top:6px;">Máximo 2 muestras por giro en propuestas (menor orden = primero). Solo entra si está marcado "Usar como muestra" y tiene URL del sitio.</div>
+                <div style="font-size:11px;color:var(--gt);margin-top:6px;">Máximo 2 muestras por giro en propuestas (menor orden = primero). Usa la "URL del proyecto" de arriba — solo entra si está marcado "Usar como muestra".</div>
               </div>
             </div>
             <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px;">
@@ -1467,7 +1464,6 @@ function openPortItem(id) {
     cb.checked = activeGiros.includes(cb.value);
   });
   document.getElementById('pf-usar-muestra').checked = item ? !!item.usar_como_muestra : false;
-  document.getElementById('pf-url-sitio').value      = item?.url_sitio || '';
   document.getElementById('pf-orden-muestra').value  = item?.orden_muestra ?? 0;
   pfToggleUrlRequired();
   document.getElementById('pf-image-status').textContent = '';
@@ -1510,7 +1506,8 @@ async function savePortItem(e) {
     service_tags:  selectedTags.join(','),
     giros:             selectedGiros,
     usar_como_muestra: document.getElementById('pf-usar-muestra').checked ? 1 : 0,
-    url_sitio:         document.getElementById('pf-url-sitio').value.trim(),
+    // url_sitio fuera de la UI (2026-06-11): las muestras usan la "URL
+    // del proyecto" estándar (campo url) — el campo aparte era redundante.
     orden_muestra:     parseInt(document.getElementById('pf-orden-muestra').value) || 0,
   };
 
