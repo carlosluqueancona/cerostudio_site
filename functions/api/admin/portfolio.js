@@ -35,6 +35,39 @@ const VALID_SERVICE_TAGS = [
   'clinicas',
 ];
 
+// Giros válidos para muestras de cero-prospector (ver portfolio_muestras_migration.sql).
+// Editar aquí + actualizar admin UI checkboxes al añadir giros nuevos.
+const VALID_GIROS = [
+  'salud',
+  'mascotas',
+  'estetica',
+  'legal_finanzas',
+  'restaurante',
+  'retail',
+  'inmobiliaria',
+  'educacion',
+  'industrial',
+  'generico',
+];
+
+function normalizeGiros(raw) {
+  // Acepta array de strings o string JSON. Devuelve string JSON canónico
+  // ('["salud","retail"]'), filtrado a giros válidos, sin duplicados.
+  if (raw == null || raw === '') return '[]';
+  let arr = raw;
+  if (typeof raw === 'string') {
+    try { arr = JSON.parse(raw); } catch { return '[]'; }
+  }
+  if (!Array.isArray(arr)) return '[]';
+  const seen = new Set();
+  const unique = [];
+  for (const g of arr) {
+    const v = String(g).trim().toLowerCase();
+    if (VALID_GIROS.includes(v) && !seen.has(v)) { seen.add(v); unique.push(v); }
+  }
+  return JSON.stringify(unique);
+}
+
 function normalizeServiceTags(raw) {
   // Acepta string CSV o array. Devuelve string CSV canónico, filtrado a tags válidos.
   if (raw == null || raw === '') return '';
@@ -176,6 +209,10 @@ function validateProject(body) {
     return 'La URL del proyecto debe empezar con http:// o https://';
   }
   // service_tags es opcional; normalize ya filtra inválidos silenciosamente.
+  // url_sitio (muestra para cero-prospector) es opcional pero si viene debe ser http(s).
+  if (body?.url_sitio && !/^https?:\/\//i.test(body.url_sitio)) {
+    return 'La URL del sitio (muestra) debe empezar con http:// o https://';
+  }
   return null;
 }
 
@@ -229,11 +266,12 @@ export async function onRequestPost(context) {
   if (validationError) return json({ error: validationError }, 400, origin);
 
   try {
-    const { name, url, image, cat_es, cat_en, desc_es, desc_en, sort_order, visible, show_link, service_tags } = body;
+    const { name, url, image, cat_es, cat_en, desc_es, desc_en, sort_order, visible, show_link, service_tags, giros, usar_como_muestra, url_sitio, orden_muestra } = body;
     const tagsCSV = normalizeServiceTags(service_tags);
+    const girosJSON = normalizeGiros(giros);
     const r = await env.DB.prepare(
-      'INSERT INTO portfolio_items (name, url, image, cat_es, cat_en, desc_es, desc_en, sort_order, visible, show_link, service_tags) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
-    ).bind(name, url || '', image, cat_es, cat_en, desc_es, desc_en, sort_order ?? 0, visible ?? 1, show_link ?? 1, tagsCSV).run();
+      'INSERT INTO portfolio_items (name, url, image, cat_es, cat_en, desc_es, desc_en, sort_order, visible, show_link, service_tags, giros, usar_como_muestra, url_sitio, orden_muestra) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    ).bind(name, url || '', image, cat_es, cat_en, desc_es, desc_en, sort_order ?? 0, visible ?? 1, show_link ?? 1, tagsCSV, girosJSON, Number(usar_como_muestra) ? 1 : 0, url_sitio || '', parseInt(orden_muestra, 10) || 0).run();
     const rebuildInfo = await tryRebuild(env);
     return json({ success: true, id: r.meta.last_row_id, ...rebuildInfo }, 201, origin);
   } catch (e) {
@@ -258,11 +296,12 @@ export async function onRequestPut(context) {
   if (validationError) return json({ error: validationError }, 400, origin);
 
   try {
-    const { name, url, image, cat_es, cat_en, desc_es, desc_en, sort_order, visible, show_link, service_tags } = body;
+    const { name, url, image, cat_es, cat_en, desc_es, desc_en, sort_order, visible, show_link, service_tags, giros, usar_como_muestra, url_sitio, orden_muestra } = body;
     const tagsCSV = normalizeServiceTags(service_tags);
+    const girosJSON = normalizeGiros(giros);
     const res = await env.DB.prepare(
-      'UPDATE portfolio_items SET name=?, url=?, image=?, cat_es=?, cat_en=?, desc_es=?, desc_en=?, sort_order=?, visible=?, show_link=?, service_tags=? WHERE id=?'
-    ).bind(name, url || '', image, cat_es, cat_en, desc_es, desc_en, sort_order ?? 0, visible ?? 1, show_link ?? 1, tagsCSV, id).run();
+      'UPDATE portfolio_items SET name=?, url=?, image=?, cat_es=?, cat_en=?, desc_es=?, desc_en=?, sort_order=?, visible=?, show_link=?, service_tags=?, giros=?, usar_como_muestra=?, url_sitio=?, orden_muestra=? WHERE id=?'
+    ).bind(name, url || '', image, cat_es, cat_en, desc_es, desc_en, sort_order ?? 0, visible ?? 1, show_link ?? 1, tagsCSV, girosJSON, Number(usar_como_muestra) ? 1 : 0, url_sitio || '', parseInt(orden_muestra, 10) || 0, id).run();
     if (!res.meta.changes) return json({ error: 'No encontrado' }, 404, origin);
     const rebuildInfo = await tryRebuild(env);
     return json({ success: true, ...rebuildInfo }, 200, origin);
