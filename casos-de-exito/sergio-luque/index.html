@@ -153,6 +153,20 @@
     .cs-result-h{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;color:#fff;margin:0 0 10px}
     .cs-result-p{font-family:Inter,sans-serif;font-size:13.5px;line-height:1.7;font-weight:300;color:rgba(255,255,255,.62);margin:0}
 
+    /* LIGHTHOUSE SCORES — gauges circulares */
+    .cs-scores-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+    .cs-gauge{background:var(--surface-lowest,#0e0e0e);padding:42px 20px 34px;display:flex;flex-direction:column;align-items:center;text-align:center;transition:background .3s ease}
+    .cs-gauge:hover{background:var(--surface-low,#1b1b1c)}
+    .cs-gauge-ring{position:relative;width:118px;height:118px;margin:0 0 22px}
+    .cs-gauge-ring svg{width:100%;height:100%;transform:rotate(-90deg);display:block}
+    .cs-gauge-track{fill:none;stroke:rgba(255,255,255,.1);stroke-width:8}
+    .cs-gauge-prog{fill:none;stroke:var(--lime,#b2f700);stroke-width:8;stroke-linecap:round;stroke-dasharray:326.726}
+    .cs-gauge-val{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:34px;font-weight:800;color:var(--lime,#b2f700);letter-spacing:-.02em}
+    .cs-gauge-lbl{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#fff;margin:0 0 5px;line-height:1.2}
+    .cs-gauge-sub{font-family:Inter,sans-serif;font-size:12px;font-weight:300;color:rgba(255,255,255,.55);margin:0;line-height:1.3}
+    .cs-scores-note{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45);margin:22px 0 0;display:flex;align-items:center;gap:10px}
+    .cs-scores-note::before{content:'';display:inline-block;width:24px;height:1px;background:var(--lime,#b2f700);flex-shrink:0}
+
     /* QUOTE / testimonial */
     .cs-quote{background:var(--surface-lowest,#0e0e0e);border:1px solid rgba(255,255,255,.08);border-left:3px solid var(--lime,#b2f700);padding:48px 44px;position:relative}
     .cs-quote-t{font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,2.4vw,30px);font-weight:600;line-height:1.3;letter-spacing:-.015em;color:#fff;margin:0 0 24px}
@@ -196,6 +210,7 @@
       .cs-gallery{grid-template-columns:1fr;gap:16px}
       .cs-gallery .cs-g-tall{grid-row:auto;aspect-ratio:16/10}
       .cs-ba-grid{grid-template-columns:1fr;gap:14px}
+      .cs-scores-grid{grid-template-columns:1fr 1fr}
     }
     @media (max-width:520px){
       .cs-wrap{padding-top:100px}
@@ -481,6 +496,50 @@
               <p class="cs-result-p">Por primera vez, analítica avanzada para entender a su audiencia global: quién lo encuentra, desde dónde y qué escucha.</p>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- LIGHTHOUSE SCORES (Google, escritorio) -->
+      <section class="cs-section">
+        <div class="cs-wrap" style="padding-top:0">
+          <p class="cs-section-eyebrow">La prueba técnica</p>
+          <h2 class="cs-section-h2">Rápido, accesible y bien hecho —medido por Google.</h2>
+          <p class="cs-section-lead">No es opinión nuestra. Son las calificaciones de Google Lighthouse, el estándar con el que Google evalúa la calidad de un sitio.</p>
+          <div class="cs-scores-grid">
+            <div class="cs-gauge">
+              <div class="cs-gauge-ring">
+                <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="cs-gauge-track" cx="60" cy="60" r="52"/><circle class="cs-gauge-prog" cx="60" cy="60" r="52" style="stroke-dashoffset:3.27"/></svg>
+                <span class="cs-gauge-val">99</span>
+              </div>
+              <p class="cs-gauge-lbl">Rendimiento</p>
+              <p class="cs-gauge-sub">Velocidad de carga</p>
+            </div>
+            <div class="cs-gauge">
+              <div class="cs-gauge-ring">
+                <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="cs-gauge-track" cx="60" cy="60" r="52"/><circle class="cs-gauge-prog" cx="60" cy="60" r="52" style="stroke-dashoffset:0"/></svg>
+                <span class="cs-gauge-val">100</span>
+              </div>
+              <p class="cs-gauge-lbl">Accesibilidad</p>
+              <p class="cs-gauge-sub">Usable por todos</p>
+            </div>
+            <div class="cs-gauge">
+              <div class="cs-gauge-ring">
+                <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="cs-gauge-track" cx="60" cy="60" r="52"/><circle class="cs-gauge-prog" cx="60" cy="60" r="52" style="stroke-dashoffset:0"/></svg>
+                <span class="cs-gauge-val">100</span>
+              </div>
+              <p class="cs-gauge-lbl">Buenas prácticas</p>
+              <p class="cs-gauge-sub">Código y seguridad</p>
+            </div>
+            <div class="cs-gauge">
+              <div class="cs-gauge-ring">
+                <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="cs-gauge-track" cx="60" cy="60" r="52"/><circle class="cs-gauge-prog" cx="60" cy="60" r="52" style="stroke-dashoffset:0"/></svg>
+                <span class="cs-gauge-val">100</span>
+              </div>
+              <p class="cs-gauge-lbl">SEO</p>
+              <p class="cs-gauge-sub">Listo para Google</p>
+            </div>
+          </div>
+          <p class="cs-scores-note">Google Lighthouse · escritorio · sergioluque.com</p>
         </div>
       </section>
 
