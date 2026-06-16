@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <script src="/components/cookie-consent.js" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Caso de éxito: sergioluque.com — plataforma editorial a la medida para el compositor Sergio Luque, con reproductor de audio lossless propio, catálogo de obras y diseño que refleja su música algorítmica. Desarrollado por Cero Studio.">
+  <title>Caso de éxito: Sergio Luque — Compositor | Cero Studio</title>
+  <link rel="canonical" href="https://cerostudio.ai/casos-de-exito/sergio-luque/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://cerostudio.ai/casos-de-exito/sergio-luque/">
+  <meta property="og:title" content="Caso de éxito: Sergio Luque — Compositor | Cero Studio">
+  <meta property="og:description"
+    content="Plataforma editorial a la medida para un compositor de música electroacústica: reproductor lossless propio, catálogo de obras y una identidad que suena a código.">
+  <meta property="og:image" content="https://cerostudio.ai/images/casos/sergio-luque/og.webp">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="sergioluque.com — sitio del compositor Sergio Luque por Cero Studio">
+  <meta property="og:locale" content="es_MX">
+  <meta property="og:site_name" content="Cero Studio">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Caso de éxito: Sergio Luque — Compositor | Cero Studio">
+  <meta name="twitter:description"
+    content="Plataforma editorial a la medida con reproductor de audio lossless propio y catálogo de obras.">
+  <meta name="twitter:image" content="https://cerostudio.ai/images/casos/sergio-luque/og.webp">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
+    as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
+      rel="stylesheet"></noscript>
+  <link rel="stylesheet" href="/css/base.css">
+  <!-- home.css aporta navbar+footer styles del middleware -->
+  <link rel="stylesheet" href="/css/home.css?v=20260604f">
+
+  <style>
+    /* ── Case study page styles (.cs-*) — kinetic brutalism CS ──
+       CRITICAL: reset padding heredado de home.css "section{padding:120px 48px}". */
+    .cs-wrap{max-width:1180px;margin:0 auto;padding:96px 24px 0}
+    .cs-breadcrumb{font-family:Inter,sans-serif;font-size:12px;opacity:.5;margin:0 0 28px;letter-spacing:.04em;text-transform:uppercase}
+    .cs-breadcrumb a{color:inherit;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s,color .2s}
+    .cs-breadcrumb a:hover{border-bottom-color:var(--lime,#b2f700);color:var(--lime,#b2f700)}
+    .cs-breadcrumb span{margin:0 10px;opacity:.4}
+
+    /* HERO */
+    .cs-hero{display:grid;grid-template-columns:1fr 1.05fr;gap:56px;align-items:center;margin:0 0 72px;padding:0 0 24px}
+    .cs-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--lime,#b2f700);margin:0 0 22px;display:inline-flex;align-items:center;gap:12px;line-height:1.5}
+    .cs-eyebrow::before{content:"";display:block;width:32px;height:1px;background:var(--lime,#b2f700);flex-shrink:0}
+    .cs-h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(38px,5.4vw,66px);font-weight:700;line-height:1.02;letter-spacing:-.035em;margin:0 0 24px;color:#fff}
+    .cs-h1 em{font-style:normal;color:var(--lime,#b2f700)}
+    .cs-lead{font-family:Inter,sans-serif;font-size:clamp(16px,1.4vw,18px);line-height:1.6;font-weight:300;color:rgba(255,255,255,.78);margin:0 0 28px;max-width:54ch}
+    .cs-hero-stats{list-style:none;display:flex;gap:36px;margin:0 0 32px;padding:20px 0;border-top:1px solid rgba(255,255,255,.1);flex-wrap:wrap}
+    .cs-hero-stats li{display:flex;flex-direction:column;gap:6px}
+    .cs-hero-stats .num{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:800;color:var(--lime,#b2f700);letter-spacing:-.02em;line-height:1}
+    .cs-hero-stats .lbl{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+    .cs-cta-row{display:flex;gap:14px;flex-wrap:wrap}
+    .cs-cta-row .btn-primary,.cs-cta-row .btn-ghost{border-radius:0}
+    /* Shot frame (browser-ish) */
+    .cs-shot{position:relative;background:#0b0b0b;border:1px solid rgba(255,255,255,.1);overflow:hidden;aspect-ratio:4/3}
+    .cs-shot img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+    .cs-shot::after{content:"";position:absolute;bottom:-12px;right:-12px;width:48px;height:48px;background:var(--lime,#b2f700);pointer-events:none}
+
+    /* CLIENT box (autoridad) */
+    .cs-client{background:var(--surface-lowest,#0e0e0e);border:1px solid rgba(255,255,255,.06);border-left:3px solid var(--lime,#b2f700);padding:48px 48px;margin:0 0 24px;position:relative}
+    .cs-client::before{content:'';position:absolute;top:0;left:-3px;width:96px;height:3px;background:var(--lime,#b2f700)}
+    /* Especificidad bumped (.cs-client .clase) para ganar sobre ".cs-client p" */
+    .cs-client .cs-client-label{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--lime,#b2f700);margin:0 0 26px;display:inline-flex;align-items:center;gap:10px;max-width:none}
+    .cs-client-label::before{content:'↳'}
+    .cs-client .cs-client-q{font-family:'Space Grotesk',sans-serif;font-size:clamp(22px,2.8vw,34px);font-weight:700;line-height:1.18;letter-spacing:-.02em;color:#fff;margin:0 0 28px;max-width:26ch}
+    .cs-client p{font-family:Inter,sans-serif;font-size:16px;line-height:1.7;font-weight:300;color:rgba(255,255,255,.75);margin:0 0 18px;max-width:70ch}
+    .cs-client strong{font-weight:500;color:var(--lime,#b2f700)}
+    .cs-client-creds{list-style:none;display:flex;flex-wrap:wrap;gap:10px;margin:28px 0 0;padding:24px 0 0;border-top:1px solid rgba(255,255,255,.08)}
+    .cs-client-creds li{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:rgba(255,255,255,.7);padding:8px 14px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.02)}
+
+    /* SECTIONS */
+    .cs-section{padding:0 0 72px}
+    .cs-section-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.3em;text-transform:uppercase;opacity:.55;margin:0 0 22px}
+    .cs-section-eyebrow::before{content:'↳';margin-right:10px;opacity:.6}
+    .cs-section-h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,3.2vw,40px);font-weight:600;letter-spacing:-.02em;line-height:1.15;margin:0 0 24px;max-width:24ch}
+    .cs-section-lead{font-family:Inter,sans-serif;font-size:clamp(15px,1.3vw,17px);line-height:1.7;font-weight:300;color:rgba(255,255,255,.72);margin:0 0 40px;max-width:64ch}
+
+    /* CHALLENGE — single brutalist card, red accent */
+    .cs-challenge{background:var(--surface-lowest,#0e0e0e);border:1px solid rgba(255,255,255,.08);position:relative;padding:48px 44px;overflow:hidden}
+    .cs-challenge::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:#ff6464}
+    .cs-challenge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;margin:8px 0 0}
+    .cs-challenge-item h3{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;color:#fff;margin:0 0 12px;display:flex;align-items:center;gap:10px}
+    .cs-challenge-item h3::before{content:'';width:7px;height:7px;background:#ff6464;flex-shrink:0}
+    .cs-challenge-item p{font-family:Inter,sans-serif;font-size:14px;line-height:1.7;font-weight:300;color:rgba(255,255,255,.65);margin:0}
+
+    /* BUILD — bento de features */
+    .cs-build{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+    .cs-feature{background:var(--surface-lowest,#0e0e0e);padding:40px 32px 46px;position:relative;overflow:hidden;transition:background .3s ease}
+    .cs-feature::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--lime,#b2f700);transform:scaleX(0);transform-origin:left;transition:transform .45s ease}
+    .cs-feature:hover{background:var(--surface-low,#1b1b1c)}
+    .cs-feature:hover::before{transform:scaleX(1)}
+    .cs-feature:hover .cs-feature-t{color:var(--lime,#b2f700)}
+    .cs-feature-top{display:flex;align-items:center;gap:16px;margin:0 0 28px}
+    .cs-feature-num{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--lime,#b2f700);text-transform:uppercase;white-space:nowrap}
+    .cs-feature-dash{flex:1;height:1px;background:rgba(255,255,255,.12)}
+    .cs-feature-t{font-family:'Space Grotesk',sans-serif;font-size:clamp(18px,1.8vw,21px);font-weight:800;text-transform:uppercase;letter-spacing:.005em;color:#fff;margin:0 0 14px;line-height:1.18;transition:color .3s ease}
+    .cs-feature-d{font-family:Inter,sans-serif;font-size:14px;line-height:1.75;color:rgba(255,255,255,.65);font-weight:300;margin:0}
+
+    /* GALLERY — screenshots */
+    .cs-gallery{display:grid;grid-template-columns:1.4fr 1fr;gap:20px}
+    .cs-gallery figure{margin:0;position:relative;background:#0b0b0b;border:1px solid rgba(255,255,255,.1);overflow:hidden}
+    .cs-gallery img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+    .cs-gallery .cs-g-tall{grid-row:span 2;aspect-ratio:auto}
+    .cs-gallery figcaption{position:absolute;left:0;bottom:0;font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#fff;background:rgba(0,0,0,.6);padding:8px 12px;backdrop-filter:blur(4px)}
+    .cs-gallery .cs-g-a{aspect-ratio:16/10}
+    .cs-gallery .cs-g-b{aspect-ratio:16/10}
+
+    /* ANTES / DESPUÉS */
+    .cs-ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .cs-ba-fig{margin:0;position:relative;background:#0b0b0b;border:1px solid rgba(255,255,255,.1);overflow:hidden;aspect-ratio:16/10}
+    .cs-ba-fig img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+    .cs-ba-badge{position:absolute;top:12px;left:12px;font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;padding:6px 12px;z-index:2}
+    .cs-ba-badge.antes{color:#ff8080;background:rgba(18,8,8,.82);border:1px solid rgba(255,100,100,.35)}
+    .cs-ba-badge.despues{color:var(--lime,#b2f700);background:rgba(8,16,0,.82);border:1px solid rgba(178,247,0,.4)}
+
+    /* PROCESS — 3 pasos */
+    .cs-plan{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+    .cs-step{background:var(--surface-lowest,#0e0e0e);padding:40px 32px 48px;position:relative;overflow:hidden;transition:background .3s ease}
+    .cs-step::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--lime,#b2f700);transform:scaleX(0);transform-origin:left;transition:transform .45s ease}
+    .cs-step:hover{background:var(--surface-low,#1b1b1c)}
+    .cs-step:hover::before{transform:scaleX(1)}
+    .cs-step:hover .cs-step-t{color:var(--lime,#b2f700)}
+    .cs-step-top{display:flex;align-items:center;gap:18px;margin:0 0 40px}
+    .cs-step-num{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;letter-spacing:.16em;color:var(--lime,#b2f700);text-transform:uppercase;white-space:nowrap}
+    .cs-step-dash{flex:1;height:1px;background:rgba(255,255,255,.12)}
+    .cs-step-t{font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,2vw,25px);font-weight:800;text-transform:uppercase;letter-spacing:.005em;color:#fff;margin:0 0 16px;line-height:1.15;transition:color .3s ease}
+    .cs-step-d{font-family:Inter,sans-serif;font-size:14px;line-height:1.8;color:rgba(255,255,255,.65);font-weight:300;margin:0}
+
+    /* RESULTS — bento de hechos verificables */
+    .cs-results{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+    .cs-result{background:var(--surface-lowest,#0e0e0e);padding:44px 32px;position:relative;overflow:hidden;transition:background .3s ease}
+    .cs-result::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:var(--lime,#b2f700);transform:scaleX(0);transform-origin:left;transition:transform .45s ease}
+    .cs-result:hover{background:var(--surface-low,#1b1b1c)}
+    .cs-result:hover::before{transform:scaleX(1)}
+    .cs-result-num{font-family:'Space Grotesk',sans-serif;font-size:clamp(44px,6vw,72px);font-weight:800;line-height:.9;letter-spacing:-.04em;color:var(--lime,#b2f700);margin:0 0 18px}
+    .cs-result-h{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;color:#fff;margin:0 0 10px}
+    .cs-result-p{font-family:Inter,sans-serif;font-size:13.5px;line-height:1.7;font-weight:300;color:rgba(255,255,255,.62);margin:0}
+
+    /* QUOTE / testimonial */
+    .cs-quote{background:var(--surface-lowest,#0e0e0e);border:1px solid rgba(255,255,255,.08);border-left:3px solid var(--lime,#b2f700);padding:48px 44px;position:relative}
+    .cs-quote-t{font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,2.4vw,30px);font-weight:600;line-height:1.3;letter-spacing:-.015em;color:#fff;margin:0 0 24px}
+    .cs-quote-t::before{content:"\201C";color:var(--lime,#b2f700);font-weight:800}
+    .cs-quote-t::after{content:"\201D";color:var(--lime,#b2f700);font-weight:800}
+    .cs-quote-cite{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6);font-style:normal}
+
+    /* CTA */
+    .cs-cta{text-align:center;padding:64px 24px 120px}
+    .cs-cta-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,4.4vw,52px);font-weight:600;letter-spacing:-.025em;line-height:1.1;margin:0 auto 18px;max-width:24ch}
+    .cs-cta-sub{font-family:Inter,sans-serif;font-size:16px;font-weight:300;color:rgba(255,255,255,.7);margin:0 auto 36px;max-width:54ch}
+    .cs-cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+    .cs-cta-actions .btn-primary,.cs-cta-actions .btn-ghost{border-radius:0}
+
+    /* MOBILE/TOUCH fallback via reveal-cards.js (.in-view) */
+    @media (hover: none) {
+      .cs-feature.in-view{background:var(--surface-low,#1b1b1c)}
+      .cs-feature.in-view::before{transform:scaleX(1)}
+      .cs-feature.in-view .cs-feature-t{color:var(--lime,#b2f700)}
+      .cs-step.in-view{background:var(--surface-low,#1b1b1c)}
+      .cs-step.in-view::before{transform:scaleX(1)}
+      .cs-step.in-view .cs-step-t{color:var(--lime,#b2f700)}
+      .cs-result.in-view{background:var(--surface-low,#1b1b1c)}
+      .cs-result.in-view::before{transform:scaleX(1)}
+    }
+
+    @media (max-width:900px){
+      .cs-hero{grid-template-columns:1fr;gap:36px;margin-bottom:56px}
+      .cs-shot{max-width:560px;aspect-ratio:16/11}
+      .cs-shot::after{display:none}
+      .cs-client{padding:36px 24px}
+      .cs-client::before{width:72px}
+      .cs-challenge{padding:36px 24px}
+      .cs-challenge-grid{grid-template-columns:1fr;gap:28px}
+      .cs-build{grid-template-columns:1fr;gap:0;background:transparent;border:0}
+      .cs-build .cs-feature{border-bottom:1px solid rgba(255,255,255,.08)}
+      .cs-plan{grid-template-columns:1fr;gap:0;background:transparent;border:0}
+      .cs-plan .cs-step{border-bottom:1px solid rgba(255,255,255,.08)}
+      .cs-results{grid-template-columns:1fr;gap:0;background:transparent;border:0}
+      .cs-results .cs-result{border-bottom:1px solid rgba(255,255,255,.08)}
+      .cs-gallery{grid-template-columns:1fr;gap:16px}
+      .cs-gallery .cs-g-tall{grid-row:auto;aspect-ratio:16/10}
+      .cs-ba-grid{grid-template-columns:1fr;gap:14px}
+    }
+    @media (max-width:520px){
+      .cs-wrap{padding-top:100px}
+      .cs-cta{padding-bottom:80px}
+      .cs-cta-actions .btn-primary,.cs-cta-actions .btn-ghost{width:100%;text-align:center}
+    }
+  </style>
+
+  <!-- ── Structured Data: Article (case study) + CreativeWork + BreadcrumbList ── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": "https://cerostudio.ai/casos-de-exito/sergio-luque/#article",
+        "headline": "Caso de éxito: sergioluque.com — sitio para el compositor Sergio Luque",
+        "inLanguage": "es-MX",
+        "image": "https://cerostudio.ai/images/casos/sergio-luque/og.webp",
+        "author": { "@id": "https://cerostudio.ai/#organization" },
+        "publisher": { "@id": "https://cerostudio.ai/#organization" },
+        "isPartOf": { "@id": "https://cerostudio.ai/#website" },
+        "about": { "@id": "https://sergioluque.com/#website" },
+        "mainEntityOfPage": "https://cerostudio.ai/casos-de-exito/sergio-luque/"
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://sergioluque.com/#website",
+        "name": "Sergio Luque — Composer",
+        "url": "https://sergioluque.com",
+        "author": {
+          "@type": "Person",
+          "name": "Sergio Luque",
+          "jobTitle": "Compositor",
+          "url": "https://sergioluque.com"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://cerostudio.ai/casos-de-exito/sergio-luque/#breadcrumb",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://cerostudio.ai/" },
+          { "@type": "ListItem", "position": 2, "name": "Casos de éxito", "item": "https://cerostudio.ai/casos-de-exito/" },
+          { "@type": "ListItem", "position": 3, "name": "Sergio Luque", "item": "https://cerostudio.ai/casos-de-exito/sergio-luque/" }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <!-- Navbar handlers para botones inyectados por middleware. Esta página NO
+       carga /js/home.js, así que define versiones locales mínimas. -->
+  <script>
+    window.toggleLang = function () { window.location.href = '/en/case-studies/sergio-luque/'; };
+    window.toggleNav = function () {
+      var m = document.getElementById('mobileNav');
+      var h = document.getElementById('navHam');
+      if (m) m.classList.toggle('open');
+      if (h) h.classList.toggle('open');
+    };
+    window.closeNav = function () {
+      var m = document.getElementById('mobileNav');
+      var h = document.getElementById('navHam');
+      if (m) m.classList.remove('open');
+      if (h) h.classList.remove('open');
+    };
+  </script>
+</head>
+
+<body>
+  <div class="site-wrapper">
+    <div id="navbar-placeholder"></div>
+
+    <main id="main-content">
+      <div class="cs-wrap">
+        <nav class="cs-breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Inicio</a><span>/</span><a href="/casos-de-exito/">Casos de éxito</a><span>/</span>Sergio Luque
+        </nav>
+
+        <!-- HERO -->
+        <section class="cs-hero">
+          <div class="cs-hero-content">
+            <p class="cs-eyebrow">Caso de éxito · Música / Arte</p>
+            <h1 class="cs-h1">Un sitio que <em>suena</em> a su propia música.</h1>
+            <p class="cs-lead">Para <strong style="color:#fff;font-weight:500">Sergio Luque</strong> —compositor de música electroacústica e investigador en computer music— construimos una plataforma editorial a la medida: reproductor de audio en alta fidelidad, catálogo de obras curado y un diseño que refleja cómo compone: con código.</p>
+            <ul class="cs-hero-stats">
+              <li><span class="num">2026</span><span class="lbl">Lanzamiento</span></li>
+              <li><span class="num">100%</span><span class="lbl">A la medida</span></li>
+              <li><span class="num">Lossless</span><span class="lbl">Audio profesional</span></li>
+              <li><span class="num">Global</span><span class="lbl">Sobre Cloudflare</span></li>
+            </ul>
+            <div class="cs-cta-row">
+              <a href="https://sergioluque.com" target="_blank" rel="noopener" class="btn-primary ht">Visitar el sitio →</a>
+              <a href="/#contacto" class="btn-ghost ht">Quiero algo así</a>
+            </div>
+          </div>
+          <figure class="cs-shot">
+            <img src="/images/casos/sergio-luque/hero.webp"
+                 alt="Home de sergioluque.com — 'Instrumental. Electroacoustic.' sobre arte generativo"
+                 width="1400" height="1050" fetchpriority="high">
+          </figure>
+        </section>
+      </div>
+
+      <!-- EL CLIENTE -->
+      <section class="cs-section">
+        <div class="cs-wrap" style="padding-top:0">
+          <div class="cs-client">
+            <p class="cs-client-label">El cliente</p>
+            <p class="cs-client-q">No es un músico cualquiera. Es un compositor que escribe su sonido en código.</p>
+            <p>Sergio Luque (n. 1976) compone música vocal, instrumental y electroacústica, e investiga síntesis de sonido por computadora. Sus obras electroacústicas se construyen a partir de sus propias extensiones a la <strong>síntesis estocástica de Iannis Xenakis</strong>, desarrolladas en SuperCollider y C.</p>
+            <p>Su trabajo se ha presentado en Europa, América, Asia y Australia —en festivales como el centenario de Xenakis (X100) en Kraftwerk Berlín, Gaudeamus Muziekweek en Ámsterdam y el CCRMA de la Universidad de Stanford. Un cliente así necesitaba un sitio a la altura de su obra.</p>
+            <ul class="cs-client-creds">
+              <li>MIT Press · Leonardo Music Journal</li>
+              <li>The SuperCollider Book</li>
+              <li>Xenakis 100 · Berlín</li>
+              <li>Stanford CCRMA</li>
+              <li>4 continentes</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- EL RETO -->
+      <section class="cs-section">
+        <div class="cs-wrap" style="padding-top:0">
+          <p class="cs-section-eyebrow">El reto</p>
+          <h2 class="cs-section-h2">Tenía un sitio. No tenía una sede para su obra.</h2>
+          <p class="cs-section-lead">Sergio llegó con un WordPress que se veía viejo y que no le hacía justicia a una carrera de nivel internacional. Pocas visitas, mal posicionado en Google y sin métricas para entender por qué. Y, sobre todo, su música —su activo más importante— vivía en audio de calidad comercial, no profesional.</p>
+          <div class="cs-challenge">
+            <div class="cs-challenge-grid">
+              <div class="cs-challenge-item">
+                <h3>Una imagen anticuada</h3>
+                <p>Un sitio en WordPress que se sentía desactualizado y genérico —a años luz del rigor y la sofisticación de su obra. La primera impresión jugaba en su contra.</p>
+              </div>
+              <div class="cs-challenge-item">
+                <h3>Invisible y a ciegas</h3>
+                <p>Mal posicionado en Google, con pocas visitas y sin analítica avanzada: imposible saber quién lo encontraba, desde dónde, ni qué obras escuchaba.</p>
+              </div>
+              <div class="cs-challenge-item">
+                <h3>Audio sub-profesional</h3>
+                <p>Sus piezas se reproducían en calidad comercial, no profesional. Para un compositor que selecciona cada sonido entre cientos, el detalle perdido era inaceptable.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ANTES / DESPUÉS -->
+      <section class="cs-section">
+        <div class="cs-wrap" style="padding-top:0">
+          <p class="cs-section-eyebrow">Antes / Después</p>
+          <h2 class="cs-section-h2">La misma obra. Otra liga.</h2>
+          <p class="cs-section-lead">A la izquierda, el sitio anterior en WordPress: fondo blanco, una foto y una lista de texto con reproductores genéricos. A la derecha, la plataforma que construimos.</p>
+          <div class="cs-ba-grid">
+            <figure class="cs-ba-fig">
+              <span class="cs-ba-badge antes">Antes</span>
+              <img src="/images/casos/sergio-luque/antes-home.webp" alt="Home anterior de sergioluque.com en WordPress: fondo blanco con lista de obras" width="1400" height="993" loading="lazy">
+            </figure>
+            <figure class="cs-ba-fig">
+              <span class="cs-ba-badge despues">Después</span>
+              <img src="/images/casos/sergio-luque/hero.webp" alt="Home nuevo de sergioluque.com con arte generativo y diseño editorial oscuro" width="1400" height="993" loading="lazy">
+            </figure>
+            <figure class="cs-ba-fig">
+              <span class="cs-ba-badge antes">Antes</span>
+              <img src="/images/casos/sergio-luque/antes-catalogo.webp" alt="Catálogo anterior: lista de obras en texto plano sobre fondo blanco" width="1400" height="993" loading="lazy">
+            </figure>
+            <figure class="cs-ba-fig">
+              <span class="cs-ba-badge despues">Después</span>
+              <img src="/images/casos/sergio-luque/catalogue.webp" alt="Catálogo nuevo: filtrable, ordenado y navegable" width="1400" height="993" loading="lazy">
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- LO QUE CONSTRUIMOS -->
+      <section class="cs-section">
+        <div class="cs-wrap" style="padding-top:0">
+          <p class="cs-section-eyebrow">Lo que construimos</p>
+          <h2 class="cs-section-h2">Una plataforma editorial, no una plantilla.</h2>
+          <p class="cs-section-lead">Cada pieza del sitio se construyó alrededor de cómo Sergio quiere que el mundo escuche y lea su trabajo.</p>
+          <div class="cs-build">
+            <div class="cs-feature">
+              <div class="cs-feature-top"><span class="cs-feature-num">01</span><span class="cs-feature-dash"></span></div>
+              <h3 class="cs-feature-t">Reproductor de audio a la medida</h3>
+              <p class="cs-feature-d">Construimos el player desde cero —sin librerías genéricas— con audio lossless, barra de progreso, tiempos y opción de compartir cada obra. La escucha es parte de la pieza, no un accesorio.</p>
+            </div>
+            <div class="cs-feature">
+              <div class="cs-feature-top"><span class="cs-feature-num">02</span><span class="cs-feature-dash"></span></div>
+              <h3 class="cs-feature-t">Catálogo de obras navegable</h3>
+              <p class="cs-feature-d">Un catálogo filtrable por tipo (vocal, instrumental, mixto, electroacústico) con instrumentación, año y notas de cada obra. Curado, ordenado y listo para crecer con su producción.</p>
+            </div>
+            <div class="cs-feature">
+              <div class="cs-feature-top"><span class="cs-feature-num">03</span><span class="cs-feature-dash"></span></div>
+              <h3 class="cs-feature-t">Diseño que suena a código</h3>
+              <p class="cs-feature-d">Tipografía monospace, paleta sobria y un acento vivo: la estética de un editor de código, en sintonía con una obra compuesta en SuperCollider. La forma comunica el fondo.</p>
+            </div>
+            <div class="cs-feature">
+              <div class="cs-feature-top"><span class="cs-feature-num">04</span><span class="cs-feature-dash"></span></div>
+              <h3 class="cs-feature-t">Arquitectura multi-sección</h3>
+              <p class="cs-feature-d">Escucha, noticias, biografía, catálogo, investigación y contacto —cada sección con su propio rol, conectadas en una navegación clara que sirve igual a programadores de festivales que a oyentes.</p>
+            </div>
+            <div class="cs-feature">
+              <div class="cs-feature-top"><span class="cs-feature-num">05</span><span class="cs-feature-dash"></span></div>
+              <h3 class="cs-feature-t">Veloz, visible y medible</h3>
+              <p class="cs-feature-d">Sobre Cloudflare: carga rápida desde cualquier continente, base técnica pensada para posicionar en Google —donde antes era casi invisible— y analítica avanzada para entender por fin a su audiencia.</p>
+            </div>
+            <div class="cs-feature">
+              <div class="cs-feature-top"><span class="cs-feature-num">06</span><span class="cs-feature-dash"></span></div>
+              <h3 class="cs-feature-t">Listo para mantener</h3>
+              <p class="cs-feature-d">Estructura pensada para que agregar una obra nueva, un concierto o una publicación sea simple —sin rehacer el sitio cada temporada.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- GALERÍA -->
+      <section class="cs-section">
+        <div class="cs-wrap" style="padding-top:0">
+          <p class="cs-section-eyebrow">El sitio</p>
+          <h2 class="cs-section-h2">Cada pantalla, al servicio de la obra.</h2>
+          <div class="cs-gallery">
+            <figure class="cs-g-tall">
+              <img src="/images/casos/sergio-luque/player.webp" alt="Sección Listen de sergioluque.com con el reproductor de audio a la medida" width="1400" height="1400" loading="lazy">
+              <figcaption>Escucha · reproductor propio</figcaption>
+            </figure>
+            <figure class="cs-g-a">
+              <img src="/images/casos/sergio-luque/catalogue.webp" alt="Catálogo de obras filtrable" width="1400" height="875" loading="lazy">
+              <figcaption>Catálogo filtrable</figcaption>
+            </figure>
+            <figure class="cs-g-b">
+              <img src="/images/casos/sergio-luque/bio.webp" alt="Biografía del compositor" width="1400" height="875" loading="lazy">
+              <figcaption>Biografía</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- EL PROCESO -->
+      <section class="cs-section">
+        <div class="cs-wrap" style="padding-top:0">
+          <p class="cs-section-eyebrow">El proceso</p>
+          <h2 class="cs-section-h2">Tres etapas. De la obra al sitio.</h2>
+          <div class="cs-plan">
+            <div class="cs-step">
+              <div class="cs-step-top"><span class="cs-step-num">01 · Inmersión</span><span class="cs-step-dash"></span></div>
+              <h3 class="cs-step-t">Entender la obra</h3>
+              <p class="cs-step-d">Antes de diseñar, escuchamos. Mapeamos el catálogo, las necesidades de audio y a quién le habla el sitio: festivales, intérpretes, investigadores y oyentes.</p>
+            </div>
+            <div class="cs-step">
+              <div class="cs-step-top"><span class="cs-step-num">02 · Diseño</span><span class="cs-step-dash"></span></div>
+              <h3 class="cs-step-t">Una identidad propia</h3>
+              <p class="cs-step-d">Definimos un lenguaje visual que comunica rigor y autoría desde el código. Decisiones de tipografía, ritmo y color al servicio de la escucha, no de la decoración.</p>
+            </div>
+            <div class="cs-step">
+              <div class="cs-step-top"><span class="cs-step-num">03 · Desarrollo</span><span class="cs-step-dash"></span></div>
+              <h3 class="cs-step-t">Construcción y lanzamiento</h3>
+              <p class="cs-step-d">Reproductor a la medida, catálogo y secciones sobre infraestructura global. Probado, optimizado y entregado listo para crecer con cada estreno.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RESULTADOS (hechos verificables — métricas de negocio: validar con cliente) -->
+      <section class="cs-section">
+        <div class="cs-wrap" style="padding-top:0">
+          <p class="cs-section-eyebrow">El resultado</p>
+          <h2 class="cs-section-h2">Del WordPress anticuado a una sede a la altura de su carrera.</h2>
+          <div class="cs-results">
+            <div class="cs-result">
+              <div class="cs-result-num">Pro</div>
+              <p class="cs-result-h">Audio profesional</p>
+              <p class="cs-result-p">Sus piezas pasaron de calidad comercial a fidelidad lossless, en un reproductor propio que respeta cada decisión sonora.</p>
+            </div>
+            <div class="cs-result">
+              <div class="cs-result-num">+SEO</div>
+              <p class="cs-result-h">Visible en Google</p>
+              <p class="cs-result-p">Una base técnica y de velocidad pensada para posicionar y crecer en visitas —donde el sitio anterior era casi invisible.</p>
+            </div>
+            <div class="cs-result">
+              <div class="cs-result-num">360°</div>
+              <p class="cs-result-h">Decisiones con datos</p>
+              <p class="cs-result-p">Por primera vez, analítica avanzada para entender a su audiencia global: quién lo encuentra, desde dónde y qué escucha.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TESTIMONIO — PLACEHOLDER: reemplazar con cita real de Sergio Luque -->
+      <section class="cs-section">
+        <div class="cs-wrap" style="padding-top:0">
+          <div class="cs-quote">
+            <p class="cs-quote-t">Espacio reservado para el testimonio de Sergio Luque —su experiencia trabajando con Cero Studio y lo que cambió con el nuevo sitio.</p>
+            <p class="cs-quote-cite">— Sergio Luque · Compositor</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA FINAL -->
+      <section class="cs-cta">
+        <h2 class="cs-cta-h">¿Tu proyecto merece algo a la medida?</h2>
+        <p class="cs-cta-sub">Si tienes algo que una plantilla no puede contar, hablemos. Primera consulta gratis, respuesta en menos de 24 horas.</p>
+        <div class="cs-cta-actions">
+          <a href="https://sergioluque.com" target="_blank" rel="noopener" class="btn-ghost ht">Ver el sitio en vivo →</a>
+          <a href="/#contacto" class="btn-primary ht">Empecemos tu proyecto</a>
+        </div>
+      </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+  </div>
+
+  <script src="/components/loader.js" defer></script>
+  <script src="/components/reveal-cards.js" defer></script>
+</body>
+
+</html>

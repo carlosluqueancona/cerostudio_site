@@ -39,7 +39,12 @@
     // Home (/)
     '.srv-card',
     '.proc-step',
-    '.plan-card'
+    '.plan-card',
+    // /casos-de-exito/* (case studies)
+    '.cs-feature',
+    '.cs-step',
+    '.cs-result',
+    '.csx-card'
   ].join(',');
 
   function init() {
