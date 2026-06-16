@@ -11,6 +11,8 @@ const STATIC_PAGES = [
   { loc: '/',                                     priority: '1.0', changefreq: 'weekly'  },
   { loc: '/nosotros/',                            priority: '0.8', changefreq: 'monthly' },
   { loc: '/en/about-us/',                         priority: '0.7', changefreq: 'monthly' },
+  { loc: '/casos-de-exito/',                      priority: '0.8', changefreq: 'monthly' },
+  { loc: '/casos-de-exito/sergio-luque/',         priority: '0.8', changefreq: 'monthly' },
   { loc: '/blog/',                                priority: '0.9', changefreq: 'daily'   },
   { loc: '/servicios/desarrollo-web/',            priority: '0.8', changefreq: 'monthly' },
   { loc: '/servicios/tiendas-ecommerce/',         priority: '0.8', changefreq: 'monthly' },
