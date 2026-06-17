@@ -54,12 +54,18 @@
     .csx-breadcrumb a:hover{border-bottom-color:var(--lime,#b2f700);color:var(--lime,#b2f700)}
     .csx-breadcrumb span{margin:0 10px;opacity:.4}
 
-    /* HERO — banda full-width con fondo flow-field (firma CS) */
-    .csx-herowrap{position:relative;overflow:hidden;background:var(--bg,#131313);padding:calc(var(--nh,72px) + 64px) 24px 80px;border-bottom:1px solid rgba(255,255,255,.06)}
-    .csx-herowrap canvas[data-flowfield]{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
-    .csx-hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;z-index:1}
-    .csx-herowrap::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(90deg,rgba(19,19,19,.92) 0%,rgba(19,19,19,.55) 42%,rgba(19,19,19,.05) 78%,transparent 100%)}
-    .csx-hero-inner{position:relative;z-index:3;max-width:1180px;margin:0 auto}
+    /* HERO — full-width band with animated project wall (parallax) */
+    .csx-herowrap{position:relative;overflow:hidden;background:var(--bg,#131313);padding:calc(var(--nh,72px) + 64px) 24px 80px;border-bottom:1px solid rgba(255,255,255,.06);min-height:clamp(440px,62vh,640px);display:flex;align-items:center}
+    .csx-wall{position:absolute;inset:-8% -3%;z-index:0;display:flex;gap:16px;transform:rotate(-7deg) scale(1.2);transform-origin:center;opacity:.5;pointer-events:none}
+    .csx-wall-col{flex:1;min-width:0}
+    .csx-wall-track{display:flex;flex-direction:column;gap:16px;animation:csxWall 65s linear infinite;will-change:transform}
+    .csx-wall-col:nth-child(2) .csx-wall-track{animation-duration:88s;animation-direction:reverse}
+    .csx-wall-col:nth-child(3) .csx-wall-track{animation-duration:75s}
+    .csx-wall-tile{aspect-ratio:16/10;background:#0b0b0b center/cover no-repeat;border:1px solid rgba(255,255,255,.08);filter:saturate(.85) brightness(.72)}
+    @keyframes csxWall{from{transform:translateY(0)}to{transform:translateY(-50%)}}
+    @media (prefers-reduced-motion: reduce){.csx-wall-track{animation:none}}
+    .csx-herowrap::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(19,19,19,.97) 0%,rgba(19,19,19,.84) 38%,rgba(19,19,19,.45) 70%,rgba(19,19,19,.6) 100%),linear-gradient(0deg,rgba(19,19,19,.65) 0%,transparent 26%,transparent 74%,rgba(19,19,19,.65) 100%)}
+    .csx-hero-inner{position:relative;z-index:2;max-width:1180px;margin:0 auto;width:100%}
     .csx-hero{max-width:760px}
     .csx-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--lime,#b2f700);margin:0 0 22px;display:inline-flex;align-items:center;gap:12px}
     .csx-eyebrow::before{content:"";display:block;width:32px;height:1px;background:var(--lime,#b2f700)}
@@ -113,10 +119,11 @@
       .csx-card-shot{min-height:0;aspect-ratio:16/10}
       .csx-card-body{padding:36px 24px}
       .csx-soon{padding:32px 24px}
-      /* On mobile the lines span the full width: darker vertical overlay
-         to keep text legible without killing the effect. */
-      .csx-herowrap{padding:calc(var(--nh,72px) + 40px) 24px 56px}
-      .csx-herowrap::after{background:linear-gradient(180deg,rgba(19,19,19,.5) 0%,rgba(19,19,19,.7) 55%,rgba(19,19,19,.86) 100%)}
+      /* On mobile the wall is denser: darker vertical overlay to keep text
+         legible without killing the effect. */
+      .csx-herowrap{padding:calc(var(--nh,72px) + 36px) 24px 52px;min-height:auto}
+      .csx-wall{transform:rotate(-7deg) scale(1.5)}
+      .csx-herowrap::after{background:linear-gradient(180deg,rgba(19,19,19,.62) 0%,rgba(19,19,19,.78) 58%,rgba(19,19,19,.92) 100%)}
     }
     @media (max-width:520px){
       .csx-wrap{padding-top:64px}
@@ -186,8 +193,44 @@
 
     <main id="main-content">
       <section class="csx-herowrap">
-        <canvas data-flowfield aria-hidden="true"></canvas>
-        <div class="csx-hero-grid" aria-hidden="true"></div>
+        <div class="csx-wall" aria-hidden="true">
+          <div class="csx-wall-col"><div class="csx-wall-track">
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/modelle-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/mainoflex-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/cicap-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/patitaspeludas-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/imvec-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/modelle-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/mainoflex-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/cicap-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/patitaspeludas-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/imvec-screenshot.webp)"></div>
+          </div></div>
+          <div class="csx-wall-col"><div class="csx-wall-track">
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/impresiones2m-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/myr-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/edecanespachuca-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/respiraresvivir-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/marz-mercurium-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/impresiones2m-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/myr-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/edecanespachuca-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/respiraresvivir-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/marz-mercurium-screenshot.webp)"></div>
+          </div></div>
+          <div class="csx-wall-col"><div class="csx-wall-track">
+            <div class="csx-wall-tile" style="background-image:url(/images/casos/sergio-luque/hero.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/patitasfelinas-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/avicultura-estrategica-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/centro-psibori-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/seminuevoscoapa-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/casos/sergio-luque/hero.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/patitasfelinas-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/avicultura-estrategica-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/centro-psibori-screenshot.webp)"></div>
+            <div class="csx-wall-tile" style="background-image:url(/images/portafolio/seminuevoscoapa-screenshot.webp)"></div>
+          </div></div>
+        </div>
         <div class="csx-hero-inner">
           <nav class="csx-breadcrumb" aria-label="Breadcrumb">
             <a href="/">Home</a><span>/</span>Case Studies
@@ -244,7 +287,6 @@
 
   <script src="/components/loader.js" defer></script>
   <script src="/components/reveal-cards.js" defer></script>
-  <script src="/components/hero-flowfield.js" defer></script>
 </body>
 
 </html>
