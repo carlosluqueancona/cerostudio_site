@@ -259,6 +259,39 @@ export async function onRequestPost(context) {
     }
   }
 
+  // Reordenar: sube/baja un item intercambiándolo con su vecino en el orden
+  // actual (sort_order ASC, id ASC). Reasigna sort_order secuencial a TODAS
+  // las filas → robusto ante empates o sort_order=0 duplicados (si solo
+  // intercambiáramos valores, dos ceros no moverían nada).
+  if (searchParams.get('action') === 'reorder') {
+    let body;
+    try { body = await request.json(); }
+    catch { return json({ error: 'JSON inválido' }, 400, origin); }
+    const id = parseId(body?.id);
+    const dir = body?.dir;
+    if (!id || (dir !== 'up' && dir !== 'down')) {
+      return json({ error: 'Parámetros inválidos' }, 400, origin);
+    }
+    try {
+      const { results } = await env.DB.prepare(
+        'SELECT id FROM portfolio_items ORDER BY sort_order ASC, id ASC'
+      ).all();
+      const idx = results.findIndex(r => r.id === id);
+      if (idx === -1) return json({ error: 'No encontrado' }, 404, origin);
+      const swap = dir === 'up' ? idx - 1 : idx + 1;
+      if (swap < 0 || swap >= results.length) {
+        return json({ success: true, noop: true }, 200, origin); // ya está en el borde
+      }
+      [results[idx], results[swap]] = [results[swap], results[idx]];
+      const stmt = env.DB.prepare('UPDATE portfolio_items SET sort_order = ? WHERE id = ?');
+      await env.DB.batch(results.map((r, i) => stmt.bind(i, r.id)));
+      const rebuildInfo = await tryRebuild(env);
+      return json({ success: true, ...rebuildInfo }, 200, origin);
+    } catch (e) {
+      return json(serverError(e, 'reorder'), 500, origin);
+    }
+  }
+
   let body;
   try { body = await request.json(); }
   catch { return json({ error: 'JSON inválido' }, 400, origin); }
