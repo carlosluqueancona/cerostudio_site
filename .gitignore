@@ -54,3 +54,6 @@ graphify-out/
 # Capturas fuente pesadas del sitio anterior de Sergio Luque (FireShot ~80MB).
 # Las imágenes optimizadas viven en images/casos/sergio-luque/ (sí versionadas).
 sergio_luque-sitio_anterior/
+
+# Material de marca TiendaNube Partner (referencia interna, no al deploy)
+Agencias_Tiendanube_Partners/
