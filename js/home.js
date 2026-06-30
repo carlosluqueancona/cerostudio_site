@@ -476,7 +476,7 @@
           'tiendas-headline': { h: 'Vende<br><em>en línea.</em>' },
           'tiendas-urgency': { t: 'Tu tienda lista para cobrar, no solo para verse bien' },
           'tiendas-trust-text': { h: 'Pago único por el desarrollo.<br>La plataforma y la pasarela las cubre tu negocio.' },
-          'tiendas-partner-caption': { h: 'Agencia <strong style="font-weight:600;color:#fff;">Tiendanube Partner</strong><br>Empresa certificada' },
+          'tiendas-partner-caption': { h: 'Agencia <strong style="font-weight:600;color:#fff;">Tiendanube Partner</strong> certificada<br>Montamos tu tienda en línea en México' },
           'tienda-esencial-name': { t: 'Tienda Esencial' },
           'tienda-esencial-delivery': { t: 'pago único · marcas que empiezan' },
           'tienda-esencial-features': { h: '<li>Tienda en TiendaNube con template configurado a tu marca</li><li>Administras tu catálogo desde un panel simple — productos, precios y stock, cuando quieras</li><li>Pasarela de pago + envíos configurados</li><li>Conexión a Instagram + botón de WhatsApp</li><li>Dominio incluido (primer año)</li>' },
@@ -502,6 +502,7 @@
           'agenda-link': { t: 'O agenda una llamada →' },
           /* ── FOOTER */
           'footer-tagline': { t: 'Diseñamos el futuro digital de tu negocio.' },
+          'footer-partner-text': { h: 'Agencia <strong style="font-weight:600;color:#fff;">Tiendanube Partner</strong> certificada' },
           'fcol-nav-title': { t: 'Navegación' },
           'fcol-srv-title': { t: 'Servicios' },
           'fcol-contact-title': { t: 'Contacto' },
@@ -637,7 +638,7 @@
           'tiendas-headline': { h: 'Sell<br><em>online.</em>' },
           'tiendas-urgency': { t: 'A store built to sell, not just to look good' },
           'tiendas-trust-text': { h: 'One-time payment for the build.<br>The platform and payment gateway are covered by your business.' },
-          'tiendas-partner-caption': { h: 'Certified <strong style="font-weight:600;color:#fff;">Tiendanube Partner</strong><br>Agency' },
+          'tiendas-partner-caption': { h: 'Certified <strong style="font-weight:600;color:#fff;">Tiendanube Partner</strong> Agency<br>We build your online store in Mexico' },
           'tienda-esencial-name': { t: 'Store Essential' },
           'tienda-esencial-delivery': { t: 'one-time payment · brands just starting out' },
           'tienda-esencial-features': { h: '<li>TiendaNube store with a template configured to your brand</li><li>Manage your catalog from a simple panel — products, prices and stock, anytime</li><li>Payment gateway + shipping configured</li><li>Instagram connection + WhatsApp button</li><li>Domain included (first year)</li>' },
@@ -663,6 +664,7 @@
           'agenda-link': { t: 'Or schedule a call →' },
           /* ── FOOTER */
           'footer-tagline': { t: 'We design the digital future of your business.' },
+          'footer-partner-text': { h: 'Certified <strong style="font-weight:600;color:#fff;">Tiendanube Partner</strong> Agency' },
           'fcol-nav-title': { t: 'Navigation' },
           'fcol-srv-title': { t: 'Services' },
           'fcol-contact-title': { t: 'Contact' },
