@@ -123,6 +123,21 @@
         });
       });
 
+      /* ── PLAN CTA → preselecciona servicio y prellena mensaje ──── */
+      document.querySelectorAll('[data-plan-service]').forEach(a => {
+        a.addEventListener('click', () => {
+          const f = document.getElementById('contactForm');
+          if (!f) return;
+          const sel = f.querySelector('[name="servicio"]');
+          if (sel) sel.value = a.dataset.planService;
+          const msg = f.querySelector('[name="mensaje"]');
+          if (msg && !msg.value.trim())
+            msg.value = CS_LANG === 'en'
+              ? "I'm interested in the " + a.dataset.planName + ' plan.'
+              : 'Me interesa el plan ' + a.dataset.planName + '.';
+        });
+      });
+
       /* ── SCROLL REVEALS + COUNTERS (idle — no bloquean LCP) ───── */
       (window.requestIdleCallback || (cb => setTimeout(cb, 200)))(function () {
         gsap.utils.toArray('.sr').forEach(el => {
@@ -380,6 +395,8 @@
           /* ── MARQUEE */
           'marquee-1': { h: 'Diseño Web <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Desarrollo <em>·</em> Consultoría <em>·</em> Mantenimiento <em>·</em> Identidad Visual <em>·</em>' },
           'marquee-2': { h: 'Diseño Web <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Desarrollo <em>·</em> Consultoría <em>·</em> Mantenimiento <em>·</em> Identidad Visual <em>·</em>' },
+          /* ── TICKER */
+          'ticker-label': { t: 'Marcas que ya venden con nosotros' },
           /* ── SERVICIOS */
           'srv-eyebrow': { t: 'Servicios' },
           'srv-title': { h: 'Todo lo que necesitas<br>para <span class="t-outline">crecer</span> en línea' },
@@ -430,14 +447,14 @@
           /* ── NOSOTROS */
           'nos-eyebrow': { t: 'Nosotros' },
           'nos-title': { h: 'La agencia detrás de tu crecimiento <span class="t-lime">digital</span>' },
-          'nos-desc': { h: 'Somos <strong>Cero Studio</strong>, una agencia digital fundada con una misión clara: ayudar a emprendedores y negocios a competir y ganar en el mundo digital.<br><br>Combinamos diseño de nivel internacional con una comprensión profunda de las necesidades del mercado multicultural. No hacemos sitios genéricos — construimos <strong>herramientas de negocio</strong> que trabajan mientras tú descansas.' },
+          'nos-desc': { h: 'Somos <strong>Cero Studio</strong>, una agencia digital fundada con una misión clara: ayudar a emprendedores y negocios a competir y ganar en el mundo digital.<br><br>Combinamos diseño de nivel internacional con una comprensión profunda del mercado mexicano y de cómo compra tu cliente. No hacemos sitios genéricos — construimos <strong>herramientas de negocio</strong> que trabajan mientras tú descansas.' },
           'stat-l1': { t: 'Clientes atendidos' },
           'stat-l2': { t: 'Años de experiencia' },
           'stat-l3': { t: 'Proyectos entregados' },
           'stat-l4': { t: 'Satisfacción garantizada' },
           'nos-btn': { t: 'Trabajemos Juntos' },
           'nos-historia': { t: 'Con quién vas a trabajar →' },
-          'nos-quote': { h: 'Un sitio web no es un gasto. Es el vendedor más trabajador que nunca te pide vacaciones.' },
+          'nos-quote': { h: 'Un sitio web no es un gasto. Es el <span style="color:var(--lime);">vendedor</span> más <span style="color:var(--lime);">trabajador</span> que nunca te pide vacaciones.' },
           /* ── PROCESO */
           'proc-eyebrow': { t: 'Cómo Trabajamos' },
           'proc-headline': { h: 'Sin sorpresas,<br><span class="t-outline">sin rodeos.</span>' },
@@ -445,6 +462,15 @@
           'proc-t2': { t: 'Estrategia' }, 'proc-d2': { t: 'Plan a medida: qué servicios necesitas, en qué orden y con qué presupuesto para maximizar el retorno desde el primer mes.' },
           'proc-t3': { t: 'Ejecución' }, 'proc-d3': { t: 'Diseño, desarrollo, SEO y lo que haga falta. Tú apruebas, nosotros entregamos en tiempo y forma. Sin cobros sorpresa.' },
           'proc-t4': { t: 'Resultados' }, 'proc-d4': { t: 'Reportes claros cada mes: visitas, leads generados, conversiones y ventas. Sin tecnicismos — solo los números que importan a tu negocio.' },
+          /* ── TESTIMONIOS (PLACEHOLDER — sustituir por reales) */
+          'testi-eyebrow': { t: 'Testimonios' },
+          'testi-title': { h: 'Lo que dicen<br>quienes ya <span class="t-lime">venden</span>' },
+          'testi-q1': { t: 'Antes dependíamos al 100% de recomendaciones. Hoy el sitio nos trae cotizaciones nuevas cada semana — se pagó solo el primer mes.' },
+          'testi-n1': { t: 'María G.' }, 'testi-r1': { t: 'Boutique de regalos · CDMX' },
+          'testi-q2': { t: 'Excelente compromiso, profesionalismo y nivel de servicio de parte de Carlos. ¡Gracias por su valiosa colaboración!' },
+          'testi-n2': { t: 'Ricardo Lora' }, 'testi-r2': { t: 'Seminuevos Coapa · CDMX' },
+          'testi-q3': { t: 'Mi tienda pasó de vender por WhatsApp a cobrar en línea sola. El primer fin de semana ya había pedidos que no tuve que atender.' },
+          'testi-n3': { t: 'Daniela M.' }, 'testi-r3': { t: 'Tienda de mascotas · Guadalajara' },
           /* ── PRECIOS */
           'precios-eyebrow': { t: 'Inversión' },
           'precios-headline': { h: 'Precios<br><em>sin letra chica.</em>' },
@@ -467,10 +493,10 @@
           'premium-price-display': { h: 'Desde $1,800<span>USD</span>' },
           'premium-old-price': { t: 'Precio regular: desde $4,500 USD' },
           'premium-delivery': { t: 'cotización personalizada · entrega a convenir' },
-          'premium-features': { h: '<li>Todo lo del plan Cero Pro</li><li>Funciones avanzadas a la medida</li><li>Estrategia digital incluida</li><li>Account manager dedicado</li>' },
+          'premium-features': { h: '<li>Todo lo del plan Cero Pro</li><li><strong>Identidad integral + guidelines completos</strong></li><li>Funciones avanzadas a la medida</li><li>Estrategia digital incluida</li><li>Account manager dedicado</li>' },
           'premium-note': { t: 'Ideal para: negocios con múltiples servicios y necesidades a la medida.' },
           'premium-cta': { t: 'Pedir cotización →' },
-          'precios-condition': { t: 'Precios especiales de lanzamiento. Condición: Cero Studio publica el proyecto en su portafolio con nombre del negocio y resultados reales.' },
+          'precios-condition': { h: 'Precios especiales de lanzamiento. Condición: Cero Studio publica el proyecto en su portafolio con nombre del negocio y resultados reales.<br><span style="color:rgba(255,255,255,.45);" id="precios-currency-note">* Aceptamos pago en USD o MXN.</span>' },
           /* ── TIENDAS EN LÍNEA */
           'tiendas-eyebrow': { t: 'Tiendas en línea' },
           'tiendas-headline': { h: 'Vende<br><em>en línea.</em>' },
@@ -492,7 +518,7 @@
           'tienda-premium-delivery': { t: 'pago único · marca establecida' },
           'tienda-premium-features': { h: '<li>Todo lo de Tienda Pro</li><li>Diseño 100% personalizado</li><li>Branding completo</li><li>SEO avanzado + automatizaciones (carrito abandonado, correos)</li>' },
           'tienda-premium-note': { t: 'Ideal para: marca establecida.' },
-          'tienda-premium-cta': { t: 'Pedir cotización →' },
+          'tienda-premium-cta': { t: 'Quiero la Premium →' },
           'tiendas-condition': { t: 'Mensualidad opcional de soporte y carga de producto desde $800 MXN/mes. El plan de TiendaNube (~$99–249/mes) y la comisión de la pasarela de pago (~3.8% + IVA por venta) los cubre el cliente.' },
           /* ── CONTACTO */
           'contact-eyebrow': { t: 'Contacto' },
@@ -542,6 +568,8 @@
           /* ── MARQUEE */
           'marquee-1': { h: 'Web Design <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Development <em>·</em> Consulting <em>·</em> Maintenance <em>·</em> Visual Identity <em>·</em>' },
           'marquee-2': { h: 'Web Design <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Development <em>·</em> Consulting <em>·</em> Maintenance <em>·</em> Visual Identity <em>·</em>' },
+          /* ── TICKER */
+          'ticker-label': { t: 'Brands already selling with us' },
           /* ── SERVICIOS */
           'srv-eyebrow': { t: 'Services' },
           'srv-title': { h: 'Everything you need<br>to <span class="t-outline">grow</span> online' },
@@ -592,14 +620,14 @@
           /* ── NOSOTROS */
           'nos-eyebrow': { t: 'About Us' },
           'nos-title': { h: 'The agency behind your <span class="t-lime">digital</span> growth' },
-          'nos-desc': { h: "We are <strong>Cero Studio</strong>, a digital agency founded with a clear mission: to help entrepreneurs and businesses compete and win in the digital world.<br><br>We combine international-level design with a deep understanding of the multicultural and bilingual market. We don't build generic sites — we build <strong>business tools</strong> that work while you rest." },
+          'nos-desc': { h: "We are <strong>Cero Studio</strong>, a digital agency founded with a clear mission: to help entrepreneurs and businesses compete and win in the digital world.<br><br>We combine international-level design with a deep understanding of the Mexican market and how your customers buy. We don't build generic sites — we build <strong>business tools</strong> that work while you rest." },
           'stat-l1': { t: 'Clients served' },
           'stat-l2': { t: 'Years of experience' },
           'stat-l3': { t: 'Projects delivered' },
           'stat-l4': { t: 'Satisfaction guaranteed' },
           'nos-btn': { t: "Let's Work Together" },
           'nos-historia': { t: "Who you'll work with →" },
-          'nos-quote': { h: "A website isn't an expense. It's the hardest-working employee you'll never have to pay overtime." },
+          'nos-quote': { h: "A website isn't an expense. It's the <span style=\"color:var(--lime);\">hardest-working</span> <span style=\"color:var(--lime);\">employee</span> you'll never have to pay overtime." },
           /* ── PROCESO */
           'proc-eyebrow': { t: 'How We Work' },
           'proc-headline': { h: 'No surprises,<br><span class="t-outline">no detours.</span>' },
@@ -607,6 +635,15 @@
           'proc-t2': { t: 'Strategy' }, 'proc-d2': { t: 'A custom plan: which services you need, in what order, and with what budget to maximize returns from month one.' },
           'proc-t3': { t: 'Execution' }, 'proc-d3': { t: 'Design, development, SEO — whatever it takes. You approve, we deliver on time. No surprise charges.' },
           'proc-t4': { t: 'Results' }, 'proc-d4': { t: 'Clear monthly reports: visits, leads generated, conversions, and sales. No jargon — just the numbers that matter to your business.' },
+          /* ── TESTIMONIOS (PLACEHOLDER — replace with real ones) */
+          'testi-eyebrow': { t: 'Testimonials' },
+          'testi-title': { h: 'What businesses<br>already <span class="t-lime">selling</span> say' },
+          'testi-q1': { t: 'We used to depend 100% on referrals. Now the site brings in new quote requests every week — it paid for itself in the first month.' },
+          'testi-n1': { t: 'María G.' }, 'testi-r1': { t: 'Gift boutique · Mexico City' },
+          'testi-q2': { t: 'Excellent commitment, professionalism and level of service from Carlos. Thank you for your valuable collaboration!' },
+          'testi-n2': { t: 'Ricardo Lora' }, 'testi-r2': { t: 'Seminuevos Coapa · Mexico City' },
+          'testi-q3': { t: 'My store went from selling over WhatsApp to taking payments on its own. The first weekend brought orders I never had to touch.' },
+          'testi-n3': { t: 'Daniela M.' }, 'testi-r3': { t: 'Pet store · Guadalajara' },
           /* ── PRECIOS */
           'precios-eyebrow': { t: 'Investment' },
           'precios-headline': { h: 'Pricing<br><em>no hidden fees.</em>' },
@@ -629,10 +666,10 @@
           'premium-price-display': { h: 'From $1,800<span>USD</span>' },
           'premium-old-price': { t: 'Regular price: from $4,500 USD' },
           'premium-delivery': { t: 'custom quote · timeline to be agreed' },
-          'premium-features': { h: '<li>Everything in Cero Pro</li><li>Custom advanced features</li><li>Digital strategy included</li><li>Dedicated account manager</li>' },
+          'premium-features': { h: '<li>Everything in Cero Pro</li><li><strong>Full identity + complete guidelines</strong></li><li>Custom advanced features</li><li>Digital strategy included</li><li>Dedicated account manager</li>' },
           'premium-note': { t: 'Best for: businesses with multiple services and custom needs.' },
           'premium-cta': { t: 'Request a quote →' },
-          'precios-condition': { t: 'Special launch pricing. Condition: Cero Studio may feature the project in its portfolio with the business name and real results.' },
+          'precios-condition': { h: 'Special launch pricing. Condition: Cero Studio may feature the project in its portfolio with the business name and real results.<br><span style="color:rgba(255,255,255,.45);" id="precios-currency-note">* We accept payment in USD or MXN.</span>' },
           /* ── TIENDAS EN LÍNEA */
           'tiendas-eyebrow': { t: 'Online stores' },
           'tiendas-headline': { h: 'Sell<br><em>online.</em>' },
@@ -654,7 +691,7 @@
           'tienda-premium-delivery': { t: 'one-time payment · established brand' },
           'tienda-premium-features': { h: '<li>Everything in Store Pro</li><li>100% custom design</li><li>Full branding</li><li>Advanced SEO + automations (abandoned cart, emails)</li>' },
           'tienda-premium-note': { t: 'Best for: established brands.' },
-          'tienda-premium-cta': { t: 'Request a quote →' },
+          'tienda-premium-cta': { t: 'I want Store Premium →' },
           'tiendas-condition': { t: 'Optional support and product-upload retainer from $800 MXN/month. The TiendaNube plan (~$99–249/month) and the payment gateway fee (~3.8% + tax per sale) are covered by the client.' },
           /* ── CONTACTO */
           'contact-eyebrow': { t: 'Contact' },

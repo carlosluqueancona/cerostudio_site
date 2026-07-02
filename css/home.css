@@ -206,11 +206,16 @@
       justify-content: center;
       gap: 28px;
       transform: translateY(-100%);
-      transition: transform .6s cubic-bezier(.76, 0, .24, 1);
+      /* visibility evita que el contenido que desborda el panel (viewports
+         bajos) quede visible bajo el navbar con el menú cerrado */
+      visibility: hidden;
+      transition: transform .6s cubic-bezier(.76, 0, .24, 1), visibility 0s linear .6s;
     }
 
     #mobileNav.open {
       transform: translateY(0);
+      visibility: visible;
+      transition: transform .6s cubic-bezier(.76, 0, .24, 1), visibility 0s;
     }
 
     #mobileNav a {
@@ -516,6 +521,17 @@
       border-bottom: 1px solid rgba(0, 0, 0, .18);
       background: var(--lime);
       padding: 18px 0;
+    }
+
+    .ticker-label {
+      text-align: center;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .38em;
+      text-transform: uppercase;
+      color: rgba(0, 0, 0, .72);
+      margin-bottom: 14px;
+      padding: 0 24px;
     }
 
     .ticker-track {
@@ -1169,6 +1185,109 @@
       font-weight: 300;
       color: var(--gt);
       line-height: 1.8;
+    }
+
+    /* ============================================================ TESTIMONIOS */
+    #testimonios {
+      background: var(--g1);
+    }
+
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--gb);
+      margin-top: 72px;
+    }
+
+    .testi-card {
+      background: var(--bg);
+      padding: 44px 36px 40px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: background .3s;
+    }
+
+    .testi-card:hover {
+      background: var(--g2);
+    }
+
+    /* lime line top — slides in on hover (mismo lenguaje que .proc-step) */
+    .testi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--lime);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .45s ease;
+    }
+
+    .testi-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .testi-mark {
+      font-family: var(--fd);
+      font-size: 64px;
+      font-weight: 900;
+      line-height: .6;
+      color: var(--lime);
+      display: block;
+      margin-bottom: 24px;
+    }
+
+    .testi-quote {
+      font-size: 14px;
+      font-weight: 300;
+      color: rgba(255, 255, 255, .78);
+      line-height: 1.85;
+      margin-bottom: 28px;
+      flex: 1;
+    }
+
+    .testi-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      border-top: 1px solid var(--gb);
+      padding-top: 18px;
+    }
+
+    .testi-name {
+      font-family: var(--fd);
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .testi-role {
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--gt);
+    }
+
+    /* 3→1 col directo: 3 cards en 2 cols dejarían huérfano */
+    @media (max-width: 1100px) {
+      .testi-grid {
+        grid-template-columns: 1fr;
+        margin-top: 56px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .testi-grid {
+        gap: 0;
+        background: transparent;
+      }
     }
 
     /* ============================================================ PRECIOS */

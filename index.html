@@ -48,7 +48,7 @@
       rel="stylesheet">
   </noscript>
   <link rel="stylesheet" href="/css/base.css">
-  <link rel="stylesheet" href="/css/home.css?v=20260604g">
+  <link rel="stylesheet" href="/css/home.css?v=20260702a">
 
   <!-- ── Structured Data: Organization + WebSite ── -->
   <script type="application/ld+json">
@@ -156,6 +156,7 @@
 
     <!-- TICKER -->
     <div id="ticker">
+      <p class="ticker-label" id="ticker-label">Marcas que ya venden con nosotros</p>
       <div class="ticker-track">
         <div class="ticker-group">
           <div class="ticker-item"><img loading="lazy" decoding="async" src="images/logos_ticker/MAINOFLEX -Logo_FINAL_Alto_contrste-1000px.webp"
@@ -498,7 +499,7 @@
                 class="nos-img" loading="lazy" width="731" height="1000">
               <div class="nos-frame"></div>
             </div>
-            <p class="nos-quote" id="nos-quote">Un sitio web no es un gasto. Es el <span style="color:var(--lime);">vendedor</span> más <span style="color:var(--lime);">barato</span> que nunca duerme.
+            <p class="nos-quote" id="nos-quote">Un sitio web no es un gasto. Es el <span style="color:var(--lime);">vendedor</span> más <span style="color:var(--lime);">trabajador</span> que nunca te pide vacaciones.
             </p>
           </div>
           <div>
@@ -508,7 +509,7 @@
             </h2>
             <p class="nos-desc sr" id="nos-desc">Somos <strong>Cero Studio</strong>, una agencia digital fundada con una
               misión clara: ayudar a emprendedores y negocios a competir y ganar en el mundo digital.<br><br>Combinamos
-              diseño de nivel internacional con una comprensión profunda de las necesidades del mercado multicultural.
+              diseño de nivel internacional con una comprensión profunda del mercado mexicano y de cómo compra tu cliente.
               No hacemos sitios genéricos — construimos <strong>herramientas de negocio</strong> que trabajan mientras
               tú descansas.</p>
             <img src="images/firma.webp" alt="Firma Carlos Luque" class="nos-firma sr" width="4000" height="1194">
@@ -592,6 +593,50 @@
       </div>
     </section>
 
+    <!-- ═══════════════════════════════ TESTIMONIOS ═════════════════════════════ -->
+    <!-- ⚠️ Testimonios 1 y 3 (María G., Daniela M.) son PLACEHOLDER inventados.
+         Sustituir por reales + su paridad EN en js/home.js antes de darlos por finales.
+         El 2 (Ricardo Lora · Seminuevos Coapa) sí es real (WhatsApp, jul 2026). -->
+    <section id="testimonios">
+      <div class="section-inner">
+        <p class="eyebrow sr" id="testi-eyebrow">Testimonios</p>
+        <h2 class="section-title sr" id="testi-title">Lo que dicen<br>quienes ya <span class="t-lime">venden</span></h2>
+        <div class="testi-grid">
+
+          <figure class="testi-card sr ht">
+            <span class="testi-mark" aria-hidden="true">“</span>
+            <blockquote class="testi-quote" id="testi-q1">Antes dependíamos al 100% de recomendaciones. Hoy el sitio
+              nos trae cotizaciones nuevas cada semana — se pagó solo el primer mes.</blockquote>
+            <figcaption class="testi-meta">
+              <span class="testi-name" id="testi-n1">María G.</span>
+              <span class="testi-role" id="testi-r1">Boutique de regalos · CDMX</span>
+            </figcaption>
+          </figure>
+
+          <figure class="testi-card sr ht">
+            <span class="testi-mark" aria-hidden="true">“</span>
+            <blockquote class="testi-quote" id="testi-q2">Excelente compromiso, profesionalismo y nivel de servicio
+              de parte de Carlos. ¡Gracias por su valiosa colaboración!</blockquote>
+            <figcaption class="testi-meta">
+              <span class="testi-name" id="testi-n2">Ricardo Lora</span>
+              <span class="testi-role" id="testi-r2">Seminuevos Coapa · CDMX</span>
+            </figcaption>
+          </figure>
+
+          <figure class="testi-card sr ht">
+            <span class="testi-mark" aria-hidden="true">“</span>
+            <blockquote class="testi-quote" id="testi-q3">Mi tienda pasó de vender por WhatsApp a cobrar en línea
+              sola. El primer fin de semana ya había pedidos que no tuve que atender.</blockquote>
+            <figcaption class="testi-meta">
+              <span class="testi-name" id="testi-n3">Daniela M.</span>
+              <span class="testi-role" id="testi-r3">Tienda de mascotas · Guadalajara</span>
+            </figcaption>
+          </figure>
+
+        </div>
+      </div>
+    </section>
+
     <!-- ═══════════════════════════════ PRECIOS ═════════════════════════════════ -->
     <section id="precios">
       <div class="section-inner">
@@ -628,7 +673,7 @@
             </ul>
             <p style="font-size:11px;font-weight:300;color:var(--gt);margin-bottom:24px;" id="launch-note">Ideal para:
               restaurantes, consultorios, salones, servicios locales.</p>
-            <a href="#contacto" class="plan-cta plan-cta-ghost" id="launch-cta">Quiero empezar →</a>
+            <a href="#contacto" class="plan-cta plan-cta-ghost" id="launch-cta" data-plan-service="web" data-plan-name="Cero Launch">Quiero empezar →</a>
           </div>
 
           <!-- CERO PRO — destacado -->
@@ -654,7 +699,7 @@
             </ul>
             <p style="font-size:11px;font-weight:300;color:var(--gt);margin-bottom:24px;" id="pro-note">Ideal
               para: negocios establecidos, profesionales independientes, empresas listas para crecer.</p>
-            <a href="#contacto" class="plan-cta plan-cta-primary" id="pro-cta">Quiero el Cero Pro →</a>
+            <a href="#contacto" class="plan-cta plan-cta-primary" id="pro-cta" data-plan-service="web" data-plan-name="Cero Pro">Quiero el Cero Pro →</a>
           </div>
 
           <!-- CERO PREMIUM -->
@@ -673,7 +718,7 @@
             </ul>
             <p style="font-size:11px;font-weight:300;color:var(--gt);margin-bottom:24px;" id="premium-note">Ideal para:
               negocios con múltiples servicios y necesidades a la medida.</p>
-            <a href="#contacto" class="plan-cta plan-cta-primary" id="premium-cta">Pedir cotización →</a>
+            <a href="#contacto" class="plan-cta plan-cta-primary" id="premium-cta" data-plan-service="web" data-plan-name="Cero Premium">Pedir cotización →</a>
           </div>
 
         </div>
@@ -726,7 +771,7 @@
             </ul>
             <p style="font-size:11px;font-weight:300;color:var(--gt);margin-bottom:24px;" id="tienda-esencial-note">Ideal
               para: marcas que empiezan, catálogo chico.</p>
-            <a href="#contacto" class="plan-cta plan-cta-ghost" id="tienda-esencial-cta">Quiero empezar →</a>
+            <a href="#contacto" class="plan-cta plan-cta-ghost" id="tienda-esencial-cta" data-plan-service="ecommerce" data-plan-name="Tienda Esencial">Quiero empezar →</a>
           </div>
 
           <!-- TIENDA PRO — destacado -->
@@ -743,7 +788,7 @@
             </ul>
             <p style="font-size:11px;font-weight:300;color:var(--gt);margin-bottom:24px;" id="tienda-pro-note">Ideal
               para: catálogo mediano en crecimiento.</p>
-            <a href="#contacto" class="plan-cta plan-cta-primary" id="tienda-pro-cta">Quiero la Tienda Pro →</a>
+            <a href="#contacto" class="plan-cta plan-cta-primary" id="tienda-pro-cta" data-plan-service="ecommerce" data-plan-name="Tienda Pro">Quiero la Tienda Pro →</a>
           </div>
 
           <!-- TIENDA PREMIUM -->
@@ -759,7 +804,7 @@
             </ul>
             <p style="font-size:11px;font-weight:300;color:var(--gt);margin-bottom:24px;" id="tienda-premium-note">Ideal
               para: marca establecida.</p>
-            <a href="#contacto" class="plan-cta plan-cta-primary" id="tienda-premium-cta">Pedir cotización →</a>
+            <a href="#contacto" class="plan-cta plan-cta-primary" id="tienda-premium-cta" data-plan-service="ecommerce" data-plan-name="Tienda Premium">Quiero la Premium →</a>
           </div>
 
         </div>
@@ -855,7 +900,7 @@
   <script defer crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
-  <script src="/js/home.js?v=20260702a" defer></script>
+  <script src="/js/home.js?v=20260702b" defer></script>
 
   <!-- WhatsApp Float -->
   <a href="https://wa.me/525531007101?text=Hola%2C%20me%20interesa%20tener%20un%20sitio%20web%20profesional%20para%20mi%20negocio.%20%C2%BFPueden%20darme%20m%C3%A1s%20informaci%C3%B3n%3F"
