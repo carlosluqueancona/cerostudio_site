@@ -278,17 +278,22 @@
       letter-spacing: .1em;
       text-transform: uppercase;
       color: var(--on-lime);
-      background: linear-gradient(135deg, var(--lime) 0%, var(--lime-dim) 100%);
-      box-shadow: 0px 0px 16px rgba(178, 247, 0, 0.25);
+      background: var(--lime);
       padding: 10px 26px;
       display: inline-block;
-      transition: background .15s ease-out, color .15s ease-out, box-shadow .15s ease-out;
+      transition: background .15s ease-out, color .15s ease-out, box-shadow .15s ease-out, transform .15s ease-out;
     }
 
     .nav-cta:hover {
       background: #ffffff;
       color: #000000;
-      box-shadow: none;
+      transform: translate(-3px, -3px);
+      box-shadow: 3px 3px 0 0 var(--lime);
+    }
+
+    .nav-cta:active {
+      transform: translate(0, 0);
+      box-shadow: 0 0 0 0 var(--lime);
     }
 
     .nav-ham {
@@ -436,6 +441,8 @@
     }
 
     /* ============================================================ BUTTONS */
+    /* Placa dura brutalista: plano lime → al hover el botón "se levanta"
+       y deja su placa lime debajo, como registro de imprenta desfasado */
     .btn-primary {
       font-family: var(--fd);
       font-size: 14px;
@@ -443,17 +450,22 @@
       letter-spacing: .1em;
       text-transform: uppercase;
       color: var(--on-lime);
-      background: linear-gradient(135deg, var(--lime) 0%, var(--lime-dim) 100%);
-      box-shadow: 0px 0px 20px rgba(178, 247, 0, 0.3);
+      background: var(--lime);
       padding: 16px 38px;
       display: inline-block;
-      transition: background .15s ease-out, color .15s ease-out, box-shadow .15s ease-out;
+      transition: background .15s ease-out, color .15s ease-out, box-shadow .15s ease-out, transform .15s ease-out;
     }
 
     .btn-primary:hover {
       background: #ffffff;
       color: #000000;
-      box-shadow: none;
+      transform: translate(-3px, -3px);
+      box-shadow: 3px 3px 0 0 var(--lime);
+    }
+
+    .btn-primary:active {
+      transform: translate(0, 0);
+      box-shadow: 0 0 0 0 var(--lime);
     }
 
     .btn-ghost {
@@ -521,17 +533,6 @@
       border-bottom: 1px solid rgba(0, 0, 0, .18);
       background: var(--lime);
       padding: 18px 0;
-    }
-
-    .ticker-label {
-      text-align: center;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: .38em;
-      text-transform: uppercase;
-      color: rgba(0, 0, 0, .72);
-      margin-bottom: 14px;
-      padding: 0 24px;
     }
 
     .ticker-track {
@@ -626,6 +627,26 @@
       padding: 120px 48px;
     }
 
+    /* Ritmo editorial: comprimir capítulos hermanos, respirar antes de clímax.
+       #precios y #proceso conservan los 120px (respiro pre-bloques fuertes). */
+    #tiendas {
+      padding-top: 40px;            /* Precios + Tiendas = un solo capítulo "Inversión" */
+    }
+
+    #servicios {
+      padding-top: 88px;            /* entra tras la franja lime del ticker */
+      padding-bottom: 88px;
+    }
+
+    #nosotros,
+    #testimonios {
+      padding-bottom: 88px;         /* el corte de fondo ya separa */
+    }
+
+    #contacto {
+      padding-top: 72px;            /* entra tras la franja lime .dominate-section */
+    }
+
     .section-inner {
       max-width: 1200px;
       margin: 0 auto;
@@ -697,10 +718,39 @@
 
     .srv-card {
       background: var(--surface-lowest);
-      padding: 40px 36px;
+      padding: 40px 36px 96px;
       position: relative;
       overflow: hidden;
       transition: background .15s ease-out;
+    }
+
+    /* Numeral fantasma outline, recortado por el canto de la card */
+    .srv-card::before {
+      content: attr(data-num);
+      position: absolute;
+      right: -10px;
+      bottom: -24px;
+      font-family: var(--fd);
+      font-size: clamp(96px, 9vw, 140px);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -.04em;
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--surface-high);
+      pointer-events: none;
+      z-index: 0;
+      transition: -webkit-text-stroke-color .35s ease;
+    }
+
+    .srv-card:hover::before {
+      -webkit-text-stroke-color: rgba(178, 247, 0, .45);
+    }
+
+    .srv-num,
+    .srv-title,
+    .srv-desc {
+      position: relative;
+      z-index: 1;
     }
 
     .srv-card::after {
@@ -774,6 +824,19 @@
       align-items: stretch;
     }
 
+    /* muro full-bleed SOLO en el portafolio del home — NO en las páginas de
+       servicio (que comparten .port-grid dentro de un .section-inner centrado) */
+    #portafolio .port-grid {
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+    }
+
+    @media (min-width: 1600px) {
+      #portafolio .port-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
     /* Each card is an anchor tag — opens in new tab */
     .port-card {
       display: flex;
@@ -796,6 +859,7 @@
       overflow: hidden;
     }
 
+    /* Baseline compartido (páginas de servicio, tiendas): imagen a color */
     .port-card-img {
       width: 100%;
       height: auto;
@@ -810,7 +874,17 @@
       filter: brightness(.45);
     }
 
-    /* "Ver proyecto" pill — appears on hover */
+    /* muro monocromo → color SOLO en el portafolio del home */
+    #portafolio .port-card-img {
+      filter: grayscale(1) contrast(1.05);
+    }
+
+    #portafolio .port-card:hover .port-card-img {
+      transform: scale(1.02);
+      filter: none;
+    }
+
+    /* "Ver proyecto" pill — baseline compartido (aparece en hover) */
     .port-card-badge {
       position: absolute;
       top: 14px;
@@ -830,6 +904,22 @@
 
     .port-card:hover .port-card-badge {
       opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* badge como barra inferior SOLO en el portafolio del home */
+    #portafolio .port-card-badge {
+      top: auto;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 10px 24px;
+      opacity: 1;
+      transform: translateY(100%);
+      transition: transform .3s ease-out;
+    }
+
+    #portafolio .port-card:hover .port-card-badge {
       transform: translateY(0);
     }
 
@@ -1070,20 +1160,35 @@
       padding: 28px 30px;
     }
 
+    /* Contadores outline que se "imprimen" de lime conforme cuentan
+       (--fill lo anima el counter de home.js en sincronía con el conteo) */
     .stat-num {
       font-family: var(--fd);
-      font-size: 54px;
-      font-weight: 900;
-      color: var(--lime);
-      line-height: 1;
-      margin-bottom: 4px;
+      font-size: clamp(56px, 6vw, 84px);
+      font-weight: 700;
+      letter-spacing: -.04em;
+      line-height: .9;
+      font-feature-settings: 'tnum';
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--lime);
+      background: linear-gradient(90deg, var(--lime) var(--fill, 0%), transparent 0);
+      -webkit-background-clip: text;
+      background-clip: text;
+      margin-bottom: 10px;
+    }
+
+    .stat-sfx {
+      font-size: .45em;
+      vertical-align: super;
     }
 
     .stat-label {
-      font-size: 12px;
-      font-weight: 300;
+      font-family: var(--fd);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .24em;
+      text-transform: uppercase;
       color: var(--gt);
-      letter-spacing: .04em;
     }
 
     /* ============================================================ PROCESO */
@@ -1116,7 +1221,7 @@
 
     .proc-step {
       background: var(--g1);
-      padding: 44px 36px 52px;
+      padding: 44px 36px 110px;
       position: relative;
       overflow: hidden;
       transition: background .3s;
@@ -1124,6 +1229,35 @@
 
     .proc-step:hover {
       background: var(--g2);
+    }
+
+    /* Numeral fantasma outline recortado (::before lo ocupa la línea lime) */
+    .proc-step::after {
+      content: attr(data-num);
+      position: absolute;
+      right: -8px;
+      bottom: -30px;
+      font-family: var(--fd);
+      font-size: clamp(96px, 9vw, 140px);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -.04em;
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--gb);
+      pointer-events: none;
+      z-index: 0;
+      transition: -webkit-text-stroke-color .35s ease;
+    }
+
+    .proc-step:hover::after {
+      -webkit-text-stroke-color: rgba(178, 247, 0, .45);
+    }
+
+    .proc-step-top,
+    .proc-title,
+    .proc-desc {
+      position: relative;
+      z-index: 1;
     }
 
     /* lime line top — slides in on hover */
@@ -1187,6 +1321,25 @@
       line-height: 1.8;
     }
 
+    /* ── Ejemplos de tiendas (CMS tag 'ecommerce') dentro de #tiendas ── */
+    .tiendas-ejemplos {
+      margin-top: 72px;
+    }
+
+    .tiendas-port-grid {
+      /* dentro del contenedor — sin el full-bleed del portafolio principal */
+      width: 100%;
+      margin-left: 0;
+      grid-template-columns: repeat(3, 1fr);
+      margin-top: 28px;
+    }
+
+    @media (min-width: 1600px) {
+      .port-grid.tiendas-port-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
     /* ============================================================ TESTIMONIOS */
     #testimonios {
       background: var(--g1);
@@ -1232,23 +1385,43 @@
       transform: scaleX(1);
     }
 
-    .testi-mark {
-      font-family: var(--fd);
-      font-size: 64px;
-      font-weight: 900;
-      line-height: .6;
-      color: var(--lime);
-      display: block;
-      margin-bottom: 24px;
+    /* Índice /01 + riel — espejo exacto de .proc-step-top */
+    .testi-top {
+      display: flex;
+      align-items: center;
+      margin-bottom: 28px;
     }
 
+    .testi-idx {
+      font-family: var(--fd);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .2em;
+      color: var(--lime);
+    }
+
+    .testi-dash {
+      flex: 1;
+      height: 1px;
+      background: var(--gb);
+      margin-left: 20px;
+    }
+
+    /* La voz del cliente es la protagonista, no el adorno */
     .testi-quote {
-      font-size: 14px;
+      font-size: clamp(16px, 1.4vw, 19px);
       font-weight: 300;
-      color: rgba(255, 255, 255, .78);
-      line-height: 1.85;
+      color: rgba(255, 255, 255, .92);
+      line-height: 1.55;
+      letter-spacing: -.01em;
       margin-bottom: 28px;
       flex: 1;
+    }
+
+    .testi-quote::before {
+      content: '“';
+      color: var(--lime);
+      margin-left: -.5ch;
     }
 
     .testi-meta {
@@ -1265,6 +1438,15 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: .06em;
+    }
+
+    .testi-name::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--lime);
+      margin-right: 10px;
     }
 
     .testi-role {
@@ -1412,9 +1594,11 @@
       align-items: stretch;
     }
 
+    /* padding-top uniforme en TODAS las cards (la franja del badge cabe
+       en él) → nombres y montos quedan alineados entre tiers */
     .plan-card {
       background: var(--surface-lowest);
-      padding: 44px 36px 40px;
+      padding: 72px 36px 40px;
       display: flex;
       flex-direction: column;
       position: relative;
@@ -1432,32 +1616,26 @@
       position: relative;
     }
 
-    .plan-featured::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--lime);
-    }
-
     .plan-featured:hover {
       background: var(--surface-high);
     }
 
+    /* "Más solicitado": de sticker de esquina a lomo lime del plan */
     .plan-badge {
       position: absolute;
-      top: 16px;
-      right: 16px;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      text-align: left;
       font-family: var(--fd);
-      font-size: 9px;
+      font-size: 10px;
       font-weight: 700;
-      letter-spacing: .22em;
+      letter-spacing: .28em;
       text-transform: uppercase;
       background: var(--lime);
       color: var(--on-lime);
-      padding: 5px 14px;
+      padding: 7px 36px;
       z-index: 1;
     }
 
@@ -1569,18 +1747,16 @@
       color: rgba(255, 255, 255, .75);
     }
 
+    /* Cuadrado lime de la casa en vez del checkmark de template.
+       Se conserva position+padding-left (NO flex/gap: rompe <strong> inline) */
     .plan-features li::before {
-      content: '✓';
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--lime);
+      content: '';
+      width: 7px;
+      height: 7px;
+      background: var(--lime);
       position: absolute;
       left: 0;
-      top: 3px;
-    }
-
-    .plan-featured .plan-features li::before {
-      color: var(--lime);
+      top: 6px;
     }
 
     .plan-cta {
@@ -1595,9 +1771,6 @@
       transition: background .15s ease-out, color .15s ease-out, transform .15s ease-out;
     }
 
-    .plan-cta:hover {
-      transform: translateY(-2px);
-    }
 
     /* CTA variants */
     .plan-cta-primary {
@@ -1656,14 +1829,29 @@
       overflow: hidden;
     }
 
-    .contacto-glow {
+    /* Palabra fantasma vertical recortada por el canto — textura tipográfica
+       de la casa en vez de glow blob */
+    .contacto-ghost {
       position: absolute;
-      top: -250px;
-      right: -150px;
-      width: 650px;
-      height: 650px;
-      background: radial-gradient(circle, rgba(184, 255, 0, .07) 0%, transparent 70%);
+      right: -40px;
+      top: -20px;
+      writing-mode: vertical-rl;
+      font-family: var(--fd);
+      font-weight: 700;
+      font-size: clamp(140px, 18vw, 260px);
+      line-height: .8;
+      text-transform: uppercase;
+      letter-spacing: -.02em;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--surface-high);
       pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+
+    #contacto .section-inner {
+      position: relative;
+      z-index: 1;
     }
 
     .contacto-grid {
@@ -1731,8 +1919,39 @@
       transform: translateX(0);
     }
 
+    /* Formulario editorial de línea: label real + campo transparente +
+       subrayado lime que entra con scaleX (misma cinética que srv-card) */
     .form-group {
-      margin-bottom: 16px;
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .form-group::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--lime);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .35s ease;
+    }
+
+    .form-group:focus-within::after {
+      transform: scaleX(1);
+    }
+
+    .form-label {
+      display: block;
+      font-family: var(--fd);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 6px;
     }
 
     .form-row-2 {
@@ -1745,23 +1964,26 @@
     .form-group select,
     .form-group textarea {
       width: 100%;
-      background: var(--surface-highest);
-      border: none;
-      border-bottom: 2px solid transparent;
+      background: transparent;
+      border: 0;
+      border-bottom: 1px solid var(--gb);
       color: var(--white);
       font-family: var(--fb);
       font-size: 14px;
       font-weight: 300;
-      padding: 16px 20px;
+      padding: 14px 2px;
       outline: none;
-      transition: border-bottom-color .15s ease-out, background .15s ease-out;
+      caret-color: var(--lime);
       -webkit-appearance: none;
       appearance: none;
     }
 
     .form-group select {
       cursor: pointer;
-      background: var(--surface-highest);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23b2f700' stroke-width='2'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      padding-right: 40px;
     }
 
     .form-group select option {
@@ -1771,15 +1993,6 @@
     .form-group textarea {
       min-height: 140px;
       resize: vertical;
-    }
-
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      border-bottom-color: var(--lime);
-      background: var(--surface-high);
-      caret-color: var(--lime);
-      outline: none;
     }
 
     .form-group input::placeholder,
@@ -1794,13 +2007,12 @@
       letter-spacing: .1em;
       text-transform: uppercase;
       color: var(--on-lime);
-      background: linear-gradient(135deg, var(--lime) 0%, var(--lime-dim) 100%);
-      box-shadow: 0px 0px 20px rgba(178, 247, 0, 0.3);
+      background: var(--lime);
       padding: 18px 0;
       width: 100%;
       border: none;
       cursor: pointer;
-      transition: background .15s ease-out, color .15s ease-out, box-shadow .15s ease-out;
+      transition: background .15s ease-out, color .15s ease-out, box-shadow .15s ease-out, transform .15s ease-out;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1812,7 +2024,13 @@
     .btn-submit:hover {
       background: #ffffff;
       color: #000000;
-      box-shadow: none;
+      transform: translate(-3px, -3px);
+      box-shadow: 3px 3px 0 0 var(--lime);
+    }
+
+    .btn-submit:active {
+      transform: translate(0, 0);
+      box-shadow: 0 0 0 0 var(--lime);
     }
 
     .btn-submit:disabled {
@@ -1852,17 +2070,18 @@
       line-height: 1.6;
     }
 
+    /* Feedback en el patrón de nota de la casa (borde izquierdo 2px) */
     .form-feedback.success {
       display: block;
-      background: rgba(0, 221, 102, .08);
-      border: 1px solid rgba(0, 221, 102, .3);
-      color: #00dd66;
+      border-left: 2px solid var(--lime);
+      background: rgba(178, 247, 0, .06);
+      color: var(--lime);
     }
 
     .form-feedback.error {
       display: block;
-      background: rgba(255, 70, 70, .08);
-      border: 1px solid rgba(255, 70, 70, .3);
+      border-left: 2px solid #ff6464;
+      background: rgba(255, 70, 70, .06);
       color: #ff6464;
     }
 
@@ -2011,6 +2230,19 @@
         padding: 80px 24px;
       }
 
+      /* ritmo comprimido también en mobile */
+      #tiendas {
+        padding-top: 28px;
+      }
+
+      #servicios {
+        padding-top: 64px;
+      }
+
+      #contacto {
+        padding-top: 56px;
+      }
+
       #hero {
         padding: calc(var(--nh) + 40px) 24px 80px;
       }
@@ -2108,16 +2340,12 @@
         padding: 22px 18px;
       }
 
-      .stat-num {
-        font-size: 40px;
-      }
-
       .port-grid {
         grid-template-columns: 1fr;
       }
     }
 
-    /* ── HERO ACTIVO: solo Magnetic Field Lines ── */
+    /* ── HERO ACTIVO: El Pulso de Venta (CS_HERO_FX en home.js) ── */
 
     /* ============================================================ WHATSAPP */
     .float-wa {
@@ -2249,5 +2477,17 @@
       .plan-card.plan-featured.in-view {
         background: var(--surface-high);
         transition: background .9s ease .5s;
+      }
+      /* numerales fantasma: encendido lime en touch con el ritmo aprobado */
+      .srv-card.in-view::before {
+        -webkit-text-stroke-color: rgba(178, 247, 0, .45);
+        transition: -webkit-text-stroke-color .9s ease .5s;
+      }
+      .proc-step.in-view::after {
+        -webkit-text-stroke-color: rgba(178, 247, 0, .45);
+        transition: -webkit-text-stroke-color .9s ease .5s;
+      }
+      .testi-card.in-view::before {
+        animation: ceroLineSlide 1s cubic-bezier(.16,1,.3,1) .5s forwards;
       }
     }

@@ -164,7 +164,10 @@
               const t0 = performance.now();
               (function step(now) {
                 const p = Math.min((now - t0) / 1600, 1);
-                el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * target) + suffix;
+                /* dígitos outline que se rellenan de lime junto con el conteo */
+                el.innerHTML = Math.round((1 - Math.pow(1 - p, 3)) * target) +
+                  (suffix ? '<span class="stat-sfx">' + suffix + '</span>' : '');
+                el.style.setProperty('--fill', (p * 100) + '%');
                 if (p < 1) requestAnimationFrame(step);
               })(t0);
             }
@@ -197,7 +200,439 @@
 
 
 
-      /* ── HERO — MAGNETIC FIELD LINES (idle — decorativo) ─────── */
+      /* ══════════════════════════════════════════════════════════
+         HERO FX — switch de animación del hero:
+           'pulse' = El Pulso de Venta (electrocardiograma de ventas)
+           'field' = líneas magnéticas (versión anterior, intacta)
+         Para reactivar el hero anterior: cambiar a 'field' y bump ?v=
+      ══════════════════════════════════════════════════════════ */
+      var CS_HERO_FX = 'pulse';
+
+      /* ── HERO — EL PULSO DE VENTA (idle — decorativo) ──────────
+         Metáfora: la línea blanca casi plana = tu negocio sin sitio;
+         la traza lime con picos = ventas entrando en tiempo real.
+         Cada pico deja un "+1" que flota y se desvanece.
+         Oscilloscope-style: barrido continuo derecha→izquierda.   */
+      if (CS_HERO_FX === 'pulse')
+      (window.requestIdleCallback || (cb => setTimeout(cb, 200)))(function () {
+      (function () {
+        const canvas = document.getElementById('heroCanvas');
+        if (!canvas) return;
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const ctx = canvas.getContext('2d');
+        const LIME = '178,247,0';
+        const SPIKE_LEN = 22;
+
+        let W, H, dx, N, base, baseEcho, vBase, maxAmp, tight, bound;
+        let kHead = 0;            /* índice de muestra en el borde derecho */
+        let spikes = [];          /* { k0, amp, counted } */
+        let nextSpikeK = 115;     /* 1er pico coreografiado: entra ~2.4s, justo tras "VENDE." */
+        let firstSpike = true;
+        let pings = [];           /* ondas en la retícula por cada venta */
+        let beams = [];           /* haces verticales por venta (sismógrafo) */
+        let flashes = [];         /* destellos radiales por venta (bloom) */
+        let ghosts = [];          /* telemetría fantasma a lo alto del hero */
+        let sales = 0;            /* contador acumulado del HUD */
+
+        function resize() {
+          W = canvas.width = window.innerWidth;
+          H = canvas.height = window.innerHeight;
+          dx = W < 768 ? 6 : 3;   /* px entre muestras */
+          N = Math.ceil(W / dx) + 2;
+
+          /* Geometría real: la señal vive en la franja libre BAJO los CTAs
+             (bbox de #heroActions), no en un % a ciegas. El texto siempre gana. */
+          let top = H * .58;
+          const actions = document.getElementById('heroActions');
+          if (actions) {
+            const ar = actions.getBoundingClientRect();
+            const hr = canvas.parentElement.getBoundingClientRect();
+            const b = ar.bottom - hr.top;
+            if (b > 0 && b < H) top = b;
+          }
+          top += 20;                    /* frontera + margen */
+          bound = top;                  /* los picos brillantes nunca suben de aquí */
+          const free = H - top;
+          tight = free < 130;           /* franja apretada → picos más chicos */
+
+          /* Las 3 líneas narrativas con SEPARACIÓN FIJA en px (no fracción),
+             para que nunca se amontonen en una sola aunque la franja sea corta.
+             visitas (arriba) · ventas (media, con picos) · eco (abajo). */
+          const gapV = Math.min(46, Math.max(26, free * .28));   /* separación entre líneas */
+          baseEcho = Math.min(H - 16, top + free * .92);
+          base = baseEcho - gapV;                                /* ventas encima del eco */
+          vBase = base - gapV;                                   /* visitas encima de ventas */
+          /* techo duro para los picos: no cruzan la frontera de texto */
+          maxAmp = Math.max(30, base - bound - 46);
+
+          /* Canales fantasma: MUCHAS líneas a todo lo alto del hero — el
+             telón de "mission control" detrás del texto. Son la columna
+             vertebral visual; visibles pero sin herir la lectura. */
+          ghosts = [];
+          const nG = W < 768 ? 5 : 9;
+          for (let i = 0; i < nG; i++) {
+            const yFrac = .05 + (i * .90) / (nG - 1);   /* 5%..95% de la altura */
+            /* no dibujar un fantasma justo sobre las 3 líneas narrativas */
+            const y = H * yFrac;
+            if (y > vBase - 30 && y < baseEcho + 30) continue;
+            ghosts.push({
+              y: y,
+              seed: i * 777,
+              f: .55 + i * .18,
+              amp: (7 + (i % 3) * 6) / 8,
+              lime: i % 3 === 0,
+              spd: .5 + (i % 4) * .25,      /* deriva propia → no todas laten igual */
+              cf1: .050 + (i % 3) * .014,   /* frecuencias de picos (incomensurables */
+              cf2: .031 + (i % 4) * .008,   /*  → patrón irregular, no metronómico) */
+              peak: 10 + (i % 3) * 6,       /* altura de sus picos */
+            });
+          }
+        }
+
+        /* ruido suave determinista por índice de muestra */
+        function noise(k, a) {
+          return Math.sin(k * .11) * 2 * a + Math.sin(k * .043 + 1.7) * 3 * a + Math.sin(k * .021 + 4.2) * 4.5 * a;
+        }
+
+        /* pico angosto hacia arriba (y negativo) — para que las OTRAS líneas
+           también tengan actividad, no solo ondas. pow alto = cresta afilada. */
+        function crest(k, f, amp) {
+          const s = Math.sin(k * f);
+          return s > 0 ? -Math.pow(s, 12) * amp : 0;
+        }
+
+        /* forma QRS por tramos rectos — sin easing, brutal como un EKG real */
+        function qrs(s, amp) {
+          if (s < 0 || s > SPIKE_LEN) return 0;
+          if (s < 3) return (s / 3) * amp * .12;
+          if (s < 7) return amp * .12 - ((s - 3) / 4) * amp * 1.12;
+          if (s < 11) return -amp + ((s - 7) / 4) * amp * 1.3;
+          if (s < 15) return amp * .3 - ((s - 11) / 4) * amp * .36;
+          return (1 - (s - 15) / 7) * -amp * .06;
+        }
+
+        function spikeSum(k) {
+          let v = 0;
+          for (let i = 0; i < spikes.length; i++) v += qrs(k - spikes[i].k0, spikes[i].amp);
+          return v;
+        }
+
+        /* agenda picos entrando por la derecha; poda los que ya salieron */
+        function scheduleSpikes() {
+          while (nextSpikeK < kHead + N) {
+            /* el primero es grande: el titular promete, la señal lo demuestra */
+            const amp = firstSpike ? maxAmp : Math.min(H * (.13 + Math.random() * .10), maxAmp);
+            spikes.push({ k0: nextSpikeK, amp: amp, counted: false });
+            firstSpike = false;
+            nextSpikeK += 26 + Math.floor(Math.random() * 52);   /* más ventas: picos más seguidos */
+          }
+          while (spikes.length && spikes[0].k0 + SPIKE_LEN < kHead - N) spikes.shift();
+        }
+
+        function limeY(k, x) {
+          let a = 1, pull = 0;
+          /* el cursor electrifica la señal Y la atrae hacia él */
+          const d = Math.abs(x - _mx);
+          if (d < 220) {
+            const t = 1 - d / 220;
+            a = 1 + t * 1.8;
+            const cy = Math.min(Math.max(_my, bound + 20), H - 20);
+            pull = (cy - base) * t * t * .35;
+          }
+          /* clip duro: ni electrificada sube a la zona de texto */
+          return Math.max(bound + 4, base + noise(k, a) + spikeSum(k) + pull);
+        }
+
+        /* eco "sin sitio": casi muerto, apenas unos blips esporádicos */
+        function echoY(k) {
+          return baseEcho + noise(k * .7 + 900, .35) + crest(k + 500, .028, 5);
+        }
+
+        /* línea de "visitas": tráfico con sus propios picos + repuntes que
+           ANTECEDEN a cada venta. Clamp para no invadir la zona de texto. */
+        function visitY(k) {
+          let v = vBase + noise(k * 1.7 + 400, .5)
+            + crest(k + 200, .066, 15) + crest(k + 60, .043, 9);
+          for (let i = 0; i < spikes.length; i++) {
+            const dk = k - (spikes[i].k0 - 26);
+            if (dk > -30 && dk < 30) v -= Math.exp(-(dk * dk) / 90) * 12;
+          }
+          return Math.max(bound + 2, v);
+        }
+
+        function buildPath(yOf) {
+          const p = new Path2D();
+          for (let i = 0; i <= N; i++) {
+            const k = kHead - (N - i);
+            const x = i * dx;
+            const y = yOf(k, x);
+            if (i === 0) p.moveTo(x, y); else p.lineTo(x, y);
+          }
+          return p;
+        }
+
+        /* área bajo la curva (para el relleno de degradado de ventas) */
+        function buildAreaPath(yOf) {
+          const p = new Path2D();
+          p.moveTo(0, H);
+          for (let i = 0; i <= N; i++) {
+            const k = kHead - (N - i);
+            const x = i * dx;
+            p.lineTo(x, yOf(k, x));
+          }
+          p.lineTo(W, H);
+          p.closePath();
+          return p;
+        }
+
+        function renderFrame() {
+          ctx.clearRect(0, 0, W, H);
+          scheduleSpikes();
+
+          /* barrido de escaneo recorriendo el hero */
+          const sx = ((kHead * 3.2) % (W + 600)) - 300;
+          const grad = ctx.createLinearGradient(sx - 80, 0, sx + 80, 0);
+          grad.addColorStop(0, 'rgba(' + LIME + ',0)');
+          grad.addColorStop(.5, 'rgba(' + LIME + ',.045)');
+          grad.addColorStop(1, 'rgba(' + LIME + ',0)');
+          ctx.fillStyle = grad;
+          ctx.fillRect(sx - 80, 0, 160, H);
+
+          const dim = tight ? .7 : 1;
+
+          /* telemetría fantasma: MUCHOS canales. Los lime llevan glow neón. */
+          for (let i = 0; i < ghosts.length; i++) {
+            const g = ghosts[i];
+            const drift = kHead * g.spd;
+            const gp = buildPath(function (k) {
+              return g.y + noise(k * g.f + g.seed + drift, g.amp)
+                + crest(k + g.seed, g.cf1, g.peak)
+                + crest(k + g.seed * 1.7, g.cf2, g.peak * .6);
+            });
+            if (g.lime) {
+              ctx.shadowColor = 'rgba(' + LIME + ',.9)';
+              ctx.shadowBlur = 8;
+              ctx.strokeStyle = 'rgba(' + LIME + ',.34)';
+              ctx.lineWidth = 1.4;
+            } else {
+              ctx.shadowBlur = 0;
+              ctx.strokeStyle = 'rgba(255,255,255,.15)';
+              ctx.lineWidth = 1;
+            }
+            ctx.stroke(gp);
+          }
+          ctx.shadowBlur = 0;
+
+          /* eco casi muerto — el negocio sin sitio */
+          ctx.strokeStyle = 'rgba(255,255,255,.18)';
+          ctx.lineWidth = 1;
+          ctx.stroke(buildPath(echoY));
+
+          /* línea de visitas — más brillante, con leve glow */
+          ctx.shadowColor = 'rgba(255,255,255,.5)';
+          ctx.shadowBlur = 6;
+          ctx.strokeStyle = 'rgba(255,255,255,.55)';
+          ctx.lineWidth = 1.6;
+          ctx.stroke(buildPath(visitY));
+          ctx.shadowBlur = 0;
+
+          /* ════ VENTAS — el espectáculo ════
+             1) área rellena con degradado (cordillera lime encendida)
+             2) línea con doble glow neón
+             3) cabeza brillante con halo grande */
+          const limePath = buildPath(limeY);
+
+          const ag = ctx.createLinearGradient(0, bound, 0, H);
+          ag.addColorStop(0, 'rgba(' + LIME + ',' + (.30 * dim) + ')');
+          ag.addColorStop(.55, 'rgba(' + LIME + ',' + (.09 * dim) + ')');
+          ag.addColorStop(1, 'rgba(' + LIME + ',0)');
+          ctx.fillStyle = ag;
+          ctx.fill(buildAreaPath(limeY));
+
+          ctx.shadowColor = 'rgba(' + LIME + ',1)';
+          ctx.shadowBlur = 22 * dim;
+          ctx.strokeStyle = 'rgba(' + LIME + ',1)';
+          ctx.lineWidth = 2.6;
+          ctx.stroke(limePath);
+          ctx.shadowBlur = 10 * dim;
+          ctx.lineWidth = 1.3;
+          ctx.strokeStyle = '#eaffbf';
+          ctx.stroke(limePath);
+          ctx.shadowBlur = 0;
+
+          const hy = limeY(kHead, W);
+          ctx.shadowColor = 'rgba(' + LIME + ',1)';
+          ctx.shadowBlur = 24;
+          ctx.fillStyle = '#f2ffcf';
+          ctx.beginPath(); ctx.arc(W - 2, hy, 4.5, 0, Math.PI * 2); ctx.fill();
+          ctx.shadowBlur = 0;
+          ctx.fillStyle = 'rgba(' + LIME + ',.14)';
+          ctx.beginPath(); ctx.arc(W - 2, hy, 16, 0, Math.PI * 2); ctx.fill();
+
+          /* nacimiento de cada venta: cuenta en el HUD y emite ping en la retícula */
+          for (let i = 0; i < spikes.length; i++) {
+            const sp = spikes[i];
+            if (!sp.counted && kHead >= sp.k0 + 7) {
+              sp.counted = true;
+              sales++;
+              pings.push({ kApex: sp.k0 + 7, amp: sp.amp, r: 4 });
+              beams.push({ kApex: sp.k0 + 7 });
+              flashes.push({ kApex: sp.k0 + 7, amp: sp.amp, r: 3 });
+            }
+          }
+
+          /* haz vertical por venta — marca de evento estilo sismógrafo:
+             intenso en la franja de la señal, fantasmal tras el texto */
+          for (let i = beams.length - 1; i >= 0; i--) {
+            const b = beams[i];
+            const age = kHead - b.kApex;
+            if (age > 90) { beams.splice(i, 1); continue; }
+            const px = (N - age) * dx;
+            if (px < -10 || px > W + 10) continue;
+            const fade = 1 - age / 90;
+            ctx.shadowColor = 'rgba(' + LIME + ',1)';
+            ctx.shadowBlur = 6 * fade;
+            ctx.strokeStyle = 'rgba(' + LIME + ',' + (.5 * fade) + ')';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.moveTo(px, bound); ctx.lineTo(px, H); ctx.stroke();
+            ctx.shadowBlur = 0;
+            ctx.strokeStyle = 'rgba(' + LIME + ',' + (.10 * fade) + ')';
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(px, 0); ctx.lineTo(px, bound); ctx.stroke();
+          }
+
+          /* destello radial por venta — bloom que nace en el ápex y se apaga */
+          ctx.save();
+          ctx.beginPath(); ctx.rect(0, bound, W, H - bound); ctx.clip();
+          for (let i = flashes.length - 1; i >= 0; i--) {
+            const f = flashes[i];
+            f.r += 3.5;
+            const fade = 1 - f.r / 90;
+            if (fade <= 0) { flashes.splice(i, 1); continue; }
+            const px = (N - (kHead - f.kApex)) * dx;
+            const py = base - f.amp;
+            if (px < -100 || px > W + 100) { flashes.splice(i, 1); continue; }
+            const rg = ctx.createRadialGradient(px, py, 0, px, py, f.r);
+            rg.addColorStop(0, 'rgba(' + LIME + ',' + (.5 * fade) + ')');
+            rg.addColorStop(1, 'rgba(' + LIME + ',0)');
+            ctx.fillStyle = rg;
+            ctx.beginPath(); ctx.arc(px, py, f.r, 0, Math.PI * 2); ctx.fill();
+          }
+          ctx.restore();
+
+          /* pings: onda de 1px que se expande desde el ápex y viaja con la señal
+             (clip: la onda jamás cruza a la zona de texto) */
+          ctx.save();
+          ctx.beginPath(); ctx.rect(0, bound, W, H - bound); ctx.clip();
+          for (let i = pings.length - 1; i >= 0; i--) {
+            const p = pings[i];
+            p.r += 2;
+            const a = .5 * (1 - p.r / 70);
+            if (a <= 0) { pings.splice(i, 1); continue; }
+            const px = (N - (kHead - p.kApex)) * dx;
+            if (px < -80 || px > W + 80) { pings.splice(i, 1); continue; }
+            ctx.strokeStyle = 'rgba(' + LIME + ',' + a + ')';
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.arc(px, base - p.amp, p.r, 0, Math.PI * 2); ctx.stroke();
+          }
+          ctx.restore();
+
+          /* "+1" por pico: nace en el ápex, flota hacia arriba y se apaga */
+          ctx.font = '700 13px "Space Grotesk", sans-serif';
+          ctx.textAlign = 'center';
+          for (let i = 0; i < spikes.length; i++) {
+            const sp = spikes[i];
+            const kApex = sp.k0 + 7;
+            const age = kHead - kApex;
+            if (age < 0 || age > 110) continue;
+            const x = (N - age) * dx;
+            if (x < -20 || x > W + 20) continue;
+            ctx.fillStyle = 'rgba(' + LIME + ',' + (Math.max(0, 1 - age / 110) * .85) + ')';
+            /* clamp: el "+1" flota pero jamás invade la zona de texto */
+            ctx.fillText('+1', x, Math.max(bound + 12, base - sp.amp - 14 - age * .3));
+          }
+
+          /* leyendas de gráfica: la historia de las dos líneas */
+          const en = (typeof CS_LANG !== 'undefined' && CS_LANG === 'en');
+          const LGD = en
+            ? { on: 'WITH A SITE · LIVE', vis: 'VISITS', off: 'WITHOUT A SITE', sales: 'SALES' }
+            : { on: 'CON SITIO · EN VIVO', vis: 'VISITAS', off: 'SIN SITIO', sales: 'VENTAS' };
+          try { ctx.letterSpacing = '2px'; } catch (e) { }
+          ctx.textAlign = 'left';
+          ctx.font = '700 10px "Space Grotesk", sans-serif';
+          ctx.fillStyle = 'rgba(' + LIME + ',.8)';
+          ctx.fillText(LGD.on, 26, base - 12);
+          ctx.fillStyle = 'rgba(255,255,255,.42)';
+          ctx.fillText(LGD.vis, 26, vBase - 10);
+          ctx.fillStyle = 'rgba(255,255,255,.32)';
+          ctx.fillText(LGD.off, 26, baseEcho + 18);
+
+          /* HUD de telemetría: ventas acumuladas (arriba del float de WhatsApp) */
+          ctx.textAlign = 'right';
+          ctx.font = '700 22px "Space Grotesk", sans-serif';
+          ctx.fillStyle = 'rgba(' + LIME + ',.9)';
+          ctx.fillText('▲ ' + sales, W - 30, H - 116);
+          ctx.font = '700 9px "Space Grotesk", sans-serif';
+          ctx.fillStyle = 'rgba(255,255,255,.35)';
+          ctx.fillText(LGD.sales, W - 30, H - 100);
+          try { ctx.letterSpacing = '0px'; } catch (e) { }
+        }
+
+        let rafId;
+        let frameInterval, lastFrameTime = 0;
+
+        function draw(now) {
+          rafId = requestAnimationFrame(draw);
+          if (now - lastFrameTime < frameInterval) return;
+          lastFrameTime = now;
+          kHead += 1.05;   /* velocidad de barrido — más movimiento */
+          renderFrame();
+        }
+
+        resize();
+        frameInterval = 1000 / (W < 768 ? 30 : 60);
+
+        if (prefersReducedMotion) {
+          /* frame único con picos ya en pantalla — sin loop */
+          kHead = 400; scheduleSpikes(); renderFrame();
+        } else {
+          new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting) {
+              if (!rafId) { lastFrameTime = 0; rafId = requestAnimationFrame(draw); }
+            } else if (rafId) {
+              cancelAnimationFrame(rafId); rafId = null;
+            }
+          }, { threshold: 0 }).observe(canvas.parentElement);
+          /* arranque inmediato si el hero ya está en viewport — no
+             dependemos del primer callback del IO para el primer frame */
+          const r0 = canvas.parentElement.getBoundingClientRect();
+          if (r0.bottom > 0 && r0.top < window.innerHeight && !rafId) {
+            lastFrameTime = 0; rafId = requestAnimationFrame(draw);
+          }
+        }
+
+        window.addEventListener('resize', () => {
+          resize();
+          frameInterval = 1000 / (W < 768 ? 30 : 60);
+          spikes = []; pings = []; beams = []; flashes = []; firstSpike = false; nextSpikeK = kHead + 60;
+          if (prefersReducedMotion) { kHead += 400; scheduleSpikes(); renderFrame(); }
+        });
+
+        /* tap/click en el fondo del hero = venta instantánea bajo el cursor */
+        canvas.parentElement.addEventListener('click', function (e) {
+          if (prefersReducedMotion) return;
+          if (e.target.closest('a, button, input, select, textarea')) return;
+          const x = e.clientX - canvas.getBoundingClientRect().left;
+          const k0 = Math.round(kHead - N + x / dx) - 7;
+          spikes.push({ k0: k0, amp: Math.min(H * (.12 + Math.random() * .06), maxAmp), counted: false });
+          spikes.sort(function (a, b) { return a.k0 - b.k0; });
+        });
+      })();
+      }); /* end requestIdleCallback pulse */
+
+      /* ── HERO — MAGNETIC FIELD LINES (legacy — CS_HERO_FX='field') ── */
+      if (CS_HERO_FX === 'field')
       (window.requestIdleCallback || (cb => setTimeout(cb, 200)))(function () {
       (function () {
         const canvas = document.getElementById('heroCanvas');
@@ -395,8 +830,6 @@
           /* ── MARQUEE */
           'marquee-1': { h: 'Diseño Web <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Desarrollo <em>·</em> Consultoría <em>·</em> Mantenimiento <em>·</em> Identidad Visual <em>·</em>' },
           'marquee-2': { h: 'Diseño Web <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Desarrollo <em>·</em> Consultoría <em>·</em> Mantenimiento <em>·</em> Identidad Visual <em>·</em>' },
-          /* ── TICKER */
-          'ticker-label': { t: 'Marcas que ya venden con nosotros' },
           /* ── SERVICIOS */
           'srv-eyebrow': { t: 'Servicios' },
           'srv-title': { h: 'Todo lo que necesitas<br>para <span class="t-outline">crecer</span> en línea' },
@@ -520,6 +953,14 @@
           'tienda-premium-note': { t: 'Ideal para: marca establecida.' },
           'tienda-premium-cta': { t: 'Quiero la Premium →' },
           'tiendas-condition': { t: 'Mensualidad opcional de soporte y carga de producto desde $800 MXN/mes. El plan de TiendaNube (~$99–249/mes) y la comisión de la pasarela de pago (~3.8% + IVA por venta) los cubre el cliente.' },
+          'tiendas-ejemplos-eyebrow': { t: 'Tiendas que ya cobran en línea' },
+          /* fallback estático (el CMS los sobreescribe vía CS_PORTFOLIO_I18N) */
+          'tport-c1': { t: 'Tienda online · Mascotas' },
+          'tport-d1': { t: 'Tienda online de alta calidad para el cuidado y bienestar de mascotas.' },
+          'tport-c2': { t: 'Tienda online · Gatos' },
+          'tport-d2': { t: 'E-commerce especializado en productos y accesorios premium para gatos.' },
+          'tport-c3': { t: 'Manufactura · Estanterías y exhibidores' },
+          'tport-d3': { t: 'Tienda multimarca con sistema de inventario en tiempo real y catálogo dinámico.' },
           /* ── CONTACTO */
           'contact-eyebrow': { t: 'Contacto' },
           'contact-title': { h: '¿Listo para el<br><span class="t-outline">siguiente</span> nivel?' },
@@ -568,8 +1009,6 @@
           /* ── MARQUEE */
           'marquee-1': { h: 'Web Design <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Development <em>·</em> Consulting <em>·</em> Maintenance <em>·</em> Visual Identity <em>·</em>' },
           'marquee-2': { h: 'Web Design <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Development <em>·</em> Consulting <em>·</em> Maintenance <em>·</em> Visual Identity <em>·</em>' },
-          /* ── TICKER */
-          'ticker-label': { t: 'Brands already selling with us' },
           /* ── SERVICIOS */
           'srv-eyebrow': { t: 'Services' },
           'srv-title': { h: 'Everything you need<br>to <span class="t-outline">grow</span> online' },
@@ -693,6 +1132,13 @@
           'tienda-premium-note': { t: 'Best for: established brands.' },
           'tienda-premium-cta': { t: 'I want Store Premium →' },
           'tiendas-condition': { t: 'Optional support and product-upload retainer from $800 MXN/month. The TiendaNube plan (~$99–249/month) and the payment gateway fee (~3.8% + tax per sale) are covered by the client.' },
+          'tiendas-ejemplos-eyebrow': { t: 'Stores already selling online' },
+          'tport-c1': { t: 'Online Store · Pets' },
+          'tport-d1': { t: 'High-quality online store for pet care and well-being.' },
+          'tport-c2': { t: 'Online Store · Cats' },
+          'tport-d2': { t: 'Specialized e-commerce for premium cat products and accessories.' },
+          'tport-c3': { t: 'Manufacturing · Racks & Displays' },
+          'tport-d3': { t: 'Multi-brand store with real-time inventory system and dynamic catalog.' },
           /* ── CONTACTO */
           'contact-eyebrow': { t: 'Contact' },
           'contact-title': { h: 'Ready for the<br><span class="t-outline">next</span> level?' },
@@ -743,6 +1189,7 @@
           email: 'Email *',
           empresa: 'Empresa / Negocio',
           servicio: '¿Qué servicio necesitas?',
+          servicioPh: 'Selecciona una opción',
           mensaje: 'Cuéntanos sobre tu proyecto *',
           opts: ['Desarrollo Web', 'Tienda eCommerce', 'Branding Digital', 'SEO & Visibilidad', 'Mantenimiento', 'Consultoría Digital', 'Otro']
         },
@@ -751,6 +1198,7 @@
           email: 'Email *',
           empresa: 'Company / Business',
           servicio: 'What service do you need?',
+          servicioPh: 'Select an option',
           mensaje: 'Tell us about your project *',
           opts: ['Web Development', 'eCommerce Store', 'Digital Branding', 'SEO & Visibility', 'Maintenance', 'Digital Consulting', 'Other']
         }
@@ -788,17 +1236,19 @@
         var line3b = document.getElementById('heroLine3b');
         if (line3b) line3b.style.display = 'none';
 
-        /* Form placeholders */
+        /* Form labels (labels reales — a11y; ya no placeholders) */
         var form = CS_FORM[lang];
         var f = document.getElementById('contactForm');
         if (f) {
-          f.querySelector('[name="nombre"]').placeholder = form.nombre;
-          f.querySelector('[name="email"]').placeholder = form.email;
-          f.querySelector('[name="empresa"]').placeholder = form.empresa;
-          f.querySelector('[name="mensaje"]').placeholder = form.mensaje;
+          var setL = function (id, txt) { var el = g(id); if (el) el.textContent = txt; };
+          setL('form-l-nombre', form.nombre);
+          setL('form-l-email', form.email);
+          setL('form-l-empresa', form.empresa);
+          setL('form-l-servicio', form.servicio);
+          setL('form-l-mensaje', form.mensaje);
           var sel = f.querySelector('[name="servicio"]');
           if (sel) {
-            sel.options[0].text = form.servicio;
+            sel.options[0].text = form.servicioPh;
             var vals = ['web', 'ecommerce', 'branding', 'seo', 'mantenimiento', 'consultoria', 'otro'];
             vals.forEach(function (v, i) {
               var opt = sel.querySelector('[value="' + v + '"]');

@@ -40,6 +40,7 @@
     '.srv-card',
     '.proc-step',
     '.plan-card',
+    '.testi-card',
     // /casos-de-exito/* (case studies)
     '.cs-feature',
     '.cs-step',
