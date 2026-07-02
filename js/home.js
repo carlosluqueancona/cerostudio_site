@@ -436,7 +436,7 @@
           'stat-l3': { t: 'Proyectos entregados' },
           'stat-l4': { t: 'Satisfacción garantizada' },
           'nos-btn': { t: 'Trabajemos Juntos' },
-          'nos-historia': { t: 'Mi historia completa →' },
+          'nos-historia': { t: 'Con quién vas a trabajar →' },
           'nos-quote': { h: 'Un sitio web no es un gasto. Es el vendedor más trabajador que nunca te pide vacaciones.' },
           /* ── PROCESO */
           'proc-eyebrow': { t: 'Cómo Trabajamos' },
@@ -598,7 +598,7 @@
           'stat-l3': { t: 'Projects delivered' },
           'stat-l4': { t: 'Satisfaction guaranteed' },
           'nos-btn': { t: "Let's Work Together" },
-          'nos-historia': { t: 'Read My Full Story →' },
+          'nos-historia': { t: "Who you'll work with →" },
           'nos-quote': { h: "A website isn't an expense. It's the hardest-working employee you'll never have to pay overtime." },
           /* ── PROCESO */
           'proc-eyebrow': { t: 'How We Work' },
