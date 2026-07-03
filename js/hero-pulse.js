@@ -93,14 +93,20 @@ document.addEventListener('DOMContentLoaded', function () {
           }
           const titleEl = document.querySelector('.hero-static-title, .lp-h1');
           let titleBot = titleEl ? (titleEl.getBoundingClientRect().bottom - hr.top) : H * .5;
+          /* La banda descansa debajo de los CTAs (no del h1): el botón outline
+             deja ver las líneas si el pulso las cruza, así que anclamos a la
+             fila completa. Los picos de click SÍ suben hasta el título (userCeil). */
+          const ctaEl = document.querySelector('.lp-cta-row');
+          let ctaBot = ctaEl ? (ctaEl.getBoundingClientRect().bottom - hr.top) : titleBot;
           echoBase = H - 16;
 
-          /* UNA sola banda de ~200px: baja hasta el fondo y sube lo necesario
-             para ocupar 200px, sin comerse el título. El texto (DOM) va por
-             encima del canvas; los botones sólidos tapan las líneas limpio. */
+          /* La banda LLENA desde debajo de los CTAs hasta el fondo (con tope),
+             para que los trazos del embudo respiren en vez de encimarse en 200px.
+             El texto (DOM) va por encima del canvas; los botones sólidos tapan
+             las líneas limpio. */
           const bandBot = echoBase - 18;
-          let bandTop = bandBot - 200;                       /* banda objetivo 200px */
-          bandTop = Math.max(bandTop, Math.round(titleBot + 16));  /* no comerse el título */
+          const MAXBAND = W < 768 ? 240 : 380;               /* tope: no separar de más */
+          let bandTop = Math.max(bandBot - MAXBAND, Math.round(ctaBot + 24));
           bound = bandTop;
           userCeil = Math.round(titleBot + 16);   /* techo alto SOLO para picos de click */
           const roomy = bandBot - bandTop;
@@ -115,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
           const slot = roomy / use.length;
           channels = use.map(function (defIdx, i) {
             const y = bandTop + slot * (i + 0.5);
-            const amp = Math.max(22, slot * 0.5);
+            const amp = Math.max(20, slot * 0.42);   /* < slot/2 → deja aire entre trazos */
             return {
               def: CH_DEFS[defIdx],
               y: y,
