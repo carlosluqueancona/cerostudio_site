@@ -223,7 +223,7 @@
         const ctx = canvas.getContext('2d');
         const LIME = '178,247,0';
         const SPIKE_LEN = 22;
-        const CLICK_NEAR = 140;   /* px en X: radio para que un click siga el mismo combo */
+        const CLICK_NEAR = 100;   /* px en X: si el cursor se aleja >100px del ancla, se desengancha (pico nuevo) */
 
         let W, H, dx, N, bound, tight, echoBase, userCeil;
         let kHead = 0;            /* índice de muestra en el borde derecho */
