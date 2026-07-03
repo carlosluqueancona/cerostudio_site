@@ -833,8 +833,8 @@
     /* muro full-bleed SOLO en el portafolio del home — NO en las páginas de
        servicio (que comparten .port-grid dentro de un .section-inner centrado) */
     #portafolio .port-grid {
-      width: 100vw;
-      margin-left: calc(50% - 50vw);
+      width: calc(100vw - 48px);
+      margin-left: calc(50% - 50vw + 24px);
     }
 
     @media (min-width: 1600px) {
@@ -870,24 +870,20 @@
       overflow: hidden;
     }
 
-    /* Muro monocromo → color al hover. GLOBAL: mismas cards en el home y en
-       las páginas de servicio (solo el grid full-bleed es exclusivo del home). */
+    /* Muro monocromo → color. Con HOVER (mouse) el muro es monocromo y se
+       enciende al pasar el cursor; en TOUCH (sin hover) las imágenes van a
+       COLOR por default y el badge queda visible — si no, en mobile el muro se
+       ve gris y sin CTA. GLOBAL: mismas cards en home y páginas de servicio. */
     .port-card-img {
       width: 100%;
       height: auto;
       display: block;
       background: var(--surface);
       transition: transform .65s ease, filter .4s;
-      filter: grayscale(1) contrast(1.05);
     }
 
-    /* grayscale → color al hover en TODA card (con o sin link): es el efecto del muro */
-    .port-card:hover .port-card-img {
-      transform: scale(1.02);
-      filter: none;
-    }
-
-    /* "Ver proyecto" — barra de estatus que sube desde el canto inferior */
+    /* "Ver proyecto" — barra de estatus. Visible por default (touch); en hover
+       arranca oculta abajo y sube al pasar el cursor. */
     .port-card-badge {
       position: absolute;
       bottom: 0;
@@ -902,13 +898,26 @@
       background: var(--lime);
       padding: 10px 24px;
       opacity: 1;
-      transform: translateY(100%);
+      transform: translateY(0);
       transition: transform .3s ease-out;
     }
 
-    /* badge solo existe en cards con link (el <div> sin link no lo emite) */
-    .port-card:hover .port-card-badge {
-      transform: translateY(0);
+    /* Efecto muro SOLO en devices con hover (mouse): grayscale que se enciende
+       y badge que sube. En touch no aplica → color + CTA visibles (arriba). */
+    @media (hover: hover) {
+      .port-card-img {
+        filter: grayscale(1) contrast(1.05);
+      }
+      .port-card:hover .port-card-img {
+        transform: scale(1.02);
+        filter: none;
+      }
+      .port-card-badge {
+        transform: translateY(100%);
+      }
+      .port-card:hover .port-card-badge {
+        transform: translateY(0);
+      }
     }
 
     /* Info area */
