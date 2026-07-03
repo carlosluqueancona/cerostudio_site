@@ -92,6 +92,13 @@
     .cs-section-h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,3.2vw,40px);font-weight:600;letter-spacing:-.02em;line-height:1.15;margin:0 0 24px;max-width:24ch}
     .cs-section-lead{font-family:Inter,sans-serif;font-size:clamp(15px,1.3vw,17px);line-height:1.7;font-weight:300;color:rgba(255,255,255,.72);margin:0 0 40px;max-width:64ch}
 
+    /* PHOTOS — fotos reales del taller */
+    .cs-photos{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .cs-photos figure{margin:0;position:relative;background:#0b0b0b;border:1px solid rgba(255,255,255,.1);overflow:hidden;aspect-ratio:3/4}
+    .cs-photos img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;filter:grayscale(1) contrast(1.04);transition:filter .5s ease,transform .6s ease}
+    .cs-photos figure:hover img{filter:none;transform:scale(1.03)}
+    .cs-photos figcaption{position:absolute;left:0;bottom:0;font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#fff;background:rgba(0,0,0,.62);padding:8px 12px;backdrop-filter:blur(4px)}
+
     /* CHALLENGE — single brutalist card, red accent */
     .cs-challenge{background:var(--surface-lowest,#0e0e0e);border:1px solid rgba(255,255,255,.08);position:relative;padding:48px 44px;overflow:hidden}
     .cs-challenge::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:#ff6464}
@@ -167,6 +174,8 @@
       .cs-step.in-view .cs-step-t{color:var(--lime,#b2f700)}
       .cs-result.in-view{background:var(--surface-low,#1b1b1c)}
       .cs-result.in-view::before{transform:scaleX(1)}
+      /* en touch las fotos van a color por default (no hay hover) */
+      .cs-photos img{filter:none}
     }
 
     @media (max-width:900px){
@@ -299,6 +308,25 @@
               <li>Piezas a la medida</li>
               <li>México</li>
             </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- EL TALLER — fotos reales -->
+      <section class="cs-section">
+        <div class="cs-wrap" style="padding-top:0">
+          <p class="cs-section-eyebrow">El taller</p>
+          <h2 class="cs-section-h2">Dos décadas de oficio. Ahora, con marca.</h2>
+          <p class="cs-section-lead">La precisión nunca fue el problema —siempre estuvo en sus manos. Faltaba que el mundo la viera. Hoy el logo que creamos vive en la pared del taller, junto a las máquinas que le dieron su reputación.</p>
+          <div class="cs-photos">
+            <figure>
+              <img src="/images/casos/imvec/taller-marca.webp" alt="Operario de IMVEC midiendo una pieza con calibrador en el torno; al fondo, el logo de IMVEC pintado en la pared del taller" width="1000" height="1375" loading="lazy">
+              <figcaption>La marca, en el taller</figcaption>
+            </figure>
+            <figure>
+              <img src="/images/casos/imvec/taller-precision.webp" alt="Operario de IMVEC maquinando una pieza de metal en la fresadora, con viruta metálica" width="1000" height="1333" loading="lazy">
+              <figcaption>Precisión, pieza por pieza</figcaption>
+            </figure>
           </div>
         </div>
       </section>
