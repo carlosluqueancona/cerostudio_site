@@ -13,6 +13,7 @@ const STATIC_PAGES = [
   { loc: '/en/about-us/',                         priority: '0.7', changefreq: 'monthly' },
   { loc: '/casos-de-exito/',                      priority: '0.8', changefreq: 'monthly' },
   { loc: '/casos-de-exito/sergio-luque/',         priority: '0.8', changefreq: 'monthly' },
+  { loc: '/casos-de-exito/imvec/',                priority: '0.8', changefreq: 'monthly' },
   { loc: '/en/case-studies/',                     priority: '0.7', changefreq: 'monthly' },
   { loc: '/en/case-studies/sergio-luque/',        priority: '0.7', changefreq: 'monthly' },
   { loc: '/blog/',                                priority: '0.9', changefreq: 'daily'   },
