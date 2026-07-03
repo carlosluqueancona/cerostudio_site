@@ -859,36 +859,28 @@
       overflow: hidden;
     }
 
-    /* Baseline compartido (páginas de servicio, tiendas): imagen a color */
+    /* Muro monocromo → color al hover. GLOBAL: mismas cards en el home y en
+       las páginas de servicio (solo el grid full-bleed es exclusivo del home). */
     .port-card-img {
       width: 100%;
       height: auto;
       display: block;
       background: var(--surface);
       transition: transform .65s ease, filter .4s;
-      filter: none;
-    }
-
-    .port-card:hover .port-card-img {
-      transform: scale(1.06);
-      filter: brightness(.45);
-    }
-
-    /* muro monocromo → color SOLO en el portafolio del home */
-    #portafolio .port-card-img {
       filter: grayscale(1) contrast(1.05);
     }
 
-    #portafolio .port-card:hover .port-card-img {
+    .port-card:not(.port-card--no-link):hover .port-card-img {
       transform: scale(1.02);
       filter: none;
     }
 
-    /* "Ver proyecto" pill — baseline compartido (aparece en hover) */
+    /* "Ver proyecto" — barra de estatus que sube desde el canto inferior */
     .port-card-badge {
       position: absolute;
-      top: 14px;
-      right: 14px;
+      bottom: 0;
+      left: 0;
+      right: 0;
       font-family: var(--fd);
       font-size: 10px;
       font-weight: 700;
@@ -896,30 +888,13 @@
       text-transform: uppercase;
       color: var(--on-lime);
       background: var(--lime);
-      padding: 6px 14px;
-      opacity: 0;
-      transform: translateY(-8px);
-      transition: opacity .15s ease-out, transform .15s ease-out;
-    }
-
-    .port-card:hover .port-card-badge {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* badge como barra inferior SOLO en el portafolio del home */
-    #portafolio .port-card-badge {
-      top: auto;
-      bottom: 0;
-      left: 0;
-      right: 0;
       padding: 10px 24px;
       opacity: 1;
       transform: translateY(100%);
       transition: transform .3s ease-out;
     }
 
-    #portafolio .port-card:hover .port-card-badge {
+    .port-card:not(.port-card--no-link):hover .port-card-badge {
       transform: translateY(0);
     }
 
@@ -1319,25 +1294,6 @@
       font-weight: 300;
       color: var(--gt);
       line-height: 1.8;
-    }
-
-    /* ── Ejemplos de tiendas (CMS tag 'ecommerce') dentro de #tiendas ── */
-    .tiendas-ejemplos {
-      margin-top: 72px;
-    }
-
-    .tiendas-port-grid {
-      /* dentro del contenedor — sin el full-bleed del portafolio principal */
-      width: 100%;
-      margin-left: 0;
-      grid-template-columns: repeat(3, 1fr);
-      margin-top: 28px;
-    }
-
-    @media (min-width: 1600px) {
-      .port-grid.tiendas-port-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
     }
 
     /* ============================================================ TESTIMONIOS */
