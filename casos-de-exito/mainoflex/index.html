@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <script src="/components/cookie-consent.js" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Caso de éxito: Mainoflex — un negocio industrial de mangueras antivibratorias heredado de padre a hijo, sin más presencia que Facebook. Le construimos su primer sitio web: catálogo, contacto directo y una imagen a la altura de sus clientes. Por Cero Studio.">
+  <title>Del Facebook al sitio que da confianza — Caso Mainoflex | Cero Studio</title>
+  <link rel="canonical" href="https://cerostudio.ai/casos-de-exito/mainoflex/">
+  <link rel="alternate" hreflang="es-MX" href="https://cerostudio.ai/casos-de-exito/mainoflex/">
+  <link rel="alternate" hreflang="x-default" href="https://cerostudio.ai/casos-de-exito/mainoflex/">
+  <link rel="icon" type="image/png" href="/CS_Favicon_512x512.png">
+  <link rel="apple-touch-icon" href="/CS_Favicon_512x512.png">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://cerostudio.ai/casos-de-exito/mainoflex/">
+  <meta property="og:title" content="Del Facebook al sitio que da confianza — Caso Mainoflex | Cero Studio">
+  <meta property="og:description"
+    content="Un negocio industrial de mangueras antivibratorias, heredado de padre a hijo y sin más presencia que Facebook. Le construimos su primer sitio: catálogo, contacto directo y confianza para clientes grandes.">
+  <meta property="og:image" content="https://cerostudio.ai/images/casos/mainoflex/og.webp">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="mainoflex.mx — sitio de Mainoflex, soluciones antivibratorias, por Cero Studio">
+  <meta property="og:locale" content="es_MX">
+  <meta property="og:site_name" content="Cero Studio">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Del Facebook al sitio que da confianza — Caso Mainoflex | Cero Studio">
+  <meta name="twitter:description"
+    content="Primer sitio web para un negocio industrial de mangueras antivibratorias: catálogo, contacto directo y una imagen a la altura de sus clientes.">
+  <meta name="twitter:image" content="https://cerostudio.ai/images/casos/mainoflex/og.webp">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
+    as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
+      rel="stylesheet"></noscript>
+  <link rel="stylesheet" href="/css/base.css">
+  <!-- home.css aporta navbar+footer styles del middleware -->
+  <link rel="stylesheet" href="/css/home.css?v=20260703b">
+
+  <style>
+    /* ── Case study page styles (.cs-*) — kinetic brutalism CS ──
+       CRITICAL: reset padding heredado de home.css "section{padding:120px 48px}". */
+    .cs-wrap{max-width:1180px;margin:0 auto;padding:96px 24px 0}
+    .cs-breadcrumb{font-family:Inter,sans-serif;font-size:12px;opacity:.5;margin:0 0 28px;letter-spacing:.04em;text-transform:uppercase}
+    .cs-breadcrumb a{color:inherit;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s,color .2s}
+    .cs-breadcrumb a:hover{border-bottom-color:var(--lime,#b2f700);color:var(--lime,#b2f700)}
+    .cs-breadcrumb span{margin:0 10px;opacity:.4}
+
+    /* HERO */
+    .cs-hero{display:grid;grid-template-columns:1fr 1.05fr;gap:56px;align-items:center;margin:0 0 72px;padding:0 0 24px}
+    .cs-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--lime,#b2f700);margin:0 0 22px;display:inline-flex;align-items:center;gap:12px;line-height:1.5}
+    .cs-eyebrow::before{content:"";display:block;width:32px;height:1px;background:var(--lime,#b2f700);flex-shrink:0}
+    .cs-h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(38px,5.4vw,66px);font-weight:700;line-height:1.02;letter-spacing:-.035em;margin:0 0 24px;color:#fff}
+    .cs-h1 em{font-style:normal;color:var(--lime,#b2f700)}
+    .cs-lead{font-family:Inter,sans-serif;font-size:clamp(16px,1.4vw,18px);line-height:1.6;font-weight:300;color:rgba(255,255,255,.78);margin:0 0 28px;max-width:54ch}
+    .cs-hero-stats{list-style:none;display:flex;gap:36px;margin:0 0 32px;padding:20px 0;border-top:1px solid rgba(255,255,255,.1);flex-wrap:wrap}
+    .cs-hero-stats li{display:flex;flex-direction:column;gap:6px}
+    .cs-hero-stats .num{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:800;color:var(--lime,#b2f700);letter-spacing:-.02em;line-height:1}
+    .cs-hero-stats .lbl{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+    .cs-cta-row{display:flex;gap:14px;flex-wrap:wrap}
+    .cs-cta-row .btn-primary,.cs-cta-row .btn-ghost{border-radius:0}
+    /* Shot frame (browser-ish) */
+    .cs-shot{position:relative;background:#0b0b0b;border:1px solid rgba(255,255,255,.1);overflow:hidden;aspect-ratio:16/10}
+    .cs-shot img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+    .cs-shot::after{content:"";position:absolute;bottom:-12px;right:-12px;width:48px;height:48px;background:var(--lime,#b2f700);pointer-events:none}
+
+    /* CLIENT box (autoridad) */
+    .cs-client{background:var(--surface-lowest,#0e0e0e);border:1px solid rgba(255,255,255,.06);border-left:3px solid var(--lime,#b2f700);padding:48px 48px;margin:0 0 24px;position:relative}
+    .cs-client::before{content:'';position:absolute;top:0;left:-3px;width:96px;height:3px;background:var(--lime,#b2f700)}
+    .cs-client .cs-client-label{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--lime,#b2f700);margin:0 0 26px;display:inline-flex;align-items:center;gap:10px;max-width:none}
+    .cs-client-label::before{content:'↳'}
+    .cs-client .cs-client-q{font-family:'Space Grotesk',sans-serif;font-size:clamp(22px,2.8vw,34px);font-weight:700;line-height:1.18;letter-spacing:-.02em;color:#fff;margin:0 0 28px;max-width:26ch}
+    .cs-client p{font-family:Inter,sans-serif;font-size:16px;line-height:1.7;font-weight:300;color:rgba(255,255,255,.75);margin:0 0 18px;max-width:70ch}
+    .cs-client strong{font-weight:500;color:var(--lime,#b2f700)}
+    .cs-client-creds{list-style:none;display:flex;flex-wrap:wrap;gap:10px;margin:28px 0 0;padding:24px 0 0;border-top:1px solid rgba(255,255,255,.08)}
+    .cs-client-creds li{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:rgba(255,255,255,.7);padding:8px 14px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.02)}
+
+    /* SECTIONS */
+    .cs-section{padding:0 0 72px}
+    .cs-section-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.3em;text-transform:uppercase;opacity:.55;margin:0 0 22px}
+    .cs-section-eyebrow::before{content:'↳';margin-right:10px;opacity:.6}
+    .cs-section-h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,3.2vw,40px);font-weight:600;letter-spacing:-.02em;line-height:1.15;margin:0 0 24px;max-width:24ch}
+    .cs-section-lead{font-family:Inter,sans-serif;font-size:clamp(15px,1.3vw,17px);line-height:1.7;font-weight:300;color:rgba(255,255,255,.72);margin:0 0 40px;max-width:64ch}
+
+    /* CHALLENGE — single brutalist card, red accent */
+    .cs-challenge{background:var(--surface-lowest,#0e0e0e);border:1px solid rgba(255,255,255,.08);position:relative;padding:48px 44px;overflow:hidden}
+    .cs-challenge::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:#ff6464}
+    .cs-challenge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;margin:8px 0 0}
+    .cs-challenge-item h3{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;color:#fff;margin:0 0 12px;display:flex;align-items:center;gap:10px}
+    .cs-challenge-item h3::before{content:'';width:7px;height:7px;background:#ff6464;flex-shrink:0}
+    .cs-challenge-item p{font-family:Inter,sans-serif;font-size:14px;line-height:1.7;font-weight:300;color:rgba(255,255,255,.65);margin:0}
+
+    /* BUILD — bento de features */
+    .cs-build{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+    .cs-feature{background:var(--surface-lowest,#0e0e0e);padding:40px 32px 46px;position:relative;overflow:hidden;transition:background .3s ease}
+    .cs-feature::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--lime,#b2f700);transform:scaleX(0);transform-origin:left;transition:transform .45s ease}
+    .cs-feature:hover{background:var(--surface-low,#1b1b1c)}
+    .cs-feature:hover::before{transform:scaleX(1)}
+    .cs-feature:hover .cs-feature-t{color:var(--lime,#b2f700)}
+    .cs-feature-top{display:flex;align-items:center;gap:16px;margin:0 0 28px}
+    .cs-feature-num{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--lime,#b2f700);text-transform:uppercase;white-space:nowrap}
+    .cs-feature-dash{flex:1;height:1px;background:rgba(255,255,255,.12)}
+    .cs-feature-t{font-family:'Space Grotesk',sans-serif;font-size:clamp(18px,1.8vw,21px);font-weight:800;text-transform:uppercase;letter-spacing:.005em;color:#fff;margin:0 0 14px;line-height:1.18;transition:color .3s ease}
+    .cs-feature-d{font-family:Inter,sans-serif;font-size:14px;line-height:1.75;color:rgba(255,255,255,.65);font-weight:300;margin:0}
+
+    /* PROCESS — 3 pasos */
+    .cs-plan{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+    .cs-step{background:var(--surface-lowest,#0e0e0e);padding:40px 32px 48px;position:relative;overflow:hidden;transition:background .3s ease}
+    .cs-step::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--lime,#b2f700);transform:scaleX(0);transform-origin:left;transition:transform .45s ease}
+    .cs-step:hover{background:var(--surface-low,#1b1b1c)}
+    .cs-step:hover::before{transform:scaleX(1)}
+    .cs-step:hover .cs-step-t{color:var(--lime,#b2f700)}
+    .cs-step-top{display:flex;align-items:center;gap:18px;margin:0 0 40px}
+    .cs-step-num{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;letter-spacing:.16em;color:var(--lime,#b2f700);text-transform:uppercase;white-space:nowrap}
+    .cs-step-dash{flex:1;height:1px;background:rgba(255,255,255,.12)}
+    .cs-step-t{font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,2vw,25px);font-weight:800;text-transform:uppercase;letter-spacing:.005em;color:#fff;margin:0 0 16px;line-height:1.15;transition:color .3s ease}
+    .cs-step-d{font-family:Inter,sans-serif;font-size:14px;line-height:1.8;color:rgba(255,255,255,.65);font-weight:300;margin:0}
+
+    /* RESULTS — bento de hechos */
+    .cs-results{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+    .cs-result{background:var(--surface-lowest,#0e0e0e);padding:44px 32px;position:relative;overflow:hidden;transition:background .3s ease}
+    .cs-result::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:var(--lime,#b2f700);transform:scaleX(0);transform-origin:left;transition:transform .45s ease}
+    .cs-result:hover{background:var(--surface-low,#1b1b1c)}
+    .cs-result:hover::before{transform:scaleX(1)}
+    .cs-result-num{font-family:'Space Grotesk',sans-serif;font-size:clamp(38px,5vw,58px);font-weight:800;line-height:.95;letter-spacing:-.04em;color:var(--lime,#b2f700);margin:0 0 18px}
+    .cs-result-h{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;color:#fff;margin:0 0 10px}
+    .cs-result-p{font-family:Inter,sans-serif;font-size:13.5px;line-height:1.7;font-weight:300;color:rgba(255,255,255,.62);margin:0}
+
+    /* CTA */
+    .cs-cta{text-align:center;padding:64px 24px 120px}
+    .cs-cta-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,4.4vw,52px);font-weight:600;letter-spacing:-.025em;line-height:1.1;margin:0 auto 18px;max-width:24ch}
+    .cs-cta-sub{font-family:Inter,sans-serif;font-size:16px;font-weight:300;color:rgba(255,255,255,.7);margin:0 auto 36px;max-width:54ch}
+    .cs-cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+    .cs-cta-actions .btn-primary,.cs-cta-actions .btn-ghost{border-radius:0}
+
+    /* MOBILE/TOUCH fallback via reveal-cards.js (.in-view) */
+    @media (hover: none) {
+      .cs-feature.in-view{background:var(--surface-low,#1b1b1c)}
+      .cs-feature.in-view::before{transform:scaleX(1)}
+      .cs-feature.in-view .cs-feature-t{color:var(--lime,#b2f700)}
+      .cs-step.in-view{background:var(--surface-low,#1b1b1c)}
+      .cs-step.in-view::before{transform:scaleX(1)}
+      .cs-step.in-view .cs-step-t{color:var(--lime,#b2f700)}
+      .cs-result.in-view{background:var(--surface-low,#1b1b1c)}
+      .cs-result.in-view::before{transform:scaleX(1)}
+    }
+
+    @media (max-width:900px){
+      .cs-hero{grid-template-columns:1fr;gap:36px;margin-bottom:56px}
+      .cs-shot{max-width:560px;aspect-ratio:16/11}
+      .cs-shot::after{display:none}
+      .cs-client{padding:36px 24px}
+      .cs-client::before{width:72px}
+      .cs-challenge{padding:36px 24px}
+      .cs-challenge-grid{grid-template-columns:1fr;gap:28px}
+      .cs-build{grid-template-columns:1fr;gap:0;background:transparent;border:0}
+      .cs-build .cs-feature{border-bottom:1px solid rgba(255,255,255,.08)}
+      .cs-plan{grid-template-columns:1fr;gap:0;background:transparent;border:0}
+      .cs-plan .cs-step{border-bottom:1px solid rgba(255,255,255,.08)}
+      .cs-results{grid-template-columns:1fr;gap:0;background:transparent;border:0}
+      .cs-results .cs-result{border-bottom:1px solid rgba(255,255,255,.08)}
+    }
+    @media (max-width:520px){
+      .cs-wrap{padding-top:100px}
+      .cs-cta{padding-bottom:80px}
+      .cs-cta-actions .btn-primary,.cs-cta-actions .btn-ghost{width:100%;text-align:center}
+    }
+  </style>
+
+  <!-- ── Structured Data: Article (case study) + Organization (cliente) + BreadcrumbList ── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": "https://cerostudio.ai/casos-de-exito/mainoflex/#article",
+        "headline": "Caso de éxito: Mainoflex — del Facebook a un sitio que da confianza",
+        "inLanguage": "es-MX",
+        "image": "https://cerostudio.ai/images/casos/mainoflex/og.webp",
+        "author": { "@id": "https://cerostudio.ai/#organization" },
+        "publisher": { "@id": "https://cerostudio.ai/#organization" },
+        "isPartOf": { "@id": "https://cerostudio.ai/#website" },
+        "about": { "@id": "https://mainoflex.mx/#organization" },
+        "mainEntityOfPage": "https://cerostudio.ai/casos-de-exito/mainoflex/"
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://mainoflex.mx/#organization",
+        "name": "Mainoflex",
+        "url": "https://mainoflex.mx",
+        "slogan": "Mangueras antivibratorias a tu alcance.",
+        "description": "Soluciones antivibratorias para sistemas industriales: mangueras, bridas y conexiones para el manejo de fluidos y el control de vibraciones."
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://cerostudio.ai/casos-de-exito/mainoflex/#breadcrumb",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://cerostudio.ai/" },
+          { "@type": "ListItem", "position": 2, "name": "Casos de éxito", "item": "https://cerostudio.ai/casos-de-exito/" },
+          { "@type": "ListItem", "position": 3, "name": "Mainoflex", "item": "https://cerostudio.ai/casos-de-exito/mainoflex/" }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <!-- Navbar handlers para botones inyectados por middleware. Esta página NO
+       carga /js/home.js, así que define versiones locales mínimas.
+       toggleLang → índice EN de casos (aún no hay detalle Mainoflex en inglés). -->
+  <script>
+    window.toggleLang = function () { window.location.href = '/en/case-studies/'; };
+    window.toggleNav = function () {
+      var m = document.getElementById('mobileNav');
+      var h = document.getElementById('navHam');
+      if (m) m.classList.toggle('open');
+      if (h) h.classList.toggle('open');
+    };
+    window.closeNav = function () {
+      var m = document.getElementById('mobileNav');
+      var h = document.getElementById('navHam');
+      if (m) m.classList.remove('open');
+      if (h) h.classList.remove('open');
+    };
+  </script>
+</head>
+
+<body>
+  <div class="site-wrapper">
+    <div id="navbar-placeholder"></div>
+
+    <main id="main-content">
+      <div class="cs-wrap">
+        <nav class="cs-breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Inicio</a><span>/</span><a href="/casos-de-exito/">Casos de éxito</a><span>/</span>Mainoflex
+        </nav>
+
+        <!-- HERO -->
+        <section class="cs-hero">
+          <div class="cs-hero-content">
+            <p class="cs-eyebrow">Caso de éxito · Industria / Manejo de fluidos</p>
+            <h1 class="cs-h1">Un oficio industrial, por fin <em>en línea.</em></h1>
+            <p class="cs-lead"><strong style="color:#fff;font-weight:500">Mainoflex</strong> fabrica mangueras antivibratorias y conexiones que evitan fugas y rupturas en sistemas industriales. Un negocio heredado de padre a hijo, con producto sólido pero sin más presencia que una página de Facebook. Le construimos su primer sitio web: catálogo, contacto directo y una imagen a la altura de los clientes que quiere ganar.</p>
+            <ul class="cs-hero-stats">
+              <li><span class="num">0 → 1</span><span class="lbl">De Facebook a web propia</span></li>
+              <li><span class="num">B2B</span><span class="lbl">Clientes industriales</span></li>
+              <li><span class="num">24/7</span><span class="lbl">Catálogo y contacto</span></li>
+              <li><span class="num">En vivo</span><span class="lbl">mainoflex.mx</span></li>
+            </ul>
+            <div class="cs-cta-row">
+              <a href="https://mainoflex.mx/" target="_blank" rel="noopener" class="btn-primary ht">Visitar el sitio →</a>
+              <a href="/#contacto" class="btn-ghost ht">Quiero algo así</a>
+            </div>
+          </div>
+          <figure class="cs-shot">
+            <img src="/images/casos/mainoflex/hero.webp"
+                 alt="Home de mainoflex.mx — 'Soluciones antivibratorias para un flujo sin interrupciones' con foto de mangueras flexibles industriales"
+                 width="1600" height="1000" fetchpriority="high">
+          </figure>
+        </section>
+      </div>
+
+      <!-- EL CLIENTE -->
+      <section class="cs-section">
+        <div class="cs-wrap" style="padding-top:0">
+          <div class="cs-client">
+            <p class="cs-client-label">El cliente</p>
+            <p class="cs-client-q">Un producto que la industria necesita, hecho negocio de familia.</p>
+            <p>Mainoflex fabrica y distribuye <strong>mangueras antivibratorias, bridas y conexiones</strong> para el manejo de fluidos. Su producto absorbe la vibración que, sin control, revienta tuberías y maquinaria —y suma la asesoría técnica para que cada instalación funcione sin fugas.</p>
+            <p>Es un negocio heredado: el padre lo fundó y el hijo tomó el control tras su fallecimiento, decidido a innovar y hacerlo crecer. Ya vende a empresas con pedidos recurrentes y a revendedores; su meta es llegar a las grandes embotelladoras y marcas de consumo del país.</p>
+            <ul class="cs-client-creds">
+              <li>Mangueras antivibratorias</li>
+              <li>Bridas y conexiones</li>
+              <li>Manejo de fluidos</li>
+              <li>Asesoría técnica</li>
+              <li>México</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- EL RETO -->
+      <section class="cs-section">
+        <div class="cs-wrap" style="padding-top:0">
+          <p class="cs-section-eyebrow">El reto</p>
+          <h2 class="cs-section-h2">Todo el peso en una página de Facebook.</h2>
+          <p class="cs-section-lead">El producto convence a quien ya lo conoce. El problema es todo lo de antes: un cliente industrial serio —una embotelladora, una gasera— busca en Google, revisa un catálogo y necesita señales de que está tratando con una empresa formal. Mainoflex no tenía dónde dar esa primera impresión.</p>
+          <div class="cs-challenge">
+            <div class="cs-challenge-grid">
+              <div class="cs-challenge-item">
+                <h3>Sin sitio propio</h3>
+                <p>Toda la presencia vivía en Facebook y en que el cliente los buscara directo. Nada que un prospecto nuevo pudiera consultar, comparar ni tomar como referencia formal.</p>
+              </div>
+              <div class="cs-challenge-item">
+                <h3>Catálogo invisible</h3>
+                <p>Un portafolio de productos técnicos —medidas, tipos, aplicaciones— sin un lugar donde mostrarse ordenado y disponible las 24 horas para quien cotiza.</p>
+              </div>
+              <div class="cs-challenge-item">
+                <h3>Falta de confianza formal</h3>
+                <p>Para venderle a marcas grandes hace falta verse a su nivel. Sin sitio, la calidad del producto quedaba escondida detrás de una imagen que no la respaldaba.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LO QUE CONSTRUIMOS -->
+      <section class="cs-section">
+        <div class="cs-wrap" style="padding-top:0">
+          <p class="cs-section-eyebrow">Lo que construimos</p>
+          <h2 class="cs-section-h2">Su primera casa digital, pensada para vender.</h2>
+          <p class="cs-section-lead">Un sitio que hace el trabajo que Facebook no puede: presentar el producto con seriedad, mostrar el catálogo y facilitar el contacto para que un prospecto se convierta en cliente.</p>
+          <div class="cs-build">
+            <div class="cs-feature">
+              <div class="cs-feature-top"><span class="cs-feature-num">01</span><span class="cs-feature-dash"></span></div>
+              <h3 class="cs-feature-t">Sitio a la altura del cliente</h3>
+              <p class="cs-feature-d">Un sitio profesional que comunica calidad y formalidad desde la primera pantalla —la confianza y certeza que un comprador industrial necesita antes de levantar el teléfono.</p>
+            </div>
+            <div class="cs-feature">
+              <div class="cs-feature-top"><span class="cs-feature-num">02</span><span class="cs-feature-dash"></span></div>
+              <h3 class="cs-feature-t">Catálogo de productos</h3>
+              <p class="cs-feature-d">Sus mangueras, bridas y conexiones presentadas de forma clara y navegable: qué resuelven y para qué sirven, disponibles para consultar en cualquier momento.</p>
+            </div>
+            <div class="cs-feature">
+              <div class="cs-feature-top"><span class="cs-feature-num">03</span><span class="cs-feature-dash"></span></div>
+              <h3 class="cs-feature-t">Contacto directo + WhatsApp</h3>
+              <p class="cs-feature-d">Botón de WhatsApp y formulario de contacto integrados: el prospecto cotiza al instante, sin fricción, desde donde esté.</p>
+            </div>
+            <div class="cs-feature">
+              <div class="cs-feature-top"><span class="cs-feature-num">04</span><span class="cs-feature-dash"></span></div>
+              <h3 class="cs-feature-t">Ubicación a un toque</h3>
+              <p class="cs-feature-d">Accesos directos a Waze y Google Maps para que llegar al negocio sea inmediato —clave para clientes que compran de contado y pasan por el producto.</p>
+            </div>
+            <div class="cs-feature">
+              <div class="cs-feature-top"><span class="cs-feature-num">05</span><span class="cs-feature-dash"></span></div>
+              <h3 class="cs-feature-t">Mensaje que asesora</h3>
+              <p class="cs-feature-d">Copy centrado en el problema real —vibración, fugas, rupturas— y en la asesoría que distingue a Mainoflex, no solo en el producto. Vende la solución, no la ficha técnica.</p>
+            </div>
+            <div class="cs-feature">
+              <div class="cs-feature-top"><span class="cs-feature-num">06</span><span class="cs-feature-dash"></span></div>
+              <h3 class="cs-feature-t">Rápido, móvil y en Google</h3>
+              <p class="cs-feature-d">Optimizado para celular y con base técnica para posicionar en Google —para que por fin lo encuentren clientes nuevos, no solo los que ya lo conocían.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EL PROCESO -->
+      <section class="cs-section">
+        <div class="cs-wrap" style="padding-top:0">
+          <p class="cs-section-eyebrow">El proceso</p>
+          <h2 class="cs-section-h2">Tres etapas. Del producto a la venta.</h2>
+          <div class="cs-plan">
+            <div class="cs-step">
+              <div class="cs-step-top"><span class="cs-step-num">01 · Inmersión</span><span class="cs-step-dash"></span></div>
+              <h3 class="cs-step-t">Entender el producto</h3>
+              <p class="cs-step-d">Mapeamos qué vende Mainoflex, a quién y por qué lo eligen: calidad, disponibilidad, entrega rápida y asesoría. De ahí salió el mensaje del sitio.</p>
+            </div>
+            <div class="cs-step">
+              <div class="cs-step-top"><span class="cs-step-num">02 · Estructura</span><span class="cs-step-dash"></span></div>
+              <h3 class="cs-step-t">Ordenar la oferta</h3>
+              <p class="cs-step-d">Definimos las secciones —productos, nosotros, contacto— y cómo guiar a un comprador industrial desde la duda hasta la cotización sin perderlo en el camino.</p>
+            </div>
+            <div class="cs-step">
+              <div class="cs-step-top"><span class="cs-step-num">03 · Construcción</span><span class="cs-step-dash"></span></div>
+              <h3 class="cs-step-t">Construir y lanzar</h3>
+              <p class="cs-step-d">El sitio en mainoflex.mx, con catálogo, WhatsApp, mapas y contacto, optimizado para móvil y para Google. Entregado listo para trabajar.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RESULTADO -->
+      <section class="cs-section">
+        <div class="cs-wrap" style="padding-top:0">
+          <p class="cs-section-eyebrow">El resultado</p>
+          <h2 class="cs-section-h2">De una página social a un canal de ventas propio.</h2>
+          <div class="cs-results">
+            <div class="cs-result">
+              <div class="cs-result-num">0 → 1</div>
+              <p class="cs-result-h">Presencia propia</p>
+              <p class="cs-result-p">Pasó de depender de Facebook a tener un sitio propio en mainoflex.mx —un activo que trabaja para el negocio, no una cuenta prestada en la red de otro.</p>
+            </div>
+            <div class="cs-result">
+              <div class="cs-result-num">24/7</div>
+              <p class="cs-result-h">Catálogo y contacto</p>
+              <p class="cs-result-p">Sus productos y sus vías de contacto —WhatsApp, formulario, mapas— disponibles a toda hora, listos para captar al prospecto en el momento en que decide.</p>
+            </div>
+            <div class="cs-result">
+              <div class="cs-result-num">+</div>
+              <p class="cs-result-h">Confianza para crecer</p>
+              <p class="cs-result-p">Una imagen formal a la altura de las embotelladoras y marcas grandes a las que aspira —el respaldo digital que le faltaba a un producto que ya era bueno.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TESTIMONIO — PENDIENTE: agregar cita real de Jesús (Mainoflex) cuando esté disponible. -->
+
+      <!-- CTA FINAL -->
+      <section class="cs-cta">
+        <h2 class="cs-cta-h">¿Tu producto es bueno pero nadie lo ve?</h2>
+        <p class="cs-cta-sub">Si vendes de boca en boca o solo por redes, te construimos el sitio que convierte tu calidad en clientes nuevos. Primera consulta gratis, respuesta en menos de 24 horas.</p>
+        <div class="cs-cta-actions">
+          <a href="https://mainoflex.mx/" target="_blank" rel="noopener" class="btn-ghost ht">Ver el sitio en vivo →</a>
+          <a href="/#contacto" class="btn-primary ht">Empecemos tu proyecto</a>
+        </div>
+      </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+  </div>
+
+  <script src="/components/loader.js" defer></script>
+  <script src="/components/reveal-cards.js?v=20260703b" defer></script>
+  <script src="/components/cursor.js" defer></script>
+</body>
+
+</html>
