@@ -101,7 +101,10 @@ function buildPortfolioHTML(items, lang = 'es') {
   const badgeLabel = lang === 'en' ? 'View Project →' : 'Ver Proyecto →';
   return items.map((item, i) => {
     const n = i + 1;
-    const showLink = item.show_link == null ? 1 : item.show_link;
+    /* Coerción robusta: show_link puede venir como número (0/1) o string
+       ("0"/"1"). Sin Number(), el string "0" sería truthy y renderizaría el
+       enlace + badge pese a tener la bandera desactivada en la base de datos. */
+    const showLink = item.show_link == null ? 1 : Number(item.show_link);
     const inner = `  <div class="port-card-img-wrap">
     <img src="${esc(item.image)}" alt="${esc(item.name)}" class="port-card-img" loading="lazy" width="640" height="400">${showLink ? `
     <div class="port-card-badge"><span data-i18n="port-badge">${badgeLabel}</span></div>` : ''}

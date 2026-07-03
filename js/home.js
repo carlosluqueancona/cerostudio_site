@@ -483,8 +483,10 @@
             for (let i = 0; i < ch.spikes.length; i++) {
               const sp = ch.spikes[i];
               const apex = sp.k0 + 7, age = kHead - apex;
-              const px = (N - age) * dx, py = Math.max(userCeil, ch.y - sp.amp);
+              const px = (N - age) * dx;
               if (px < -60 || px > W + 60) continue;
+              /* altura REAL de la línea en el pico (incluye el stacking de clicks) */
+              const py = chY(ch, apex, px);
               if (sp.flash > 0) {
                 sp.flash += 3.2;
                 const ff = 1 - sp.flash / 80;
@@ -611,10 +613,12 @@
           if (!ch) return;
           /* combo = suma de clicks seguidos; cada click genera SU pico donde
              está el mouse, más alto conforme subes el combo */
+          /* combo: el 1er click de una sesión empieza en 1; los siguientes
+             SUMAN (1, 2, 3, 4…) y el pico crece proporcional al nº de clicks.
+             Tras ~1s sin clickear, la sesión reinicia en 1. */
           ch.combo = (kHead - ch.lastClickK < 60) ? ch.combo + 1 : 1;
           ch.lastClickK = kHead;
-          /* altura PROPORCIONAL al número de clicks (combo), topada a userCeil */
-          const amp = Math.min(ch.y - userCeil, ch.amp * .6 * ch.combo);
+          const amp = Math.min(ch.y - userCeil, ch.amp * .5 * ch.combo);
           const k0 = Math.round(kHead - N + cx / dx) - 7;   /* pico en la X del mouse */
           ch.spikes.push({ k0: k0, amp: amp, qty: ch.combo, counted: true, flash: 6, user: true, textK: kHead });
           ch.spikes.sort(function (a, b) { return a.k0 - b.k0; });
