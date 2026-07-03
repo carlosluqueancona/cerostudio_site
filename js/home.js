@@ -238,8 +238,8 @@
         const CH_DEFS = [
           { key: 'visitas',       es: 'VISITAS',       en: 'VISITS',       lime: false, glow: false, inc: [14, 60], rate: [26, 54],  base: 4200, seed: 120 },
           { key: 'interacciones', es: 'INTERACCIONES', en: 'INTERACTIONS', lime: false, glow: false, inc: [7, 30],  rate: [32, 66],  base: 1480, seed: 340 },
-          { key: 'mensajes',      es: 'MENSAJES',      en: 'MESSAGES',     lime: true,  glow: true,  inc: [2, 11],  rate: [44, 96],  base: 372,  seed: 560 },
-          { key: 'prospectos',    es: 'PROSPECTOS',    en: 'LEADS',        lime: true,  glow: true,  inc: [1, 5],   rate: [58, 128], base: 126,  seed: 780 },
+          { key: 'mensajes',      es: 'MENSAJES',      en: 'MESSAGES',     lime: true,  glow: true,  inc: [2, 11],  rate: [44, 96],  base: 372,  seed: 560, hero: true },
+          { key: 'prospectos',    es: 'PROSPECTOS',    en: 'LEADS',        lime: true,  glow: true,  inc: [1, 5],   rate: [58, 128], base: 126,  seed: 780, hero: true },
           { key: 'ventas',        es: 'VENTAS',        en: 'SALES',        lime: true,  glow: true,  inc: [1, 3],   rate: [40, 88],  base: 34,   seed: 20, hero: true },
         ];
 
