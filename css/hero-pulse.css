@@ -1,0 +1,53 @@
+/* ══════════════════════════════════════════════════════════════════════
+   HERO "PULSO DE VENTA" — estilos del canvas (extraído de css/home.css)
+   ──────────────────────────────────────────────────────────────────────
+   Self-contained: reglas mínimas para que el canvas del EKG renderice en
+   cualquier página interna (que carga servicios.css, NO home.css).
+   Pareja de /js/hero-pulse.js. Incluir con:
+     <link rel="stylesheet" href="/css/hero-pulse.css">
+
+   El contenedor host necesita  position:relative; overflow:hidden;
+   background:#000  para que el canvas (position:absolute; inset:0) lo llene
+   y las líneas no desborden. Usa la clase helper .hero-pulse-host en tu
+   <section> (las páginas internas no tienen #hero como la home).
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* Contenedor host: envuelve <canvas id="heroCanvas"> + <div class="hero-grid">
+   (+ opcional .hero-inner para el texto encima). */
+.hero-pulse-host {
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+
+#heroCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Contenido de texto por encima del canvas (opcional). */
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Fondo tipo HERO de consultoría: rejilla lime tenue con desvanecido radial.
+   Capa base (z:0) detrás del canvas (z:1); la animación EKG dibuja encima. */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(206, 255, 51, .19) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(206, 255, 51, .19) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+  mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+  pointer-events: none;
+  z-index: 0;
+}
