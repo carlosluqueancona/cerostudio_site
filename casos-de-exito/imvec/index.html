@@ -113,11 +113,12 @@
     .cs-feature-t{font-family:'Space Grotesk',sans-serif;font-size:clamp(18px,1.8vw,21px);font-weight:800;text-transform:uppercase;letter-spacing:.005em;color:#fff;margin:0 0 14px;line-height:1.18;transition:color .3s ease}
     .cs-feature-d{font-family:Inter,sans-serif;font-size:14px;line-height:1.75;color:rgba(255,255,255,.65);font-weight:300;margin:0}
 
-    /* SLOGAN band — la entrega de marca */
-    .cs-slogan{background:var(--surface-lowest,#0e0e0e);border:1px solid rgba(255,255,255,.08);border-left:3px solid var(--lime,#b2f700);padding:52px 48px;text-align:center}
-    .cs-slogan-lbl{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--lime,#b2f700);margin:0 0 22px}
-    .cs-slogan-t{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,3.6vw,46px);font-weight:700;line-height:1.08;letter-spacing:-.025em;color:#fff;margin:0}
-    .cs-slogan-t em{font-style:normal;color:var(--lime,#b2f700)}
+    /* BRAND band — la identidad entregada (logo real) */
+    .cs-slogan{background:var(--surface-lowest,#0e0e0e);border:1px solid rgba(255,255,255,.08);border-left:3px solid var(--lime,#b2f700);padding:64px 48px;text-align:center}
+    .cs-slogan-lbl{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--lime,#b2f700);margin:0 0 40px}
+    .cs-slogan-logo{width:100%;max-width:540px;height:auto;margin:0 auto 34px;display:block}
+    .cs-slogan-cap{font-family:Inter,sans-serif;font-size:14px;font-weight:300;color:rgba(255,255,255,.62);margin:0 auto;max-width:52ch;line-height:1.7}
+    .cs-slogan-cap strong{font-weight:500;color:#fff}
 
     /* PROCESS — 3 pasos */
     .cs-plan{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
@@ -368,12 +369,15 @@
         </div>
       </section>
 
-      <!-- SLOGAN entregado -->
+      <!-- LA IDENTIDAD entregada — logo real -->
       <section class="cs-section">
         <div class="cs-wrap" style="padding-top:0">
           <div class="cs-slogan">
-            <p class="cs-slogan-lbl">Slogan entregado</p>
-            <p class="cs-slogan-t">Fabricamos precisión.<br><em>Entregamos certeza.</em></p>
+            <p class="cs-slogan-lbl">La identidad entregada</p>
+            <img class="cs-slogan-logo" src="/images/casos/imvec/logo-blanco.webp"
+                 alt="Logo de IMVEC: isotipo de engranaje con monograma CM, wordmark IMVEC y slogan 'Fabricamos precisión · Entregamos certeza'"
+                 width="1400" height="541" loading="lazy">
+            <p class="cs-slogan-cap">Isotipo, wordmark y slogan —<strong>Fabricamos precisión. Entregamos certeza.</strong>— diseñados desde cero. El engranaje comunica el oficio; el monograma CM, la firma del taller.</p>
           </div>
         </div>
       </section>
