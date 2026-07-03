@@ -238,8 +238,8 @@
         const CH_DEFS = [
           { key: 'visitas',       es: 'VISITAS',       en: 'VISITS',       lime: false, glow: false, inc: [14, 60], rate: [26, 54],  base: 4200, seed: 120 },
           { key: 'interacciones', es: 'INTERACCIONES', en: 'INTERACTIONS', lime: false, glow: false, inc: [7, 30],  rate: [32, 66],  base: 1480, seed: 340 },
-          { key: 'mensajes',      es: 'MENSAJES',      en: 'MESSAGES',     lime: true,  glow: true,  inc: [2, 11],  rate: [44, 96],  base: 372,  seed: 560, hero: true, alpha: .20 },
-          { key: 'prospectos',    es: 'PROSPECTOS',    en: 'LEADS',        lime: true,  glow: true,  inc: [1, 5],   rate: [58, 128], base: 126,  seed: 780, hero: true, alpha: .40 },
+          { key: 'mensajes',      es: 'MENSAJES',      en: 'MESSAGES',     lime: true,  glow: true,  inc: [2, 11],  rate: [44, 96],  base: 372,  seed: 560, hero: true, alpha: .60 },
+          { key: 'prospectos',    es: 'PROSPECTOS',    en: 'LEADS',        lime: true,  glow: true,  inc: [1, 5],   rate: [58, 128], base: 126,  seed: 780, hero: true, alpha: .80 },
           { key: 'ventas',        es: 'VENTAS',        en: 'SALES',        lime: true,  glow: true,  inc: [1, 3],   rate: [40, 88],  base: 34,   seed: 20, hero: true },
         ];
 
@@ -617,20 +617,26 @@
             if (dd < best) { best = dd; ch = channels[c]; }
           }
           if (!ch) return;
-          /* combo = suma de clicks seguidos; cada click genera SU pico donde
-             está el mouse, más alto conforme subes el combo */
-          /* combo: el 1er click empieza en 1; los siguientes SUMAN (1,2,3,4…)
-             SOLO si caen cerca del PRIMER click del combo (≤CLICK_NEAR px en X)
-             Y dentro de ~1s. Si te alejas o tardas, reinicia en 1 y ese click
-             pasa a ser la nueva ancla. El pico crece proporcional al combo. */
+          /* combo: el 1er click cerca de una línea CREA un pico ancla (+1). Los
+             clicks siguientes que caen a ≤CLICK_NEAR px del PRIMER click, dentro
+             de ~1s, NO crean picos nuevos: ENGORDAN el mismo pico ancla (+2, +3,
+             …) creciendo su altura. Si te alejas o tardas, arranca ancla nueva. */
           const near = (kHead - ch.lastClickK < 60) && Math.abs(cx - ch.anchorX) < CLICK_NEAR;
-          if (near) ch.combo += 1;
-          else { ch.combo = 1; ch.anchorX = cx; }
           ch.lastClickK = kHead;
-          const amp = Math.min(ch.y - userCeil, ch.amp * .5 * ch.combo);
-          const k0 = Math.round(kHead - N + cx / dx) - 7;   /* pico en la X del mouse */
-          ch.spikes.push({ k0: k0, amp: amp, qty: ch.combo, counted: true, flash: 6, user: true, textK: kHead });
-          ch.spikes.sort(function (a, b) { return a.k0 - b.k0; });
+          if (near && ch.activeClick) {
+            ch.combo += 1;
+            const sp = ch.activeClick;                       /* el MISMO pico crece */
+            sp.amp = Math.min(ch.y - userCeil, ch.amp * .5 * ch.combo);
+            sp.qty = ch.combo;
+            sp.flash = 6; sp.textK = kHead;
+          } else {
+            ch.combo = 1; ch.anchorX = cx;                   /* ancla nueva */
+            const k0 = Math.round(kHead - N + cx / dx) - 7;  /* pico en la X del mouse */
+            const sp = { k0: k0, amp: Math.min(ch.y - userCeil, ch.amp * .5), qty: 1, counted: true, flash: 6, user: true, textK: kHead };
+            ch.spikes.push(sp);
+            ch.spikes.sort(function (a, b) { return a.k0 - b.k0; });
+            ch.activeClick = sp;
+          }
           counts[ch.def.key] += 1;   /* el contador suma cada click */
         });
       })();
