@@ -223,6 +223,7 @@
         const ctx = canvas.getContext('2d');
         const LIME = '178,247,0';
         const SPIKE_LEN = 22;
+        const CLICK_NEAR = 140;   /* px en X: radio para que un click siga el mismo combo */
 
         let W, H, dx, N, bound, tight, echoBase, userCeil;
         let kHead = 0;            /* índice de muestra en el borde derecho */
@@ -288,7 +289,7 @@
               ceil: Math.max(bandTop, y - amp - 6),      /* picos locales, no invaden arriba */
               clipTop: Math.round(y - amp - 22), clipBot: Math.round(y + slot * 0.6),
               spikes: [], nextK: 90 + defIdx * 22, first: !!CH_DEFS[defIdx].hero,
-              combo: 0, lastClickK: -999, activeClick: null,
+              combo: 0, lastClickK: -999, activeClick: null, anchorX: 0,
             };
           });
 
@@ -615,10 +616,13 @@
           if (!ch) return;
           /* combo = suma de clicks seguidos; cada click genera SU pico donde
              está el mouse, más alto conforme subes el combo */
-          /* combo: el 1er click de una sesión empieza en 1; los siguientes
-             SUMAN (1, 2, 3, 4…) y el pico crece proporcional al nº de clicks.
-             Tras ~1s sin clickear, la sesión reinicia en 1. */
-          ch.combo = (kHead - ch.lastClickK < 60) ? ch.combo + 1 : 1;
+          /* combo: el 1er click empieza en 1; los siguientes SUMAN (1,2,3,4…)
+             SOLO si caen cerca del PRIMER click del combo (≤CLICK_NEAR px en X)
+             Y dentro de ~1s. Si te alejas o tardas, reinicia en 1 y ese click
+             pasa a ser la nueva ancla. El pico crece proporcional al combo. */
+          const near = (kHead - ch.lastClickK < 60) && Math.abs(cx - ch.anchorX) < CLICK_NEAR;
+          if (near) ch.combo += 1;
+          else { ch.combo = 1; ch.anchorX = cx; }
           ch.lastClickK = kHead;
           const amp = Math.min(ch.y - userCeil, ch.amp * .5 * ch.combo);
           const k0 = Math.round(kHead - N + cx / dx) - 7;   /* pico en la X del mouse */
