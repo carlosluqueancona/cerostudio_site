@@ -328,7 +328,7 @@
            picos chicos frecuentes + picos grandes ocasionales (12%). */
         function schedule(ch) {
           const d = ch.def;
-          const qLo = d.inc[0], qHi = d.inc[1], span = Math.max(1, qHi - qLo);
+          const qLo = d.inc[0], qHi = d.inc[1];
           while (ch.nextK < kHead + N) {
             let qty;
             if (ch.first) { qty = qHi; ch.first = false; }
@@ -336,11 +336,11 @@
               qty = qLo + Math.floor(Math.random() * (qHi - qLo + 1));
               if (Math.random() < .12) qty = Math.round(qty * (1.6 + Math.random() * 1.4));  /* pico grande ocasional */
             }
-            /* altura COHERENTE con el número: la amplitud se deriva de qty,
-               monótona. +N chico = pico bajo, +N grande = pico alto.
-               t>1 en picos grandes → tope ~1.25×amp (mismo rango de antes). */
-            const t = Math.min(1.34, (qty - qLo) / span);
-            const amp = ch.amp * (.42 + .62 * t);
+            /* altura PROPORCIONAL al número real: amp ∝ qty/qHi (a través de
+               cero), por canal. +1 = blip corto; el máximo del canal llena el
+               carril; los picos grandes se topan ahí. El ojo lee "el doble de
+               número, el doble de alto" dentro de cada línea. */
+            const amp = ch.amp * Math.max(.15, Math.min(1, qty / qHi));
             ch.spikes.push({ k0: ch.nextK, amp: amp, qty: qty, counted: false, flash: 0 });
             ch.nextK += d.rate[0] + Math.floor(Math.random() * (d.rate[1] - d.rate[0]));
           }
