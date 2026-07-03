@@ -328,17 +328,19 @@
            picos chicos frecuentes + picos grandes ocasionales (12%). */
         function schedule(ch) {
           const d = ch.def;
+          const qLo = d.inc[0], qHi = d.inc[1], span = Math.max(1, qHi - qLo);
           while (ch.nextK < kHead + N) {
-            let amp, qty;
-            if (ch.first) { amp = ch.amp; qty = d.inc[1]; ch.first = false; }
+            let qty;
+            if (ch.first) { qty = qHi; ch.first = false; }
             else {
-              amp = ch.amp * (.42 + Math.random() * .58);
-              qty = d.inc[0] + Math.floor(Math.random() * (d.inc[1] - d.inc[0] + 1));
-              if (Math.random() < .12) {           /* pico grande ocasional */
-                amp = ch.amp * (.9 + Math.random() * .35);
-                qty = Math.round(qty * (1.6 + Math.random() * 1.4));
-              }
+              qty = qLo + Math.floor(Math.random() * (qHi - qLo + 1));
+              if (Math.random() < .12) qty = Math.round(qty * (1.6 + Math.random() * 1.4));  /* pico grande ocasional */
             }
+            /* altura COHERENTE con el número: la amplitud se deriva de qty,
+               monótona. +N chico = pico bajo, +N grande = pico alto.
+               t>1 en picos grandes → tope ~1.25×amp (mismo rango de antes). */
+            const t = Math.min(1.34, (qty - qLo) / span);
+            const amp = ch.amp * (.42 + .62 * t);
             ch.spikes.push({ k0: ch.nextK, amp: amp, qty: qty, counted: false, flash: 0 });
             ch.nextK += d.rate[0] + Math.floor(Math.random() * (d.rate[1] - d.rate[0]));
           }
