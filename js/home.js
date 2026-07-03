@@ -224,6 +224,7 @@
         const LIME = '178,247,0';
         const SPIKE_LEN = 22;
         const CLICK_NEAR = 100;   /* px en X: si el cursor se aleja >100px del ancla, se desengancha (pico nuevo) */
+        const CLICK_HOVER = typeof window.matchMedia === 'function' && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
         let W, H, dx, N, bound, tight, echoBase, userCeil;
         let kHead = 0;            /* índice de muestra en el borde derecho */
@@ -231,6 +232,7 @@
         let counts = null;        /* contadores acumulados por métrica (persisten en resize) */
         let ghosts = [];          /* telemetría fantasma tenue detrás del texto */
         let pings = [];           /* ondas compartidas por evento de venta */
+        let comboCh = null;       /* canal con combo de clicks activo (para desenganche por cursor) */
 
         /* Embudo StoryBrand: el sitio convierte extraños en clientes.
            entrada → conversión (arriba → abajo). Cada canal tiene su tren de
@@ -397,6 +399,11 @@
 
         function renderFrame() {
           ctx.clearRect(0, 0, W, H);
+          /* desenganche por CURSOR: si el mouse se aleja >CLICK_NEAR px del ancla
+             del combo activo, suéltalo (el próximo click abre un pico nuevo). */
+          if (CLICK_HOVER && comboCh && Math.abs(_mx - comboCh.anchorX) > CLICK_NEAR) {
+            comboCh.activeClick = null; comboCh.combo = 0; comboCh = null;
+          }
           const dim = tight ? .82 : 1;
           const en = (typeof CS_LANG !== 'undefined' && CS_LANG === 'en');
 
@@ -638,6 +645,7 @@
             ch.activeClick = sp;
           }
           counts[ch.def.key] += 1;   /* el contador suma cada click */
+          comboCh = ch;              /* este canal queda como el combo activo */
         });
       })();
       }); /* end requestIdleCallback pulse */
