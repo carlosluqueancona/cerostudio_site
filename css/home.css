@@ -903,7 +903,7 @@
     }
 
     /* Efecto muro SOLO en devices con hover (mouse): grayscale que se enciende
-       y badge que sube. En touch no aplica → color + CTA visibles (arriba). */
+       y badge que sube. */
     @media (hover: hover) {
       .port-card-img {
         filter: grayscale(1) contrast(1.05);
@@ -917,6 +917,20 @@
       }
       .port-card:hover .port-card-badge {
         transform: translateY(0);
+      }
+    }
+
+    /* En TOUCH el muro también arranca monocromo (como escritorio) y enciende
+       a color cuando la card cruza el centro de la pantalla (.port-card--lit,
+       lo pone reveal-cards.js) o mientras se presiona (:active). */
+    @media (hover: none) {
+      .port-card-img {
+        filter: grayscale(1) contrast(1.05);
+      }
+      .port-card--lit .port-card-img,
+      .port-card:active .port-card-img {
+        filter: none;
+        transform: scale(1.02);
       }
     }
 

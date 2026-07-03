@@ -70,9 +70,29 @@
     }
   }
 
+  // Muro de portafolio: en touch enciende color (.port-card--lit) mientras la
+  // card cruza una banda central del viewport; se apaga al salir. Distinto del
+  // reveal one-shot de arriba → observer propio, toggle on/off.
+  function initPortWall() {
+    var cards = document.querySelectorAll('.port-card');
+    if (!cards.length) return;
+
+    // rootMargin recorta el viewport a una banda central (~16% de alto): la card
+    // sólo "intersecta" cuando está a la mitad de la pantalla.
+    var wall = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        entries[i].target.classList.toggle('port-card--lit', entries[i].isIntersecting);
+      }
+    }, { rootMargin: '-42% 0px -42% 0px', threshold: 0 });
+
+    for (var k = 0; k < cards.length; k++) wall.observe(cards[k]);
+  }
+
+  function boot() { init(); initPortWall(); }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', boot);
   } else {
-    init();
+    boot();
   }
 })();
