@@ -481,8 +481,8 @@
           'testi-n1': { t: 'Gustavo Carrillo' }, 'testi-r1': { t: 'Dueño · IMVEC.MX' },
           'testi-q2': { t: 'Excelente compromiso, profesionalismo y nivel de servicio de parte de Carlos. ¡Gracias por su valiosa colaboración!' },
           'testi-n2': { t: 'Ricardo Lora' }, 'testi-r2': { t: 'Seminuevos Coapa · CDMX' },
-          'testi-q3': { t: 'Mi tienda pasó de vender por WhatsApp a cobrar en línea sola. El primer fin de semana ya había pedidos que no tuve que atender.' },
-          'testi-n3': { t: 'Daniela M.' }, 'testi-r3': { t: 'Tienda de mascotas · Guadalajara' },
+          'testi-q3': { t: 'Nuestro nuevo sitio web optimizó la captación de clientes y aumentó nuestras ventas un 40% en dos meses.' },
+          'testi-n3': { t: 'Jesús Bernal' }, 'testi-r3': { t: 'Mainoflex · Soluciones antivibratorias' },
           /* ── PRECIOS */
           'precios-eyebrow': { t: 'Inversión' },
           'precios-headline': { h: 'Precios<br><em>sin letra chica.</em>' },
@@ -652,8 +652,8 @@
           'testi-n1': { t: 'Gustavo Carrillo' }, 'testi-r1': { t: 'Owner · IMVEC.MX' },
           'testi-q2': { t: 'Excellent commitment, professionalism and level of service from Carlos. Thank you for your valuable collaboration!' },
           'testi-n2': { t: 'Ricardo Lora' }, 'testi-r2': { t: 'Seminuevos Coapa · Mexico City' },
-          'testi-q3': { t: 'My store went from selling over WhatsApp to taking payments on its own. The first weekend brought orders I never had to touch.' },
-          'testi-n3': { t: 'Daniela M.' }, 'testi-r3': { t: 'Pet store · Guadalajara' },
+          'testi-q3': { t: 'Our new website optimized how we bring in clients and grew our sales by 40% in two months.' },
+          'testi-n3': { t: 'Jesús Bernal' }, 'testi-r3': { t: 'Mainoflex · Anti-vibration solutions' },
           /* ── PRECIOS */
           'precios-eyebrow': { t: 'Investment' },
           'precios-headline': { h: 'Pricing<br><em>no hidden fees.</em>' },
