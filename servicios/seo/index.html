@@ -36,6 +36,16 @@
   <link rel="stylesheet" href="/css/base.css">
   <link rel="stylesheet" href="/css/home.css">
   <link rel="stylesheet" href="/css/servicios.css?v=20260614a">
+  <style>
+    /* Hero con animación de gráficas (hero-pulse): alto como la home (100vh)
+       para que la banda de líneas viva abajo sin encimarse con el texto. */
+    .lp-hero--pulse { min-height: 100vh; }
+    @media (max-width: 768px) {
+      /* Texto arriba + hero alto: la banda de líneas (2 en mobile) queda
+         limpia abajo, sin encimarse con el h1/lead/CTAs. */
+      .lp-hero--pulse { min-height: 118vh; align-items: flex-start; }
+    }
+  </style>
   <script src="/components/cookie-consent.js" defer></script>
   <script src="/components/cursor.js" defer></script>
 
@@ -140,8 +150,9 @@
 
     <main id="main-content">
 
-      <section class="lp-hero">
+      <section class="lp-hero lp-hero--pulse">
         <div class="lp-hero-grid"></div>
+        <canvas id="heroCanvas"></canvas>
         <div class="section-inner">
           <p class="lp-eyebrow">Servicio 04 · SEO + AI Search · México</p>
           <h1 class="lp-h1">SEO para empresas que quieren aparecer en <span class="t-lime">Google y en la IA.</span></h1>
@@ -351,6 +362,7 @@
 
     <div id="footer-placeholder"></div>
   </div>
+  <script src="/js/hero-pulse.js?v=20260703a" defer></script>
   <script src="/components/reveal-cards.js" defer></script>
   <script src="/components/lang-toggle.js?v=20260604c" defer></script>
 </body>

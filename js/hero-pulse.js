@@ -73,22 +73,25 @@ document.addEventListener('DOMContentLoaded', function () {
         ];
 
         function resize() {
-          W = canvas.width = window.innerWidth;
-          H = canvas.height = window.innerHeight;
+          /* Tamaño = el del contenedor host (no window), para funcionar en un
+             hero de cualquier altura (home 100vh, interiores ~70vh). */
+          const host = canvas.parentElement.getBoundingClientRect();
+          W = canvas.width = Math.round(host.width);
+          H = canvas.height = Math.round(host.height);
           dx = W < 768 ? 6 : 3;   /* px entre muestras */
           N = Math.ceil(W / dx) + 2;
 
           /* Geometría real: dos bandas que ENMARCAN el titular — superior
              (arriba del eyebrow) e inferior (debajo de los CTAs) — para que
              las líneas ocupen mucho más espacio vertical sin tocar el texto. */
-          const hr = canvas.parentElement.getBoundingClientRect();
+          const hr = host;
           function rel(id, edge) {
             const el = document.getElementById(id);
             if (!el) return null;
             const r = el.getBoundingClientRect();
             return (edge === 'top' ? r.top : r.bottom) - hr.top;
           }
-          const titleEl = document.querySelector('.hero-static-title');
+          const titleEl = document.querySelector('.hero-static-title, .lp-h1');
           let titleBot = titleEl ? (titleEl.getBoundingClientRect().bottom - hr.top) : H * .5;
           echoBase = H - 16;
 
@@ -104,9 +107,10 @@ document.addEventListener('DOMContentLoaded', function () {
           tight = roomy < 150;
 
           /* solo conversión (embudo SB7): mensajes · prospectos · ventas */
-          /* Para mostrar VISITAS (tráfico) en una página de SEO/posicionamiento: use = [0, 2, 3, 4]. */
-          let use = [2, 3, 4];
-          if (roomy < 150) use = [2, 4];
+          /* SEO/posicionamiento: incluimos VISITAS (tráfico). Desktop = embudo
+             completo [0,2,3,4]; mobile = compacto [0,4] (visitas→ventas) para
+             no saturar la pantalla angosta. */
+          let use = W < 768 ? [0, 4] : [0, 2, 3, 4];
           if (roomy < 90) use = [4];
           const slot = roomy / use.length;
           channels = use.map(function (defIdx, i) {
