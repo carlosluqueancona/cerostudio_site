@@ -518,10 +518,13 @@
                 op = Math.max(0, Math.min(1, op));
                 if (op > 0) {
                   const uv = sp.user;
-                  const floorY = uv ? userCeil + 10 : ch.ceil + 12;
+                  /* el número va JUSTO encima de la punta REAL del pico, así su
+                     altura sigue al pico (coherente con el +N). Solo el pico de
+                     click se topa a userCeil para no invadir el título. */
+                  const numY = uv ? Math.max(userCeil + 10, py - 11) : py - 11;
                   ctx.font = '700 ' + (uv ? 18 : d.hero ? 14 : 12) + 'px "Space Grotesk", sans-serif';
                   ctx.fillStyle = (d.lime ? 'rgba(' + LIME + ',' : 'rgba(255,255,255,') + (op * (uv ? 1 : d.lime ? .9 : .62)) + ')';
-                  ctx.fillText('+' + sp.qty, px, Math.max(floorY, py - 11));
+                  ctx.fillText('+' + sp.qty, px, numY);
                 }
               }
             }
