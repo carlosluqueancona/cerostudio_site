@@ -477,8 +477,8 @@
           /* ── TESTIMONIOS (PLACEHOLDER — sustituir por reales) */
           'testi-eyebrow': { t: 'Testimonios' },
           'testi-title': { h: 'Lo que dicen<br>quienes ya <span class="t-lime">venden</span>' },
-          'testi-q1': { t: 'Antes dependíamos al 100% de recomendaciones. Hoy el sitio nos trae cotizaciones nuevas cada semana — se pagó solo el primer mes.' },
-          'testi-n1': { t: 'María G.' }, 'testi-r1': { t: 'Boutique de regalos · CDMX' },
+          'testi-q1': { t: 'No siempre teníamos las ideas claras, pero Carlos siempre aportó soluciones. Logramos triplicar el valor de nuestra inversión en ventas.' },
+          'testi-n1': { t: 'Gustavo Carrillo' }, 'testi-r1': { t: 'Dueño · IMVEC.MX' },
           'testi-q2': { t: 'Excelente compromiso, profesionalismo y nivel de servicio de parte de Carlos. ¡Gracias por su valiosa colaboración!' },
           'testi-n2': { t: 'Ricardo Lora' }, 'testi-r2': { t: 'Seminuevos Coapa · CDMX' },
           'testi-q3': { t: 'Mi tienda pasó de vender por WhatsApp a cobrar en línea sola. El primer fin de semana ya había pedidos que no tuve que atender.' },
@@ -648,8 +648,8 @@
           /* ── TESTIMONIOS (PLACEHOLDER — replace with real ones) */
           'testi-eyebrow': { t: 'Testimonials' },
           'testi-title': { h: 'What businesses<br>already <span class="t-lime">selling</span> say' },
-          'testi-q1': { t: 'We used to depend 100% on referrals. Now the site brings in new quote requests every week — it paid for itself in the first month.' },
-          'testi-n1': { t: 'María G.' }, 'testi-r1': { t: 'Gift boutique · Mexico City' },
+          'testi-q1': { t: 'We didn\'t always have our ideas fully clear, but Carlos always brought solutions to the table. We ended up tripling the value of our investment in sales.' },
+          'testi-n1': { t: 'Gustavo Carrillo' }, 'testi-r1': { t: 'Owner · IMVEC.MX' },
           'testi-q2': { t: 'Excellent commitment, professionalism and level of service from Carlos. Thank you for your valuable collaboration!' },
           'testi-n2': { t: 'Ricardo Lora' }, 'testi-r2': { t: 'Seminuevos Coapa · Mexico City' },
           'testi-q3': { t: 'My store went from selling over WhatsApp to taking payments on its own. The first weekend brought orders I never had to touch.' },
