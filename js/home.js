@@ -819,7 +819,7 @@
           'mnav-contacto': { t: 'Contacto' },
           'mnav-blog': { t: 'Blog' },
           /* ── HERO */
-          'heroEyebrow': { t: 'Agencia Digital Premium · cerostudio.ai' },
+          'heroEyebrow': { t: 'Para negocios que quieren clientes, no solo visitas.' },
           'heroSub': { t: 'Desarrollamos sitios web y tiendas online para emprendedores y negocios. Diseño de nivel internacional, resultados reales.' },
           'hero-btn-portfolio': { t: 'Ver Portafolio' },
           'hero-btn-quote': { t: 'Solicitar Cotización' },
@@ -990,7 +990,7 @@
           'mnav-precios': { t: 'Pricing' },
           'mnav-contacto': { t: 'Contact' },
           /* ── HERO */
-          'heroEyebrow': { t: 'Premium Digital Agency · cerostudio.ai' },
+          'heroEyebrow': { t: 'For businesses that want customers, not just clicks.' },
           'heroSub': { t: 'We build websites and online stores for entrepreneurs and businesses. International-level design, real results.' },
           'hero-btn-portfolio': { t: 'View Portfolio' },
           'hero-btn-quote': { t: 'Request a Quote' },
