@@ -238,8 +238,8 @@
         const CH_DEFS = [
           { key: 'visitas',       es: 'VISITAS',       en: 'VISITS',       lime: false, glow: false, inc: [14, 60], rate: [26, 54],  base: 4200, seed: 120 },
           { key: 'interacciones', es: 'INTERACCIONES', en: 'INTERACTIONS', lime: false, glow: false, inc: [7, 30],  rate: [32, 66],  base: 1480, seed: 340 },
-          { key: 'mensajes',      es: 'MENSAJES',      en: 'MESSAGES',     lime: true,  glow: true,  inc: [2, 11],  rate: [44, 96],  base: 372,  seed: 560, hero: true },
-          { key: 'prospectos',    es: 'PROSPECTOS',    en: 'LEADS',        lime: true,  glow: true,  inc: [1, 5],   rate: [58, 128], base: 126,  seed: 780, hero: true },
+          { key: 'mensajes',      es: 'MENSAJES',      en: 'MESSAGES',     lime: true,  glow: true,  inc: [2, 11],  rate: [44, 96],  base: 372,  seed: 560, hero: true, alpha: .20 },
+          { key: 'prospectos',    es: 'PROSPECTOS',    en: 'LEADS',        lime: true,  glow: true,  inc: [1, 5],   rate: [58, 128], base: 126,  seed: 780, hero: true, alpha: .40 },
           { key: 'ventas',        es: 'VENTAS',        en: 'SALES',        lime: true,  glow: true,  inc: [1, 3],   rate: [40, 88],  base: 34,   seed: 20, hero: true },
         ];
 
@@ -448,6 +448,8 @@
             const ch = channels[c];
             const d = ch.def;
             const yFn = function (k, x) { return chY(ch, k, x); };
+            ctx.save();
+            ctx.globalAlpha = d.alpha == null ? 1 : d.alpha;   /* opacidad maestra por línea (20/40/100) */
             const path = buildPath(yFn);
             const bright = d.hero ? 1 : d.lime ? .82 : .5;
 
@@ -532,6 +534,7 @@
             ctx.fillStyle = d.lime ? 'rgba(' + LIME + ',.5)' : 'rgba(255,255,255,.38)';
             ctx.fillText(en ? d.en : d.es, 26 + nw + 10, cy - (big ? 3 : 1));
             try { ctx.letterSpacing = '0px'; } catch (e) { }
+            ctx.restore();
           }
 
           /* SIN SITIO — contador en 0, la línea muerta (stakes SB7) */
