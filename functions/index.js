@@ -32,8 +32,9 @@ export async function onRequest(context) {
     if (!htmlCache?.value) return response;
 
     const portfolioHTML = htmlCache.value;
+    // Escapar '<' impide que un '</script>' dentro del JSON rompa/inyecte HTML
     const i18nScript = i18nCache?.value
-      ? `<script>window.CS_PORTFOLIO_I18N=${i18nCache.value};</script>`
+      ? `<script>window.CS_PORTFOLIO_I18N=${i18nCache.value.replace(/</g, '\\u003c')};</script>`
       : '';
 
     return new HTMLRewriter()

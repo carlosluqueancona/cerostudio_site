@@ -23,11 +23,12 @@ backup-*.sql
 *.dump.sql
 *.backup.sql
 *.sql
-# Excepciones: schema y seeds versionados del blog
-!blog/schema.sql
-!blog/seed.sql
-!blog/seeds/
-!blog/seeds/*.sql
+# Excepciones: schema y seeds versionados del blog (viven en .dev/, fuera del deploy)
+!.dev/blog/schema.sql
+!.dev/blog/seed.sql
+!.dev/blog/seeds/
+!.dev/blog/seeds/*.sql
+!.dev/formulario/cero-intake-worker/schema.sql
 # Added by code-review-graph
 .code-review-graph/
 AGENTS.md
@@ -57,3 +58,4 @@ sergio_luque-sitio_anterior/
 
 # Material de marca TiendaNube Partner (referencia interna, no al deploy)
 Agencias_Tiendanube_Partners/
+_archivo/

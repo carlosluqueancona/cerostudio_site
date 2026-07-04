@@ -23,6 +23,51 @@ function corsHeaders(origin) {
 const DEST_EMAIL = 'cerostudiomx@gmail.com';
 const FROM_EMAIL = 'noreply@cerostudio.ai';
 
+// ── Rate limit ────────────────────────────────────────────────────────────────
+// Primera línea: contador en memoria por isolate (barato, se evade entre PoPs).
+// Segunda línea: conteos en D1 sobre contact_submissions (sin cambiar schema).
+const _ipHits = new Map(); // ip -> [timestamps]
+
+function ipLimited(ip) {
+  const now = Date.now(), WINDOW = 5 * 60 * 1000, MAX = 3;
+  const hits = (_ipHits.get(ip) || []).filter(t => now - t < WINDOW);
+  hits.push(now);
+  if (_ipHits.size > 5000) _ipHits.clear(); // cota de memoria del isolate
+  _ipHits.set(ip, hits);
+  return hits.length > MAX;
+}
+
+async function d1Limited(env, email) {
+  const hourAgo   = new Date(Date.now() - 3600e3).toISOString();
+  const tenMinAgo = new Date(Date.now() - 600e3).toISOString();
+  const [byEmail, global] = await Promise.all([
+    env.DB.prepare('SELECT COUNT(*) AS n FROM contact_submissions WHERE email = ? AND created_at > ?')
+      .bind(email, hourAgo).first(),
+    env.DB.prepare('SELECT COUNT(*) AS n FROM contact_submissions WHERE created_at > ?')
+      .bind(tenMinAgo).first(),
+  ]);
+  return (byEmail?.n ?? 0) >= 3 || (global?.n ?? 0) >= 10;
+}
+
+// ── Turnstile (mismo patrón que el intake worker) ─────────────────────────────
+// Si TURNSTILE_SECRET_KEY no está configurada en Pages, se salta la verificación
+// (no rompe el form). Al configurarla, el form debe mandar cf_turnstile_response.
+async function verifyTurnstile(token, env, ip) {
+  if (!env.TURNSTILE_SECRET_KEY) return true;
+  if (!token) return false;
+  try {
+    const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ secret: env.TURNSTILE_SECRET_KEY, response: token, remoteip: ip }),
+    });
+    const data = await res.json();
+    return !!data.success;
+  } catch {
+    return false;
+  }
+}
+
 export async function onRequestOptions(context) {
   const origin = context.request.headers.get('Origin') || '';
   return new Response(null, { status: 204, headers: corsHeaders(origin) });
@@ -44,6 +89,18 @@ export async function onRequestPost(context) {
     if (!email?.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
       return json({ error: 'Email inválido' }, 400, origin);
     if (!mensaje?.trim()) return json({ error: 'El mensaje es requerido' }, 400, origin);
+
+    // Límites de tamaño — evita payloads gigantes hacia D1/Resend
+    if (nombre.length > 200 || email.length > 254 || (empresa?.length ?? 0) > 200 ||
+        (servicio?.length ?? 0) > 50 || mensaje.length > 5000)
+      return json({ error: 'El mensaje excede el tamaño permitido' }, 400, origin);
+
+    // Anti-spam: Turnstile (si está configurado) + rate limit
+    const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+    if (!(await verifyTurnstile(body.cf_turnstile_response || '', env, ip)))
+      return json({ error: 'Verificación anti-bot fallida. Recarga la página.' }, 403, origin);
+    if (ipLimited(ip) || (await d1Limited(env, email.trim().toLowerCase())))
+      return json({ error: 'Demasiados envíos. Intenta de nuevo en unos minutos.' }, 429, origin);
 
     const now = new Date().toISOString();
 

@@ -192,7 +192,8 @@ export async function onRequest(context) {
     if (i18n) {
       rewriter.on('body', {
         element(el) {
-          el.append(`<script>window.CS_PORTFOLIO_I18N=${i18n};</script>`, { html: true });
+          // Escapar '<' impide que un '</script>' dentro del JSON rompa/inyecte HTML
+          el.append(`<script>window.CS_PORTFOLIO_I18N=${i18n.replace(/</g, '\\u003c')};</script>`, { html: true });
         },
       });
     }
