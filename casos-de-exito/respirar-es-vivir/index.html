@@ -145,6 +145,13 @@
     .cs-result-h{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;color:#fff;margin:0 0 10px}
     .cs-result-p{font-family:Inter,sans-serif;font-size:13.5px;line-height:1.7;font-weight:300;color:rgba(255,255,255,.62);margin:0}
 
+    /* QUOTE / testimonial */
+    .cs-quote{background:var(--surface-lowest,#0e0e0e);border:1px solid rgba(255,255,255,.08);border-left:3px solid var(--lime,#b2f700);padding:48px 44px;position:relative}
+    .cs-quote-t{font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,2.4vw,30px);font-weight:600;line-height:1.3;letter-spacing:-.015em;color:#fff;margin:0 0 24px}
+    .cs-quote-t::before{content:"\201C";color:var(--lime,#b2f700);font-weight:800}
+    .cs-quote-t::after{content:"\201D";color:var(--lime,#b2f700);font-weight:800}
+    .cs-quote-cite{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6);font-style:normal}
+
     /* CTA */
     .cs-cta{text-align:center;padding:64px 24px 120px}
     .cs-cta-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,4.4vw,52px);font-weight:600;letter-spacing:-.025em;line-height:1.1;margin:0 auto 18px;max-width:24ch}
@@ -264,8 +271,8 @@
             <p class="cs-lead">El <strong style="color:#fff;font-weight:500">Dr. César Salas Mártir</strong> —neumólogo y especialista en medicina interna con más de 20 años— dependía de un directorio médico donde competía junto a decenas de perfiles idénticos. Le creamos su marca y su sitio propio: un lugar donde su experiencia y su trato humano se ven a la primera.</p>
             <ul class="cs-hero-stats">
               <li><span class="num">20+</span><span class="lbl">Años de experiencia</span></li>
+              <li><span class="num">3,000+</span><span class="lbl">Pacientes atendidos</span></li>
               <li><span class="num">0 → 1</span><span class="lbl">De directorio a sitio propio</span></li>
-              <li><span class="num">Marca</span><span class="lbl">Creada desde cero</span></li>
               <li><span class="num">Agenda</span><span class="lbl">Cita directa + WhatsApp</span></li>
             </ul>
             <div class="cs-cta-row">
@@ -293,8 +300,8 @@
               <li>Neumología</li>
               <li>Medicina interna</li>
               <li>Desde 2004</li>
+              <li>+3,000 pacientes</li>
               <li>ATS · ERS · ALAT</li>
-              <li>Cédulas de especialidad</li>
             </ul>
           </div>
         </div>
@@ -437,7 +444,15 @@
         </div>
       </section>
 
-      <!-- TESTIMONIO — PENDIENTE: agregar cita real del Dr. Salas cuando esté disponible. -->
+      <!-- TESTIMONIO — real, reseña de paciente publicada en respiraresvivir.com -->
+      <section class="cs-section">
+        <div class="cs-wrap" style="padding-top:0">
+          <div class="cs-quote">
+            <p class="cs-quote-t">Fuimos afortunados al encontrar al Dr. Salas. Es un doctor muy dedicado, nos dio una excelente atención y un tratamiento muy eficaz que sacó a mi mamá de su crisis respiratoria. Además tiene una gran accesibilidad y empatía.</p>
+            <p class="cs-quote-cite">— Jennifer Amozorrutia · Paciente</p>
+          </div>
+        </div>
+      </section>
 
       <!-- CTA FINAL -->
       <section class="cs-cta">
