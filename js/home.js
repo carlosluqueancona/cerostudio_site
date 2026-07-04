@@ -53,9 +53,12 @@
         setTimeout(runHeroEntrance, 0); /* diferir para que CS_HERO_TEXTS y CS_LANG estén inicializados */
       } else {
         sessionStorage.setItem('cs_v', '1');
-        gsap.timeline({ onComplete: runHeroEntrance })
+        /* runHeroEntrance arranca ANTES del fade del loader: el scramble ya corre
+           cuando el hero se descubre y nunca se ve el título estático "ya puesto" */
+        gsap.timeline()
           .to('#ldLogo', { opacity: 1, duration: .4, ease: 'power2.out' })
           .to('#ldBar', { width: '100%', duration: .5, ease: 'power2.inOut' }, '-=.1')
+          .call(runHeroEntrance)
           .to('#loader', { opacity: 0, duration: .6, ease: 'power2.out' }, '+=.1')
           .set('#loader', { display: 'none' });
       }

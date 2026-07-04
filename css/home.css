@@ -418,12 +418,9 @@
       letter-spacing: -.04em;
       text-transform: uppercase;
       margin-bottom: 48px;
-      /* opacity:0 instead of visibility:hidden — browser measures LCP correctly */
-      opacity: 0;
-    }
-
-    .hero-static-title span[data-hero-line] {
-      opacity: 0;
+      /* Pintado desde el HTML (el #loader opaco lo cubre): así el LCP se registra
+         al primer paint y no hasta que termina el intro. El scramble anima encima.
+         NO volver a opacity:0 — retrasa el LCP ~1.6s en móvil. */
     }
 
     @media (max-width: 768px) {
