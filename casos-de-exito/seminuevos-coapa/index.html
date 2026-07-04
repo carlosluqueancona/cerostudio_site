@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <script src="/components/cookie-consent.js" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Caso de éxito: Seminuevos Coapa — una agencia de autos seminuevos con un sitio de 2013, sin diseño responsivo y difícil de actualizar. Lo llevamos a un sitio moderno, autogestionable, con catálogo y buscador, optimizado para Google y buscadores AI. Por Cero Studio.">
+  <title>De un sitio de 2013 a un catálogo moderno — Caso Seminuevos Coapa | Cero Studio</title>
+  <link rel="canonical" href="https://cerostudio.ai/casos-de-exito/seminuevos-coapa/">
+  <link rel="alternate" hreflang="es-MX" href="https://cerostudio.ai/casos-de-exito/seminuevos-coapa/">
+  <link rel="alternate" hreflang="x-default" href="https://cerostudio.ai/casos-de-exito/seminuevos-coapa/">
+  <link rel="icon" type="image/png" href="/CS_Favicon_512x512.png">
+  <link rel="apple-touch-icon" href="/CS_Favicon_512x512.png">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://cerostudio.ai/casos-de-exito/seminuevos-coapa/">
+  <meta property="og:title" content="De un sitio de 2013 a un catálogo moderno — Caso Seminuevos Coapa | Cero Studio">
+  <meta property="og:description"
+    content="Una agencia de autos seminuevos con un sitio de 2013, sin diseño responsivo. Lo llevamos a un catálogo moderno y autogestionable, optimizado para Google y buscadores AI.">
+  <meta property="og:image" content="https://cerostudio.ai/images/casos/seminuevos-coapa/og.webp">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="seminuevoscoapa.com.mx — catálogo de autos seminuevos, rediseño por Cero Studio">
+  <meta property="og:locale" content="es_MX">
+  <meta property="og:site_name" content="Cero Studio">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="De un sitio de 2013 a un catálogo moderno — Caso Seminuevos Coapa | Cero Studio">
+  <meta name="twitter:description"
+    content="Rediseño de un sitio de 2013 sin responsividad a un catálogo moderno, autogestionable y optimizado para Google y buscadores AI.">
+  <meta name="twitter:image" content="https://cerostudio.ai/images/casos/seminuevos-coapa/og.webp">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
+    as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
+      rel="stylesheet"></noscript>
+  <link rel="stylesheet" href="/css/base.css">
+  <!-- home.css aporta navbar+footer styles del middleware -->
+  <link rel="stylesheet" href="/css/home.css?v=20260703b">
+
+  <style>
+    /* ── Case study page styles (.cs-*) — kinetic brutalism CS ──
+       CRITICAL: reset padding heredado de home.css "section{padding:120px 48px}". */
+    .cs-wrap{max-width:1180px;margin:0 auto;padding:96px 24px 0}
+    .cs-breadcrumb{font-family:Inter,sans-serif;font-size:12px;opacity:.5;margin:0 0 28px;letter-spacing:.04em;text-transform:uppercase}
+    .cs-breadcrumb a{color:inherit;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s,color .2s}
+    .cs-breadcrumb a:hover{border-bottom-color:var(--lime,#b2f700);color:var(--lime,#b2f700)}
+    .cs-breadcrumb span{margin:0 10px;opacity:.4}
+
+    /* HERO */
+    .cs-hero{display:grid;grid-template-columns:1fr 1.05fr;gap:56px;align-items:center;margin:0 0 72px;padding:0 0 24px}
+    .cs-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--lime,#b2f700);margin:0 0 22px;display:inline-flex;align-items:center;gap:12px;line-height:1.5}
+    .cs-eyebrow::before{content:"";display:block;width:32px;height:1px;background:var(--lime,#b2f700);flex-shrink:0}
+    .cs-h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(38px,5.4vw,66px);font-weight:700;line-height:1.02;letter-spacing:-.035em;margin:0 0 24px;color:#fff}
+    .cs-h1 em{font-style:normal;color:var(--lime,#b2f700)}
+    .cs-lead{font-family:Inter,sans-serif;font-size:clamp(16px,1.4vw,18px);line-height:1.6;font-weight:300;color:rgba(255,255,255,.78);margin:0 0 28px;max-width:54ch}
+    .cs-hero-stats{list-style:none;display:flex;gap:36px;margin:0 0 32px;padding:20px 0;border-top:1px solid rgba(255,255,255,.1);flex-wrap:wrap}
+    .cs-hero-stats li{display:flex;flex-direction:column;gap:6px}
+    .cs-hero-stats .num{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:800;color:var(--lime,#b2f700);letter-spacing:-.02em;line-height:1}
+    .cs-hero-stats .lbl{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+    .cs-cta-row{display:flex;gap:14px;flex-wrap:wrap}
+    .cs-cta-row .btn-primary,.cs-cta-row .btn-ghost{border-radius:0}
+    /* Shot frame (browser-ish) */
+    .cs-shot{position:relative;background:#0b0b0b;border:1px solid rgba(255,255,255,.1);overflow:hidden;aspect-ratio:16/10}
+    .cs-shot img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+    .cs-shot::after{content:"";position:absolute;bottom:-12px;right:-12px;width:48px;height:48px;background:var(--lime,#b2f700);pointer-events:none}
+
+    /* CLIENT box (autoridad) */
+    .cs-client{background:var(--surface-lowest,#0e0e0e);border:1px solid rgba(255,255,255,.06);border-left:3px solid var(--lime,#b2f700);padding:48px 48px;margin:0 0 24px;position:relative}
+    .cs-client::before{content:'';position:absolute;top:0;left:-3px;width:96px;height:3px;background:var(--lime,#b2f700)}
+    .cs-client .cs-client-label{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--lime,#b2f700);margin:0 0 26px;display:inline-flex;align-items:center;gap:10px;max-width:none}
+    .cs-client-label::before{content:'↳'}
+    .cs-client .cs-client-q{font-family:'Space Grotesk',sans-serif;font-size:clamp(22px,2.8vw,34px);font-weight:700;line-height:1.18;letter-spacing:-.02em;color:#fff;margin:0 0 28px;max-width:26ch}
+    .cs-client p{font-family:Inter,sans-serif;font-size:16px;line-height:1.7;font-weight:300;color:rgba(255,255,255,.75);margin:0 0 18px;max-width:70ch}
+    .cs-client strong{font-weight:500;color:var(--lime,#b2f700)}
+    .cs-client-creds{list-style:none;display:flex;flex-wrap:wrap;gap:10px;margin:28px 0 0;padding:24px 0 0;border-top:1px solid rgba(255,255,255,.08)}
+    .cs-client-creds li{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:rgba(255,255,255,.7);padding:8px 14px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.02)}
+
+    /* SECTIONS */
+    .cs-section{padding:0 0 72px}
+    .cs-section-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.3em;text-transform:uppercase;opacity:.55;margin:0 0 22px}
+    .cs-section-eyebrow::before{content:'↳';margin-right:10px;opacity:.6}
+    .cs-section-h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,3.2vw,40px);font-weight:600;letter-spacing:-.02em;line-height:1.15;margin:0 0 24px;max-width:24ch}
+    .cs-section-lead{font-family:Inter,sans-serif;font-size:clamp(15px,1.3vw,17px);line-height:1.7;font-weight:300;color:rgba(255,255,255,.72);margin:0 0 40px;max-width:64ch}
+
+    /* CHALLENGE — single brutalist card, red accent */
+    .cs-challenge{background:var(--surface-lowest,#0e0e0e);border:1px solid rgba(255,255,255,.08);position:relative;padding:48px 44px;overflow:hidden}
+    .cs-challenge::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:#ff6464}
+    .cs-challenge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;margin:8px 0 0}
+    .cs-challenge-item h3{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;color:#fff;margin:0 0 12px;display:flex;align-items:center;gap:10px}
+    .cs-challenge-item h3::before{content:'';width:7px;height:7px;background:#ff6464;flex-shrink:0}
+    .cs-challenge-item p{font-family:Inter,sans-serif;font-size:14px;line-height:1.7;font-weight:300;color:rgba(255,255,255,.65);margin:0}
+
+    /* ANTES / DESPUÉS */
+    .cs-ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .cs-ba-fig{margin:0;position:relative;background:#0b0b0b;border:1px solid rgba(255,255,255,.1);overflow:hidden;aspect-ratio:16/10}
+    .cs-ba-fig img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+    .cs-ba-badge{position:absolute;top:12px;left:12px;font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;padding:6px 12px;z-index:2}
+    .cs-ba-badge.antes{color:#ff8080;background:rgba(18,8,8,.82);border:1px solid rgba(255,100,100,.35)}
+    .cs-ba-badge.despues{color:var(--lime,#b2f700);background:rgba(8,16,0,.82);border:1px solid rgba(178,247,0,.4)}
+
+    /* BUILD — bento de features */
+    .cs-build{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+    .cs-feature{background:var(--surface-lowest,#0e0e0e);padding:40px 32px 46px;position:relative;overflow:hidden;transition:background .3s ease}
+    .cs-feature::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--lime,#b2f700);transform:scaleX(0);transform-origin:left;transition:transform .45s ease}
+    .cs-feature:hover{background:var(--surface-low,#1b1b1c)}
+    .cs-feature:hover::before{transform:scaleX(1)}
+    .cs-feature:hover .cs-feature-t{color:var(--lime,#b2f700)}
+    .cs-feature-top{display:flex;align-items:center;gap:16px;margin:0 0 28px}
+    .cs-feature-num{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--lime,#b2f700);text-transform:uppercase;white-space:nowrap}
+    .cs-feature-dash{flex:1;height:1px;background:rgba(255,255,255,.12)}
+    .cs-feature-t{font-family:'Space Grotesk',sans-serif;font-size:clamp(18px,1.8vw,21px);font-weight:800;text-transform:uppercase;letter-spacing:.005em;color:#fff;margin:0 0 14px;line-height:1.18;transition:color .3s ease}
+    .cs-feature-d{font-family:Inter,sans-serif;font-size:14px;line-height:1.75;color:rgba(255,255,255,.65);font-weight:300;margin:0}
+
+    /* PROCESS — 3 pasos */
+    .cs-plan{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+    .cs-step{background:var(--surface-lowest,#0e0e0e);padding:40px 32px 48px;position:relative;overflow:hidden;transition:background .3s ease}
+    .cs-step::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:var(--lime,#b2f700);transform:scaleX(0);transform-origin:left;transition:transform .45s ease}
+    .cs-step:hover{background:var(--surface-low,#1b1b1c)}
+    .cs-step:hover::before{transform:scaleX(1)}
+    .cs-step:hover .cs-step-t{color:var(--lime,#b2f700)}
+    .cs-step-top{display:flex;align-items:center;gap:18px;margin:0 0 40px}
+    .cs-step-num{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;letter-spacing:.16em;color:var(--lime,#b2f700);text-transform:uppercase;white-space:nowrap}
+    .cs-step-dash{flex:1;height:1px;background:rgba(255,255,255,.12)}
+    .cs-step-t{font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,2vw,25px);font-weight:800;text-transform:uppercase;letter-spacing:.005em;color:#fff;margin:0 0 16px;line-height:1.15;transition:color .3s ease}
+    .cs-step-d{font-family:Inter,sans-serif;font-size:14px;line-height:1.8;color:rgba(255,255,255,.65);font-weight:300;margin:0}
+
+    /* RESULTS — bento de hechos */
+    .cs-results{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+    .cs-result{background:var(--surface-lowest,#0e0e0e);padding:44px 32px;position:relative;overflow:hidden;transition:background .3s ease}
+    .cs-result::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:var(--lime,#b2f700);transform:scaleX(0);transform-origin:left;transition:transform .45s ease}
+    .cs-result:hover{background:var(--surface-low,#1b1b1c)}
+    .cs-result:hover::before{transform:scaleX(1)}
+    .cs-result-num{font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,4.2vw,48px);font-weight:800;line-height:1;letter-spacing:-.035em;color:var(--lime,#b2f700);margin:0 0 18px}
+    .cs-result-h{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;color:#fff;margin:0 0 10px}
+    .cs-result-p{font-family:Inter,sans-serif;font-size:13.5px;line-height:1.7;font-weight:300;color:rgba(255,255,255,.62);margin:0}
+
+    /* QUOTE / testimonial */
+    .cs-quote{background:var(--surface-lowest,#0e0e0e);border:1px solid rgba(255,255,255,.08);border-left:3px solid var(--lime,#b2f700);padding:48px 44px;position:relative}
+    .cs-quote-t{font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,2.4vw,30px);font-weight:600;line-height:1.3;letter-spacing:-.015em;color:#fff;margin:0 0 24px}
+    .cs-quote-t::before{content:"\201C";color:var(--lime,#b2f700);font-weight:800}
+    .cs-quote-t::after{content:"\201D";color:var(--lime,#b2f700);font-weight:800}
+    .cs-quote-cite{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6);font-style:normal}
+
+    /* CTA */
+    .cs-cta{text-align:center;padding:64px 24px 120px}
+    .cs-cta-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,4.4vw,52px);font-weight:600;letter-spacing:-.025em;line-height:1.1;margin:0 auto 18px;max-width:24ch}
+    .cs-cta-sub{font-family:Inter,sans-serif;font-size:16px;font-weight:300;color:rgba(255,255,255,.7);margin:0 auto 36px;max-width:54ch}
+    .cs-cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+    .cs-cta-actions .btn-primary,.cs-cta-actions .btn-ghost{border-radius:0}
+
+    /* MOBILE/TOUCH fallback via reveal-cards.js (.in-view) */
+    @media (hover: none) {
+      .cs-feature.in-view{background:var(--surface-low,#1b1b1c)}
+      .cs-feature.in-view::before{transform:scaleX(1)}
+      .cs-feature.in-view .cs-feature-t{color:var(--lime,#b2f700)}
+      .cs-step.in-view{background:var(--surface-low,#1b1b1c)}
+      .cs-step.in-view::before{transform:scaleX(1)}
+      .cs-step.in-view .cs-step-t{color:var(--lime,#b2f700)}
+      .cs-result.in-view{background:var(--surface-low,#1b1b1c)}
+      .cs-result.in-view::before{transform:scaleX(1)}
+    }
+
+    @media (max-width:900px){
+      .cs-hero{grid-template-columns:1fr;gap:36px;margin-bottom:56px}
+      .cs-shot{max-width:560px;aspect-ratio:16/11}
+      .cs-shot::after{display:none}
+      .cs-client{padding:36px 24px}
+      .cs-client::before{width:72px}
+      .cs-challenge{padding:36px 24px}
+      .cs-challenge-grid{grid-template-columns:1fr;gap:28px}
+      .cs-ba-grid{grid-template-columns:1fr;gap:14px}
+      .cs-build{grid-template-columns:1fr;gap:0;background:transparent;border:0}
+      .cs-build .cs-feature{border-bottom:1px solid rgba(255,255,255,.08)}
+      .cs-plan{grid-template-columns:1fr;gap:0;background:transparent;border:0}
+      .cs-plan .cs-step{border-bottom:1px solid rgba(255,255,255,.08)}
+      .cs-results{grid-template-columns:1fr;gap:0;background:transparent;border:0}
+      .cs-results .cs-result{border-bottom:1px solid rgba(255,255,255,.08)}
+    }
+    @media (max-width:520px){
+      .cs-wrap{padding-top:100px}
+      .cs-cta{padding-bottom:80px}
+      .cs-cta-actions .btn-primary,.cs-cta-actions .btn-ghost{width:100%;text-align:center}
+    }
+  </style>
+
+  <!-- ── Structured Data: Article (case study) + AutoDealer (cliente) + BreadcrumbList ── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": "https://cerostudio.ai/casos-de-exito/seminuevos-coapa/#article",
+        "headline": "Caso de éxito: Seminuevos Coapa — de un sitio de 2013 a un catálogo moderno",
+        "inLanguage": "es-MX",
+        "image": "https://cerostudio.ai/images/casos/seminuevos-coapa/og.webp",
+        "author": { "@id": "https://cerostudio.ai/#organization" },
+        "publisher": { "@id": "https://cerostudio.ai/#organization" },
+        "isPartOf": { "@id": "https://cerostudio.ai/#website" },
+        "about": { "@id": "https://seminuevoscoapa.com.mx/#dealer" },
+        "mainEntityOfPage": "https://cerostudio.ai/casos-de-exito/seminuevos-coapa/"
+      },
+      {
+        "@type": "AutoDealer",
+        "@id": "https://seminuevoscoapa.com.mx/#dealer",
+        "name": "Seminuevos Coapa",
+        "url": "https://seminuevoscoapa.com.mx",
+        "description": "Agencia de autos seminuevos certificados en la Ciudad de México, con garantía de documentación y planes de financiamiento.",
+        "areaServed": { "@type": "City", "name": "Ciudad de México" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://cerostudio.ai/casos-de-exito/seminuevos-coapa/#breadcrumb",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://cerostudio.ai/" },
+          { "@type": "ListItem", "position": 2, "name": "Casos de éxito", "item": "https://cerostudio.ai/casos-de-exito/" },
+          { "@type": "ListItem", "position": 3, "name": "Seminuevos Coapa", "item": "https://cerostudio.ai/casos-de-exito/seminuevos-coapa/" }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <!-- Navbar handlers para botones inyectados por middleware. Esta página NO
+       carga /js/home.js, así que define versiones locales mínimas.
+       toggleLang → índice EN de casos (aún no hay detalle en inglés). -->
+  <script>
+    window.toggleLang = function () { window.location.href = '/en/case-studies/'; };
+    window.toggleNav = function () {
+      var m = document.getElementById('mobileNav');
+      var h = document.getElementById('navHam');
+      if (m) m.classList.toggle('open');
+      if (h) h.classList.toggle('open');
+    };
+    window.closeNav = function () {
+      var m = document.getElementById('mobileNav');
+      var h = document.getElementById('navHam');
+      if (m) m.classList.remove('open');
+      if (h) h.classList.remove('open');
+    };
+  </script>
+</head>
+
+<body>
+  <div class="site-wrapper">
+    <div id="navbar-placeholder"></div>
+
+    <main id="main-content">
+      <div class="cs-wrap">
+        <nav class="cs-breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Inicio</a><span>/</span><a href="/casos-de-exito/">Casos de éxito</a><span>/</span>Seminuevos Coapa
+        </nav>
+
+        <!-- HERO -->
+        <section class="cs-hero">
+          <div class="cs-hero-content">
+            <p class="cs-eyebrow">Caso de éxito · Automotriz / Seminuevos</p>
+            <h1 class="cs-h1">Del 2013 a un catálogo que <em>vende hoy.</em></h1>
+            <p class="cs-lead"><strong style="color:#fff;font-weight:500">Seminuevos Coapa</strong> vendía autos con un sitio de hace más de una década: sin diseño responsivo, imposible de actualizar sin ayuda y casi invisible en Google. Lo reconstruimos desde cero: un catálogo moderno con buscador, que ellos mismos administran, optimizado para Google y para los buscadores con IA.</p>
+            <ul class="cs-hero-stats">
+              <li><span class="num">2013 → hoy</span><span class="lbl">Rediseño completo</span></li>
+              <li><span class="num">100%</span><span class="lbl">Responsivo</span></li>
+              <li><span class="num">Autogestión</span><span class="lbl">Suben autos solos</span></li>
+              <li><span class="num">SEO + GEO</span><span class="lbl">Google + buscadores AI</span></li>
+            </ul>
+            <div class="cs-cta-row">
+              <a href="https://seminuevoscoapa.com.mx/" target="_blank" rel="noopener" class="btn-primary ht">Visitar el sitio →</a>
+              <a href="/#contacto" class="btn-ghost ht">Quiero algo así</a>
+            </div>
+          </div>
+          <figure class="cs-shot">
+            <img src="/images/casos/seminuevos-coapa/hero.webp"
+                 alt="Home nuevo de seminuevoscoapa.com.mx — catálogo de autos seminuevos con auto destacado y buscador"
+                 width="1600" height="1000" fetchpriority="high">
+          </figure>
+        </section>
+      </div>
+
+      <!-- EL CLIENTE -->
+      <section class="cs-section">
+        <div class="cs-wrap" style="padding-top:0">
+          <div class="cs-client">
+            <p class="cs-client-label">El cliente</p>
+            <p class="cs-client-q">Una agencia consolidada, con una web que se quedó atrás.</p>
+            <p>Seminuevos Coapa es una agencia de <strong>autos seminuevos certificados</strong> en la Ciudad de México, con varias sucursales, garantía de documentación y planes de financiamiento a meses. El negocio funcionaba; su presencia digital, no.</p>
+            <p>Su catálogo —decenas de autos que cambian cada semana— vivía en un sitio antiguo donde publicar una unidad nueva o quitar una vendida era un trámite lento y dependiente de terceros.</p>
+            <ul class="cs-client-creds">
+              <li>Autos seminuevos</li>
+              <li>Unidades certificadas</li>
+              <li>Financiamiento a meses</li>
+              <li>Multi-sucursal</li>
+              <li>Ciudad de México</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- EL RETO -->
+      <section class="cs-section">
+        <div class="cs-wrap" style="padding-top:0">
+          <p class="cs-section-eyebrow">El reto</p>
+          <h2 class="cs-section-h2">Un sitio de otra época vendiendo en esta.</h2>
+          <p class="cs-section-lead">El sitio anterior era de 2013: diseño denso, listados en tablas, miniaturas diminutas y hasta un contador de visitas. En un celular —donde hoy busca la mayoría de los compradores de autos— era prácticamente inusable. Y cada auto nuevo dependía de alguien externo para publicarse.</p>
+          <div class="cs-challenge">
+            <div class="cs-challenge-grid">
+              <div class="cs-challenge-item">
+                <h3>Sin diseño responsivo</h3>
+                <p>Pensado para monitores de escritorio de hace una década. En móvil se veía apretado y roto —justo donde la gente busca su próximo auto.</p>
+              </div>
+              <div class="cs-challenge-item">
+                <h3>Imposible de actualizar</h3>
+                <p>Publicar un auto nuevo o retirar uno vendido requería ayuda externa. El catálogo real y el del sitio nunca terminaban de coincidir.</p>
+              </div>
+              <div class="cs-challenge-item">
+                <h3>Invisible en las búsquedas</h3>
+                <p>Sin una base técnica moderna, el sitio no competía en Google —y mucho menos en los nuevos buscadores con IA donde ya se investiga qué auto comprar.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ANTES / DESPUÉS -->
+      <section class="cs-section">
+        <div class="cs-wrap" style="padding-top:0">
+          <p class="cs-section-eyebrow">Antes / Después</p>
+          <h2 class="cs-section-h2">La misma agencia. Otra década.</h2>
+          <p class="cs-section-lead">A la izquierda, el sitio anterior: cabecera azul, tablas de autos y diseño de 2013. A la derecha, el catálogo que construimos —limpio, con auto destacado y buscador al frente.</p>
+          <div class="cs-ba-grid">
+            <figure class="cs-ba-fig">
+              <span class="cs-ba-badge antes">Antes</span>
+              <img src="/images/casos/seminuevos-coapa/antes.webp" alt="Sitio anterior de Seminuevos Coapa (2013): cabecera azul, listados en tablas y miniaturas pequeñas" width="1600" height="1000" loading="lazy">
+            </figure>
+            <figure class="cs-ba-fig">
+              <span class="cs-ba-badge despues">Después</span>
+              <img src="/images/casos/seminuevos-coapa/hero.webp" alt="Sitio nuevo de Seminuevos Coapa: catálogo moderno con auto destacado y buscador" width="1600" height="1000" loading="lazy">
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- LO QUE CONSTRUIMOS -->
+      <section class="cs-section">
+        <div class="cs-wrap" style="padding-top:0">
+          <p class="cs-section-eyebrow">Lo que construimos</p>
+          <h2 class="cs-section-h2">Un catálogo moderno que ellos manejan solos.</h2>
+          <p class="cs-section-lead">No fue un maquillaje: reconstruimos el sitio con un backend moderno y una base pensada para vender autos en 2026 —y para que la agencia sea dueña de su contenido.</p>
+          <div class="cs-build">
+            <div class="cs-feature">
+              <div class="cs-feature-top"><span class="cs-feature-num">01</span><span class="cs-feature-dash"></span></div>
+              <h3 class="cs-feature-t">Diseño moderno y responsivo</h3>
+              <p class="cs-feature-d">Un sitio limpio que se ve impecable en celular, tablet y escritorio —donde antes se veía roto. La primera impresión ahora juega a favor de la agencia.</p>
+            </div>
+            <div class="cs-feature">
+              <div class="cs-feature-top"><span class="cs-feature-num">02</span><span class="cs-feature-dash"></span></div>
+              <h3 class="cs-feature-t">Catálogo con buscador</h3>
+              <p class="cs-feature-d">Inventario navegable con buscador y filtros, fichas técnicas por unidad y auto destacado en portada. El comprador encuentra su auto en segundos.</p>
+            </div>
+            <div class="cs-feature">
+              <div class="cs-feature-top"><span class="cs-feature-num">03</span><span class="cs-feature-dash"></span></div>
+              <h3 class="cs-feature-t">Backend autogestionable</h3>
+              <p class="cs-feature-d">Un panel moderno donde la agencia sube, edita y retira autos sola —sin depender de nadie. El catálogo del sitio por fin refleja el del piso de ventas.</p>
+            </div>
+            <div class="cs-feature">
+              <div class="cs-feature-top"><span class="cs-feature-num">04</span><span class="cs-feature-dash"></span></div>
+              <h3 class="cs-feature-t">Multi-sucursal + cotiza</h3>
+              <p class="cs-feature-d">Inventario por sucursal y un botón de cotización directa para que el prospecto pase de mirar a contactar sin fricción.</p>
+            </div>
+            <div class="cs-feature">
+              <div class="cs-feature-top"><span class="cs-feature-num">05</span><span class="cs-feature-dash"></span></div>
+              <h3 class="cs-feature-t">SEO técnico</h3>
+              <p class="cs-feature-d">Base optimizada para Google: velocidad, estructura y datos que ayudan a que sus autos aparezcan cuando alguien busca ese modelo, año o precio.</p>
+            </div>
+            <div class="cs-feature">
+              <div class="cs-feature-top"><span class="cs-feature-num">06</span><span class="cs-feature-dash"></span></div>
+              <h3 class="cs-feature-t">Listo para buscadores AI (GEO)</h3>
+              <p class="cs-feature-d">Optimizado también para los buscadores con IA —ChatGPT, Gemini, Perplexity— donde cada vez más gente investiga qué seminuevo comprar y dónde.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EL PROCESO -->
+      <section class="cs-section">
+        <div class="cs-wrap" style="padding-top:0">
+          <p class="cs-section-eyebrow">El proceso</p>
+          <h2 class="cs-section-h2">Tres etapas. Del sitio viejo al nuevo.</h2>
+          <div class="cs-plan">
+            <div class="cs-step">
+              <div class="cs-step-top"><span class="cs-step-num">01 · Diagnóstico</span><span class="cs-step-dash"></span></div>
+              <h3 class="cs-step-t">Entender el inventario</h3>
+              <p class="cs-step-d">Mapeamos cómo rota el inventario, cómo compra un cliente de seminuevos y qué hacía imposible mantener el sitio anterior al día.</p>
+            </div>
+            <div class="cs-step">
+              <div class="cs-step-top"><span class="cs-step-num">02 · Diseño</span><span class="cs-step-dash"></span></div>
+              <h3 class="cs-step-t">Rediseñar la experiencia</h3>
+              <p class="cs-step-d">Un diseño moderno, mobile-first, centrado en encontrar y cotizar autos rápido —muy lejos de las tablas y miniaturas del sitio viejo.</p>
+            </div>
+            <div class="cs-step">
+              <div class="cs-step-top"><span class="cs-step-num">03 · Desarrollo</span><span class="cs-step-dash"></span></div>
+              <h3 class="cs-step-t">Construir y lanzar</h3>
+              <p class="cs-step-d">Catálogo, buscador y panel autogestionable sobre un backend moderno, con SEO y GEO desde la base. Entregado listo para que la agencia lo maneje.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RESULTADO -->
+      <section class="cs-section">
+        <div class="cs-wrap" style="padding-top:0">
+          <p class="cs-section-eyebrow">El resultado</p>
+          <h2 class="cs-section-h2">Un sitio que trabaja al ritmo de la agencia.</h2>
+          <div class="cs-results">
+            <div class="cs-result">
+              <div class="cs-result-num">100%</div>
+              <p class="cs-result-h">Responsivo y moderno</p>
+              <p class="cs-result-p">De un diseño roto en móvil a una experiencia impecable en cualquier pantalla —donde de verdad busca el comprador de autos.</p>
+            </div>
+            <div class="cs-result">
+              <div class="cs-result-num">Autogestión</div>
+              <p class="cs-result-h">Independencia total</p>
+              <p class="cs-result-p">La agencia sube y actualiza su inventario sola, en minutos. El sitio por fin va al ritmo del piso de ventas, sin intermediarios.</p>
+            </div>
+            <div class="cs-result">
+              <div class="cs-result-num">SEO + GEO</div>
+              <p class="cs-result-h">Visible donde se busca</p>
+              <p class="cs-result-p">Base optimizada para Google y para los buscadores con IA —listo para aparecer donde hoy se investiga qué auto comprar.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TESTIMONIO — real, Ricardo Lora (mismo del home) -->
+      <section class="cs-section">
+        <div class="cs-wrap" style="padding-top:0">
+          <div class="cs-quote">
+            <p class="cs-quote-t">Excelente compromiso, profesionalismo y nivel de servicio de parte de Carlos. ¡Gracias por su valiosa colaboración!</p>
+            <p class="cs-quote-cite">— Ricardo Lora · Seminuevos Coapa</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA FINAL -->
+      <section class="cs-cta">
+        <h2 class="cs-cta-h">¿Tu sitio se quedó en otra década?</h2>
+        <p class="cs-cta-sub">Si tu web ya no vende como debería, la reconstruimos: moderna, tuya para administrar y lista para Google y la IA. Primera consulta gratis, respuesta en menos de 24 horas.</p>
+        <div class="cs-cta-actions">
+          <a href="https://seminuevoscoapa.com.mx/" target="_blank" rel="noopener" class="btn-ghost ht">Ver el sitio en vivo →</a>
+          <a href="/#contacto" class="btn-primary ht">Empecemos tu proyecto</a>
+        </div>
+      </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+  </div>
+
+  <script src="/components/loader.js" defer></script>
+  <script src="/components/reveal-cards.js?v=20260703b" defer></script>
+  <script src="/components/cursor.js" defer></script>
+</body>
+
+</html>
