@@ -31,23 +31,23 @@
     '</nav>';
 
   var NAVBAR_EN = '<div id="mobileNav">' +
-    '<a href="/#servicios" onclick="closeNav()" id="mnav-servicios">Services</a>' +
-    '<a href="/#portafolio" onclick="closeNav()" id="mnav-portafolio">Portfolio</a>' +
+    '<a href="/en/#servicios" onclick="closeNav()" id="mnav-servicios">Services</a>' +
+    '<a href="/en/#portafolio" onclick="closeNav()" id="mnav-portafolio">Portfolio</a>' +
     '<a href="/en/about-us/" onclick="closeNav()" id="mnav-nosotros">About</a>' +
-    '<a href="/#precios" onclick="closeNav()" id="mnav-precios">Pricing</a>' +
-    '<a href="/#contacto" onclick="closeNav()" id="mnav-contacto">Contact</a>' +
+    '<a href="/en/#precios" onclick="closeNav()" id="mnav-precios">Pricing</a>' +
+    '<a href="/en/#contacto" onclick="closeNav()" id="mnav-contacto">Contact</a>' +
     '<a href="/blog/" onclick="closeNav()" id="mnav-blog">Blog</a>' +
     '<button id="mnav-lang" class="lang-btn-mobile ht" onclick="toggleLang();closeNav();">ES</button>' +
     '</div>' +
     '<nav id="navbar">' +
-    '<a href="/" class="ht"><img src="/images/svg/Cero_Studio_AI_Horizontal.svg" alt="Cero Studio" class="nav-logo"></a>' +
+    '<a href="/en/" class="ht"><img src="/images/svg/Cero_Studio_AI_Horizontal.svg" alt="Cero Studio" class="nav-logo"></a>' +
     '<ul class="nav-links">' +
-    '<li><a href="/#servicios" class="ht" id="nav-servicios">Services</a></li>' +
-    '<li><a href="/#portafolio" class="ht" id="nav-portafolio">Portfolio</a></li>' +
+    '<li><a href="/en/#servicios" class="ht" id="nav-servicios">Services</a></li>' +
+    '<li><a href="/en/#portafolio" class="ht" id="nav-portafolio">Portfolio</a></li>' +
     '<li><a href="/en/case-studies/" class="ht" id="nav-casos">Cases</a></li>' +
     '<li><a href="/en/about-us/" class="ht" id="nav-nosotros">About</a></li>' +
-    '<li><a href="/#precios" class="ht" id="nav-precios">Pricing</a></li>' +
-    '<li><a href="/#contacto" class="ht" id="nav-contacto">Contact</a></li>' +
+    '<li><a href="/en/#precios" class="ht" id="nav-precios">Pricing</a></li>' +
+    '<li><a href="/en/#contacto" class="ht" id="nav-contacto">Contact</a></li>' +
     '<li><a href="/blog/" class="ht" id="nav-blog">Blog</a></li>' +
     '</ul>' +
     '<button id="langToggle" class="lang-btn ht active-en" onclick="toggleLang()">ES</button>' +
@@ -98,12 +98,12 @@
     '<p class="footer-tagline" id="footer-tagline">We design the digital future of your business.</p></div>' +
     '<div><p class="footer-col-title" id="fcol-nav-title">Navigation</p>' +
     '<ul class="footer-links" id="fcol-nav-links">' +
-    '<li><a href="/#servicios" id="fnav-srv">Services</a></li>' +
-    '<li><a href="/#portafolio" id="fnav-port">Portfolio</a></li>' +
+    '<li><a href="/en/#servicios" id="fnav-srv">Services</a></li>' +
+    '<li><a href="/en/#portafolio" id="fnav-port">Portfolio</a></li>' +
     '<li><a href="/en/case-studies/" id="fnav-casos">Case Studies</a></li>' +
     '<li><a href="/en/about-us/" id="fnav-nos">About</a></li>' +
-    '<li><a href="/#proceso" id="fnav-proc">Process</a></li>' +
-    '<li><a href="/#contacto" id="fnav-contact">Contact</a></li>' +
+    '<li><a href="/en/#proceso" id="fnav-proc">Process</a></li>' +
+    '<li><a href="/en/#contacto" id="fnav-contact">Contact</a></li>' +
     '<li><a href="/blog/" id="fnav-blog">Blog</a></li>' +
     '<li><a href="/privacidad/?lang=en" id="fnav-privacy">Privacy &amp; Cookies</a></li>' +
     '</ul></div>' +
@@ -158,11 +158,16 @@
     if (!navAlreadyRendered) inject(navEl, NAVBAR_HTML);
     if (!footerAlreadyRendered) inject(ftEl, FOOTER_HTML);
 
-    /* On the homepage, convert /# links to # so navigation stays in-page */
-    var isHome = window.location.pathname === '/' || window.location.pathname === '/index.html';
-    if (isHome) {
-      document.querySelectorAll('#navbar a[href^="/#"], #mobileNav a[href^="/#"]').forEach(function (a) {
+    /* On either homepage (ES "/" or EN "/en/"), convert its own absolute
+       anchor links to bare #anchors so navigation stays in-page */
+    var p = window.location.pathname;
+    if (p === '/' || p === '/index.html') {
+      document.querySelectorAll('#navbar a[href^="/#"], #mobileNav a[href^="/#"], footer a[href^="/#"]').forEach(function (a) {
         a.setAttribute('href', a.getAttribute('href').slice(1));
+      });
+    } else if (p === '/en/' || p === '/en/index.html') {
+      document.querySelectorAll('#navbar a[href^="/en/#"], #mobileNav a[href^="/en/#"], footer a[href^="/en/#"]').forEach(function (a) {
+        a.setAttribute('href', a.getAttribute('href').slice(4));
       });
     }
 
