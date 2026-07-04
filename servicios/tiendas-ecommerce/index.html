@@ -38,7 +38,7 @@
   <noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"></noscript>
   <link rel="stylesheet" href="/css/base.css">
   <link rel="stylesheet" href="/css/home.css?v=20260703b">
-  <link rel="stylesheet" href="/css/servicios.css?v=20260614a">
+  <link rel="stylesheet" href="/css/servicios-spec.css?v=20260704a">
   <script src="/components/cookie-consent.js" defer></script>
   <script src="/components/cursor.js" defer></script>
 
@@ -127,126 +127,131 @@
 
     <div id="navbar-placeholder"></div>
 
-    <nav class="crumbs" aria-label="Migas de pan">
-      <a href="/">Inicio</a>&nbsp;›&nbsp;<a href="/#servicios">Servicios</a>&nbsp;›&nbsp;<span aria-current="page">Tiendas eCommerce</span>
-    </nav>
-
     <main id="main-content">
+      <div class="sv-sheet">
 
-      <section class="lp-hero">
-        <div class="lp-hero-grid"></div>
-        <div class="section-inner">
-          <p class="lp-eyebrow">Para negocios que pierden ventas cuando cierran.</p>
-          <h1 class="lp-h1">Tu tienda online <span class="t-lime">vendiendo 24/7.</span></h1>
-          <p class="lp-lead">
-            eCommerce con pagos locales, inventario, checkout optimizado y experiencia que convierte —
-            todo lo que necesitas para dejar de depender de WhatsApp e Instagram para cerrar ventas.
-            Tu negocio escalando mientras duermes.
-          </p>
-          <div class="lp-cta-row">
-            <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Agendar Llamada Gratis</a>
-            <a href="https://wa.me/525531007101?text=Hola%2C%20vi%20su%20p%C3%A1gina%20de%20Tiendas%20eCommerce%20y%20me%20interesa%20cotizaci%C3%B3n." target="_blank" rel="noopener" class="btn-ghost ht">Enviar WhatsApp</a>
-          </div>
-          <div style="display:flex;align-items:center;gap:16px;margin-top:36px;">
-            <img src="/images/tiendanube-partner.webp" alt="Agencia Tiendanube Partner · Empresa Certificada"
-              width="76" height="76" loading="lazy" decoding="async"
-              style="width:76px;height:76px;flex:none;" />
-            <span style="font-size:13px;font-weight:300;color:#9a9a9a;line-height:1.55;">
-              Agencia <strong style="font-weight:600;color:#fff;">Tiendanube Partner</strong> certificada<br>Montamos tu tienda en línea en México
-            </span>
-          </div>
-        </div>
-      </section>
+        <nav class="sv-crumbs" aria-label="Migas de pan">
+          <a href="/">Inicio</a><span>›</span><a href="/#servicios">Servicios</a><span>›</span><span aria-current="page">Tiendas eCommerce</span>
+        </nav>
 
-      <section class="lp-section">
-        <div class="section-inner">
-          <h2>El 78% de las compras online en México se hacen desde el celular.</h2>
-          <p>
+        <!-- ── FICHA · portada ─────────────────────────────────────── -->
+        <header class="sv-hero">
+          <div>
+            <p class="sv-code">SRV-02 · Tiendas eCommerce</p>
+            <h1 class="sv-h1">Tu tienda online <em>vendiendo 24/7.</em></h1>
+            <p class="sv-lead">
+              Para negocios que pierden ventas cuando cierran: eCommerce con pagos locales, inventario,
+              checkout optimizado y experiencia que convierte — todo lo que necesitas para dejar de
+              depender de WhatsApp e Instagram para cerrar ventas. Tu negocio escalando mientras duermes.
+            </p>
+            <div class="sv-cta-row">
+              <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Agendar Llamada Gratis</a>
+              <a href="https://wa.me/525531007101?text=Hola%2C%20vi%20su%20p%C3%A1gina%20de%20Tiendas%20eCommerce%20y%20me%20interesa%20cotizaci%C3%B3n." target="_blank" rel="noopener" class="btn-ghost ht">Enviar WhatsApp</a>
+            </div>
+            <div style="display:flex;align-items:center;gap:16px;margin-top:36px;">
+              <img src="/images/tiendanube-partner.webp" alt="Agencia Tiendanube Partner · Empresa Certificada"
+                width="76" height="76" loading="lazy" decoding="async"
+                style="width:76px;height:76px;flex:none;" />
+              <span style="font-size:13px;font-weight:300;color:#9a9a9a;line-height:1.55;">
+                Agencia <strong style="font-weight:600;color:#fff;">Tiendanube Partner</strong> certificada<br>Montamos tu tienda en línea en México
+              </span>
+            </div>
+          </div>
+          <aside class="sv-specs" aria-label="Especificaciones del servicio">
+            <p class="sv-specs-title">Especificaciones</p>
+            <dl>
+              <div class="row"><dt>Entrega</dt><dd><strong>4–8 semanas</strong> según alcance</dd></div>
+              <div class="row"><dt>Inversión</dt><dd>Desde <strong>$6,000 MXN</strong> · pago único</dd></div>
+              <div class="row"><dt>Incluye</dt><dd>Pagos MX (OXXO · Mercado Pago · Stripe) · inventario · SEO eCommerce</dd></div>
+              <div class="row"><dt>Garantía</dt><dd>Sin comisión por venta · pago único</dd></div>
+            </dl>
+            <p class="sv-stamp">Cero Studio · Ficha de servicio · MX</p>
+          </aside>
+        </header>
+
+        <!-- ── § 01 · Diagnóstico ──────────────────────────────────── -->
+        <section class="sv-section">
+          <div class="sv-sec-head">
+            <span class="sv-sec-num">01 — Diagnóstico</span>
+            <h2 class="sv-h2">La diferencia entre una tienda que funciona y una que solo "está ahí" es la fricción.</h2>
+          </div>
+          <div class="sv-gauge">
+            <p class="sv-gauge-num">78<span class="unit">%</span></p>
+            <div class="sv-gauge-txt">
+              <p class="sv-gauge-claim">de las compras online en México se hacen desde el celular.</p>
+            </div>
+          </div>
+          <p class="sv-body">
             Si tu tienda no es rápida, no acepta OXXO Pay y no tiene checkout optimizado para móvil,
             estás perdiendo el 8 de cada 10 ventas potenciales. La diferencia entre una tienda online
             que funciona y una que solo "está ahí" no está en el catálogo — está en cuántas fricciones
             tiene el comprador desde que entra hasta que paga.
           </p>
-          <div class="benefit-grid">
-            <div class="benefit-card">
-              <h3>Pagos para México real</h3>
-              <p>OXXO Pay para clientes sin tarjeta (40% del mercado), Mercado Pago, Stripe, SPEI.
-                Captures clientes que otros pierden.</p>
+          <div class="sv-modules">
+            <div class="sv-module"><span class="idx">MOD-A</span><h3>Pagos para México real</h3><p>OXXO Pay para clientes sin tarjeta (40% del mercado), Mercado Pago, Stripe, SPEI. Captures clientes que otros pierden.</p></div>
+            <div class="sv-module"><span class="idx">MOD-B</span><h3>Mobile-first</h3><p>Diseño optimizado para celular desde el inicio, no como afterthought. Checkout en 3 pasos, formularios mínimos, autofill nativo.</p></div>
+            <div class="sv-module"><span class="idx">MOD-C</span><h3>SEO de productos</h3><p>Schema Product, breadcrumbs y URLs amigables para que Google muestre tus productos en rich results y Google Shopping.</p></div>
+            <div class="sv-module"><span class="idx">MOD-D</span><h3>Tú sigues en control</h3><p>Panel admin intuitivo. Editas productos, precios, cupones e inventario sin depender de un desarrollador para cada cambio.</p></div>
+          </div>
+        </section>
+
+        <!-- ── § 02 · En producción (SSR desde CMS por _middleware.js,
+             service_tags='ecommerce', editable en /blog/admin/) ────── -->
+        <section class="sv-section" id="casos">
+          <div id="service-portfolio-wrapper">
+            <div class="sv-sec-head">
+              <span class="sv-sec-num">02 — En producción</span>
+              <h2 class="sv-h2">Tiendas vendiendo, <span class="t-lime">no maquetas.</span></h2>
             </div>
-            <div class="benefit-card">
-              <h3>Mobile-first</h3>
-              <p>Diseño optimizado para celular desde el inicio, no como afterthought. Checkout en
-                3 pasos, formularios mínimos, autofill nativo.</p>
-            </div>
-            <div class="benefit-card">
-              <h3>SEO de productos</h3>
-              <p>Schema Product, breadcrumbs y URLs amigables para que Google muestre tus productos
-                en rich results y Google Shopping.</p>
-            </div>
-            <div class="benefit-card">
-              <h3>Tú sigues en control</h3>
-              <p>Panel admin intuitivo. Editas productos, precios, cupones e inventario sin depender
-                de un desarrollador para cada cambio.</p>
+            <p class="sv-body">eCommerce reales corriendo hoy en México. Catálogos, pagos locales y conversión — adaptado al cliente de cada marca.</p>
+            <div class="port-grid" id="service-portfolio-grid" style="grid-template-columns:repeat(2,1fr);margin-top:48px">
+              <!-- SSR-injected from CMS -->
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- ── Casos · En producción ──
-           Cards inyectados server-side por /functions/_middleware.js desde el
-           CMS de portafolio (D1 portfolio_items con service_tags='ecommerce').
-           Editable desde /blog/admin/ → tab Portafolio. -->
-      <section class="lp-section" id="casos">
-        <div class="section-inner" id="service-portfolio-wrapper">
-          <p class="eyebrow">Casos · En producción</p>
-          <h2>Tiendas vendiendo, <span class="t-lime">no maquetas.</span></h2>
-          <p>eCommerce reales corriendo hoy en México. Catálogos, pagos locales y conversión — adaptado al cliente de cada marca.</p>
-          <div class="port-grid" id="service-portfolio-grid" style="grid-template-columns:repeat(2,1fr);margin-top:48px">
-            <!-- SSR-injected from CMS -->
+        <!-- ── § 03 · Lista de materiales ──────────────────────────── -->
+        <section class="sv-section">
+          <div class="sv-sec-head">
+            <span class="sv-sec-num">03 — Lista de materiales</span>
+            <h2 class="sv-h2">Todo lo que tu tienda necesita el día 1.</h2>
           </div>
-        </div>
-      </section>
-
-      <section class="lp-section">
-        <div class="section-inner">
-          <p class="eyebrow">Lo que incluye</p>
-          <h2>Todo lo que tu tienda necesita el día 1.</h2>
-          <p>No es solo un catálogo. Es un sistema de venta completo configurado para el mercado
-            mexicano:</p>
-          <div class="includes-grid">
-            <div class="includes-item"><span class="num">01</span><div><h3>Pagos para México</h3><p>OXXO Pay, Mercado Pago, Stripe, SPEI y transferencia integrados.</p></div></div>
-            <div class="includes-item"><span class="num">02</span><div><h3>Catálogo + variantes</h3><p>Productos con tallas, colores, sabores; galerías; SEO-friendly.</p></div></div>
-            <div class="includes-item"><span class="num">03</span><div><h3>Gestión de inventario</h3><p>Control de stock en tiempo real con alertas de bajo stock.</p></div></div>
-            <div class="includes-item"><span class="num">04</span><div><h3>Checkout optimizado</h3><p>3 pasos, autofill nativo, recuperación de carritos abandonados.</p></div></div>
-            <div class="includes-item"><span class="num">05</span><div><h3>SEO para eCommerce</h3><p>Schema Product, breadcrumbs, URLs amigables, meta por producto.</p></div></div>
-            <div class="includes-item"><span class="num">06</span><div><h3>Panel admin</h3><p>Pedidos, clientes, productos, cupones — todo desde un panel intuitivo.</p></div></div>
-            <div class="includes-item"><span class="num">07</span><div><h3>Integraciones de envío</h3><p>Envíame, DHL, Fedex, Estafeta. Cálculo de costo automático.</p></div></div>
-            <div class="includes-item"><span class="num">08</span><div><h3>WhatsApp Business</h3><p>Botón flotante con mensaje precargado por producto.</p></div></div>
-            <div class="includes-item"><span class="num">09</span><div><h3>Email transaccional</h3><p>Confirmación de compra, status de envío y emails de seguimiento.</p></div></div>
-            <div class="includes-item"><span class="num">10</span><div><h3>Capacitación + soporte</h3><p>Te enseñamos a operar la tienda y soporte post-lanzamiento.</p></div></div>
+          <p class="sv-body">No es solo un catálogo. Es un sistema de venta completo configurado para el mercado mexicano:</p>
+          <div class="sv-bom">
+            <div class="sv-bom-row"><span class="num">01</span><h3>Pagos para México</h3><p>OXXO Pay, Mercado Pago, Stripe, SPEI y transferencia integrados.</p></div>
+            <div class="sv-bom-row"><span class="num">02</span><h3>Catálogo + variantes</h3><p>Productos con tallas, colores, sabores; galerías; SEO-friendly.</p></div>
+            <div class="sv-bom-row"><span class="num">03</span><h3>Gestión de inventario</h3><p>Control de stock en tiempo real con alertas de bajo stock.</p></div>
+            <div class="sv-bom-row"><span class="num">04</span><h3>Checkout optimizado</h3><p>3 pasos, autofill nativo, recuperación de carritos abandonados.</p></div>
+            <div class="sv-bom-row"><span class="num">05</span><h3>SEO para eCommerce</h3><p>Schema Product, breadcrumbs, URLs amigables, meta por producto.</p></div>
+            <div class="sv-bom-row"><span class="num">06</span><h3>Panel admin</h3><p>Pedidos, clientes, productos, cupones — todo desde un panel intuitivo.</p></div>
+            <div class="sv-bom-row"><span class="num">07</span><h3>Integraciones de envío</h3><p>Envíame, DHL, Fedex, Estafeta. Cálculo de costo automático.</p></div>
+            <div class="sv-bom-row"><span class="num">08</span><h3>WhatsApp Business</h3><p>Botón flotante con mensaje precargado por producto.</p></div>
+            <div class="sv-bom-row"><span class="num">09</span><h3>Email transaccional</h3><p>Confirmación de compra, status de envío y emails de seguimiento.</p></div>
+            <div class="sv-bom-row"><span class="num">10</span><h3>Capacitación + soporte</h3><p>Te enseñamos a operar la tienda y soporte post-lanzamiento.</p></div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="lp-section" id="proceso">
-        <div class="section-inner">
-          <p class="eyebrow">Proceso</p>
-          <h2>De brief a tienda lanzada en 4 a 8 semanas.</h2>
-          <div class="process-grid">
-            <div class="process-step"><p class="step-num">01 · Semana 1–2</p><h3>Descubrimiento</h3><p>Brief, análisis de catálogo, estructura de categorías y arquitectura de la tienda.</p></div>
-            <div class="process-step"><p class="step-num">02 · Semana 2–4</p><h3>Diseño UX</h3><p>Mockups de páginas clave: home, listado, producto, carrito y checkout.</p></div>
-            <div class="process-step"><p class="step-num">03 · Semana 4–7</p><h3>Desarrollo</h3><p>Construcción, integraciones de pago/envío y carga inicial de productos.</p></div>
-            <div class="process-step"><p class="step-num">04 · Semana 7–8</p><h3>Lanzamiento</h3><p>Pruebas de checkout, capacitación operativa, alta en Google y go-live.</p></div>
+        <!-- ── § 04 · Línea de ensamble ────────────────────────────── -->
+        <section class="sv-section" id="proceso">
+          <div class="sv-sec-head">
+            <span class="sv-sec-num">04 — Línea de ensamble</span>
+            <h2 class="sv-h2">De brief a tienda lanzada en 4 a 8 semanas.</h2>
           </div>
-        </div>
-      </section>
+          <div class="sv-line">
+            <div class="sv-step"><span class="when">Paso 01 · Semana 1–2</span><h3>Descubrimiento</h3><p>Brief, análisis de catálogo, estructura de categorías y arquitectura de la tienda.</p></div>
+            <div class="sv-step"><span class="when">Paso 02 · Semana 2–4</span><h3>Diseño UX</h3><p>Mockups de páginas clave: home, listado, producto, carrito y checkout.</p></div>
+            <div class="sv-step"><span class="when">Paso 03 · Semana 4–7</span><h3>Desarrollo</h3><p>Construcción, integraciones de pago/envío y carga inicial de productos.</p></div>
+            <div class="sv-step"><span class="when">Paso 04 · Semana 7–8</span><h3>Lanzamiento</h3><p>Pruebas de checkout, capacitación operativa, alta en Google y go-live.</p></div>
+          </div>
+        </section>
 
-      <!-- ── PRECIOS ── -->
-      <section class="lp-section" id="precios">
-        <div class="section-inner">
-          <p class="eyebrow">Inversión</p>
-          <h2>Precios <span class="t-lime">claros.</span></h2>
-          <p>Arranca con una tienda en Tiendanube — somos Agencia Partner certificada — o vamos por un
+        <!-- ── § 05 · Inversión (planes Tiendanube, markup original) ── -->
+        <section class="sv-section" id="precios">
+          <div class="sv-sec-head">
+            <span class="sv-sec-num">05 — Inversión</span>
+            <h2 class="sv-h2">Precios <span class="t-lime">claros.</span></h2>
+          </div>
+          <p class="sv-body">Arranca con una tienda en Tiendanube — somos Agencia Partner certificada — o vamos por un
             eCommerce a medida. En ambos casos el desarrollo es pago único y no cobramos comisión por venta.</p>
 
           <div class="pricing-grid" style="margin-top:48px;">
@@ -298,14 +303,15 @@
             Mensualidad opcional de soporte y carga de producto desde $800 MXN/mes. El plan de TiendaNube
             (~$99–249/mes) y la comisión de la pasarela de pago (~3.8% + IVA por venta) los cubre tu negocio.
           </p>
-        </div>
-      </section>
+        </section>
 
-      <section class="lp-section">
-        <div class="section-inner">
-          <p class="eyebrow">Preguntas frecuentes</p>
-          <h2>Lo que más nos preguntan.</h2>
-          <div class="faq-list">
+        <!-- ── § 06 · Preguntas frecuentes ─────────────────────────── -->
+        <section class="sv-section">
+          <div class="sv-sec-head">
+            <span class="sv-sec-num">06 — Preguntas frecuentes</span>
+            <h2 class="sv-h2">Lo que más nos preguntan.</h2>
+          </div>
+          <div class="sv-faq">
             <details class="faq-item">
               <summary>¿Cuánto cuesta una tienda en línea en México?</summary>
               <p>Dos rutas. <strong>Tiendas en Tiendanube</strong> — somos Agencia Partner certificada —
@@ -347,36 +353,40 @@
                 <a href="/servicios/seo/">nuestro servicio de SEO</a>.</p>
             </details>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="lp-final-cta">
-        <h2>Tu próxima venta <span class="t-lime">no debería depender de WhatsApp.</span></h2>
-        <p>Cotización personalizada en 24 horas. Sin compromisos.</p>
-        <div class="lp-cta-row">
-          <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Agendar Llamada Gratis</a>
-          <a href="https://wa.me/525531007101?text=Hola%2C%20vi%20su%20p%C3%A1gina%20de%20Tiendas%20eCommerce%20y%20me%20interesa%20cotizaci%C3%B3n." target="_blank" rel="noopener" class="btn-ghost ht">Enviar WhatsApp</a>
-        </div>
-      </section>
-
-      <section class="lp-related">
-        <div class="section-inner">
-          <h2>Servicios que potencian tu tienda en línea</h2>
-          <div class="lp-related-grid">
-            <a href="/servicios/desarrollo-web/" class="lp-related-card"><span class="label">01</span><p>Desarrollo Web</p></a>
-            <a href="/servicios/seo/" class="lp-related-card"><span class="label">04</span><p>SEO &amp; Visibilidad</p></a>
-            <a href="/servicios/branding-digital/" class="lp-related-card"><span class="label">03</span><p>Branding Digital</p></a>
-            <a href="/servicios/mantenimiento/" class="lp-related-card"><span class="label">05</span><p>Mantenimiento Web</p></a>
-            <a href="/servicios/consultoria-digital/" class="lp-related-card"><span class="label">06</span><p>Consultoría Digital</p></a>
+        <!-- ── Orden de trabajo (CTA final) ────────────────────────── -->
+        <section class="sv-order" data-label="Orden de trabajo">
+          <h2>Tu próxima venta <span class="t-lime">no debería depender de WhatsApp.</span></h2>
+          <p>Cotización personalizada en 24 horas. Sin compromisos.</p>
+          <div class="sv-cta-row">
+            <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Agendar Llamada Gratis</a>
+            <a href="https://wa.me/525531007101?text=Hola%2C%20vi%20su%20p%C3%A1gina%20de%20Tiendas%20eCommerce%20y%20me%20interesa%20cotizaci%C3%B3n." target="_blank" rel="noopener" class="btn-ghost ht">Enviar WhatsApp</a>
           </div>
-        </div>
-      </section>
+        </section>
 
+        <!-- ── § 07 · Catálogo de servicios ────────────────────────── -->
+        <section class="sv-section">
+          <div class="sv-sec-head">
+            <span class="sv-sec-num">07 — Catálogo</span>
+            <h2 class="sv-h2">Servicios que potencian tu tienda en línea.</h2>
+          </div>
+          <div class="sv-catalog">
+            <a href="/servicios/desarrollo-web/" class="sv-catalog-row"><span class="code">SRV-01</span><span class="name">Desarrollo Web</span><span class="arrow">→</span></a>
+            <a href="/servicios/branding-digital/" class="sv-catalog-row"><span class="code">SRV-03</span><span class="name">Branding Digital</span><span class="arrow">→</span></a>
+            <a href="/servicios/seo/" class="sv-catalog-row"><span class="code">SRV-04</span><span class="name">SEO + AI Search</span><span class="arrow">→</span></a>
+            <a href="/servicios/mantenimiento/" class="sv-catalog-row"><span class="code">SRV-05</span><span class="name">Mantenimiento Web</span><span class="arrow">→</span></a>
+            <a href="/servicios/consultoria-digital/" class="sv-catalog-row"><span class="code">SRV-06</span><span class="name">Consultoría Digital</span><span class="arrow">→</span></a>
+            <a href="/diseno-web-para-clinicas/" class="sv-catalog-row"><span class="code">SRV-07</span><span class="name">Diseño Web para Clínicas</span><span class="arrow">→</span></a>
+          </div>
+        </section>
+
+      </div>
     </main>
 
     <div id="footer-placeholder"></div>
   </div>
-  <script src="/components/reveal-cards.js?v=20260703b" defer></script>
+  <script src="/components/reveal-cards.js?v=20260704a" defer></script>
   <script src="/components/lang-toggle.js?v=20260604c" defer></script>
 </body>
 

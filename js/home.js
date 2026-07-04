@@ -406,9 +406,9 @@
           'mnav-blog': { t: 'Blog' },
           /* ── HERO */
           'heroEyebrow': { t: 'Para negocios que quieren clientes, no solo visitas.' },
-          'heroSub': { t: 'Desarrollamos sitios web y tiendas online para emprendedores y negocios. Diseño de nivel internacional, resultados reales.' },
+          'heroSub': { t: 'Consigue el sitio web o la tienda online que tu negocio merece: diseño de nivel internacional que convierte visitas en clientes.' },
           'hero-btn-portfolio': { t: 'Ver Portafolio' },
-          'hero-btn-quote': { t: 'Solicitar Cotización' },
+          'hero-btn-quote': { t: 'Iniciar Proyecto' },
           /* ── MARQUEE */
           'marquee-1': { h: 'Diseño Web <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Desarrollo <em>·</em> Consultoría <em>·</em> Mantenimiento <em>·</em> Identidad Visual <em>·</em>' },
           'marquee-2': { h: 'Diseño Web <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Desarrollo <em>·</em> Consultoría <em>·</em> Mantenimiento <em>·</em> Identidad Visual <em>·</em>' },
@@ -467,7 +467,7 @@
           'stat-l2': { t: 'Años de experiencia' },
           'stat-l3': { t: 'Proyectos entregados' },
           'stat-l4': { t: 'Satisfacción garantizada' },
-          'nos-btn': { t: 'Trabajemos Juntos' },
+          'nos-btn': { t: 'Iniciar Proyecto' },
           'nos-historia': { t: 'Con quién vas a trabajar →' },
           'nos-quote': { h: 'Un sitio web no es un gasto. Es el <span style="color:var(--lime);">vendedor</span> más <span style="color:var(--lime);">trabajador</span> que nunca te pide vacaciones.' },
           /* ── PROCESO */
@@ -535,6 +535,16 @@
           'tienda-premium-note': { t: 'Ideal para: marca establecida.' },
           'tienda-premium-cta': { t: 'Quiero la Premium →' },
           'tiendas-condition': { t: 'Mensualidad opcional de soporte y carga de producto desde $800 MXN/mes. El plan de TiendaNube (~$99–249/mes) y la comisión de la pasarela de pago (~3.8% + IVA por venta) los cubre el cliente.' },
+          /* ── STAKES */
+          'stakes-eyebrow': { t: 'Lo que está en juego' },
+          'stakes-title': { h: 'Lo que pierdes cada día<br>sin un sitio <span class="t-lime">que venda</span>' },
+          'stakes-1t': { t: 'El cliente que te buscó anoche' },
+          'stakes-1p': { t: 'Te buscó en Google, no te encontró — o encontró un sitio que no daba confianza — y le compró al competidor que sí aparece. Eso pasa todos los días, en silencio.' },
+          'stakes-2t': { t: 'La credibilidad que ya te juzgaron' },
+          'stakes-2p': { t: 'El 75% de las personas juzga la seriedad de una empresa por su sitio web. Con un sitio viejo o sin sitio, ya te descartaron antes de hablar contigo.' },
+          'stakes-3t': { t: 'Las respuestas de IA donde no existes' },
+          'stakes-3p': { t: 'Cerca del 30% de las búsquedas ya terminan en ChatGPT, Gemini o Perplexity. Si tu negocio no está en sus fuentes, la IA recomienda a otro.' },
+          'stakes-cta': { t: 'Deja de perder clientes →' },
           /* ── FAQ */
           'faq-eyebrow': { t: 'Preguntas frecuentes' },
           'faq-title': { h: 'Lo que todos preguntan<br>antes de <span class="t-lime">empezar</span>' },
@@ -555,7 +565,8 @@
           'contact-title': { h: '¿Listo para el<br><span class="t-outline">siguiente</span> nivel?' },
           'contact-sub': { t: 'Cuéntanos sobre tu proyecto. Respondemos en menos de 24 horas y la primera consulta es completamente gratis.' },
           'submitBtnLabel': { t: 'Enviar Mensaje' },
-          'agenda-link': { t: 'O agenda una llamada →' },
+          'agenda-link': { t: 'O agenda una llamada gratis →' },
+          'contact-wa': { t: 'Enviar WhatsApp' },
           /* ── FOOTER */
           'footer-tagline': { t: 'Diseñamos el futuro digital de tu negocio.' },
           'footer-partner-text': { h: 'Agencia <strong style="font-weight:600;color:#fff;">Tiendanube Partner</strong> certificada' },
@@ -592,9 +603,9 @@
           'mnav-contacto': { t: 'Contact' },
           /* ── HERO */
           'heroEyebrow': { t: 'For businesses that want customers, not just clicks.' },
-          'heroSub': { t: 'We build websites and online stores for entrepreneurs and businesses. International-level design, real results.' },
+          'heroSub': { t: 'Get the website or online store your business deserves: international-level design that turns visitors into customers.' },
           'hero-btn-portfolio': { t: 'View Portfolio' },
-          'hero-btn-quote': { t: 'Request a Quote' },
+          'hero-btn-quote': { t: 'Start Your Project' },
           /* ── MARQUEE */
           'marquee-1': { h: 'Web Design <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Development <em>·</em> Consulting <em>·</em> Maintenance <em>·</em> Visual Identity <em>·</em>' },
           'marquee-2': { h: 'Web Design <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Development <em>·</em> Consulting <em>·</em> Maintenance <em>·</em> Visual Identity <em>·</em>' },
@@ -611,10 +622,10 @@
           /* ── PORTAFOLIO */
           'port-eyebrow': { t: 'Portfolio' },
           'port-title': { h: 'Projects that make<br>a <span class="t-outline">difference</span>' },
-          'port-start-btn': { t: 'Start a Project' },
+          'port-start-btn': { t: 'Start Your Project' },
           'port-cta-q': { h: 'Your business<br>here?' },
           'port-cta-sub': { t: 'Join +150 successful businesses' },
-          'port-cta-btn': { t: 'Start a Project' },
+          'port-cta-btn': { t: 'Start Your Project' },
           'port-badge': { t: 'View Project →' },
           'port-c1': { t: 'Agency · Models & BTL Production' },
           'port-d1': { t: 'Digital platform for modeling agency, promotional staff and corporate event production.' },
@@ -653,7 +664,7 @@
           'stat-l2': { t: 'Years of experience' },
           'stat-l3': { t: 'Projects delivered' },
           'stat-l4': { t: 'Satisfaction guaranteed' },
-          'nos-btn': { t: "Let's Work Together" },
+          'nos-btn': { t: 'Start Your Project' },
           'nos-historia': { t: "Who you'll work with →" },
           'nos-quote': { h: "A website isn't an expense. It's the <span style=\"color:var(--lime);\">hardest-working</span> <span style=\"color:var(--lime);\">employee</span> you'll never have to pay overtime." },
           /* ── PROCESO */
@@ -721,6 +732,16 @@
           'tienda-premium-note': { t: 'Best for: established brands.' },
           'tienda-premium-cta': { t: 'I want Store Premium →' },
           'tiendas-condition': { t: 'Optional support and product-upload retainer from $800 MXN/month. The TiendaNube plan (~$99–249/month) and the payment gateway fee (~3.8% + tax per sale) are covered by the client.' },
+          /* ── STAKES */
+          'stakes-eyebrow': { t: "What's at stake" },
+          'stakes-title': { h: 'What you lose every day<br>without a site <span class="t-lime">that sells</span>' },
+          'stakes-1t': { t: 'The customer who searched for you last night' },
+          'stakes-1p': { t: "They looked for you on Google, didn't find you — or found a site that inspired no trust — and bought from the competitor who does show up. It happens every day, silently." },
+          'stakes-2t': { t: 'The credibility you were already judged on' },
+          'stakes-2p': { t: '75% of people judge how serious a business is by its website. With an outdated site — or none — you were ruled out before the first conversation.' },
+          'stakes-3t': { t: "The AI answers where you don't exist" },
+          'stakes-3p': { t: "About 30% of searches now end in ChatGPT, Gemini or Perplexity. If your business isn't in their sources, the AI recommends someone else." },
+          'stakes-cta': { t: 'Stop losing customers →' },
           /* ── FAQ */
           'faq-eyebrow': { t: 'FAQ' },
           'faq-title': { h: 'What everyone asks<br>before <span class="t-lime">starting</span>' },
@@ -741,7 +762,8 @@
           'contact-title': { h: 'Ready for the<br><span class="t-outline">next</span> level?' },
           'contact-sub': { t: 'Tell us about your project. We respond in under 24 hours and the first consultation is completely free.' },
           'submitBtnLabel': { t: 'Send Message' },
-          'agenda-link': { t: 'Or schedule a call →' },
+          'agenda-link': { t: 'Or schedule a free call →' },
+          'contact-wa': { t: 'Send a WhatsApp' },
           /* ── FOOTER */
           'footer-tagline': { t: 'We design the digital future of your business.' },
           'footer-partner-text': { h: 'Certified <strong style="font-weight:600;color:#fff;">Tiendanube Partner</strong> Agency' },

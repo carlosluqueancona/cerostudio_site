@@ -814,3 +814,13 @@ section#casos:has(> #service-portfolio-wrapper[hidden]) {
   .lp-related-card.in-view::before { transform: scaleX(1); }
   .lp-related-card.in-view p { color: var(--lime, #b2f700); }
 }
+
+/* Portafolio SSR en móvil: 1 columna (override del inline 2-col; fix jul 2026,
+   mismo bloque que en servicios-spec.css para las landings migradas). */
+@media (max-width: 700px) {
+  #service-portfolio-grid {
+    grid-template-columns: 1fr !important;
+    margin-top: 28px !important;
+    gap: 20px;
+  }
+}

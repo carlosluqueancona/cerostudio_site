@@ -36,7 +36,12 @@
     '.process-step',
     '.includes-item',
     '.lp-related-card',
+    // /servicios/* nuevas (ficha técnica .sv-*)
+    '.sv-module',
+    '.sv-bom-row',
+    '.sv-step',
     // Home (/)
+    '.stakes-card',
     '.srv-card',
     '.proc-step',
     '.plan-card',

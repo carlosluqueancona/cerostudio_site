@@ -39,7 +39,8 @@
   <noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"></noscript>
   <link rel="stylesheet" href="/css/base.css">
   <link rel="stylesheet" href="/css/home.css?v=20260703b">
-  <link rel="stylesheet" href="/css/servicios.css?v=20260614a">
+  <link rel="stylesheet" href="/css/servicios-spec.css?v=20260704a">
+  <link rel="stylesheet" href="/css/hero-pulse.css?v=20260704a">
   <script src="/components/cookie-consent.js" defer></script>
   <script src="/components/cursor.js" defer></script>
 
@@ -63,9 +64,9 @@
         "url": "https://cerostudio.ai/en/services/seo/",
         "offers": {
           "@type": "Offer",
-          "priceCurrency": "USD",
-          "price": "499",
-          "priceSpecification": { "@type": "PriceSpecification", "priceCurrency": "USD", "minPrice": "499" },
+          "priceCurrency": "MXN",
+          "price": "4000",
+          "priceSpecification": { "@type": "PriceSpecification", "priceCurrency": "MXN", "minPrice": "4000" },
           "availability": "https://schema.org/InStock"
         }
       },
@@ -98,7 +99,7 @@
           {
             "@type": "Question",
             "name": "How much does the monthly SEO service cost?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Ongoing SEO is quoted by scope: number of target keywords, content production volume and competition level. An initial audit + action plan has a fixed price starting at 447 USD. The monthly ongoing service starts at 670 USD per month and scales by objectives. For SMBs with limited budget, we offer one-shot audits with an implementation plan you can execute internally." }
+            "acceptedAnswer": { "@type": "Answer", "text": "Ongoing SEO is quoted by scope: number of target keywords, content production volume and competition level. An initial audit + action plan has a fixed price starting at 4,000 MXN (about 223 USD). Monthly optimization starts at 2,000 MXN (about 112 USD) per month and scales by objectives. For SMBs with limited budget, we offer one-shot audits with an implementation plan you can execute internally." }
           },
           {
             "@type": "Question",
@@ -138,122 +139,130 @@
 
     <div id="navbar-placeholder"></div>
 
-    <nav class="crumbs" aria-label="Breadcrumb">
-      <a href="/en/">Home</a>&nbsp;›&nbsp;<a href="/en/#services">Services</a>&nbsp;›&nbsp;<span aria-current="page">SEO + AI Search</span>
-    </nav>
-
     <main id="main-content">
+      <div class="sv-sheet">
 
-      <section class="lp-hero">
-        <div class="lp-hero-grid"></div>
-        <div class="section-inner">
-          <p class="lp-eyebrow">For businesses tired of renting clicks that switch off.</p>
-          <h1 class="lp-h1">SEO for businesses that want to show up in <span class="t-lime">Google and in AI.</span></h1>
-          <p class="lp-lead">
-            Organic rankings in Google + visibility in ChatGPT, Claude, Gemini and Perplexity.
-            So your customers find you — searching or asking. Serious technical work that generates
-            qualified traffic for years, not expensive clicks that stop when you stop paying.
-          </p>
-          <div class="lp-cta-row">
-            <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Schedule a Free Audit</a>
-            <a href="https://wa.me/525531007101?text=Hi%2C%20I%20saw%20your%20SEO%20page%20and%20I%27d%20like%20a%20free%20audit%20for%20my%20site." target="_blank" rel="noopener" class="btn-ghost ht">Send WhatsApp</a>
+        <nav class="sv-crumbs" aria-label="Breadcrumb">
+          <a href="/en/">Home</a><span>›</span><a href="/en/#services">Services</a><span>›</span><span aria-current="page">SEO + AI Search</span>
+        </nav>
+
+        <!-- ── SHEET · cover with Sales Pulse ──────────────────────── -->
+        <header class="sv-hero sv-hero--pulse hero-pulse-host">
+          <canvas id="heroCanvas"></canvas>
+          <div class="hero-grid"></div>
+          <div>
+            <p class="sv-code">SRV-04 · SEO + AI Search</p>
+            <h1 class="sv-h1">SEO for businesses that want to show up in <em>Google and in AI.</em></h1>
+            <p class="sv-lead">
+              Organic rankings in Google + visibility in ChatGPT, Claude, Gemini and Perplexity.
+              So your customers find you — searching or asking. Serious technical work that generates
+              qualified traffic for years, not expensive clicks that stop when you stop paying.
+            </p>
+            <div class="sv-cta-row">
+              <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Schedule a Free Audit</a>
+              <a href="https://wa.me/525531007101?text=Hi%2C%20I%20saw%20your%20SEO%20page%20and%20I%27d%20like%20a%20free%20audit%20for%20my%20site." target="_blank" rel="noopener" class="btn-ghost ht">Send WhatsApp</a>
+            </div>
           </div>
-        </div>
-      </section>
+          <aside class="sv-specs" aria-label="Service specifications">
+            <p class="sv-specs-title">Specifications</p>
+            <dl>
+              <div class="row"><dt>Results</dt><dd>Visible in <strong>3–6 months</strong> · compounding ROI</dd></div>
+              <div class="row"><dt>Investment</dt><dd>Audit from <strong>$4,000 MXN</strong> · monthly optimization from $2,000 MXN</dd></div>
+              <div class="row"><dt>Includes</dt><dd>Technical audit · on-page · local SEO · AEO/GEO · llms.txt</dd></div>
+              <div class="row"><dt>Coverage</dt><dd>Google + ChatGPT, Claude, Gemini and Perplexity</dd></div>
+            </dl>
+            <p class="sv-stamp">Cero Studio · Service sheet · MX</p>
+          </aside>
+        </header>
 
-      <section class="lp-section">
-        <div class="section-inner">
-          <h2>93% of online experiences begin with a search engine. <span class="t-lime">And increasingly with an AI.</span></h2>
-          <p>
+        <!-- ── § 01 · Diagnosis ────────────────────────────────────── -->
+        <section class="sv-section">
+          <div class="sv-sec-head">
+            <span class="sv-sec-num">01 — Diagnosis</span>
+            <h2 class="sv-h2">Search is no longer just Google. <span class="t-lime">And you have to be in both universes.</span></h2>
+          </div>
+          <div class="sv-gauge">
+            <p class="sv-gauge-num">93<span class="unit">%</span></p>
+            <div class="sv-gauge-txt">
+              <p class="sv-gauge-claim">of online experiences begin with a search engine. And increasingly with an AI.</p>
+            </div>
+          </div>
+          <p class="sv-body">
             If your site doesn't show up on the first page of Google for the words your potential
             customers search, you're losing between 60% and 80% of the available market. And unlike
             Google Ads, where you stop existing when you stop paying, SEO generates organic traffic
             for years after the initial investment.
           </p>
-          <p>
+          <p class="sv-body">
             But search is no longer just Google. <strong>ChatGPT, Claude, Gemini and Perplexity</strong>
             cite sites in their answers — and a growing portion of searches now ends in a chatbot
             response instead of a click. If you're not in their sources, you stop existing for that
             user. The technical SEO we do positions you in both universes.
           </p>
-          <div class="benefit-grid">
-            <div class="benefit-card">
-              <h3>Traffic that doesn't turn off</h3>
-              <p>Once you rank, traffic arrives without paying per click. Compounding ROI that grows
-                each month instead of stopping when you stop investing.</p>
+          <div class="sv-modules">
+            <div class="sv-module"><span class="idx">MOD-A</span><h3>Traffic that doesn't turn off</h3><p>Once you rank, traffic arrives without paying per click. Compounding ROI that grows each month instead of stopping when you stop investing.</p></div>
+            <div class="sv-module"><span class="idx">MOD-B</span><h3>Customers with intent</h3><p>Someone who searches "SEO agency in Mexico" or asks ChatGPT "what SEO agency do you recommend?" is ready to hire. We attract prospects with commercial intent, not browsers.</p></div>
+            <div class="sv-module"><span class="idx">MOD-C</span><h3>Less local competition</h3><p>Local SEO + AEO in Mexico has less saturation than markets like the US or Spain. Now is the time to take positions — both in Google Maps and in AI responses.</p></div>
+            <div class="sv-module"><span class="idx">MOD-D</span><h3>Cited by AI = authority</h3><p>Showing up as a source in answers from ChatGPT, Claude or Perplexity positions you as a verified reference in your niche. It's the new equivalent of organic position #1 — but with more reputational impact.</p></div>
+          </div>
+        </section>
+
+        <!-- ── § 02 · In production (SSR from CMS, service_tags='seo') ── -->
+        <section class="sv-section" id="casos">
+          <div id="service-portfolio-wrapper">
+            <div class="sv-sec-head">
+              <span class="sv-sec-num">02 — In production</span>
+              <h2 class="sv-h2">Rankings that <span class="t-lime">bring the lead.</span></h2>
             </div>
-            <div class="benefit-card">
-              <h3>Customers with intent</h3>
-              <p>Someone who searches "SEO agency in Mexico" or asks ChatGPT "what SEO agency do you
-                recommend?" is ready to hire. We attract prospects with commercial intent, not
-                browsers.</p>
-            </div>
-            <div class="benefit-card">
-              <h3>Less local competition</h3>
-              <p>Local SEO + AEO in Mexico has less saturation than markets like the US or Spain.
-                Now is the time to take positions — both in Google Maps and in AI responses.</p>
-            </div>
-            <div class="benefit-card">
-              <h3>Cited by AI = authority</h3>
-              <p>Showing up as a source in answers from ChatGPT, Claude or Perplexity positions you
-                as a verified reference in your niche. It's the new equivalent of organic position
-                #1 — but with more reputational impact.</p>
+            <p class="sv-body">Projects where SEO moved the needle: organic traffic, qualified leads, measurable brand authority.</p>
+            <div class="port-grid" id="service-portfolio-grid" style="grid-template-columns:repeat(2,1fr);margin-top:48px">
+              <!-- SSR-injected from CMS -->
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- ── Cases · In production ── -->
-      <section class="lp-section" id="casos">
-        <div class="section-inner" id="service-portfolio-wrapper">
-          <p class="eyebrow">Cases · In production</p>
-          <h2>Rankings that <span class="t-lime">bring the lead.</span></h2>
-          <p>Projects where SEO moved the needle: organic traffic, qualified leads, measurable brand authority.</p>
-          <div class="port-grid" id="service-portfolio-grid" style="grid-template-columns:repeat(2,1fr);margin-top:48px">
-            <!-- SSR-injected from CMS -->
+        <!-- ── § 03 · Bill of materials ────────────────────────────── -->
+        <section class="sv-section">
+          <div class="sv-sec-head">
+            <span class="sv-sec-num">03 — Bill of materials</span>
+            <h2 class="sv-h2">Real technical work, no shortcuts.</h2>
           </div>
-        </div>
-      </section>
-
-      <section class="lp-section">
-        <div class="section-inner">
-          <p class="eyebrow">What's included</p>
-          <h2>Real technical work, no shortcuts.</h2>
-          <p>Serious SEO involves audit, strategy, implementation and monitoring. This is what we
-            deliver on every project:</p>
-          <div class="includes-grid">
-            <div class="includes-item"><span class="num">01</span><div><h3>Technical audit</h3><p>Speed, indexing, canonicals, URLs, mobile-friendly and 50+ technical factors.</p></div></div>
-            <div class="includes-item"><span class="num">02</span><div><h3>Keyword research</h3><p>Keywords with real volume, purchase intent and competition for Mexico.</p></div></div>
-            <div class="includes-item"><span class="num">03</span><div><h3>On-page SEO</h3><p>Titles, meta descriptions, H1, content and internal structure per page.</p></div></div>
-            <div class="includes-item"><span class="num">04</span><div><h3>Technical SEO</h3><p>Schema markup, sitemap.xml, robots.txt, Core Web Vitals, HTTPS and internal links.</p></div></div>
-            <div class="includes-item"><span class="num">05</span><div><h3>Local SEO</h3><p>Google Business Profile, LocalBusiness schema, citations and review strategy.</p></div></div>
-            <div class="includes-item"><span class="num">06</span><div><h3>Content strategy</h3><p>Monthly editorial calendar with briefs per article of commercial intent.</p></div></div>
-            <div class="includes-item"><span class="num">07</span><div><h3>Search Console + GA4</h3><p>Setup, integration and analysis. You never depend on us to access.</p></div></div>
-            <div class="includes-item"><span class="num">08</span><div><h3>Monthly report</h3><p>Positions, impressions, clicks, conversions and AI citations. No jargon.</p></div></div>
-            <div class="includes-item"><span class="num">09</span><div><h3>AEO / GEO</h3><p>Structure optimized for ChatGPT, Claude, Gemini and Perplexity. Enriched schema, direct answers and topical authority.</p></div></div>
-            <div class="includes-item"><span class="num">10</span><div><h3>llms.txt + AI crawlers</h3><p>Proper permissions for GPTBot, ClaudeBot, Google-Extended and PerplexityBot. Your content visible where it matters.</p></div></div>
+          <p class="sv-body">Serious SEO involves audit, strategy, implementation and monitoring. This is what we deliver on every project:</p>
+          <div class="sv-bom">
+            <div class="sv-bom-row"><span class="num">01</span><h3>Technical audit</h3><p>Speed, indexing, canonicals, URLs, mobile-friendly and 50+ technical factors.</p></div>
+            <div class="sv-bom-row"><span class="num">02</span><h3>Keyword research</h3><p>Keywords with real volume, purchase intent and competition for Mexico.</p></div>
+            <div class="sv-bom-row"><span class="num">03</span><h3>On-page SEO</h3><p>Titles, meta descriptions, H1, content and internal structure per page.</p></div>
+            <div class="sv-bom-row"><span class="num">04</span><h3>Technical SEO</h3><p>Schema markup, sitemap.xml, robots.txt, Core Web Vitals, HTTPS and internal links.</p></div>
+            <div class="sv-bom-row"><span class="num">05</span><h3>Local SEO</h3><p>Google Business Profile, LocalBusiness schema, citations and review strategy.</p></div>
+            <div class="sv-bom-row"><span class="num">06</span><h3>Content strategy</h3><p>Monthly editorial calendar with briefs per article of commercial intent.</p></div>
+            <div class="sv-bom-row"><span class="num">07</span><h3>Search Console + GA4</h3><p>Setup, integration and analysis. You never depend on us to access.</p></div>
+            <div class="sv-bom-row"><span class="num">08</span><h3>Monthly report</h3><p>Positions, impressions, clicks, conversions and AI citations. No jargon.</p></div>
+            <div class="sv-bom-row"><span class="num">09</span><h3>AEO / GEO</h3><p>Structure optimized for ChatGPT, Claude, Gemini and Perplexity. Enriched schema, direct answers and topical authority.</p></div>
+            <div class="sv-bom-row"><span class="num">10</span><h3>llms.txt + AI crawlers</h3><p>Proper permissions for GPTBot, ClaudeBot, Google-Extended and PerplexityBot. Your content visible where it matters.</p></div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="lp-section" id="proceso">
-        <div class="section-inner">
-          <p class="eyebrow">Process</p>
-          <h2>Audit → Strategy → Implementation → Growth.</h2>
-          <div class="process-grid">
-            <div class="process-step"><p class="step-num">01 · Month 1</p><h3>Audit</h3><p>Complete technical review, keyword research and local competitor analysis.</p></div>
-            <div class="process-step"><p class="step-num">02 · Month 1</p><h3>Strategy</h3><p>Action plan prioritized by impact. Quick wins first, long-term optimizations after.</p></div>
-            <div class="process-step"><p class="step-num">03 · Month 1–3</p><h3>Implementation</h3><p>Technical fixes, existing content optimization and new articles.</p></div>
-            <div class="process-step"><p class="step-num">04 · Month 3+</p><h3>Reporting</h3><p>Monthly report with progress, strategy adjustments and new opportunities detected.</p></div>
+        <!-- ── § 04 · Assembly line ────────────────────────────────── -->
+        <section class="sv-section" id="proceso">
+          <div class="sv-sec-head">
+            <span class="sv-sec-num">04 — Assembly line</span>
+            <h2 class="sv-h2">Audit → Strategy → Implementation → Growth.</h2>
           </div>
-        </div>
-      </section>
+          <div class="sv-line">
+            <div class="sv-step"><span class="when">Step 01 · Month 1</span><h3>Audit</h3><p>Complete technical review, keyword research and local competitor analysis.</p></div>
+            <div class="sv-step"><span class="when">Step 02 · Month 1</span><h3>Strategy</h3><p>Action plan prioritized by impact. Quick wins first, long-term optimizations after.</p></div>
+            <div class="sv-step"><span class="when">Step 03 · Month 1–3</span><h3>Implementation</h3><p>Technical fixes, existing content optimization and new articles.</p></div>
+            <div class="sv-step"><span class="when">Step 04 · Month 3+</span><h3>Reporting</h3><p>Monthly report with progress, strategy adjustments and new opportunities detected.</p></div>
+          </div>
+        </section>
 
-      <section class="lp-section">
-        <div class="section-inner">
-          <p class="eyebrow">Frequently asked</p>
-          <h2>What people ask the most.</h2>
-          <div class="faq-list">
+        <!-- ── § 05 · FAQ ──────────────────────────────────────────── -->
+        <section class="sv-section">
+          <div class="sv-sec-head">
+            <span class="sv-sec-num">05 — FAQ</span>
+            <h2 class="sv-h2">What people ask the most.</h2>
+          </div>
+          <div class="sv-faq">
             <details class="faq-item">
               <summary>How long does SEO take to show results?</summary>
               <p>Visible results typically between 3 and 6 months. <strong>Month 1–2:</strong> audit
@@ -276,8 +285,8 @@
             </details>
             <details class="faq-item">
               <summary>How much does the monthly service cost?</summary>
-              <p>Initial audit + action plan: from <strong>$447 USD</strong> (fixed price).
-                Ongoing monthly SEO: from <strong>$670 USD/month</strong>, scales by objectives.
+              <p>Initial audit + action plan: from <strong>$4,000 MXN</strong> (≈ $223 USD, fixed price).
+                Monthly optimization: from <strong>$2,000 MXN/month</strong> (≈ $112 USD/month), scales by objectives.
                 For SMBs with limited budget, we offer one-shot audits with an implementation plan
                 you can execute internally.</p>
             </details>
@@ -321,36 +330,40 @@
                 a chatbot answer. If you're not in their sources, you stop existing for that user.</p>
             </details>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="lp-final-cta">
-        <h2>Your customers are already <span class="t-lime">searching — and asking — for what you sell.</span></h2>
-        <p>Free SEO + AI Search audit for your site. We tell you exactly what you're missing to rank in Google and appear in ChatGPT, Claude and Gemini. No commitment.</p>
-        <div class="lp-cta-row">
-          <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Schedule a Free Audit</a>
-          <a href="https://wa.me/525531007101?text=Hi%2C%20I%20saw%20your%20SEO%20page%20and%20I%27d%20like%20a%20free%20audit%20for%20my%20site." target="_blank" rel="noopener" class="btn-ghost ht">Send WhatsApp</a>
-        </div>
-      </section>
-
-      <section class="lp-related">
-        <div class="section-inner">
-          <h2>A good SEO needs these foundations</h2>
-          <div class="lp-related-grid">
-            <a href="/en/services/web-development/" class="lp-related-card"><span class="label">01</span><p>Web Development</p></a>
-            <a href="/en/services/online-stores/" class="lp-related-card"><span class="label">02</span><p>eCommerce Stores</p></a>
-            <a href="/servicios/branding-digital/" class="lp-related-card"><span class="label">03</span><p>Digital Branding</p></a>
-            <a href="/servicios/mantenimiento/" class="lp-related-card"><span class="label">05</span><p>Web Maintenance</p></a>
-            <a href="/servicios/consultoria-digital/" class="lp-related-card"><span class="label">06</span><p>Digital Consulting</p></a>
+        <!-- ── Work order (final CTA) ──────────────────────────────── -->
+        <section class="sv-order" data-label="Work order">
+          <h2>Your customers are already <span class="t-lime">searching — and asking — for what you sell.</span></h2>
+          <p>Free SEO + AI Search audit for your site. We tell you exactly what you're missing to rank in Google and appear in ChatGPT, Claude and Gemini. No commitment.</p>
+          <div class="sv-cta-row">
+            <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Schedule a Free Audit</a>
+            <a href="https://wa.me/525531007101?text=Hi%2C%20I%20saw%20your%20SEO%20page%20and%20I%27d%20like%20a%20free%20audit%20for%20my%20site." target="_blank" rel="noopener" class="btn-ghost ht">Send WhatsApp</a>
           </div>
-        </div>
-      </section>
+        </section>
 
+        <!-- ── § 06 · Catalog ──────────────────────────────────────── -->
+        <section class="sv-section">
+          <div class="sv-sec-head">
+            <span class="sv-sec-num">06 — Catalog</span>
+            <h2 class="sv-h2">A good SEO needs these foundations.</h2>
+          </div>
+          <div class="sv-catalog">
+            <a href="/en/services/web-development/" class="sv-catalog-row"><span class="code">SRV-01</span><span class="name">Web Development</span><span class="arrow">→</span></a>
+            <a href="/en/services/online-stores/" class="sv-catalog-row"><span class="code">SRV-02</span><span class="name">Online Stores</span><span class="arrow">→</span></a>
+            <a href="/en/services/digital-branding/" class="sv-catalog-row"><span class="code">SRV-03</span><span class="name">Digital Branding</span><span class="arrow">→</span></a>
+            <a href="/en/services/web-maintenance/" class="sv-catalog-row"><span class="code">SRV-05</span><span class="name">Web Maintenance</span><span class="arrow">→</span></a>
+            <a href="/en/services/digital-consulting/" class="sv-catalog-row"><span class="code">SRV-06</span><span class="name">Digital Consulting</span><span class="arrow">→</span></a>
+          </div>
+        </section>
+
+      </div>
     </main>
 
     <div id="footer-placeholder"></div>
   </div>
-  <script src="/components/reveal-cards.js?v=20260703b" defer></script>
+  <script src="/js/hero-pulse.js?v=20260704a" defer></script>
+  <script src="/components/reveal-cards.js?v=20260704a" defer></script>
   <script src="/components/lang-toggle.js?v=20260604c" defer></script>
 </body>
 

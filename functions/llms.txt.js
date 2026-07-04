@@ -49,6 +49,13 @@ Por qué importa: ~30% del comportamiento de búsqueda ya no termina en un clic 
 - [Seminuevos Coapa](${BASE}/casos-de-exito/seminuevos-coapa/): De un sitio de 2013 a catálogo moderno autogestionable con buscador.
 - [Sergio Luque](${BASE}/casos-de-exito/sergio-luque/): Plataforma editorial a la medida con reproductor de audio lossless propio. EN: ${BASE}/en/case-studies/sergio-luque/
 
+## Precios de referencia (pago único salvo indicación; promociones de lanzamiento vigentes en ${BASE}/#precios)
+
+- Sitio web profesional: Cero Launch $299 USD (≈ $5,400 MXN, entrega 5 días hábiles) · Cero Pro $999 USD (≈ $17,900 MXN, el más solicitado) · Cero Premium desde $1,800 USD (≈ $32,000 MXN). Sin mensualidades ocultas.
+- Tienda en línea (TiendaNube): Esencial $6,000 MXN · Pro $12,000 MXN · Premium $22,000 MXN, pago único. eCommerce a medida: por cotización.
+- SEO + AI Search: auditoría inicial + plan de acción desde $4,000 MXN · optimización mensual desde $2,000 MXN/mes.
+- Sitio para clínicas y consultorios: desde $499 USD, entrega 2–4 semanas, cumplimiento LFPDPPP.
+
 ## Nosotros
 
 - [Carlos Luque Ancona — Fundador](${BASE}/nosotros/): 25+ años construyendo sitios que venden. Pionero de radio por internet en México. EN: ${BASE}/en/about-us/`;

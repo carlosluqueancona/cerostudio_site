@@ -1,0 +1,559 @@
+/* ═══════════════════════════════════════════════════════════════════
+   CERO STUDIO — Landings de servicios · "FICHA TÉCNICA" (.sv-*)
+   Concepto: cada servicio se presenta como spec-sheet industrial —
+   código de serie (SRV-0X), tabla de especificaciones, lista de
+   materiales (BOM), línea de ensamble y orden de trabajo.
+   Familia: kinetic brutalism CS (home bespoke · nosotros ab-* · casos cs-*).
+   Requiere base.css + home.css (chrome, botones, .section-inner, .port-*).
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Marco de hoja técnica ─────────────────────────────────────── */
+.sv-sheet {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 88px 24px 0;
+}
+
+.sv-crumbs {
+  font-family: var(--fb);
+  font-size: 12px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  opacity: .5;
+  margin: 0 0 34px;
+}
+.sv-crumbs a { color: inherit; text-decoration: none; border-bottom: 1px solid transparent; transition: color .2s, border-color .2s; }
+.sv-crumbs a:hover { color: var(--lime); border-bottom-color: var(--lime); }
+.sv-crumbs span { margin: 0 10px; opacity: .4; }
+
+/* ── HERO · portada de la ficha ─────────────────────────────────── */
+.sv-hero {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, .14);
+  padding: clamp(32px, 5vw, 64px);
+  margin: 0 0 88px;
+  display: grid;
+  grid-template-columns: 1.35fr .9fr;
+  gap: clamp(32px, 5vw, 72px);
+  background:
+    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+/* marcas de registro en las esquinas */
+.sv-hero::before, .sv-hero::after {
+  content: '+';
+  position: absolute;
+  font-family: var(--fd);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--lime);
+  line-height: 1;
+}
+.sv-hero::before { top: 10px; left: 12px; }
+.sv-hero::after { bottom: 10px; right: 12px; }
+
+.sv-code {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--fd);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin: 0 0 26px;
+}
+.sv-code::after {
+  content: '';
+  display: block;
+  width: 56px;
+  height: 1px;
+  background: var(--lime);
+}
+
+.sv-h1 {
+  font-family: var(--fd);
+  font-size: clamp(38px, 5.2vw, 64px);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -.035em;
+  text-transform: uppercase;
+  margin: 0 0 24px;
+}
+.sv-h1 em { font-style: normal; color: var(--lime); }
+
+.sv-lead {
+  font-family: var(--fb);
+  font-size: clamp(15px, 1.4vw, 17px);
+  line-height: 1.65;
+  font-weight: 300;
+  color: rgba(255, 255, 255, .78);
+  margin: 0 0 32px;
+  max-width: 52ch;
+}
+
+.sv-cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+.sv-cta-row .btn-primary, .sv-cta-row .btn-ghost { border-radius: 0; }
+
+/* Tabla de especificaciones (columna derecha del hero) */
+.sv-specs {
+  align-self: center;
+  border: 1px solid rgba(255, 255, 255, .14);
+  background: rgba(10, 10, 10, .82);
+}
+.sv-specs-title {
+  font-family: var(--fd);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--black);
+  background: var(--lime);
+  padding: 10px 18px;
+  margin: 0;
+}
+.sv-specs dl { margin: 0; }
+.sv-specs .row {
+  display: grid;
+  grid-template-columns: 104px 1fr;
+  gap: 16px;
+  padding: 14px 18px;
+  border-top: 1px solid rgba(255, 255, 255, .08);
+}
+.sv-specs .row:first-child { border-top: 0; }
+.sv-specs dt {
+  font-family: var(--fd);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .5);
+  padding-top: 3px;
+}
+.sv-specs dd {
+  font-family: var(--fb);
+  font-size: 14px;
+  font-weight: 400;
+  color: #fff;
+  line-height: 1.5;
+}
+.sv-specs dd strong { color: var(--lime); font-weight: 600; }
+.sv-stamp {
+  font-family: var(--fd);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .35);
+  padding: 12px 18px;
+  border-top: 1px dashed rgba(255, 255, 255, .14);
+}
+.sv-stamp::before { content: '⌗ '; color: var(--lime); }
+
+/* ── Variante hero con "Pulso de Venta" (solo /servicios/seo/) ───
+   El marco de ficha se conserva; el fondo de plano se sustituye por el
+   canvas EKG vivo (js/hero-pulse.js + css/hero-pulse.css). ─────────── */
+.sv-hero--pulse {
+  background: #000;
+  min-height: min(760px, calc(100vh - 170px));
+  align-content: center;
+}
+.sv-hero--pulse > div:not(.hero-grid), .sv-hero--pulse > aside { position: relative; z-index: 2; }
+.sv-hero--pulse #heroCanvas,
+.sv-hero--pulse .hero-grid {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+@media (max-width: 900px) {
+  .sv-hero--pulse { min-height: 0; }
+}
+
+/* ── Secciones numeradas (§) ────────────────────────────────────── */
+.sv-section { padding: 0 0 88px; }
+.sv-section .section-inner { padding: 0; max-width: 1180px; margin: 0 auto; }
+
+.sv-sec-head {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, .14);
+  padding: 0 0 16px;
+  margin: 0 0 40px;
+}
+.sv-sec-num {
+  font-family: var(--fd);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  color: var(--lime);
+  white-space: nowrap;
+}
+.sv-sec-num::before { content: '§ '; opacity: .6; }
+.sv-h2 {
+  font-family: var(--fd);
+  font-size: clamp(24px, 3vw, 38px);
+  font-weight: 600;
+  letter-spacing: -.02em;
+  line-height: 1.12;
+  margin: 0;
+  max-width: 26ch;
+}
+.sv-h2 .t-lime { color: var(--lime); }
+
+.sv-body {
+  font-family: var(--fb);
+  font-size: clamp(15px, 1.3vw, 17px);
+  line-height: 1.7;
+  font-weight: 300;
+  color: rgba(255, 255, 255, .75);
+  max-width: 64ch;
+  margin: 0 0 20px;
+}
+.sv-body a { color: var(--lime); }
+.sv-body strong { color: #fff; font-weight: 500; }
+
+/* Dato de autoridad (bignum) como lectura de instrumento */
+.sv-gauge {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: clamp(24px, 4vw, 56px);
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-left: 3px solid var(--lime);
+  padding: clamp(24px, 3.5vw, 44px);
+  margin: 0 0 40px;
+}
+.sv-gauge-num {
+  font-family: var(--fd);
+  font-size: clamp(64px, 9vw, 128px);
+  font-weight: 800;
+  letter-spacing: -.05em;
+  line-height: .9;
+  color: var(--lime);
+}
+.sv-gauge-num .unit { font-size: .45em; font-weight: 700; }
+.sv-gauge-txt h2, .sv-gauge-txt .sv-gauge-claim {
+  font-family: var(--fd);
+  font-size: clamp(18px, 2.2vw, 26px);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -.01em;
+  margin: 0 0 12px;
+}
+.sv-cite { font-size: 12px; color: rgba(255, 255, 255, .45); margin: 0; }
+.sv-cite a { color: inherit; }
+
+/* ── Módulos de beneficio (spec modules) ────────────────────────── */
+.sv-modules {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: rgba(255, 255, 255, .12);
+  border: 1px solid rgba(255, 255, 255, .12);
+}
+.sv-module {
+  background: var(--black);
+  padding: 32px 30px;
+  position: relative;
+  transition: background .25s ease;
+}
+.sv-module::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--lime);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .45s ease;
+}
+.sv-module:hover { background: #101010; }
+.sv-module:hover::before { transform: scaleX(1); }
+.sv-module:hover h3 { color: var(--lime); }
+.sv-module .idx {
+  font-family: var(--fd);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .26em;
+  color: var(--lime);
+  display: block;
+  margin: 0 0 16px;
+}
+.sv-module h3 {
+  font-family: var(--fd);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  margin: 0 0 10px;
+}
+.sv-module p {
+  font-family: var(--fb);
+  font-size: 14px;
+  line-height: 1.65;
+  font-weight: 300;
+  color: rgba(255, 255, 255, .65);
+  margin: 0;
+}
+
+/* ── BOM · lista de materiales (lo que incluye) ─────────────────── */
+.sv-bom { border-top: 1px solid rgba(255, 255, 255, .14); }
+.sv-bom-row {
+  display: grid;
+  grid-template-columns: 72px 240px 1fr;
+  gap: 24px;
+  align-items: baseline;
+  padding: 18px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+  transition: background .25s ease;
+}
+.sv-bom-row:hover { background: rgba(178, 247, 0, .04); }
+.sv-bom-row .num {
+  font-family: var(--fd);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  color: var(--lime);
+}
+.sv-bom-row .num::before { content: 'N° '; opacity: .5; font-weight: 400; }
+.sv-bom-row h3 {
+  font-family: var(--fd);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  margin: 0;
+}
+.sv-bom-row p {
+  font-family: var(--fb);
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 300;
+  color: rgba(255, 255, 255, .6);
+  margin: 0;
+}
+
+/* ── Línea de ensamble (proceso) ────────────────────────────────── */
+.sv-line {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  counter-reset: paso;
+}
+.sv-step {
+  position: relative;
+  padding: 28px 26px 8px 0;
+  margin-right: 26px;
+  border-top: 2px solid rgba(255, 255, 255, .16);
+  transition: border-color .35s ease;
+}
+.sv-step:hover { border-top-color: var(--lime); }
+.sv-step::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background: var(--lime);
+}
+.sv-step .when {
+  font-family: var(--fd);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--lime);
+  display: block;
+  margin: 0 0 12px;
+}
+.sv-step h3 {
+  font-family: var(--fd);
+  font-size: 19px;
+  font-weight: 600;
+  margin: 0 0 10px;
+}
+.sv-step p {
+  font-family: var(--fb);
+  font-size: 13.5px;
+  line-height: 1.6;
+  font-weight: 300;
+  color: rgba(255, 255, 255, .62);
+  margin: 0;
+}
+
+/* ── FAQ · anotaciones de la ficha ──────────────────────────────── */
+.sv-faq { max-width: 860px; }
+.sv-faq .faq-item { border-bottom: 1px solid rgba(255, 255, 255, .12); }
+.sv-faq .faq-item:first-child { border-top: 1px solid rgba(255, 255, 255, .12); }
+.sv-faq summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding: 22px 0;
+  font-family: var(--fd);
+  font-size: clamp(15px, 1.8vw, 18px);
+  font-weight: 600;
+  color: #fff;
+}
+.sv-faq summary::-webkit-details-marker { display: none; }
+.sv-faq summary::after {
+  content: '+';
+  color: var(--lime);
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: transform .3s ease;
+}
+.sv-faq .faq-item[open] summary::after { transform: rotate(45deg); }
+.sv-faq .faq-item p {
+  padding: 0 40px 24px 0;
+  max-width: 74ch;
+  font-family: var(--fb);
+  font-size: 15px;
+  color: var(--gray-light);
+  font-weight: 300;
+  line-height: 1.75;
+  margin: 0;
+}
+.sv-faq .faq-item a { color: var(--lime); }
+.sv-faq .faq-item strong { color: #fff; font-weight: 500; }
+
+/* ── ORDEN DE TRABAJO (CTA final) ───────────────────────────────── */
+.sv-order {
+  position: relative;
+  border: 1px solid var(--lime);
+  padding: clamp(40px, 6vw, 72px) clamp(28px, 5vw, 64px);
+  margin: 0 0 88px;
+  text-align: center;
+}
+.sv-order::before {
+  content: attr(data-label);
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--black);
+  padding: 0 16px;
+  font-family: var(--fd);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  color: var(--lime);
+  white-space: nowrap;
+}
+.sv-order h2 {
+  font-family: var(--fd);
+  font-size: clamp(26px, 3.6vw, 44px);
+  font-weight: 700;
+  letter-spacing: -.025em;
+  line-height: 1.1;
+  margin: 0 0 16px;
+}
+.sv-order h2 .t-lime { color: var(--lime); }
+.sv-order > p {
+  font-family: var(--fb);
+  font-size: 15px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, .7);
+  margin: 0 0 32px;
+}
+.sv-order .sv-cta-row { justify-content: center; }
+
+/* ── Catálogo de servicios relacionados ─────────────────────────── */
+.sv-catalog {
+  border-top: 1px solid rgba(255, 255, 255, .14);
+}
+.sv-catalog-row {
+  display: grid;
+  grid-template-columns: 96px 1fr auto;
+  gap: 20px;
+  align-items: center;
+  padding: 20px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+  text-decoration: none;
+  color: #fff;
+  transition: background .25s ease, padding-left .25s ease;
+}
+.sv-catalog-row:hover { background: rgba(178, 247, 0, .05); padding-left: 14px; }
+.sv-catalog-row .code {
+  font-family: var(--fd);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  color: var(--lime);
+}
+.sv-catalog-row .name {
+  font-family: var(--fd);
+  font-size: clamp(16px, 2vw, 20px);
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+.sv-catalog-row .arrow { color: var(--lime); font-size: 18px; transition: transform .25s ease; }
+.sv-catalog-row:hover .arrow { transform: translateX(6px); }
+
+/* ── Scroll reveal SOLO touch (patrón del sitio: reveal-cards.js corre
+   únicamente con hover:none; desktop ya tiene :hover). Ritmo aprobado:
+   keyframes 1s .5s forwards. Contenido visible por default — sin JS no
+   se oculta nada. ─────────────────────────────────────────────────── */
+@media (hover: none) {
+  .sv-module.in-view { background: #101010; }
+  .sv-module.in-view::before {
+    animation: svLine 1s cubic-bezier(.16, 1, .3, 1) .5s forwards;
+  }
+  .sv-module.in-view h3 { color: var(--lime); transition: color .9s ease .5s; }
+  .sv-step.in-view { border-top-color: rgba(178, 247, 0, .55); transition: border-color .9s ease .5s; }
+  .sv-bom-row.in-view { background: rgba(178, 247, 0, .04); transition: background .9s ease .5s; }
+}
+@keyframes svLine {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .sv-hero { grid-template-columns: 1fr; }
+  .sv-line { grid-template-columns: repeat(2, 1fr); row-gap: 36px; }
+  .sv-bom-row { grid-template-columns: 56px 1fr; }
+  .sv-bom-row p { grid-column: 2; }
+}
+
+@media (max-width: 640px) {
+  .sv-sheet { padding-top: 80px; }
+  .sv-hero { padding: 24px 20px; margin-bottom: 64px; }
+  .sv-section { padding-bottom: 64px; }
+  .sv-sec-head { flex-direction: column; gap: 8px; }
+  .sv-modules { grid-template-columns: 1fr; }
+  .sv-line { grid-template-columns: 1fr; }
+  .sv-step { margin-right: 0; }
+  .sv-gauge { grid-template-columns: 1fr; }
+  .sv-specs .row { grid-template-columns: 92px 1fr; }
+}
+
+/* Mobile bento collapse: sin banda gris (patrón aprobado) */
+@media (max-width: 520px) {
+  .sv-modules { gap: 0; background: transparent; border-left: 0; border-right: 0; }
+  .sv-module { border-bottom: 1px solid rgba(255, 255, 255, .12); padding: 26px 4px; }
+  .sv-module:last-child { border-bottom: 0; }
+}
+
+/* Portafolio SSR en móvil: 1 columna (el inline style de 2 cols aprieta las
+   cards y la fila se estira a la altura de la más alta → espacio muerto).
+   !important porque el grid trae grid-template-columns inline. */
+@media (max-width: 700px) {
+  #service-portfolio-grid {
+    grid-template-columns: 1fr !important;
+    margin-top: 28px !important;
+    gap: 20px;
+  }
+}
