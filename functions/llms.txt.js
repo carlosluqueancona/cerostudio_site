@@ -11,6 +11,7 @@ const HEADER = `# Cero Studio — Agencia Digital Premium en México
 > Diseñamos y desarrollamos sitios web, tiendas eCommerce, branding digital y SEO + AI Search (AEO/GEO) para emprendedores y negocios en México. Diseño que vende, sin letra chica.
 
 URL: ${BASE}
+English version: ${BASE}/en/
 Language: es-MX
 Available in: es-MX, en
 Contact: ${BASE}/#contacto

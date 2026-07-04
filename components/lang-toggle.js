@@ -30,6 +30,12 @@
     '/servicios/consultoria-digital/':  '/en/services/digital-consulting/',
     '/servicios/mantenimiento/':        '/en/services/web-maintenance/',
     '/diseno-web-para-clinicas/':       '/en/services/clinic-website-design/',
+    '/casos-de-exito/':                 '/en/case-studies/',
+    '/casos-de-exito/sergio-luque/':    '/en/case-studies/sergio-luque/',
+    '/casos-de-exito/imvec/':           '/en/case-studies/imvec/',
+    '/casos-de-exito/mainoflex/':       '/en/case-studies/mainoflex/',
+    '/casos-de-exito/respirar-es-vivir/': '/en/case-studies/respirar-es-vivir/',
+    '/casos-de-exito/seminuevos-coapa/': '/en/case-studies/seminuevos-coapa/',
   };
   // Invertir el mapa para EN → ES.
   var EN_TO_ES = {};

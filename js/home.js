@@ -917,17 +917,21 @@
         window._csLangReady = true;
       }
 
+      /* Desde jul 2026 existe /en/index.html real: el toggle NAVEGA entre las
+         dos homes (URL = idioma, como el resto del sitio) en vez de traducir
+         in-place — el in-place dejaba contenido EN bajo la URL ES, invisible
+         para crawlers y con analytics/share-links mentirosos. */
+      var CS_IS_EN_HOME = window.location.pathname.indexOf('/en') === 0;
+
       function toggleLang() {
-        setLang(CS_LANG === 'es' ? 'en' : 'es');
+        var goEn = !CS_IS_EN_HOME;
+        try { localStorage.setItem('cs-lang', goEn ? 'en' : 'es'); } catch (e) { }
+        window.location.href = goEn ? '/en/' : '/';
       }
 
-      /* Init on DOMContentLoaded */
+      /* Init on DOMContentLoaded — el idioma lo dicta la URL, no localStorage */
       window.addEventListener('DOMContentLoaded', function () {
-        var saved = null;
-        try { saved = localStorage.getItem('cs-lang'); } catch (e) { }
-        var navLang = navigator.language || navigator.userLanguage || '';
-        var detected = navLang.toLowerCase().startsWith('es') ? 'es' : 'en';
-        setLang(saved || detected);
+        setLang(CS_IS_EN_HOME ? 'en' : 'es');
       });
 
       /* Re-apply lang to navbar once components are injected */
