@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
+  <script src="/components/cookie-consent.js" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Blog de Cero Studio — Consejos sobre diseño web, marketing digital y SEO para emprendedores y negocios en México.">
   <title>Blog · Diseño Web, Marketing Digital y SEO | Cero Studio</title>
@@ -18,6 +19,30 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/png" href="/CS_Favicon_512x512.png">
   <link rel="apple-touch-icon" href="/CS_Favicon_512x512.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Blog",
+        "@id": "https://cerostudio.ai/blog/#blog",
+        "url": "https://cerostudio.ai/blog/",
+        "name": "Blog de Cero Studio",
+        "description": "Consejos sobre diseño web, marketing digital y SEO para emprendedores y negocios en México.",
+        "inLanguage": "es-MX",
+        "publisher": { "@id": "https://cerostudio.ai/#organization" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://cerostudio.ai/blog/#breadcrumb",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://cerostudio.ai/" },
+          { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://cerostudio.ai/blog/" }
+        ]
+      }
+    ]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- Fonts loaded asynchronously to avoid render-blocking -->
