@@ -1,7 +1,8 @@
 /* ── CERO STUDIO — Base CSS ── */
 /* Variables, fonts, and reset shared across all pages */
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap');
+/* Fuentes: cada página las carga con <link rel="preload" as="style"> + noscript.
+   NO reintroducir @import aquí — es render-blocking encadenado y duplica la descarga. */
 
 :root {
   --black:       #0a0a0a;

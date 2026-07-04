@@ -59,6 +59,11 @@
 /css/*
   Cache-Control: public, max-age=300, stale-while-revalidate=86400
 
+# Page JS (home.js, hero-pulse, etc.) — todas las referencias llevan ?v=,
+# así que puede cachearse fuerte; el bump de versión invalida.
+/js/*
+  Cache-Control: public, max-age=31536000, immutable
+
 # SVG/font assets: 1 year
 /images/svg/*
   Cache-Control: public, max-age=31536000, immutable
