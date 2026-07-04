@@ -117,18 +117,35 @@ async function loadPartial(env, baseUrl, path, cache) {
   }
 }
 
+// CSP para páginas públicas. _headers NO aplica a responses generadas/
+// transformadas por Functions (la home y el blog SSR salían SIN CSP), así que
+// se setea aquí. Mantener en sync con la sección "/" de _headers.
+// /blog/admin se excluye: su CSP más permisivo (uploads a R2) sí llega vía _headers.
+const PUBLIC_CSP = "default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https://challenges.cloudflare.com; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://intake.cerostudio.ai";
+
+function withCsp(response, pathname) {
+  if (pathname.startsWith('/blog/admin')) return response;
+  const ct = response.headers.get('content-type') || '';
+  if (!ct.includes('text/html')) return response;
+  if (response.headers.get('content-security-policy')) return response;
+  const r = new Response(response.body, response);
+  r.headers.set('Content-Security-Policy', PUBLIC_CSP);
+  return r;
+}
+
 export async function onRequest(context) {
   const response = await context.next();
+  const reqPath = new URL(context.request.url).pathname;
 
   // Only rewrite successful HTML responses
   const ct = response.headers.get('content-type') || '';
   if (!ct.includes('text/html')) return response;
-  if (response.status >= 400 && response.status !== 404) return response;
+  if (response.status >= 400 && response.status !== 404) return withCsp(response, reqPath);
 
   // If a downstream function (e.g. blog/[slug].js) already inlined partials,
   // skip — it sets X-Cero-SSR. The blog SSR handler already injects nav+footer
   // itself, so re-running the rewriter would be redundant work.
-  if (response.headers.get('X-Cero-SSR')) return response;
+  if (response.headers.get('X-Cero-SSR')) return withCsp(response, reqPath);
 
   // Pick partials by request URL so /en/* gets English navbar/footer in the
   // initial HTML (crawlers and no-JS users), not the Spanish version.
@@ -151,7 +168,7 @@ export async function onRequest(context) {
   _cache[lang].navbar = navbarCache.value;
   _cache[lang].footer = footerCache.value;
 
-  if (!navbarHtml && !footerHtml && !servicePortfolio?.html) return response;
+  if (!navbarHtml && !footerHtml && !servicePortfolio?.html) return withCsp(response, pathname);
 
   const rewriter = new HTMLRewriter()
     .on('#navbar-placeholder', {
@@ -202,8 +219,8 @@ export async function onRequest(context) {
   const transformed = rewriter.transform(response);
   const extraHeaders = { 'X-Cero-Partials': `inlined-${lang}` };
   if (serviceTag) extraHeaders['X-Cero-Service-Tag'] = serviceTag;
-  return new Response(transformed.body, {
+  return withCsp(new Response(transformed.body, {
     status: transformed.status,
     headers: { ...Object.fromEntries(transformed.headers), ...extraHeaders },
-  });
+  }), pathname);
 }
