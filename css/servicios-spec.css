@@ -160,8 +160,9 @@
   min-height: min(760px, calc(100vh - 170px));
   align-content: center;
 }
-.sv-hero--pulse > div, .sv-hero--pulse > aside { position: relative; z-index: 2; }
-.sv-hero--pulse #heroCanvas {
+.sv-hero--pulse > div:not(.hero-grid), .sv-hero--pulse > aside { position: relative; z-index: 2; }
+.sv-hero--pulse #heroCanvas,
+.sv-hero--pulse .hero-grid {
   position: absolute;
   inset: 0;
   width: 100%;
