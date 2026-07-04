@@ -546,3 +546,14 @@
   .sv-module { border-bottom: 1px solid rgba(255, 255, 255, .12); padding: 26px 4px; }
   .sv-module:last-child { border-bottom: 0; }
 }
+
+/* Portafolio SSR en móvil: 1 columna (el inline style de 2 cols aprieta las
+   cards y la fila se estira a la altura de la más alta → espacio muerto).
+   !important porque el grid trae grid-template-columns inline. */
+@media (max-width: 700px) {
+  #service-portfolio-grid {
+    grid-template-columns: 1fr !important;
+    margin-top: 28px !important;
+    gap: 20px;
+  }
+}
