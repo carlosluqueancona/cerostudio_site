@@ -23,12 +23,12 @@ backup-*.sql
 *.dump.sql
 *.backup.sql
 *.sql
-# Excepciones: schema y seeds versionados del blog (viven en .dev/, fuera del deploy)
-!.dev/blog/schema.sql
-!.dev/blog/seed.sql
-!.dev/blog/seeds/
-!.dev/blog/seeds/*.sql
-!.dev/formulario/cero-intake-worker/schema.sql
+# Excepciones: schema y seeds versionados del blog (viven en _dev/, fuera del deploy)
+!_dev/blog/schema.sql
+!_dev/blog/seed.sql
+!_dev/blog/seeds/
+!_dev/blog/seeds/*.sql
+!_dev/formulario/cero-intake-worker/schema.sql
 # Added by code-review-graph
 .code-review-graph/
 AGENTS.md

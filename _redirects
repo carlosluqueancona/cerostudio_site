@@ -15,6 +15,6 @@
 /proyecto/* https://tu.cerostudio.ai/proyecto 301
 /admin/* https://app.cerostudio.ai/clientes 301
 
-# ── Guard: tooling interno (.dev/) jamás se sirve, aunque Pages lo suba ──
-/.dev/* / 302
+# ── Guard: tooling interno (_dev/) jamás se sirve, aunque Pages lo suba ──
+/_dev/* / 302
 
