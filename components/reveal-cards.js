@@ -41,6 +41,7 @@
     '.sv-bom-row',
     '.sv-step',
     // Home (/)
+    '.stakes-card',
     '.srv-card',
     '.proc-step',
     '.plan-card',

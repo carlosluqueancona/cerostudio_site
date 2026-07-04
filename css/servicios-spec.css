@@ -152,6 +152,26 @@
 }
 .sv-stamp::before { content: '⌗ '; color: var(--lime); }
 
+/* ── Variante hero con "Pulso de Venta" (solo /servicios/seo/) ───
+   El marco de ficha se conserva; el fondo de plano se sustituye por el
+   canvas EKG vivo (js/hero-pulse.js + css/hero-pulse.css). ─────────── */
+.sv-hero--pulse {
+  background: #000;
+  min-height: min(760px, calc(100vh - 170px));
+  align-content: center;
+}
+.sv-hero--pulse > div, .sv-hero--pulse > aside { position: relative; z-index: 2; }
+.sv-hero--pulse #heroCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+@media (max-width: 900px) {
+  .sv-hero--pulse { min-height: 0; }
+}
+
 /* ── Secciones numeradas (§) ────────────────────────────────────── */
 .sv-section { padding: 0 0 88px; }
 .sv-section .section-inner { padding: 0; max-width: 1180px; margin: 0 auto; }

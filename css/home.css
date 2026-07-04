@@ -2530,3 +2530,84 @@
       font-weight: 300;
       line-height: 1.75;
     }
+
+    /* ── STAKES (SB7: lo que se pierde sin actuar) ───────────────── */
+    #stakes .section-title { margin-bottom: 56px; }
+
+    .stakes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(255, 255, 255, .12);
+      border: 1px solid rgba(255, 255, 255, .12);
+    }
+
+    .stakes-card {
+      background: var(--black);
+      padding: 40px 34px;
+      position: relative;
+      transition: background .3s ease;
+    }
+
+    .stakes-card::before {
+      content: attr(data-n);
+      font-family: var(--fd);
+      font-size: 64px;
+      font-weight: 900;
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255, 255, 255, .18);
+      display: block;
+      margin-bottom: 22px;
+      transition: -webkit-text-stroke-color .4s ease;
+    }
+
+    .stakes-card:hover { background: #101010; }
+    .stakes-card:hover::before { -webkit-text-stroke-color: rgba(178, 247, 0, .55); }
+
+    .stakes-card h3 {
+      font-family: var(--fd);
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: -.01em;
+      margin-bottom: 12px;
+    }
+
+    .stakes-card p {
+      font-size: 14.5px;
+      line-height: 1.7;
+      font-weight: 300;
+      color: var(--gray-light);
+    }
+
+    .stakes-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 40px;
+      font-family: var(--fd);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--lime);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color .25s ease;
+    }
+    .stakes-cta:hover { border-bottom-color: var(--lime); }
+
+    @media (max-width: 860px) {
+      .stakes-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 520px) {
+      .stakes-grid { gap: 0; background: transparent; border-left: 0; border-right: 0; }
+      .stakes-card { border-bottom: 1px solid rgba(255, 255, 255, .12); padding: 30px 4px; }
+      .stakes-card:last-child { border-bottom: 0; }
+    }
+
+    @media (hover: none) {
+      .stakes-card.in-view { background: #101010; }
+      .stakes-card.in-view::before { -webkit-text-stroke-color: rgba(178, 247, 0, .45); transition: -webkit-text-stroke-color .9s ease .5s; }
+    }
