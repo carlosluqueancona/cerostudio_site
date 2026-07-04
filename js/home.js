@@ -993,6 +993,10 @@
         var payload = {};
         fd.forEach(function(v, k) { payload[k] = v; });
 
+        /* Turnstile: el widget inyecta cf-turnstile-response; el API espera snake_case */
+        payload.cf_turnstile_response = payload['cf-turnstile-response'] || '';
+        delete payload['cf-turnstile-response'];
+
         fetch(CONTACT_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1002,12 +1006,15 @@
             btn.classList.remove('loading');
             btn.disabled = false;
             label.textContent = msgs.send;
+            if (window.turnstile) window.turnstile.reset(); /* el token es de un solo uso */
             if (res.ok) {
               setFeedback('success', msgs.success);
               form.reset();
             } else {
               return res.json().then(function (data) {
-                var errMsg = (data && data.errors) ? data.errors.map(function (x) { return x.message; }).join(', ') : msgs.error;
+                var errMsg = (data && data.error) ? data.error
+                  : (data && data.errors) ? data.errors.map(function (x) { return x.message; }).join(', ')
+                  : msgs.error;
                 setFeedback('error', errMsg);
               });
             }
