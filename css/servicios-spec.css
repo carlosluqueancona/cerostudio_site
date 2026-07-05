@@ -543,7 +543,7 @@
 /* Mobile bento collapse: sin banda gris (patrón aprobado) */
 @media (max-width: 520px) {
   .sv-modules { gap: 0; background: transparent; border-left: 0; border-right: 0; }
-  .sv-module { border-bottom: 1px solid rgba(255, 255, 255, .12); padding: 26px 4px; }
+  .sv-module { border-bottom: 1px solid rgba(255, 255, 255, .12); padding: 26px 18px; }
   .sv-module:last-child { border-bottom: 0; }
 }
 
