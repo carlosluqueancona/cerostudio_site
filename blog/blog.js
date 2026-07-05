@@ -205,6 +205,27 @@ async function loadMore() {
   }
 }
 
+// CTA de conversión de artículos — mismo markup que functions/blog/[slug].js (SSR)
+const ARTICLE_CTA_END = `
+      <aside class="article-cta" data-label="Cero Studio">
+        <h2 class="article-cta-title">¿Tu sitio se ve bien <em>pero no vende?</em></h2>
+        <p class="article-cta-text">Diseñamos sitios que convierten visitas en clientes. Cuéntanos tu proyecto y recibe una propuesta clara en menos de 24 horas.</p>
+        <div class="article-cta-row">
+          <a href="/#contacto" class="article-cta-btn">Cotizar mi proyecto →</a>
+          <a href="https://wa.me/525531007101?text=Hola%2C%20le%C3%AD%20un%20art%C3%ADculo%20de%20su%20blog%20y%20quiero%20cotizar%20mi%20proyecto." class="article-cta-wa" target="_blank" rel="noopener">WhatsApp directo</a>
+        </div>
+      </aside>`;
+
+const ARTICLE_CTA_MID = `<div class="article-cta-inline"><span>¿Necesitas un sitio que venda?</span> <a href="/#contacto">Cotiza gratis — respuesta en 24 horas →</a></div>`;
+
+// Inserta el CTA inline a la mitad del artículo (solo si hay ≥8 párrafos)
+function withMidCta(content) {
+  const parts = (content || '').split('</p>');
+  if (parts.length < 9) return content;
+  const mid = Math.ceil((parts.length - 1) / 2);
+  return parts.slice(0, mid).join('</p>') + '</p>' + ARTICLE_CTA_MID + parts.slice(mid).join('</p>');
+}
+
 async function renderPost(slug) {
   const root = document.getElementById('blog-root');
   
@@ -236,8 +257,9 @@ async function renderPost(slug) {
         </header>
 
         <div class="article-content">
-          ${post.content}
+          ${withMidCta(post.content)}
         </div>
+${ARTICLE_CTA_END}
       </article>
     `;
     
