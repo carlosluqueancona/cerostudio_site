@@ -73,7 +73,14 @@
 
     <!-- Main Content Root -->
     <main id="blog-root" role="main"><a id="main-content" tabindex="-1"></a>
-      <div id="blog-loader" style="padding: 200px 48px; text-align: center; font-family: 'Space Grotesk', sans-serif; letter-spacing: 0.2em; color: var(--lime);">
+      <!-- Shell estático (H1 para SEO); blog.js lo reemplaza con el mismo header + grid -->
+      <header class="blog-hero">
+        <div class="section-inner">
+          <div class="eyebrow">Nuestro Blog</div>
+          <h1 class="section-title">Insights sobre diseño <br class="pc-only"> y tecnología</h1>
+        </div>
+      </header>
+      <div id="blog-loader" style="padding: 0 48px 200px; text-align: center; font-family: 'Space Grotesk', sans-serif; letter-spacing: 0.2em; color: var(--lime);">
         CARGANDO BLOG...
       </div>
     </main>
