@@ -31,12 +31,7 @@
     '.ab-stakes-card',
     '.ab-empathy',
     '.ab-timeline-coda',
-    // /servicios/* + /diseno-web-para-clinicas/
-    '.benefit-card',
-    '.process-step',
-    '.includes-item',
-    '.lp-related-card',
-    // /servicios/* nuevas (ficha técnica .sv-*)
+    // /servicios/* + /diseno-web-para-clinicas/ (ficha técnica .sv-*)
     '.sv-module',
     '.sv-bom-row',
     '.sv-step',

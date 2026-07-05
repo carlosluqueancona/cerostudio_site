@@ -336,7 +336,7 @@
             }
 
             ctx.strokeStyle = seed.lime
-              ? `rgba(184,255,0,${seed.alpha})`
+              ? `rgba(178,247,0,${seed.alpha})`
               : `rgba(255,255,255,${seed.alpha})`;
             ctx.lineWidth = seed.lw;
             ctx.stroke();
@@ -405,7 +405,7 @@
           'mnav-contacto': { t: 'Contacto' },
           'mnav-blog': { t: 'Blog' },
           /* ── HERO */
-          'heroEyebrow': { t: 'Para negocios que quieren clientes, no solo visitas.' },
+          'heroEyebrow': { t: 'Clientes, no solo visitas.' },
           'heroSub': { t: 'Consigue el sitio web o la tienda online que tu negocio merece: diseño de nivel internacional que convierte visitas en clientes.' },
           'hero-btn-portfolio': { t: 'Ver Portafolio' },
           'hero-btn-quote': { t: 'Iniciar Proyecto' },
@@ -413,7 +413,7 @@
           'marquee-1': { h: 'Diseño Web <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Desarrollo <em>·</em> Consultoría <em>·</em> Mantenimiento <em>·</em> Identidad Visual <em>·</em>' },
           'marquee-2': { h: 'Diseño Web <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Desarrollo <em>·</em> Consultoría <em>·</em> Mantenimiento <em>·</em> Identidad Visual <em>·</em>' },
           /* ── SERVICIOS */
-          'srv-eyebrow': { t: 'Servicios' },
+          'srv-eyebrow': { t: '01 — Servicios' },
           'srv-title': { h: 'Todo lo que necesitas<br>para <span class="t-outline">crecer</span> en línea' },
           'srv-desc': { t: 'Desde el diseño hasta el lanzamiento, cubrimos cada aspecto de tu presencia digital con estándares de nivel internacional.' },
           'srv-t1': { t: 'Desarrollo Web' }, 'srv-d1': { t: 'Sitios rápidos, modernos y optimizados que generan confianza y convierten visitantes en clientes desde el primer clic.' },
@@ -423,7 +423,6 @@
           'srv-t5': { t: 'Mantenimiento' }, 'srv-d5': { t: 'Soporte técnico continuo, actualizaciones de seguridad y optimización para que tu sitio funcione perfecto siempre.' },
           'srv-t6': { t: 'Consultoría Digital' }, 'srv-d6': { t: 'Estrategia digital personalizada para escalar tu negocio. Tomamos las decisiones correctas antes de escribir código.' },
           /* ── PORTAFOLIO */
-          'port-eyebrow': { t: 'Portafolio' },
           'port-title': { h: 'Proyectos que hacen<br>la <span class="t-outline">diferencia</span>' },
           'port-start-btn': { t: 'Iniciar Proyecto' },
           'port-cta-q': { h: '¿Tu negocio<br>aquí?' },
@@ -602,7 +601,7 @@
           'mnav-precios': { t: 'Pricing' },
           'mnav-contacto': { t: 'Contact' },
           /* ── HERO */
-          'heroEyebrow': { t: 'For businesses that want customers, not just clicks.' },
+          'heroEyebrow': { t: 'Customers, not just clicks.' },
           'heroSub': { t: 'Get the website or online store your business deserves: international-level design that turns visitors into customers.' },
           'hero-btn-portfolio': { t: 'View Portfolio' },
           'hero-btn-quote': { t: 'Start Your Project' },
@@ -610,7 +609,7 @@
           'marquee-1': { h: 'Web Design <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Development <em>·</em> Consulting <em>·</em> Maintenance <em>·</em> Visual Identity <em>·</em>' },
           'marquee-2': { h: 'Web Design <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Development <em>·</em> Consulting <em>·</em> Maintenance <em>·</em> Visual Identity <em>·</em>' },
           /* ── SERVICIOS */
-          'srv-eyebrow': { t: 'Services' },
+          'srv-eyebrow': { t: '01 — Services' },
           'srv-title': { h: 'Everything you need<br>to <span class="t-outline">grow</span> online' },
           'srv-desc': { t: 'From design to launch, we cover every aspect of your digital presence to international standards.' },
           'srv-t1': { t: 'Web Development' }, 'srv-d1': { t: 'Fast, modern, optimized websites that build trust and convert visitors into customers from the first click.' },
@@ -620,7 +619,6 @@
           'srv-t5': { t: 'Maintenance' }, 'srv-d5': { t: 'Continuous technical support, security updates, and optimization so your site runs perfectly at all times.' },
           'srv-t6': { t: 'Digital Consulting' }, 'srv-d6': { t: 'Personalized digital strategy to scale your business. We make the right decisions before writing a single line of code.' },
           /* ── PORTAFOLIO */
-          'port-eyebrow': { t: 'Portfolio' },
           'port-title': { h: 'Projects that make<br>a <span class="t-outline">difference</span>' },
           'port-start-btn': { t: 'Start Your Project' },
           'port-cta-q': { h: 'Your business<br>here?' },

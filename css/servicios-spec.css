@@ -231,7 +231,7 @@
 .sv-gauge-num {
   font-family: var(--fd);
   font-size: clamp(64px, 9vw, 128px);
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -.05em;
   line-height: .9;
   color: var(--lime);

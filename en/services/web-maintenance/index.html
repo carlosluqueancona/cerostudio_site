@@ -37,9 +37,9 @@
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
     as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="/css/base.css">
-  <link rel="stylesheet" href="/css/home.css?v=20260703b">
-  <link rel="stylesheet" href="/css/servicios.css?v=20260614a">
+  <link rel="stylesheet" href="/css/base.css?v=20260705a">
+  <link rel="stylesheet" href="/css/home.css?v=20260705a">
+  <link rel="stylesheet" href="/css/servicios-spec.css?v=20260705a">
   <script src="/components/cookie-consent.js" defer></script>
   <script src="/components/cursor.js" defer></script>
 
@@ -92,94 +92,120 @@
 
     <div id="navbar-placeholder"></div>
 
-    <nav class="crumbs" aria-label="Breadcrumb">
-      <a href="/en/">Home</a>&nbsp;›&nbsp;<a href="/en/#services">Services</a>&nbsp;›&nbsp;<span aria-current="page">Web Maintenance</span>
-    </nav>
-
     <main id="main-content">
+      <div class="sv-sheet">
 
-      <section class="lp-hero">
-        <div class="lp-hero-grid"></div>
-        <div class="section-inner">
-          <p class="lp-eyebrow">For businesses that can't afford a site that's down.</p>
-          <h1 class="lp-h1">Web support <span class="t-lime">365 days a year.</span></h1>
-          <p class="lp-lead">
-            Security updates, backups, continuous monitoring and ongoing optimization so your site
-            runs perfectly without you having to worry. Your digital business working while you sleep.
+        <nav class="sv-crumbs" aria-label="Breadcrumb">
+          <a href="/en/">Home</a><span>›</span><a href="/en/#services">Services</a><span>›</span><span aria-current="page">Web Maintenance</span>
+        </nav>
+
+        <!-- ── SHEET · cover ───────────────────────────────────────── -->
+        <header class="sv-hero">
+          <div>
+            <p class="sv-code">SRV-05 · Web Maintenance</p>
+            <h1 class="sv-h1">Web support <em>365 days a year.</em></h1>
+            <p class="sv-lead">
+              Security updates, backups, continuous monitoring and ongoing optimization so your site
+              runs perfectly without you having to worry. Your digital business working while you sleep.
+            </p>
+            <div class="sv-cta-row">
+              <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Schedule a Free Call</a>
+              <a href="https://wa.me/525531007101?text=Hi%2C%20I%20saw%20your%20Web%20Maintenance%20page%20and%20I%27d%20like%20more%20information." target="_blank" rel="noopener" class="btn-ghost ht">Send WhatsApp</a>
+            </div>
+          </div>
+          <aside class="sv-specs" aria-label="Service specifications">
+            <p class="sv-specs-title">Specifications</p>
+            <dl>
+              <div class="row"><dt>Response</dt><dd><strong>&lt; 2h business hours</strong> site down · changes in 24h</dd></div>
+              <div class="row"><dt>Investment</dt><dd>From <strong>$800 MXN/mo</strong> · complete plan from $3,500</dd></div>
+              <div class="row"><dt>Includes</dt><dd>Security · daily backups · 24/7 monitoring · report</dd></div>
+              <div class="row"><dt>Contract</dt><dd>Month-to-month, no annual contract · cancel with 30 days notice</dd></div>
+            </dl>
+            <p class="sv-stamp">Cero Studio · Service sheet · MX</p>
+          </aside>
+        </header>
+
+        <!-- ── § 01 · Diagnosis ────────────────────────────────────── -->
+        <section class="sv-section">
+          <div class="sv-sec-head">
+            <span class="sv-sec-num">01 — Diagnosis</span>
+            <h2 class="sv-h2">A site without maintenance is a ticking bomb.</h2>
+          </div>
+          <div class="sv-gauge">
+            <p class="sv-gauge-num">43<span class="unit">%</span></p>
+            <div class="sv-gauge-txt">
+              <p class="sv-gauge-claim">of cyberattacks target small and medium businesses.</p>
+            </div>
+          </div>
+          <p class="sv-body">
+            Outdated plugins, expiring SSL certificates, nonexistent backups and nobody monitoring
+            if the site is down at 3am. The first hack isn't the most expensive — the most expensive
+            is the lost trust with your customers and the time to restore everything from scratch.
           </p>
-          <div class="lp-cta-row">
-            <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Schedule a Free Call</a>
-            <a href="https://wa.me/525531007101?text=Hi%2C%20I%20saw%20your%20Web%20Maintenance%20page%20and%20I%27d%20like%20more%20information." target="_blank" rel="noopener" class="btn-ghost ht">Send WhatsApp</a>
+          <div class="sv-modules">
+            <div class="sv-module"><span class="idx">MOD-A</span><h3>Real security</h3><p>Plugins, frameworks and dependencies always up to date. We close vulnerabilities before they're exploited, not after.</p></div>
+            <div class="sv-module"><span class="idx">MOD-B</span><h3>Zero data loss</h3><p>Automatic daily backups. If something fails — human error, hack, server failure — we restore in minutes without losing anything.</p></div>
+            <div class="sv-module"><span class="idx">MOD-C</span><h3>We notify you first</h3><p>24/7 monitoring. If the site goes down, we're the first to know. By the time a customer would notice, it's already fixed.</p></div>
+            <div class="sv-module"><span class="idx">MOD-D</span><h3>Maintained speed</h3><p>Monthly Core Web Vitals review. Your site stays fast even as you accumulate content and plugins over time.</p></div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="lp-section">
-        <div class="section-inner">
-          <h2>43% of cyberattacks target small and medium businesses.</h2>
-          <p>
-            A site without maintenance is a ticking bomb: outdated plugins, expiring SSL certificates,
-            nonexistent backups and nobody monitoring if the site is down at 3am. The first hack
-            isn't the most expensive — the most expensive is the lost trust with your customers and
-            the time to restore everything from scratch.
-          </p>
-          <div class="benefit-grid">
-            <div class="benefit-card"><h3>Real security</h3><p>Plugins, frameworks and dependencies always up to date. We close vulnerabilities before they're exploited, not after.</p></div>
-            <div class="benefit-card"><h3>Zero data loss</h3><p>Automatic daily backups. If something fails — human error, hack, server failure — we restore in minutes without losing anything.</p></div>
-            <div class="benefit-card"><h3>We notify you first</h3><p>24/7 monitoring. If the site goes down, we're the first to know. By the time a customer would notice, it's already fixed.</p></div>
-            <div class="benefit-card"><h3>Maintained speed</h3><p>Monthly Core Web Vitals review. Your site stays fast even as you accumulate content and plugins over time.</p></div>
+        <!-- ── § 02 · In production (SSR from CMS via _middleware.js,
+             service_tags='mantenimiento', EN variant from cat_en/desc_en,
+             editable at /blog/admin/) ── -->
+        <section class="sv-section" id="casos">
+          <div id="service-portfolio-wrapper">
+            <div class="sv-sec-head">
+              <span class="sv-sec-num">02 — In production</span>
+              <h2 class="sv-h2">Sites we <span class="t-lime">keep alive.</span></h2>
+            </div>
+            <p class="sv-body">These brands — we didn't just build their site. We keep it running, updated and fast month after month.</p>
+            <div class="port-grid" id="service-portfolio-grid" style="grid-template-columns:repeat(2,1fr);margin-top:48px">
+              <!-- SSR-injected from CMS -->
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- ── Cases · Sites we keep alive ── -->
-      <section class="lp-section" id="casos">
-        <div class="section-inner" id="service-portfolio-wrapper">
-          <p class="eyebrow">Cases · Alive today</p>
-          <h2>Sites we <span class="t-lime">keep alive.</span></h2>
-          <p>These brands — we didn't just build their site. We keep it running, updated and fast month after month.</p>
-          <div class="port-grid" id="service-portfolio-grid" style="grid-template-columns:repeat(2,1fr);margin-top:48px">
-            <!-- SSR-injected from CMS -->
+        <!-- ── § 03 · Bill of materials ────────────────────────────── -->
+        <section class="sv-section">
+          <div class="sv-sec-head">
+            <span class="sv-sec-num">03 — Bill of materials</span>
+            <h2 class="sv-h2">Complete coverage, no surprises on the invoice.</h2>
           </div>
-        </div>
-      </section>
-
-      <section class="lp-section">
-        <div class="section-inner">
-          <p class="eyebrow">What's included</p>
-          <h2>Complete coverage, no surprises on the invoice.</h2>
-          <p>Everything a professional site needs to run perfectly month after month — without you having to think about it:</p>
-          <div class="includes-grid">
-            <div class="includes-item"><span class="num">01</span><div><h3>Security updates</h3><p>Plugins, frameworks, libraries and dependencies always up to date.</p></div></div>
-            <div class="includes-item"><span class="num">02</span><div><h3>Automatic backups</h3><p>Daily site + database backup. Quick restoration.</p></div></div>
-            <div class="includes-item"><span class="num">03</span><div><h3>24/7 uptime monitoring</h3><p>Immediate alert if the site goes down, at any time of day.</p></div></div>
-            <div class="includes-item"><span class="num">04</span><div><h3>Content changes</h3><p>Texts, images, prices and products as you need.</p></div></div>
-            <div class="includes-item"><span class="num">05</span><div><h3>Speed optimization</h3><p>Monthly Core Web Vitals review with preventive adjustments.</p></div></div>
-            <div class="includes-item"><span class="num">06</span><div><h3>SSL renewal</h3><p>SSL certificates renewed automatically, no downtime.</p></div></div>
-            <div class="includes-item"><span class="num">07</span><div><h3>Vulnerability scanning</h3><p>Monthly security analysis with immediate remediation.</p></div></div>
-            <div class="includes-item"><span class="num">08</span><div><h3>Monthly report</h3><p>Site status, traffic, uptime and everything we did this month.</p></div></div>
+          <p class="sv-body">Everything a professional site needs to run perfectly month after month — without you having to think about it:</p>
+          <div class="sv-bom">
+            <div class="sv-bom-row"><span class="num">01</span><h3>Security updates</h3><p>Plugins, frameworks, libraries and dependencies always up to date.</p></div>
+            <div class="sv-bom-row"><span class="num">02</span><h3>Automatic backups</h3><p>Daily site + database backup. Quick restoration.</p></div>
+            <div class="sv-bom-row"><span class="num">03</span><h3>24/7 uptime monitoring</h3><p>Immediate alert if the site goes down, at any time of day.</p></div>
+            <div class="sv-bom-row"><span class="num">04</span><h3>Content changes</h3><p>Texts, images, prices and products as you need.</p></div>
+            <div class="sv-bom-row"><span class="num">05</span><h3>Speed optimization</h3><p>Monthly Core Web Vitals review with preventive adjustments.</p></div>
+            <div class="sv-bom-row"><span class="num">06</span><h3>SSL renewal</h3><p>SSL certificates renewed automatically, no downtime.</p></div>
+            <div class="sv-bom-row"><span class="num">07</span><h3>Vulnerability scanning</h3><p>Monthly security analysis with immediate remediation.</p></div>
+            <div class="sv-bom-row"><span class="num">08</span><h3>Monthly report</h3><p>Site status, traffic, uptime and everything we did this month.</p></div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="lp-section" id="proceso">
-        <div class="section-inner">
-          <p class="eyebrow">Process</p>
-          <h2>Setup → Continuous operation → Monthly report.</h2>
-          <div class="process-grid">
-            <div class="process-step"><p class="step-num">01 · Week 1</p><h3>Initial audit</h3><p>Site technical review, risk identification and immediate remediation plan.</p></div>
-            <div class="process-step"><p class="step-num">02 · Week 1–2</p><h3>Setup</h3><p>Monitoring installation, backup configuration and critical issue resolution.</p></div>
-            <div class="process-step"><p class="step-num">03 · Month 1+</p><h3>Continuous operation</h3><p>Updates, backups, monitoring and incident response per SLA.</p></div>
-            <div class="process-step"><p class="step-num">04 · Each month</p><h3>Report</h3><p>Transparent report with everything done, site metrics and recommendations.</p></div>
+        <!-- ── § 04 · Assembly line ────────────────────────────────── -->
+        <section class="sv-section" id="proceso">
+          <div class="sv-sec-head">
+            <span class="sv-sec-num">04 — Assembly line</span>
+            <h2 class="sv-h2">Setup → Continuous operation → Monthly report.</h2>
           </div>
-        </div>
-      </section>
+          <div class="sv-line">
+            <div class="sv-step"><span class="when">Step 01 · Week 1</span><h3>Initial audit</h3><p>Site technical review, risk identification and immediate remediation plan.</p></div>
+            <div class="sv-step"><span class="when">Step 02 · Week 1–2</span><h3>Setup</h3><p>Monitoring installation, backup configuration and critical issue resolution.</p></div>
+            <div class="sv-step"><span class="when">Step 03 · Month 1+</span><h3>Continuous operation</h3><p>Updates, backups, monitoring and incident response per SLA.</p></div>
+            <div class="sv-step"><span class="when">Step 04 · Each month</span><h3>Report</h3><p>Transparent report with everything done, site metrics and recommendations.</p></div>
+          </div>
+        </section>
 
-      <section class="lp-section">
-        <div class="section-inner">
-          <p class="eyebrow">Frequently asked</p>
-          <h2>What people ask the most.</h2>
-          <div class="faq-list">
+        <!-- ── § 05 · FAQ ──────────────────────────────────────────── -->
+        <section class="sv-section">
+          <div class="sv-sec-head">
+            <span class="sv-sec-num">05 — FAQ</span>
+            <h2 class="sv-h2">What people ask the most.</h2>
+          </div>
+          <div class="sv-faq">
             <details class="faq-item">
               <summary>How much does web maintenance cost in Mexico?</summary>
               <p>Basic plan from <strong>$800 MXN/mo</strong> (security + backups + monitoring + report).
@@ -215,36 +241,39 @@
                 <strong>Inquiries/improvements:</strong> &lt; 48h. Priority plan cuts all in half.</p>
             </details>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="lp-final-cta">
-        <h2>Is your site <span class="t-lime">protected and backed up?</span></h2>
-        <p>We review your site for free and tell you exactly what state it's in. No commitment.</p>
-        <div class="lp-cta-row">
-          <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Schedule a Free Review</a>
-          <a href="https://wa.me/525531007101?text=Hi%2C%20I%20saw%20your%20Web%20Maintenance%20page%20and%20I%27d%20like%20more%20information." target="_blank" rel="noopener" class="btn-ghost ht">Send WhatsApp</a>
-        </div>
-      </section>
-
-      <section class="lp-related">
-        <div class="section-inner">
-          <h2>More services for your digital presence</h2>
-          <div class="lp-related-grid">
-            <a href="/en/services/web-development/" class="lp-related-card"><span class="label">01</span><p>Web Development</p></a>
-            <a href="/en/services/seo/" class="lp-related-card"><span class="label">04</span><p>SEO &amp; Visibility</p></a>
-            <a href="/en/services/online-stores/" class="lp-related-card"><span class="label">02</span><p>eCommerce Stores</p></a>
-            <a href="/en/services/digital-branding/" class="lp-related-card"><span class="label">03</span><p>Digital Branding</p></a>
-            <a href="/en/services/digital-consulting/" class="lp-related-card"><span class="label">06</span><p>Digital Consulting</p></a>
+        <!-- ── Work order (final CTA) ──────────────────────────────── -->
+        <section class="sv-order" data-label="Work order">
+          <h2>Is your site <span class="t-lime">protected and backed up?</span></h2>
+          <p>We review your site for free and tell you exactly what state it's in. No commitment.</p>
+          <div class="sv-cta-row">
+            <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Schedule a Free Review</a>
+            <a href="https://wa.me/525531007101?text=Hi%2C%20I%20saw%20your%20Web%20Maintenance%20page%20and%20I%27d%20like%20more%20information." target="_blank" rel="noopener" class="btn-ghost ht">Send WhatsApp</a>
           </div>
-        </div>
-      </section>
+        </section>
 
+        <!-- ── § 06 · Service catalog ──────────────────────────────── -->
+        <section class="sv-section">
+          <div class="sv-sec-head">
+            <span class="sv-sec-num">06 — Catalog</span>
+            <h2 class="sv-h2">More services for your digital presence.</h2>
+          </div>
+          <div class="sv-catalog">
+            <a href="/en/services/web-development/" class="sv-catalog-row"><span class="code">SRV-01</span><span class="name">Web Development</span><span class="arrow">→</span></a>
+            <a href="/en/services/online-stores/" class="sv-catalog-row"><span class="code">SRV-02</span><span class="name">Online Stores</span><span class="arrow">→</span></a>
+            <a href="/en/services/digital-branding/" class="sv-catalog-row"><span class="code">SRV-03</span><span class="name">Digital Branding</span><span class="arrow">→</span></a>
+            <a href="/en/services/seo/" class="sv-catalog-row"><span class="code">SRV-04</span><span class="name">SEO + AI Search</span><span class="arrow">→</span></a>
+            <a href="/en/services/digital-consulting/" class="sv-catalog-row"><span class="code">SRV-06</span><span class="name">Digital Consulting</span><span class="arrow">→</span></a>
+          </div>
+        </section>
+
+      </div>
     </main>
 
     <div id="footer-placeholder"></div>
   </div>
-  <script src="/components/reveal-cards.js?v=20260703b" defer></script>
+  <script src="/components/reveal-cards.js?v=20260705a" defer></script>
   <script src="/components/lang-toggle.js?v=20260604c" defer></script>
 </body>
 

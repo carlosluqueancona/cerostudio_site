@@ -5,9 +5,12 @@
    NO reintroducir @import aquí — es render-blocking encadenado y duplica la descarga. */
 
 :root {
-  --black:       #0a0a0a;
+  --black:       #131313;
   --white:       #ffffff;
   --lime:        #b2f700;
+  --lime-rgb:    178, 247, 0;    /* = --lime; para rgba(var(--lime-rgb), a) */
+  --lime-bright: #ceff33;        /* variante brillante: rejillas y hovers */
+  --lime-bright-rgb: 206, 255, 51;
   --gray1:       #111111;
   --gray2:       #1a1a1a;
   --gray3:       #2a2a2a;
