@@ -45,7 +45,7 @@
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
   text-decoration: none;
-  border-radius: 4px;
+  border-radius: 0;
   transition: top .2s;
 }
 .skip-to-content:focus {
@@ -135,7 +135,23 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   display: flex;
   flex-direction: column;
   height: 100%;
+  position: relative;
 }
+/* Línea lime de hover — firma del lenguaje kinetic brutalism del sitio */
+.post-card::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--lime);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .35s cubic-bezier(.65, 0, .35, 1);
+  z-index: 1;
+}
+.post-card:hover::after { transform: scaleX(1); }
 
 .post-card:hover {
   background: var(--surface-low);
@@ -188,7 +204,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .post-card-title {
   font-family: var(--fd);
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
   line-height: 1.1;
   margin-bottom: 16px;
@@ -484,11 +500,16 @@ footer {
   justify-content: center;
   gap: 28px;
   transform: translateY(-100%);
-  transition: transform .6s cubic-bezier(.76, 0, .24, 1);
+  /* visibility evita que el contenido que desborda el panel (viewports
+     bajos) quede visible bajo el navbar con el menú cerrado */
+  visibility: hidden;
+  transition: transform .6s cubic-bezier(.76, 0, .24, 1), visibility 0s linear .6s;
 }
 
 #mobileNav.open {
   transform: translateY(0);
+  visibility: visible;
+  transition: transform .6s cubic-bezier(.76, 0, .24, 1), visibility 0s;
 }
 
 #mobileNav a {
@@ -586,7 +607,7 @@ footer {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   padding: 16px 40px;
-  border-radius: 4px;
+  border-radius: 0;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
