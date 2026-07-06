@@ -62,3 +62,4 @@ _archivo/
 
 # Fotos fuente del CEO (originales alta resolución, no al deploy)
 Fotos-Carlos_Luque/
+.dev.vars
