@@ -48,7 +48,7 @@
   <!-- Fonts loaded asynchronously to avoid render-blocking -->
   <link rel="preload"
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
-    as="style" onload="this.onload=null;this.rel='stylesheet'">
+    as="style" data-async>
   <noscript>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   </noscript>
@@ -59,7 +59,7 @@
 
 <body>
   <div class="site-wrapper">
-    <script src="/components/loader.js" defer></script>
+    <script src="/components/loader.js?v=20260706a" defer></script>
     <!-- Grain Overlay -->
     <svg class="noise" xmlns="http://www.w3.org/2000/svg" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: .05; z-index: 1000;">
       <filter id="nf">
@@ -88,7 +88,7 @@
     <div id="footer-placeholder"></div>
   </div>
 
-  <script src="/blog/blog.js?v=20260705b"></script>
+  <script src="/blog/blog.js?v=20260706a"></script>
   <script src="/components/lang-toggle.js?v=20260604c" defer></script>
 </body>
 

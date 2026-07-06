@@ -39,7 +39,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload"
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
-    as="style" onload="this.onload=null;this.rel='stylesheet'">
+    as="style" data-async>
   <noscript><link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
       rel="stylesheet"></noscript>
@@ -266,21 +266,6 @@
 
   <!-- Navbar handlers para botones inyectados por middleware. Esta página NO
        carga /js/home.js, así que define versiones locales mínimas. -->
-  <script>
-    window.toggleLang = function () { window.location.href = '/en/case-studies/sergio-luque/'; };
-    window.toggleNav = function () {
-      var m = document.getElementById('mobileNav');
-      var h = document.getElementById('navHam');
-      if (m) m.classList.toggle('open');
-      if (h) h.classList.toggle('open');
-    };
-    window.closeNav = function () {
-      var m = document.getElementById('mobileNav');
-      var h = document.getElementById('navHam');
-      if (m) m.classList.remove('open');
-      if (h) h.classList.remove('open');
-    };
-  </script>
 </head>
 
 <body>
@@ -570,9 +555,10 @@
     <div id="footer-placeholder"></div>
   </div>
 
-  <script src="/components/loader.js" defer></script>
+  <script src="/components/loader.js?v=20260706a" defer></script>
   <script src="/components/reveal-cards.js?v=20260705a" defer></script>
   <script src="/components/cursor.js" defer></script>
+  <script src="/components/lang-toggle.js?v=20260604c" defer></script>
 </body>
 
 </html>

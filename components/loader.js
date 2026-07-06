@@ -5,14 +5,14 @@
   var IS_EN = window.location.pathname.indexOf('/en/') === 0;
 
   var NAVBAR_ES = '<div id="mobileNav">' +
-    '<a href="/#servicios" onclick="closeNav()" id="mnav-servicios">Servicios</a>' +
-    '<a href="/#portafolio" onclick="closeNav()" id="mnav-portafolio">Portafolio</a>' +
-    '<a href="/casos-de-exito/" onclick="closeNav()" id="mnav-casos">Casos de éxito</a>' +
-    '<a href="/#nosotros" onclick="closeNav()" id="mnav-nosotros">Nosotros</a>' +
-    '<a href="/#precios" onclick="closeNav()" id="mnav-precios">Precios</a>' +
-    '<a href="/#contacto" onclick="closeNav()" id="mnav-contacto">Contacto</a>' +
-    '<a href="/blog/" onclick="closeNav()" id="mnav-blog">Blog</a>' +
-    '<button id="mnav-lang" class="lang-btn-mobile ht" onclick="toggleLang();closeNav();">EN</button>' +
+    '<a href="/#servicios" id="mnav-servicios">Servicios</a>' +
+    '<a href="/#portafolio" id="mnav-portafolio">Portafolio</a>' +
+    '<a href="/casos-de-exito/" id="mnav-casos">Casos de éxito</a>' +
+    '<a href="/#nosotros" id="mnav-nosotros">Nosotros</a>' +
+    '<a href="/#precios" id="mnav-precios">Precios</a>' +
+    '<a href="/#contacto" id="mnav-contacto">Contacto</a>' +
+    '<a href="/blog/" id="mnav-blog">Blog</a>' +
+    '<button id="mnav-lang" class="lang-btn-mobile ht">EN</button>' +
     '</div>' +
     '<nav id="navbar">' +
     '<a href="/" class="ht"><img src="/images/svg/Cero_Studio_AI_Horizontal.svg" alt="Cero Studio" class="nav-logo"></a>' +
@@ -25,19 +25,19 @@
     '<li><a href="/#contacto" class="ht" id="nav-contacto">Contacto</a></li>' +
     '<li><a href="/blog/" class="ht" id="nav-blog">Blog</a></li>' +
     '</ul>' +
-    '<button id="langToggle" class="lang-btn ht" onclick="toggleLang()">EN</button>' +
+    '<button id="langToggle" class="lang-btn ht">EN</button>' +
     '<a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="nav-cta ht" id="nav-cta">Hablemos</a>' +
-    '<div class="nav-ham ht" id="navHam" onclick="toggleNav()"><span></span><span></span><span></span></div>' +
+    '<div class="nav-ham ht" id="navHam"><span></span><span></span><span></span></div>' +
     '</nav>';
 
   var NAVBAR_EN = '<div id="mobileNav">' +
-    '<a href="/en/#servicios" onclick="closeNav()" id="mnav-servicios">Services</a>' +
-    '<a href="/en/#portafolio" onclick="closeNav()" id="mnav-portafolio">Portfolio</a>' +
-    '<a href="/en/about-us/" onclick="closeNav()" id="mnav-nosotros">About</a>' +
-    '<a href="/en/#precios" onclick="closeNav()" id="mnav-precios">Pricing</a>' +
-    '<a href="/en/#contacto" onclick="closeNav()" id="mnav-contacto">Contact</a>' +
-    '<a href="/blog/" onclick="closeNav()" id="mnav-blog">Blog</a>' +
-    '<button id="mnav-lang" class="lang-btn-mobile ht" onclick="toggleLang();closeNav();">ES</button>' +
+    '<a href="/en/#servicios" id="mnav-servicios">Services</a>' +
+    '<a href="/en/#portafolio" id="mnav-portafolio">Portfolio</a>' +
+    '<a href="/en/about-us/" id="mnav-nosotros">About</a>' +
+    '<a href="/en/#precios" id="mnav-precios">Pricing</a>' +
+    '<a href="/en/#contacto" id="mnav-contacto">Contact</a>' +
+    '<a href="/blog/" id="mnav-blog">Blog</a>' +
+    '<button id="mnav-lang" class="lang-btn-mobile ht">ES</button>' +
     '</div>' +
     '<nav id="navbar">' +
     '<a href="/en/" class="ht"><img src="/images/svg/Cero_Studio_AI_Horizontal.svg" alt="Cero Studio" class="nav-logo"></a>' +
@@ -50,9 +50,9 @@
     '<li><a href="/en/#contacto" class="ht" id="nav-contacto">Contact</a></li>' +
     '<li><a href="/blog/" class="ht" id="nav-blog">Blog</a></li>' +
     '</ul>' +
-    '<button id="langToggle" class="lang-btn ht active-en" onclick="toggleLang()">ES</button>' +
+    '<button id="langToggle" class="lang-btn ht active-en">ES</button>' +
     '<a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="nav-cta ht" id="nav-cta">Let\'s Talk</a>' +
-    '<div class="nav-ham ht" id="navHam" onclick="toggleNav()"><span></span><span></span><span></span></div>' +
+    '<div class="nav-ham ht" id="navHam"><span></span><span></span><span></span></div>' +
     '</nav>';
 
   var FOOTER_ES = '<footer>' +
@@ -183,6 +183,39 @@
 
     document.dispatchEvent(new CustomEvent('csComponentsReady'));
   }
+
+  /* ── CSP-safe (sin inline handlers) ─────────────────────────────
+     1) CSS async: los <link rel="preload" as="style" data-async> se
+        promueven a stylesheet aquí (antes: onload= inline, bloqueado
+        por CSP sin 'unsafe-inline').
+     2) Fallbacks toggleNav/closeNav si la página no los define (home.js
+        define los suyos; las internas usan estos).
+     3) Delegación de clicks del navbar (antes: onclick= en los partials). */
+  document.querySelectorAll('link[rel="preload"][as="style"][data-async]').forEach(function (l) {
+    l.rel = 'stylesheet';
+  });
+
+  if (!window.toggleNav) window.toggleNav = function () {
+    var m = document.getElementById('mobileNav');
+    var h = document.getElementById('navHam');
+    if (m) m.classList.toggle('open');
+    if (h) h.classList.toggle('open');
+  };
+  if (!window.closeNav) window.closeNav = function () {
+    var m = document.getElementById('mobileNav');
+    var h = document.getElementById('navHam');
+    if (m) m.classList.remove('open');
+    if (h) h.classList.remove('open');
+  };
+
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest ? e.target.closest('#navHam, #langToggle, #mnav-lang, #mobileNav a') : null;
+    if (!t) return;
+    if (t.id === 'navHam') { window.toggleNav(); return; }
+    if (t.id === 'langToggle') { if (window.toggleLang) window.toggleLang(); return; }
+    if (t.id === 'mnav-lang') { if (window.toggleLang) window.toggleLang(); window.closeNav(); return; }
+    window.closeNav(); /* links del mobileNav */
+  });
 
   init();
 })();

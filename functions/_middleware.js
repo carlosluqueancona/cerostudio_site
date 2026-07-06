@@ -121,7 +121,7 @@ async function loadPartial(env, baseUrl, path, cache) {
 // transformadas por Functions (la home y el blog SSR salían SIN CSP), así que
 // se setea aquí. Mantener en sync con la sección "/" de _headers.
 // /blog/admin se excluye: su CSP más permisivo (uploads a R2) sí llega vía _headers.
-const PUBLIC_CSP = "default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://cdnjs.cloudflare.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://analytics.google.com; frame-src https://challenges.cloudflare.com; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://intake.cerostudio.ai";
+const PUBLIC_CSP = "default-src 'self'; script-src 'self' https://challenges.cloudflare.com https://cdnjs.cloudflare.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://analytics.google.com; frame-src https://challenges.cloudflare.com; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://intake.cerostudio.ai";
 
 function withCsp(response, pathname) {
   if (pathname.startsWith('/blog/admin')) return response;

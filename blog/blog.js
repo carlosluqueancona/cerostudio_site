@@ -111,7 +111,7 @@ function postCardHtml(post) {
   const thumbHtml = post.featured_image
     ? '<div class="post-card-thumb"><img src="' + post.featured_image + '" alt="' + post.title + '" loading="lazy"></div>'
     : '';
-  return '<article class="post-card' + (post.featured_image ? ' has-thumb' : '') + '" onclick="navigate(null, \'/blog/' + post.slug + '\')" style="cursor: pointer;">'
+  return '<article class="post-card' + (post.featured_image ? ' has-thumb' : '') + '" data-route="/blog/' + post.slug + '" style="cursor: pointer;">'
     + thumbHtml
     + '<div class="post-card-body">'
     + '<div class="post-card-cat">' + (post.category || 'General') + '</div>'
@@ -159,7 +159,7 @@ async function renderList() {
         ${cardsHtml}
       </div>
       <div class="load-more-wrap" id="load-more-wrap" style="${hasMore ? '' : 'display:none'}">
-        <button class="load-more-btn" id="load-more-btn" onclick="loadMore()">Ver más artículos</button>
+        <button class="load-more-btn" id="load-more-btn" data-action="load-more">Ver más artículos</button>
       </div>
     </div>
   `;
@@ -243,7 +243,7 @@ async function renderPost(slug) {
 
     root.innerHTML = `
       <article class="article-container">
-        <a href="/blog/" onclick="navigate(event, '/blog/')" class="back-link">
+        <a href="/blog/" data-route="/blog/" class="back-link">
           ← Volver al blog
         </a>
 
@@ -265,7 +265,7 @@ ${ARTICLE_CTA_END}
     
     document.title = `${post.title} — Blog Cero Studio`;
   } catch (error) {
-    root.innerHTML = `<div class="section-inner" style="padding: 100px 0; text-align: center;">Artículo no encontrado. <br><br> <a href="/blog/" onclick="navigate(event, '/blog/')" class="back-link">Volver al blog</a></div>`;
+    root.innerHTML = `<div class="section-inner" style="padding: 100px 0; text-align: center;">Artículo no encontrado. <br><br> <a href="/blog/" data-route="/blog/" class="back-link">Volver al blog</a></div>`;
   }
 }
 
@@ -279,7 +279,14 @@ function formatDate(dateStr) {
   });
 }
 
-// Global scope for onclick handlers in strings
+/* Delegación CSP-safe: los templates usan data-route / data-action
+   en vez de handlers inline (bloqueados por CSP sin 'unsafe-inline'). */
+document.addEventListener('click', function (e) {
+  if (!e.target.closest) return;
+  if (e.target.closest('[data-action="load-more"]')) { loadMore(); return; }
+  var r = e.target.closest('[data-route]');
+  if (r) navigate(e, r.getAttribute('data-route'));
+});
 window.navigate = navigate;
 window.loadMore = loadMore;
 

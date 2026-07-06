@@ -87,7 +87,7 @@ function buildArticleHtml(post) {
   return [
     '<a id="main-content" tabindex="-1"></a>',
     '<article class="article-container">',
-    `  <a href="/blog/" onclick="navigate(event, '/blog/')" class="back-link">← Volver al blog</a>`,
+    '  <a href="/blog/" data-route="/blog/" class="back-link">← Volver al blog</a>',
     '  <header class="article-header">',
     `    <div class="post-card-cat" style="margin-bottom: 24px;">${escAttr(post.category || 'General')}</div>`,
     `    <h1 class="article-title">${escAttr(post.title)}</h1>`,

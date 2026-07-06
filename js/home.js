@@ -1101,4 +1101,7 @@
       window.closeNav = closeNav;
       window.toggleLang = toggleLang;
       window.handleSubmit = handleSubmit;
+      /* CSP-safe: el form ya no usa onsubmit= inline */
+      var _cf = document.getElementById('contactForm');
+      if (_cf) _cf.addEventListener('submit', handleSubmit);
     }); // end DOMContentLoaded

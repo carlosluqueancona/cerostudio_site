@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload"
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
-    as="style" onload="this.onload=null;this.rel='stylesheet'">
+    as="style" data-async>
   <noscript>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   </noscript>
@@ -58,8 +58,8 @@
 <main>
   <div class="priv-wrap">
     <div class="lang-toggle">
-      <button class="lang-btn active" id="btn-es" onclick="privLang('es')">Español</button>
-      <button class="lang-btn"        id="btn-en" onclick="privLang('en')">English</button>
+      <button class="lang-btn active" id="btn-es" data-privlang="es">Español</button>
+      <button class="lang-btn"        id="btn-en" data-privlang="en">English</button>
     </div>
 
     <!-- ── ESPAÑOL ── -->
@@ -121,9 +121,9 @@
       <h2>4. Tu elección de cookies</h2>
       <p>Puedes cambiar tu preferencia en cualquier momento:</p>
       <div class="consent-actions">
-        <button class="btn-accept" onclick="acceptCookies()">Aceptar cookies de analítica</button>
-        <button class="btn-reject" onclick="rejectCookies()">Solo cookies esenciales</button>
-        <button class="btn-reject" onclick="resetConsent()">↺ Ver banner de nuevo</button>
+        <button class="btn-accept" data-consent="accept">Aceptar cookies de analítica</button>
+        <button class="btn-reject" data-consent="reject">Solo cookies esenciales</button>
+        <button class="btn-reject" data-consent="reset">↺ Ver banner de nuevo</button>
       </div>
       <div id="consent-status"></div>
 
@@ -229,9 +229,9 @@
       <h2>4. Your Cookie Choices</h2>
       <p>You can change your preference at any time:</p>
       <div class="consent-actions">
-        <button class="btn-accept" onclick="acceptCookies()">Accept analytics cookies</button>
-        <button class="btn-reject" onclick="rejectCookies()">Essential cookies only</button>
-        <button class="btn-reject" onclick="resetConsent()">↺ See banner again</button>
+        <button class="btn-accept" data-consent="accept">Accept analytics cookies</button>
+        <button class="btn-reject" data-consent="reject">Essential cookies only</button>
+        <button class="btn-reject" data-consent="reset">↺ See banner again</button>
       </div>
       <div id="consent-status-en"></div>
 
@@ -281,70 +281,7 @@
 </main>
 
 <div id="footer-placeholder"></div>
-<script src="/components/loader.js" defer></script>
-<script>
-  var CS_KEY = 'cs_cookie_consent';
-
-  function saveConsent(v) {
-    try { localStorage.setItem(CS_KEY, v); } catch(e) {}
-  }
-
-  function acceptCookies() {
-    saveConsent('accepted');
-    updateConsentStatus();
-    // Load GTM if not already loaded
-    if (!window._gtmLoaded) {
-      window._gtmLoaded = true;
-      var s = document.createElement('script');
-      s.async = true;
-      s.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-PDS8GXPB';
-      document.head.appendChild(s);
-    }
-    // Remove the cookie bar if visible
-    var bar = document.getElementById('cs-cookie-bar');
-    if (bar) bar.remove();
-  }
-
-  function rejectCookies() {
-    saveConsent('rejected');
-    updateConsentStatus();
-    var bar = document.getElementById('cs-cookie-bar');
-    if (bar) bar.remove();
-  }
-
-  function resetConsent() {
-    try { localStorage.removeItem(CS_KEY); } catch(e) {}
-    // Redirect to homepage — banner will appear there naturally
-    window.location.href = '/';
-  }
-
-  function updateConsentStatus() {
-    var v;
-    try { v = localStorage.getItem(CS_KEY); } catch(e) {}
-    var esEl = document.getElementById('consent-status');
-    var enEl = document.getElementById('consent-status-en');
-    var label, cls;
-    if (v === 'accepted')      { label = { es: 'Aceptado',         en: 'Accepted'        }; cls = 'accepted'; }
-    else if (v === 'rejected') { label = { es: 'Solo esenciales',  en: 'Essential only'  }; cls = 'rejected'; }
-    else                       { label = { es: 'Sin decisión',     en: 'No decision yet' }; cls = 'pending';  }
-    if (esEl) esEl.innerHTML = 'Preferencia actual: <span class="' + cls + '">' + label.es + '</span>';
-    if (enEl) enEl.innerHTML = 'Current preference: <span class="' + cls + '">' + label.en + '</span>';
-  }
-
-  function privLang(l) {
-    document.getElementById('sec-es').classList.toggle('active', l === 'es');
-    document.getElementById('sec-en').classList.toggle('active', l === 'en');
-    document.getElementById('btn-es').classList.toggle('active', l === 'es');
-    document.getElementById('btn-en').classList.toggle('active', l === 'en');
-  }
-
-  updateConsentStatus();
-
-  try {
-    var urlLang = new URLSearchParams(window.location.search).get('lang');
-    var storedLang = localStorage.getItem('cs-lang');
-    if ((urlLang || storedLang) === 'en') privLang('en');
-  } catch(e) {}
-</script>
+<script src="/components/loader.js?v=20260706a" defer></script>
+  <script src="/privacidad/privacidad.js?v=20260706a" defer></script>
 </body>
 </html>
