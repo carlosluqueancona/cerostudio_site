@@ -490,6 +490,12 @@
           'precios-headline': { h: 'Precios<br><em>sin letra chica.</em>' },
           'precios-urgency': { t: 'Solo disponible para los primeros 5 clientes del mes' },
           'precios-trust-text': { h: 'Pago único. Sin sorpresas al final.<br>Fecha de entrega garantizada por escrito.' },
+          'res-l1': { t: 'retorno de su inversión en ventas' },
+          'res-c1': { t: 'IMVEC · ver caso →' },
+          'res-l2': { t: 'más ventas en 2 meses' },
+          'res-c2': { t: 'Mainoflex · ver caso →' },
+          'res-l3': { t: 'proyectos entregados' },
+          'res-c3': { t: 'Ver todos los casos →' },
           'dominate-headline': { h: '¿Listo<br>para<br>dominar?' },
           'dominate-sub': { h: 'Primera consulta gratis.<br>Sin compromisos.' },
           'dominate-cta': { t: 'Iniciar Proyecto' },
@@ -686,6 +692,12 @@
           'precios-headline': { h: 'Pricing<br><em>no hidden fees.</em>' },
           'precios-urgency': { t: 'Available for the first 5 clients each month' },
           'precios-trust-text': { h: 'One-time payment. No surprises at the end.<br>Delivery date guaranteed in writing.' },
+          'res-l1': { t: 'return on their sales investment' },
+          'res-c1': { t: 'IMVEC · view case →' },
+          'res-l2': { t: 'more sales in 2 months' },
+          'res-c2': { t: 'Mainoflex · view case →' },
+          'res-l3': { t: 'projects delivered' },
+          'res-c3': { t: 'View all case studies →' },
           'dominate-headline': { h: 'Ready<br>to<br>dominate?' },
           'dominate-sub': { h: 'Free first consultation.<br>No commitments.' },
           'dominate-cta': { t: 'Start Your Project' },
@@ -1062,6 +1074,9 @@
             label.textContent = msgs.send;
             if (window.turnstile) window.turnstile.reset(); /* el token es de un solo uso */
             if (res.ok) {
+              /* Conversión medible: GTM define el tag GA4 sobre este evento */
+              window.dataLayer = window.dataLayer || [];
+              window.dataLayer.push({ event: 'lead_form_submit', form_type: payload.servicio || 'contacto' });
               setFeedback('success', msgs.success);
               form.reset();
             } else {

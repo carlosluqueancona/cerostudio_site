@@ -2628,3 +2628,72 @@
       .stakes-card.in-view { background: #101010; }
       .stakes-card.in-view::before { -webkit-text-stroke-color: rgba(178, 247, 0, .45); transition: -webkit-text-stroke-color .9s ease .5s; }
     }
+
+    /* ── Franja de resultados (prueba social con métricas reales) ── */
+    .results-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(255, 255, 255, .14);
+      border: 1px solid rgba(255, 255, 255, .14);
+      margin: 48px 0 56px;
+    }
+    .res-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: var(--bg);
+      padding: 28px 26px;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+    .res-item::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--lime);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .35s cubic-bezier(.65, 0, .35, 1);
+    }
+    .res-item:hover::after { transform: scaleX(1); }
+    .res-num {
+      font-family: var(--fd);
+      font-size: clamp(30px, 3.6vw, 44px);
+      font-weight: 700;
+      letter-spacing: -.02em;
+      line-height: 1;
+      color: var(--lime);
+    }
+    .res-label {
+      font-family: var(--fb);
+      font-size: 14px;
+      font-weight: 300;
+      color: rgba(255, 255, 255, .75);
+    }
+    .res-case {
+      font-family: var(--fd);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .45);
+      margin-top: 8px;
+      transition: color .2s ease;
+    }
+    .res-item:hover .res-case { color: var(--lime); }
+    @media (max-width: 520px) {
+      .results-strip {
+        grid-template-columns: 1fr;
+        gap: 0;
+        background: transparent;
+        border-left: none;
+        border-right: none;
+      }
+      .res-item { border-bottom: 1px solid rgba(255, 255, 255, .14); padding: 22px 4px; }
+      .res-item:last-child { border-bottom: none; }
+    }
