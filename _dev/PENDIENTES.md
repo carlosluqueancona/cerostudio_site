@@ -16,13 +16,6 @@
 - [ ] **Google Business Profile**: completar perfil + pedir reseña por WhatsApp a
   Gustavo (IMVEC), Jesús (Mainoflex) y Ricardo (Seminuevos Coapa).
 
-## 🟡 Carlos — decisiones que me desbloquean
-
-- [ ] **Worktrees viejos** (~25 MB en `.claude/worktrees/`): 5 verificados sin trabajo
-  único (`brutalist-servicios-web`, `en-navbar-middleware`, `flamboyant-margulis`,
-  `keen-brahmagupta`, `seo-phase-1-safe`). Puedes revisarlos y dar OK para retirarlos
-  (irían archivados, no borrados) — o se quedan como están.
-
 ## 🟠 Carlos — cuando haya tiempo/presupuesto
 
 - [ ] **Pauta Google Ads** de alta intención ("cuánto cuesta página web méxico",
@@ -42,6 +35,7 @@
 
 | Fecha | Qué |
 |---|---|
+| 6 jul | Worktrees: los 6 retirados con OK de Carlos — evidencia y SHAs de rescate en `_archivo/worktrees-retirados-2026-07-06/LEEME.md`; commit huérfano anclado con tag `archivo/keen-brahmagupta-mobilenav` |
 | 6 jul | CSP sin `unsafe-inline` en script-src sitewide (admin conserva) — ~50 handlers refactorizados a delegación; verificado en prod sin violaciones |
 | 6 jul | Navbar tablet: logo 54px blindado + CASOS/BLOG ocultos en 769–1100px |
 | 6 jul | LocalBusiness: RESUELTO por decisión técnica — sin dirección física, Google lo penaliza; el schema Organization actual es lo correcto para remoto. Revisitar solo si algún día hay oficina |
