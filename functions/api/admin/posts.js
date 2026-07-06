@@ -10,7 +10,7 @@
  * POST   /api/admin/posts?action=toggle&id=N → toggle published/draft
  */
 
-import { corsHeaders, json, parseId, requireAuth } from './_shared.js';
+import { corsHeaders, json, parseId, purgeBlogCache, requireAuth } from './_shared.js';
 
 function slugify(text) {
   const map = { á:'a', é:'e', í:'i', ó:'o', ú:'u', ñ:'n', ü:'u',
@@ -68,6 +68,21 @@ export async function onRequestGet(context) {
   }
 }
 
+/**
+ * Programación: status='scheduled' exige published_at futuro (ISO).
+ * Devuelve {status, pub} normalizados o {error}.
+ */
+function resolveSchedule(status, scheduledAt, fallbackPub) {
+  if (status === 'scheduled') {
+    const d = new Date(scheduledAt || '');
+    if (isNaN(d)) return { error: 'Fecha de programación inválida' };
+    if (d.getTime() <= Date.now()) return { error: 'La fecha de programación debe ser futura' };
+    return { status: 'scheduled', pub: d.toISOString() };
+  }
+  if (status === 'published') return { status, pub: fallbackPub !== undefined ? fallbackPub : new Date().toISOString() };
+  return { status: 'draft', pub: fallbackPub !== undefined ? fallbackPub : null };
+}
+
 /** POST — create post OR toggle status */
 export async function onRequestPost(context) {
   const { request, env } = context;
@@ -81,12 +96,14 @@ export async function onRequestPost(context) {
     const id = parseId(searchParams.get('id'));
     if (!id) return json({ error: 'ID requerido o inválido' }, 400, origin);
     try {
-      const post = await env.DB.prepare('SELECT status FROM posts WHERE id = ?').bind(id).first();
+      const post = await env.DB.prepare('SELECT status, slug FROM posts WHERE id = ?').bind(id).first();
       if (!post) return json({ error: 'No encontrado' }, 404, origin);
+      // published → draft · draft/scheduled → published (ahora)
       const newStatus = post.status === 'published' ? 'draft' : 'published';
       const pub = newStatus === 'published' ? new Date().toISOString() : null;
       await env.DB.prepare('UPDATE posts SET status = ?, published_at = ? WHERE id = ?')
         .bind(newStatus, pub, id).run();
+      context.waitUntil?.(purgeBlogCache(env, [post.slug]));
       return json({ ok: true, status: newStatus }, 200, origin);
     } catch (e) {
       console.error('[posts] toggle error:', e.message);
@@ -103,7 +120,9 @@ export async function onRequestPost(context) {
     if (!title) return json({ error: 'El título es obligatorio' }, 400, origin);
 
     const slug = slugify(body.slug || title);
-    const pub  = status === 'published' ? new Date().toISOString() : null;
+    const sched = resolveSchedule(status, body.scheduled_at);
+    if (sched.error) return json({ error: sched.error }, 400, origin);
+    const pub = sched.pub;
 
     const result = await env.DB.prepare(`
       INSERT INTO posts
@@ -111,12 +130,13 @@ export async function onRequestPost(context) {
          featured_image, featured_image_alt, excerpt, content, published_at)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
-      title, slug, category || '', status || 'draft',
+      title, slug, category || '', sched.status,
       meta_title || '', meta_description || '',
       featured_image || '', featured_image_alt || '',
       excerpt || '', content || '', pub
     ).run();
 
+    context.waitUntil?.(purgeBlogCache(env, [slug]));
     return json({ ok: true, id: result.meta.last_row_id }, 201, origin);
   } catch (e) {
     if (e.message?.includes('UNIQUE')) return json({ error: 'Ya existe un artículo con ese slug' }, 409, origin);
@@ -140,12 +160,15 @@ export async function onRequestPut(context) {
     if (!title) return json({ error: 'El título es obligatorio' }, 400, origin);
 
     const slug     = slugify(body.slug || title);
-    const existing = await env.DB.prepare('SELECT status, published_at FROM posts WHERE id = ?').bind(id).first();
+    const existing = await env.DB.prepare('SELECT status, published_at, slug FROM posts WHERE id = ?').bind(id).first();
     if (!existing) return json({ error: 'No encontrado' }, 404, origin);
 
-    const pub = (status === 'published' && existing.status !== 'published')
-      ? new Date().toISOString()
+    const fallbackPub = (status === 'published' && existing.status !== 'published')
+      ? undefined /* resolveSchedule pone now() */
       : existing.published_at;
+    const sched = resolveSchedule(status, body.scheduled_at, fallbackPub);
+    if (sched.error) return json({ error: sched.error }, 400, origin);
+    const pub = sched.pub;
 
     await env.DB.prepare(`
       UPDATE posts
@@ -155,12 +178,13 @@ export async function onRequestPut(context) {
           excerpt = ?, content = ?, published_at = ?
       WHERE id = ?
     `).bind(
-      title, slug, category || '', status || 'draft',
+      title, slug, category || '', sched.status,
       meta_title || '', meta_description || '',
       featured_image || '', featured_image_alt || '',
       excerpt || '', content || '', pub, id
     ).run();
 
+    context.waitUntil?.(purgeBlogCache(env, [slug, existing.slug]));
     return json({ ok: true }, 200, origin);
   } catch (e) {
     if (e.message?.includes('UNIQUE')) return json({ error: 'Ya existe un artículo con ese slug' }, 409, origin);
@@ -180,7 +204,9 @@ export async function onRequestDelete(context) {
   if (!id) return json({ error: 'ID requerido o inválido' }, 400, origin);
 
   try {
+    const post = await env.DB.prepare('SELECT slug FROM posts WHERE id = ?').bind(id).first();
     await env.DB.prepare('DELETE FROM posts WHERE id = ?').bind(id).run();
+    context.waitUntil?.(purgeBlogCache(env, [post?.slug]));
     return json({ ok: true }, 200, origin);
   } catch (e) {
     console.error('[posts] delete error:', e.message);

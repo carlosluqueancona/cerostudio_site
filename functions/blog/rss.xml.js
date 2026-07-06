@@ -56,7 +56,7 @@ export async function onRequestGet({ env }) {
       const r = await env.DB.prepare(
         `SELECT title, slug, category, featured_image, featured_image_alt,
                 excerpt, content, published_at
-         FROM posts WHERE status = 'published'
+         FROM posts WHERE (status = 'published' OR (status = 'scheduled' AND datetime(published_at) <= datetime('now')))
          ORDER BY published_at DESC LIMIT ${MAX_ITEMS}`
       ).all();
       results = r?.results || [];

@@ -10,7 +10,7 @@
 
 const HEADERS = {
   'Content-Type': 'application/json',
-  'Cache-Control': 'public, max-age=60, stale-while-revalidate=300',
+  'Cache-Control': 'public, max-age=60, stale-while-revalidate=60',
 };
 
 function json(data, status = 200) {
@@ -26,9 +26,17 @@ export async function onRequestGet(context) {
   const per      = Math.min(50, parseInt(searchParams.get('per') || '9', 10));
 
   try {
+    // Auto-promoción: los programados cuya hora ya llegó pasan a 'published'
+    // (Pages Functions no tiene cron; este es el endpoint más golpeado).
+    try {
+      await env.DB.prepare(
+        "UPDATE posts SET status = 'published' WHERE status = 'scheduled' AND datetime(published_at) <= datetime('now')"
+      ).run();
+    } catch {}
+
     if (slug) {
       const post = await env.DB.prepare(
-        "SELECT * FROM posts WHERE slug = ? AND status = 'published' LIMIT 1"
+        "SELECT * FROM posts WHERE slug = ? AND (status = 'published' OR (status = 'scheduled' AND datetime(published_at) <= datetime('now'))) LIMIT 1"
       ).bind(slug).first();
       return post ? json(post) : json({ error: 'Artículo no encontrado' }, 404);
     }
@@ -38,7 +46,7 @@ export async function onRequestGet(context) {
     if (category) {
       const { results } = await env.DB.prepare(
         `SELECT id, title, slug, category, excerpt, featured_image, published_at
-         FROM posts WHERE status = 'published' AND category = ?
+         FROM posts WHERE (status = 'published' OR (status = 'scheduled' AND datetime(published_at) <= datetime('now'))) AND category = ?
          ORDER BY published_at DESC LIMIT ? OFFSET ?`
       ).bind(category, per, offset).all();
       return json(results);
@@ -46,7 +54,7 @@ export async function onRequestGet(context) {
 
     const { results } = await env.DB.prepare(
       `SELECT id, title, slug, category, excerpt, featured_image, published_at
-       FROM posts WHERE status = 'published'
+       FROM posts WHERE (status = 'published' OR (status = 'scheduled' AND datetime(published_at) <= datetime('now')))
        ORDER BY published_at DESC LIMIT ? OFFSET ?`
     ).bind(per, offset).all();
 

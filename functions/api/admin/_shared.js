@@ -140,3 +140,38 @@ export function parseId(raw) {
   const n = parseInt(raw, 10);
   return Number.isFinite(n) && n > 0 ? n : null;
 }
+
+// ── Purge del edge de Cloudflare al mutar contenido del blog ────────────────
+// Best-effort: sin CF_ZONE_ID/CF_PURGE_TOKEN es no-op (el sitio funciona igual,
+// solo que el edge tarda ~5 min en reflejar cambios). El token solo necesita
+// el permiso Zone → Cache Purge sobre cerostudio.ai.
+export async function purgeBlogCache(env, slugs = []) {
+  if (!env?.CF_ZONE_ID || !env?.CF_PURGE_TOKEN) return false;
+  const BASE = 'https://cerostudio.ai';
+  const files = [
+    `${BASE}/blog/`,
+    `${BASE}/api/posts`,
+    `${BASE}/api/posts?page=1&per=50`, // la URL exacta que usa blog.js
+    `${BASE}/sitemap.xml`,
+    `${BASE}/llms.txt`,
+    `${BASE}/blog/rss.xml`,
+  ];
+  for (const slug of slugs.filter(Boolean)) {
+    files.push(`${BASE}/blog/${slug}`, `${BASE}/api/posts?slug=${encodeURIComponent(slug)}`);
+  }
+  try {
+    const r = await fetch(`https://api.cloudflare.com/client/v4/zones/${env.CF_ZONE_ID}/purge_cache`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${env.CF_PURGE_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ files }),
+    });
+    if (!r.ok) console.error('[purge] Cloudflare respondió', r.status, await r.text().catch(() => ''));
+    return r.ok;
+  } catch (e) {
+    console.error('[purge] error:', e.message);
+    return false;
+  }
+}

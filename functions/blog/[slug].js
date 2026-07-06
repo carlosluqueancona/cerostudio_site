@@ -131,7 +131,7 @@ export async function onRequest(context) {
                 featured_image, featured_image_alt, excerpt, content,
                 published_at, created_at
            FROM posts
-          WHERE slug = ? AND status = 'published'
+          WHERE slug = ? AND (status = 'published' OR (status = 'scheduled' AND datetime(published_at) <= datetime('now')))
           LIMIT 1`
       ).bind(slug).first();
       dbAvailable = true;

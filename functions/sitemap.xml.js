@@ -62,7 +62,7 @@ export async function onRequestGet({ env }) {
   try {
     if (env?.DB?.prepare) {
       const r = await env.DB.prepare(
-        "SELECT slug, published_at FROM posts WHERE status = 'published' ORDER BY published_at DESC"
+        "SELECT slug, published_at FROM posts WHERE (status = 'published' OR (status = 'scheduled' AND datetime(published_at) <= datetime('now'))) ORDER BY published_at DESC"
       ).all();
       results = r?.results || [];
     }

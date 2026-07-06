@@ -138,6 +138,7 @@
     .badge { display:inline-block; padding:3px 8px; font-family:var(--fd); font-size:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
     .badge-pub   { background:var(--lime-12); color:var(--lime); }
     .badge-draft { background:var(--amber-10);  color:var(--amber); }
+    .badge-sched { background:rgba(120,170,255,.12); color:#8ab4ff; }
 
     /* ── Search bar ── */
     .search-wrap { position:relative; margin-bottom:16px; }
@@ -643,7 +644,13 @@
             <select id="f-status">
               <option value="draft">Borrador</option>
               <option value="published">Publicado</option>
+              <option value="scheduled">Programado</option>
             </select>
+          </div>
+          <div id="f-schedule-wrap" style="display:none;">
+            <label for="f-schedule">Publicar el (hora local)</label>
+            <input type="datetime-local" id="f-schedule" />
+            <div style="font-size:10px;color:var(--gt);margin-top:4px;">Se publica solo a esa hora — nadie lo ve antes.</div>
           </div>
           <div>
             <label for="f-category">Categoría</label>
@@ -850,12 +857,12 @@ function renderTable(posts) {
         <div style="font-size:11px;color:var(--gt);margin-top:2px;">/blog/${esc(p.slug)}</div>
       </td>
       <td style="font-size:12px;color:var(--gt);">${esc(p.category || '—')}</td>
-      <td><span class="badge badge-${p.status === 'published' ? 'pub' : 'draft'}">${p.status === 'published' ? 'Publicado' : 'Borrador'}</span></td>
+      <td><span class="badge badge-${p.status === 'published' ? 'pub' : p.status === 'scheduled' ? 'sched' : 'draft'}">${p.status === 'published' ? 'Publicado' : p.status === 'scheduled' ? '⏰ ' + fmtSchedule(p.published_at) : 'Borrador'}</span></td>
       <td style="font-size:12px;color:var(--gt);">${fmtDate(p.created_at)}</td>
       <td>
         <div style="display:flex;gap:6px;flex-wrap:wrap;">
           <button class="btn btn-ghost btn-sm" onclick="openEditor(${p.id})">Editar</button>
-          <button class="btn btn-ghost btn-sm" onclick="toggleStatus(${p.id}, '${p.status}', this)">${p.status === 'published' ? 'Despublicar' : 'Publicar'}</button>
+          <button class="btn btn-ghost btn-sm" onclick="toggleStatus(${p.id}, '${p.status}', this)">${p.status === 'published' ? 'Despublicar' : p.status === 'scheduled' ? 'Publicar ahora' : 'Publicar'}</button>
           ${p.status === 'published' ? `<a href="/blog/${esc(p.slug)}" target="_blank" class="btn btn-ghost btn-sm">Ver ↗</a>` : ''}
           <button class="btn btn-danger btn-sm" onclick="deletePost(${p.id}, this)">Eliminar</button>
         </div>
@@ -904,6 +911,8 @@ async function openEditor(id) {
    'f-featured-url','f-featured-alt','f-meta-title','f-meta-desc']
     .forEach(fid => { document.getElementById(fid).value = ''; });
   document.getElementById('f-status').value = 'draft';
+  document.getElementById('f-schedule').value = '';
+  updateScheduleVisibility();
   document.getElementById('f-img-preview').className = 'img-preview';
   document.getElementById('preview-pane').className  = 'preview-pane article-body';
   document.getElementById('editor-post-link').style.display = 'none';
@@ -922,6 +931,13 @@ async function openEditor(id) {
       document.getElementById('content').value       = p.content || '';
       document.getElementById('f-category').value    = p.category || '';
       document.getElementById('f-status').value      = p.status || 'draft';
+      if (p.status === 'scheduled' && p.published_at) {
+        const d = new Date(p.published_at);
+        const pad = n => String(n).padStart(2, '0');
+        document.getElementById('f-schedule').value =
+          `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      }
+      updateScheduleVisibility();
       document.getElementById('f-featured-url').value = p.featured_image || '';
       document.getElementById('f-featured-alt').value = p.featured_image_alt || '';
       document.getElementById('f-meta-title').value  = p.meta_title || '';
@@ -961,6 +977,11 @@ async function savePost() {
     meta_title:         document.getElementById('f-meta-title').value.trim(),
     meta_description:   document.getElementById('f-meta-desc').value.trim(),
   };
+  if (body.status === 'scheduled') {
+    const v = document.getElementById('f-schedule').value;
+    if (!v) { toast('Elige la fecha y hora de publicación', 'err'); btn.disabled = false; btn.textContent = 'Guardar'; return; }
+    body.scheduled_at = new Date(v).toISOString(); /* local → UTC */
+  }
 
   try {
     const method = postId ? 'PUT' : 'POST';
@@ -1263,6 +1284,20 @@ async function uploadFile(file) {
 
 // ── Tabs ──────────────────────────────────────────────────────────────────────
 let currentTab = 'posts';
+
+function updateScheduleVisibility() {
+  const wrap = document.getElementById('f-schedule-wrap');
+  if (wrap) wrap.style.display = document.getElementById('f-status').value === 'scheduled' ? '' : 'none';
+}
+document.addEventListener('change', function (e) {
+  if (e.target && e.target.id === 'f-status') updateScheduleVisibility();
+});
+
+function fmtSchedule(iso) {
+  if (!iso) return 'Programado';
+  try { return new Date(iso).toLocaleString('es-MX', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); }
+  catch { return 'Programado'; }
+}
 
 function switchTab(tab) {
   currentTab = tab;

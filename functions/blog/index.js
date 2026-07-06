@@ -97,7 +97,7 @@ export async function onRequest(context) {
       const result = await context.env.DB.prepare(
         `SELECT title, slug, category, featured_image, excerpt, published_at, created_at
            FROM posts
-          WHERE status = 'published'
+          WHERE (status = 'published' OR (status = 'scheduled' AND datetime(published_at) <= datetime('now')))
           ORDER BY published_at DESC, created_at DESC
           LIMIT ?`
       ).bind(INITIAL_LOAD).all();
