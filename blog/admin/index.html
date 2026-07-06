@@ -561,23 +561,17 @@
         <h2 style="font-family:var(--fd);font-size:18px;font-weight:700;">llms.txt <span id="llms-badge" style="font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;margin-left:8px;vertical-align:middle;background:var(--surface-2);border:1px solid var(--border);color:var(--gt);"></span></h2>
         <div style="display:flex;gap:10px;">
           <a href="/llms.txt" target="_blank" class="btn btn-ghost btn-sm">Ver llms.txt ↗</a>
-          <button class="btn btn-ghost btn-sm" onclick="resetLlms()" id="llms-reset-btn">Restaurar default</button>
           <button class="btn btn-primary btn-sm" onclick="saveLlms()" id="llms-save-btn">Guardar y publicar</button>
         </div>
       </div>
       <p style="font-size:12px;color:var(--gt);line-height:1.7;margin-bottom:16px;max-width:760px;">
-        Este es el contenido base que leen ChatGPT, Claude, Gemini y Perplexity (formato Markdown).
-        La sección <strong style="color:var(--white);">## Blog</strong> se genera sola con tus artículos publicados — no la escribas aquí.
-        Los cambios se publican al guardar, pero el caché puede tardar hasta 1 hora en reflejarlos.
+        Esto es lo que leen ChatGPT, Claude, Gemini y Perplexity. Cada sección se edita por separado:
+        las que están en <strong style="color:var(--white);">default</strong> se actualizan solas cuando el sitio cambia;
+        las <strong style="color:var(--lime);">personalizadas</strong> sirven tu texto hasta que las restaures.
+        La sección Blog siempre es automática. El caché puede tardar hasta 1 hora en reflejar cambios.
       </p>
       <div id="llms-loading" class="loading"><span class="spinner"></span></div>
-      <div id="llms-editor" style="display:none;">
-        <label style="display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gt);margin-bottom:6px;">Contenido principal (header)</label>
-        <textarea id="llms-header-input" spellcheck="false" style="width:100%;min-height:480px;background:var(--surface-1);border:1px solid var(--border);color:var(--white);padding:16px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:12px;line-height:1.7;resize:vertical;"></textarea>
-        <label style="display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gt);margin:16px 0 6px;">Cierre (footer — después del blog)</label>
-        <textarea id="llms-footer-input" spellcheck="false" style="width:100%;min-height:110px;background:var(--surface-1);border:1px solid var(--border);color:var(--white);padding:16px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:12px;line-height:1.7;resize:vertical;"></textarea>
-        <div id="llms-status" style="font-size:11px;color:var(--gt);margin-top:10px;min-height:16px;"></div>
-      </div>
+      <div id="llms-sections" style="display:none;"></div>
     </div><!-- /tab-llms -->
 
   </main>
@@ -1288,38 +1282,64 @@ function switchTab(tab) {
   if (tab === 'llms') loadLlms();
 }
 
-// ── llms.txt (site_settings: llms_header / llms_footer) ─────────────────────
-let llmsDefaults = { llms_header: '', llms_footer: '' };
-let llmsHasOverride = { llms_header: false, llms_footer: false };
+// ── llms.txt (overrides por sección en site_settings) ───────────────────────
+let llmsSections = []; // [{key, title, default, value, updated_at}] del server
 
-function llmsSetBadge() {
+function llmsRowBadge(hasOverride) {
+  return hasOverride
+    ? '<span style="font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border:1px solid var(--lime);color:var(--lime);">personalizado</span>'
+    : '<span style="font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border:1px solid var(--border);color:var(--gt);">default</span>';
+}
+
+function llmsSetGlobalBadge() {
   const badge = document.getElementById('llms-badge');
-  const custom = llmsHasOverride.llms_header || llmsHasOverride.llms_footer;
+  const custom = llmsSections.some(s => s.value !== null);
   badge.textContent = custom ? 'personalizado' : 'default';
   badge.style.color = custom ? 'var(--lime)' : 'var(--gt)';
   badge.style.borderColor = custom ? 'var(--lime)' : 'var(--border)';
 }
 
+function llmsRenderSections() {
+  const wrap = document.getElementById('llms-sections');
+  const rowStyle = 'border:1px solid var(--border);margin-bottom:8px;background:var(--surface-1);';
+  const sumStyle = 'display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;font-family:var(--fd);font-size:13px;font-weight:600;list-style:none;';
+  const taStyle  = 'width:100%;min-height:140px;background:var(--surface-2);border:1px solid var(--border);color:var(--white);padding:14px;font-family:ui-monospace,\'SF Mono\',Menlo,monospace;font-size:12px;line-height:1.7;resize:vertical;';
+  let html = '';
+  for (const s of llmsSections) {
+    // La sección Blog (automática) se pinta con candado justo antes del cierre
+    if (s.key === 'llms_footer') {
+      html += '<div style="' + rowStyle + 'opacity:.6;"><div style="' + sumStyle + 'cursor:default;">🔒 <span>Blog</span>' +
+        '<span style="font-family:var(--fb);font-weight:300;font-size:11px;color:var(--gt);">— automática: tus artículos publicados aparecen aquí solos</span></div></div>';
+    }
+    html += '<details style="' + rowStyle + '" data-key="' + s.key + '">' +
+      '<summary style="' + sumStyle + '"><span style="color:var(--gt);">▸</span> <span>' + s.title + '</span>' +
+      '<span id="llms-row-badge-' + s.key + '">' + llmsRowBadge(s.value !== null) + '</span>' +
+      (s.updated_at ? '<span style="font-family:var(--fb);font-weight:300;font-size:10px;color:var(--gt);margin-left:auto;">editada ' + new Date(s.updated_at).toLocaleDateString('es-MX') + '</span>' : '') +
+      '</summary>' +
+      '<div style="padding:0 16px 16px;">' +
+      '<textarea id="llms-ta-' + s.key + '" spellcheck="false" style="' + taStyle + '"></textarea>' +
+      '<div style="display:flex;justify-content:flex-end;margin-top:8px;">' +
+      '<button class="btn btn-ghost btn-sm" id="llms-restore-' + s.key + '" onclick="restoreLlmsSection(\'' + s.key + '\')" style="' + (s.value === null ? 'display:none;' : '') + '">Restaurar esta sección</button>' +
+      '</div></div></details>';
+  }
+  wrap.innerHTML = html;
+  // Los valores van por .value (no innerHTML) para que el markdown no se interprete
+  for (const s of llmsSections) {
+    document.getElementById('llms-ta-' + s.key).value = s.value ?? s.default;
+  }
+}
+
 async function loadLlms() {
-  document.getElementById('llms-loading').style.display = '';
-  document.getElementById('llms-editor').style.display  = 'none';
+  document.getElementById('llms-loading').style.display  = '';
+  document.getElementById('llms-sections').style.display = 'none';
   try {
-    const [h, f] = await Promise.all([
-      apiFetch('/settings?key=llms_header').then(r => r.json()),
-      apiFetch('/settings?key=llms_footer').then(r => r.json()),
-    ]);
-    if (h.error || f.error) { toast(h.error || f.error, 'err'); return; }
-    llmsDefaults = { llms_header: h.default, llms_footer: f.default };
-    llmsHasOverride = { llms_header: h.value !== null, llms_footer: f.value !== null };
-    document.getElementById('llms-header-input').value = h.value ?? h.default;
-    document.getElementById('llms-footer-input').value = f.value ?? f.default;
-    const when = h.updated_at || f.updated_at;
-    document.getElementById('llms-status').textContent = when
-      ? 'Última edición: ' + new Date(when).toLocaleString('es-MX')
-      : 'Sirviendo el contenido default (nunca se ha editado).';
-    llmsSetBadge();
-    document.getElementById('llms-loading').style.display = 'none';
-    document.getElementById('llms-editor').style.display  = '';
+    const res = await apiFetch('/settings?group=llms').then(r => r.json());
+    if (res.error) { toast(res.error, 'err'); return; }
+    llmsSections = res;
+    llmsRenderSections();
+    llmsSetGlobalBadge();
+    document.getElementById('llms-loading').style.display  = 'none';
+    document.getElementById('llms-sections').style.display = '';
   } catch {
     toast('Error al cargar llms.txt', 'err');
     document.getElementById('llms-loading').style.display = 'none';
@@ -1327,22 +1347,28 @@ async function loadLlms() {
 }
 
 async function saveLlms() {
-  const header = document.getElementById('llms-header-input').value.trim();
-  const footer = document.getElementById('llms-footer-input').value.trim();
-  if (!header) { toast('El contenido principal no puede quedar vacío', 'err'); return; }
   const btn = document.getElementById('llms-save-btn');
   btn.disabled = true;
   try {
-    const results = await Promise.all([
-      apiFetch('/settings', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key: 'llms_header', value: header }) }).then(r => r.json()),
-      apiFetch('/settings', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key: 'llms_footer', value: footer || llmsDefaults.llms_footer }) }).then(r => r.json()),
-    ]);
+    const ops = [];
+    for (const s of llmsSections) {
+      const text = document.getElementById('llms-ta-' + s.key).value.trim();
+      const served = (s.value ?? s.default).trim();
+      if (text === served) continue; // sin cambios
+      if (!text) { toast('La sección "' + s.title + '" no puede quedar vacía', 'err'); btn.disabled = false; return; }
+      if (text === s.default.trim() && s.value !== null) {
+        // Volvió a escribir el default a mano → borrar override, no guardarlo
+        ops.push(apiFetch('/settings?key=' + s.key, { method: 'DELETE' }).then(r => r.json()));
+      } else {
+        ops.push(apiFetch('/settings', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key: s.key, value: text }) }).then(r => r.json()));
+      }
+    }
+    if (!ops.length) { toast('No hay cambios que publicar', 'ok'); return; }
+    const results = await Promise.all(ops);
     const err = results.find(r => r.error);
     if (err) { toast(err.error, 'err'); return; }
-    llmsHasOverride = { llms_header: true, llms_footer: true };
-    llmsSetBadge();
-    document.getElementById('llms-status').textContent = 'Última edición: ' + new Date().toLocaleString('es-MX');
     toast('llms.txt publicado (el caché puede tardar hasta 1 h)', 'ok');
+    await loadLlms();
   } catch {
     toast('Error de conexión', 'err');
   } finally {
@@ -1350,16 +1376,13 @@ async function saveLlms() {
   }
 }
 
-async function resetLlms() {
-  if (!confirm('¿Descartar tu versión personalizada y volver al contenido default del código?')) return;
+async function restoreLlmsSection(key) {
+  const s = llmsSections.find(x => x.key === key);
+  if (!confirm('¿Descartar tu versión de "' + (s?.title || key) + '" y volver al default? El default vuelve a actualizarse solo cuando el sitio cambie.')) return;
   try {
-    const results = await Promise.all([
-      apiFetch('/settings?key=llms_header', { method: 'DELETE' }).then(r => r.json()),
-      apiFetch('/settings?key=llms_footer', { method: 'DELETE' }).then(r => r.json()),
-    ]);
-    const err = results.find(r => r.error);
-    if (err) { toast(err.error, 'err'); return; }
-    toast('Restaurado al default', 'ok');
+    const d = await apiFetch('/settings?key=' + key, { method: 'DELETE' }).then(r => r.json());
+    if (d.error) { toast(d.error, 'err'); return; }
+    toast('Sección restaurada al default', 'ok');
     await loadLlms();
   } catch {
     toast('Error de conexión', 'err');
