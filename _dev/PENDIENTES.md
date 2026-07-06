@@ -1,5 +1,5 @@
 # Pendientes · cerostudio.ai
-**Actualizado:** 6 julio 2026 · (documento vivo — se actualiza en cada sesión)
+**Actualizado:** 6 julio 2026 (tarde) · (documento vivo — se actualiza en cada sesión)
 
 ---
 
@@ -18,8 +18,6 @@
 
 ## 🟡 Carlos — decisiones que me desbloquean
 
-- [ ] **Dirección para schema LocalBusiness**: ¿dirección física o "100% remoto"?
-  Con la respuesta armo el schema y mejora el SEO local.
 - [ ] **Worktrees viejos** (~25 MB en `.claude/worktrees/`): 5 verificados sin trabajo
   único (`brutalist-servicios-web`, `en-navbar-middleware`, `flamboyant-margulis`,
   `keen-brahmagupta`, `seo-phase-1-safe`). Puedes revisarlos y dar OK para retirarlos
@@ -36,11 +34,7 @@
 
 ## 🔵 Claude — con OK de Carlos
 
-- [ ] **CSP sin `unsafe-inline`** (sesión propia, en worktree): refactorizar ~30
-  handlers inline en home/blog/admin/landings + nonces vía middleware. El CSP vive
-  en `functions/_middleware.js:124` y `_headers`. Riesgo de regresión: alto si se
-  hace con prisa — por eso va sola.
-- [ ] **Schema LocalBusiness/NAP** — bloqueado por la decisión de dirección (arriba).
+*(vacío — todo lo implementable quedó cerrado el 6 jul)*
 
 ---
 
@@ -48,6 +42,9 @@
 
 | Fecha | Qué |
 |---|---|
+| 6 jul | CSP sin `unsafe-inline` en script-src sitewide (admin conserva) — ~50 handlers refactorizados a delegación; verificado en prod sin violaciones |
+| 6 jul | Navbar tablet: logo 54px blindado + CASOS/BLOG ocultos en 769–1100px |
+| 6 jul | LocalBusiness: RESUELTO por decisión técnica — sin dirección física, Google lo penaliza; el schema Organization actual es lo correcto para remoto. Revisitar solo si algún día hay oficina |
 | 6 jul | GTM publicado: triggers + tags de `lead_form_submit` (con `form_type`), `whatsapp_click`, `agendar_click` |
 | 5 jul | Quick wins CRO: CTA en artículos del blog (SSR+client), promo amarrada a 5 clientes/mes, garantía de fecha (1 mes de mantenimiento) |
 | 5 jul | Lead magnet `/auditoria-gratis/` (ficha AUD-00) + franja de resultados reales en #precios + evento dataLayer |
