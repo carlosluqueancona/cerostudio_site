@@ -157,6 +157,7 @@ async function sendNotification(env, { nombre, email, empresa, servicio, mensaje
     seo:           'SEO & Visibilidad',
     mantenimiento: 'Mantenimiento',
     consultoria:   'Consultoría Digital',
+    'auditoria-gratis': 'Auditoría exprés GRATIS (lead magnet)',
     otro:          'Otro',
   };
 

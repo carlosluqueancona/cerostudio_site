@@ -41,6 +41,10 @@ Por qué importa: ~30% del comportamiento de búsqueda ya no termina en un clic 
 
 - [Diseño Web para Clínicas](${BASE}/diseno-web-para-clinicas/): Sitios para clínicas y consultorios médicos que convierten visitas en pacientes. EN: ${BASE}/en/services/clinic-website-design/
 
+## Diagnóstico gratuito
+
+- [Auditoría Web Exprés Gratis](${BASE}/auditoria-gratis/): Revisión manual gratuita de un sitio existente — velocidad, SEO, visibilidad en buscadores AI y conversión. 5 hallazgos accionables por email en 48 horas hábiles, sin costo ni compromiso.
+
 ## Casos de éxito
 
 - [IMVEC](${BASE}/casos-de-exito/imvec/): Taller metalmecánico sin marca → identidad + sitio web. Ventas que triplicaron la inversión.
