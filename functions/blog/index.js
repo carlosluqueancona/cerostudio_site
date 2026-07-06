@@ -47,7 +47,7 @@ function postCardHtml(post) {
     ? `<div class="post-card-thumb"><img src="${escAttr(post.featured_image)}" alt="${escAttr(post.title)}" loading="lazy"></div>`
     : '';
   const slug = escAttr(post.slug);
-  return `<article class="post-card${hasThumb ? ' has-thumb' : ''}" onclick="navigate(null, '/blog/${slug}')" style="cursor: pointer;">`
+  return `<article class="post-card${hasThumb ? ' has-thumb' : ''}" data-route="/blog/${slug}" style="cursor: pointer;">`
     + thumbHtml
     + '<div class="post-card-body">'
     + `<div class="post-card-cat">${escHtml(post.category || 'General')}</div>`
@@ -76,7 +76,7 @@ function buildListHtml(posts, hasMore) {
     `    ${cardsHtml}`,
     '  </div>',
     `  <div class="load-more-wrap" id="load-more-wrap"${hasMore ? '' : ' style="display:none"'}>`,
-    '    <button class="load-more-btn" id="load-more-btn" onclick="loadMore()">Ver más artículos</button>',
+    '    <button class="load-more-btn" id="load-more-btn" data-action="load-more">Ver más artículos</button>',
     '  </div>',
     '</div>',
   ].join('\n');
