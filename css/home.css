@@ -2697,3 +2697,16 @@
       .res-item { border-bottom: 1px solid rgba(255, 255, 255, .14); padding: 22px 4px; }
       .res-item:last-child { border-bottom: none; }
     }
+
+    /* ── Navbar tablet (769–1100px): sin colisiones ──
+       El logo se comprimía por flex-shrink y BLOG se metía bajo el botón EN.
+       Se blinda el logo al tamaño de escritorio y se ocultan CASOS y BLOG
+       (siguen en footer, home y menú móvil). */
+    @media (min-width: 769px) and (max-width: 1100px) {
+      #navbar { padding: 0 28px; }
+      #navbar > a:first-child { flex-shrink: 0; margin-right: 20px; }
+      .nav-logo { height: 54px; }
+      .nav-links { gap: 22px; }
+      .nav-links li:has(> #nav-casos),
+      .nav-links li:has(> #nav-blog) { display: none; }
+    }
