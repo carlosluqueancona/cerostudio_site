@@ -20,8 +20,9 @@
 
 - [ ] **Pauta Google Ads** de alta intención ("cuánto cuesta página web méxico",
   "diseño web para clínicas") apuntando a las fichas técnicas + remarketing.
-- [ ] **TC con vigencia en propuestas**: línea en cotizaciones tipo "precios en USD;
-  equivalente MXN a $17.90, vigente 15 días".
+- [ ] **Usar la plantilla de propuesta** en la próxima cotización:
+  `_dev/plantilla-propuesta.md` (email rápido + propuesta 1 página, con TC $17.90
+  vigente 15 días, garantía de fecha y condición de portafolio ya integradas).
 - [ ] **Reporte de auditoría exprés**: cuando llegue el primer lead, usar la plantilla
   `_dev/plantilla-auditoria-expres.md` (5 hallazgos, 48 h hábiles, ~30-40 min).
 
@@ -35,6 +36,7 @@
 
 | Fecha | Qué |
 |---|---|
+| 6 jul | Plantilla de propuesta/cotización (`_dev/plantilla-propuesta.md`) — cierra el pendiente de TC con vigencia |
 | 6 jul | Caché DOMADO y verificado por Carlos: browser siempre revalida (max-age=0 vía middleware), edge 5 min purgado automáticamente por el admin, y la Cache Rule de la zona corregida a "Respect origin TTL" (tenía override que obligaba a purgar a mano). Editar un post se ve al instante |
 | 6 jul | Admin: tarjeta PROGRAMADOS (azul) en la barra de stats; Borradores ya no cuenta programados |
 | 6 jul | Blog: posts PROGRAMADOS (estado ⏰ con fecha/hora, aparición automática sin cron, "Publicar ahora") + purge automático del edge al crear/editar/publicar/eliminar (secrets CF_ZONE_ID/CF_PURGE_TOKEN configurados y verificados) |
