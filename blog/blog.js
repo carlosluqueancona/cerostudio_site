@@ -271,7 +271,13 @@ ${ARTICLE_CTA_END}
 
 function formatDate(dateStr) {
   if (!dateStr) return '';
-  const d = new Date(dateStr.replace(/-/g, '/'));
+  /* Dos formatos conviven en D1: sqlite "YYYY-MM-DD HH:MM:SS" (posts viejos,
+     necesita el truco de las diagonales para Safari) e ISO con T/Z (posts
+     programados). El replace de guiones ROMPE el ISO → Invalid Date. */
+  const d = dateStr.includes('T')
+    ? new Date(dateStr)
+    : new Date(dateStr.replace(/-/g, '/'));
+  if (isNaN(d)) return '';
   return d.toLocaleDateString('es-MX', {
     day: 'numeric',
     month: 'long',
