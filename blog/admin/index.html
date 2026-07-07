@@ -806,14 +806,28 @@ function clearToken() {
 }
 
 // ── Dashboard ────────────────────────────────────────────────────────────────
-async function refreshDashboard() {
-  showLoadingState();
+/* La tabla se congelaba con datos viejos (p.ej. un programado que ya se
+   auto-publicó seguía mostrando ⏰). Refresco silencioso al volver a la
+   pestaña y cada 5 min mientras el dashboard esté visible. */
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && document.getElementById('view-dashboard').style.display !== 'none') {
+    refreshDashboard(true);
+  }
+});
+setInterval(() => {
+  if (!document.hidden && document.getElementById('view-dashboard').style.display !== 'none') {
+    refreshDashboard(true);
+  }
+}, 5 * 60 * 1000);
+
+async function refreshDashboard(silent) {
+  if (!silent) showLoadingState();
   try {
     const r = await apiFetch('/posts');
     if (!r.ok) { if (r.status === 401) { clearToken(); showView('login'); } return; }
     allPosts = await r.json();
     renderDashboard();
-  } catch { toast('Error al cargar artículos', 'err'); }
+  } catch { if (!silent) toast('Error al cargar artículos', 'err'); }
 }
 
 function showLoadingState() {
