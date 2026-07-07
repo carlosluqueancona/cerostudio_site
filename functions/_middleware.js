@@ -127,9 +127,16 @@ function withCsp(response, pathname) {
   if (pathname.startsWith('/blog/admin')) return response;
   const ct = response.headers.get('content-type') || '';
   if (!ct.includes('text/html')) return response;
-  if (response.headers.get('content-security-policy')) return response;
   const r = new Response(response.body, response);
-  r.headers.set('Content-Security-Policy', PUBLIC_CSP);
+  if (!r.headers.get('content-security-policy')) {
+    r.headers.set('Content-Security-Policy', PUBLIC_CSP);
+  }
+  // Cache del HTML: el navegador SIEMPRE revalida (los cambios se ven al
+  // recargar una vez); el edge de Cloudflare conserva 5 min — y ese caché
+  // lo purga el admin al mutar posts (purgeBlogCache). Sin esto, el zone
+  // setting inyectaba max-age=300 al browser y Carlos veía contenido viejo.
+  r.headers.set('Cache-Control', 'public, max-age=0, must-revalidate');
+  r.headers.set('CDN-Cache-Control', 'public, max-age=300');
   return r;
 }
 

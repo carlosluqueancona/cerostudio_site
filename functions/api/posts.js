@@ -13,6 +13,8 @@ const HEADERS = {
   'Cache-Control': 'public, max-age=60, stale-while-revalidate=60',
 };
 
+import { purgeBlogCache } from './admin/_shared.js';
+
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), { status, headers: HEADERS });
 }
@@ -28,10 +30,18 @@ export async function onRequestGet(context) {
   try {
     // Auto-promoción: los programados cuya hora ya llegó pasan a 'published'
     // (Pages Functions no tiene cron; este es el endpoint más golpeado).
+    // Si algo se promovió, se purga el edge para que el post aparezca al
+    // instante en el blog/sitemap/llms sin esperar los 5 min del caché.
     try {
-      await env.DB.prepare(
-        "UPDATE posts SET status = 'published' WHERE status = 'scheduled' AND datetime(published_at) <= datetime('now')"
-      ).run();
+      const { results: due } = await env.DB.prepare(
+        "SELECT slug FROM posts WHERE status = 'scheduled' AND datetime(published_at) <= datetime('now')"
+      ).all();
+      if (due?.length) {
+        await env.DB.prepare(
+          "UPDATE posts SET status = 'published' WHERE status = 'scheduled' AND datetime(published_at) <= datetime('now')"
+        ).run();
+        context.waitUntil?.(purgeBlogCache(env, due.map(p => p.slug)));
+      }
     } catch {}
 
     if (slug) {
