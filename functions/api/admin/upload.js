@@ -8,7 +8,7 @@
  * Retorna: { ok: true, url: "https://..." } | { ok: false, error: "..." }
  */
 
-import { corsHeaders, extractToken, json, verifyJWT } from './_shared.js';
+import { corsHeaders, extractToken, json, purgeUrls, verifyJWT } from './_shared.js';
 
 const MAX_SIZE    = 5 * 1024 * 1024; // 5 MB
 const ALLOWED     = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
@@ -108,6 +108,24 @@ export async function onRequestPost(context) {
     // Modo thumbnail derivado: el cliente sube <keyOriginal>.thumb.jpg junto a
     // cada imagen (patrón SergioLuque). Solo se permite ese sufijo — imposible
     // sobreescribir un original — y debe ser JPEG.
+    // Modo optimizar-en-sitio: reemplaza los bytes de un objeto EXISTENTE
+    // (misma URL, mismo key — las referencias en posts no cambian). El botón
+    // "Optimizar" del tab Media re-encodifica en el navegador y sube aquí.
+    const replaceKey = formData.get('replace_key');
+    if (replaceKey && typeof replaceKey === 'string') {
+      if (!/^(blog|portafolio)\/[A-Za-z0-9/_.-]+\.(jpg|jpeg|png|webp|gif)$/i.test(replaceKey)
+          || replaceKey.includes('..') || replaceKey.endsWith('.thumb.jpg')) {
+        return json({ ok: false, error: 'replace_key inválida' }, 400, origin);
+      }
+      const existing = await env.IMAGES.head(replaceKey);
+      if (!existing) return json({ ok: false, error: 'El objeto a reemplazar no existe' }, 404, origin);
+      await env.IMAGES.put(replaceKey, buffer, { httpMetadata: { contentType: mime } });
+      const base0 = (env.R2_PUBLIC_URL || '').replace(/\/$/, '');
+      // Purge de la URL pública (y su thumb) para que el reemplazo se vea ya
+      context.waitUntil?.(purgeUrls(env, [`${base0}/${replaceKey}`, `${base0}/${replaceKey}.thumb.jpg`]));
+      return json({ ok: true, url: `${base0}/${replaceKey}`, replaced: true, bytes: buffer.byteLength }, 200, origin);
+    }
+
     const derivedKey = formData.get('key');
     let filename;
     if (derivedKey && typeof derivedKey === 'string') {

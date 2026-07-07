@@ -38,6 +38,24 @@ export async function onRequestGet(context) {
     const prefix = searchParams.get('prefix') || '';
     const cursor = searchParams.get('cursor') || undefined;
 
+    // Proxy de lectura: devuelve los bytes de un objeto para que el canvas
+    // del admin pueda re-encodificar sin pelear con CORS del dominio de media.
+    const getKey = new URL(request.url).searchParams.get('get');
+    if (getKey) {
+      if (!/^(blog|portafolio)\/[A-Za-z0-9/_.-]+$/.test(getKey) || getKey.includes('..')) {
+        return json({ ok: false, error: 'key inválida' }, 400, origin);
+      }
+      const obj = await env.IMAGES.get(getKey);
+      if (!obj) return json({ ok: false, error: 'No encontrado' }, 404, origin);
+      return new Response(obj.body, {
+        headers: {
+          'Content-Type': obj.httpMetadata?.contentType || 'application/octet-stream',
+          'Cache-Control': 'no-store',
+          ...corsHeaders(origin),
+        },
+      });
+    }
+
     const listing = await env.IMAGES.list({
       prefix,
       cursor,

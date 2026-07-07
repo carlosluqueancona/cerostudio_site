@@ -145,6 +145,23 @@ export function parseId(raw) {
 // Best-effort: sin CF_ZONE_ID/CF_PURGE_TOKEN es no-op (el sitio funciona igual,
 // solo que el edge tarda ~5 min en reflejar cambios). El token solo necesita
 // el permiso Zone → Cache Purge sobre cerostudio.ai.
+/** Purge genérico de URLs exactas en el edge (best-effort, no-op sin secrets). */
+export async function purgeUrls(env, files = []) {
+  if (!env?.CF_ZONE_ID || !env?.CF_PURGE_TOKEN || !files.length) return false;
+  try {
+    const r = await fetch(`https://api.cloudflare.com/client/v4/zones/${env.CF_ZONE_ID}/purge_cache`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${env.CF_PURGE_TOKEN}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ files }),
+    });
+    if (!r.ok) console.error('[purge] Cloudflare respondió', r.status);
+    return r.ok;
+  } catch (e) {
+    console.error('[purge] error:', e.message);
+    return false;
+  }
+}
+
 export async function purgeBlogCache(env, slugs = []) {
   if (!env?.CF_ZONE_ID || !env?.CF_PURGE_TOKEN) return false;
   const BASE = 'https://cerostudio.ai';

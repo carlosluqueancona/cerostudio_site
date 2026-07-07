@@ -1992,10 +1992,52 @@ function renderMedia() {
       </div>
       <div class="media-actions">
         <button class="btn btn-ghost btn-sm" onclick="mediaCopyUrl('${esc(m.url)}')">Copiar URL</button>
+        ${csOptimizable(m) ? `<button class="btn btn-ghost btn-sm" id="opt-${esc(m.key).replace(/[^a-z0-9]/gi,'_')}" onclick="mediaOptimize('${esc(m.key)}','${esc(m.url)}',${m.size})">⚡ Optimizar</button>` : ''}
         <button class="btn btn-danger btn-sm" onclick="mediaDelete('${esc(m.url)}')">Eliminar</button>
       </div>
     </div>
   `).join('');
+}
+
+/* ¿Aplica optimizar? Por peso (>300 KB) y tipo re-encodificable.
+   La resolución se descubre al optimizar (el canvas la reduce si excede 1600px). */
+function csOptimizable(m) {
+  return m.size > 300 * 1024 && /^image\/(jpeg|png|webp)$/.test(m.contentType || '');
+}
+
+/* Optimizar EN SITIO un archivo ya subido (patrón SergioLuque "Optimize"):
+   baja los bytes vía el proxy del admin (sin CORS), re-encodifica en canvas,
+   y reemplaza el MISMO objeto en R2 — la URL no cambia, los posts que la
+   usan reciben el archivo ligero. También regenera su thumbnail. */
+async function mediaOptimize(key, url, size) {
+  const btn = document.getElementById('opt-' + key.replace(/[^a-z0-9]/gi, '_'));
+  if (btn) { btn.disabled = true; btn.textContent = 'Optimizando…'; }
+  try {
+    const blob = await apiFetch('/media?get=' + encodeURIComponent(key)).then(r => {
+      if (!r.ok) throw new Error('no se pudo leer el archivo');
+      return r.blob();
+    });
+    const file = new File([blob], key.split('/').pop(), { type: blob.type });
+    const opt = await csOptimizeImage(file, CS_OPT);
+    if (opt === file || opt.size >= size * 0.92) {
+      toast('Ya estaba óptima — no hay ganancia real', 'ok');
+      if (btn) { btn.textContent = '✓ Óptima'; }
+      return;
+    }
+    const fd = new FormData();
+    fd.append('file', opt);
+    fd.append('replace_key', key);
+    const d = await apiFetch('/upload', { method: 'POST', body: fd }).then(r => r.json());
+    if (!d.ok) { toast(d.error || 'Error al reemplazar', 'err'); return; }
+    csUploadThumb(url, opt); /* thumb regenerado, no-fatal */
+    const ahorro = Math.round((1 - opt.size / size) * 100);
+    toast(`Optimizada: −${ahorro}% (${fmtBytes(size)} → ${fmtBytes(opt.size)})`, 'ok');
+    await loadMedia();
+  } catch (e) {
+    toast('Error al optimizar: ' + (e.message || 'conexión'), 'err');
+  } finally {
+    if (btn && btn.textContent === 'Optimizando…') { btn.disabled = false; btn.textContent = '⚡ Optimizar'; }
+  }
 }
 
 async function mediaCopyUrl(url) {
