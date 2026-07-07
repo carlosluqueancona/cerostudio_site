@@ -208,8 +208,9 @@
     .media-meta { padding:10px 12px; border-top:1px solid var(--border); }
     .media-name { font-size:12px; font-weight:600; color:var(--white); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .media-sub { font-size:10px; color:var(--gt); margin-top:2px; }
-    .media-actions { display:flex; gap:6px; padding:8px 12px; border-top:1px solid var(--border); }
-    .media-actions .btn { flex:1; }
+    .media-actions { display:flex; gap:6px; padding:8px 10px; border-top:1px solid var(--border); }
+    /* 3 acciones en el ancho de una card: compactas, sin quebrar ni desbordar */
+    .media-actions .btn { flex:1 1 0; min-width:0; padding:8px 4px; font-size:10px; letter-spacing:.03em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:center; justify-content:center; }
     .media-card.pickable { cursor:pointer; }
     .media-card.pickable:hover { border-color:var(--lime-50); }
     .preview-pane { display:none; padding:24px; background:var(--surface-1); border:1px solid var(--border); min-height:200px; font-size:16px; line-height:1.8; max-height:500px; overflow-y:auto; margin-top:8px; }
@@ -1991,8 +1992,8 @@ function renderMedia() {
         <div class="media-sub">${fmtBytes(m.size)} · ${fmtDate(m.uploaded)}</div>
       </div>
       <div class="media-actions">
-        <button class="btn btn-ghost btn-sm" onclick="mediaCopyUrl('${esc(m.url)}')">Copiar URL</button>
-        ${csOptimizable(m) ? `<button class="btn btn-ghost btn-sm" id="opt-${esc(m.key).replace(/[^a-z0-9]/gi,'_')}" onclick="mediaOptimize('${esc(m.key)}','${esc(m.url)}',${m.size})">⚡ Optimizar</button>` : ''}
+        <button class="btn btn-ghost btn-sm" onclick="mediaCopyUrl('${esc(m.url)}')" title="Copiar URL">URL</button>
+        ${csOptimizable(m) ? `<button class="btn btn-ghost btn-sm" id="opt-${esc(m.key).replace(/[^a-z0-9]/gi,'_')}" onclick="mediaOptimize('${esc(m.key)}','${esc(m.url)}',${m.size})" title="Re-encodificar y aligerar este archivo (misma URL)">Optimizar</button>` : ''}
         <button class="btn btn-danger btn-sm" onclick="mediaDelete('${esc(m.url)}')">Eliminar</button>
       </div>
     </div>
@@ -2036,7 +2037,7 @@ async function mediaOptimize(key, url, size) {
   } catch (e) {
     toast('Error al optimizar: ' + (e.message || 'conexión'), 'err');
   } finally {
-    if (btn && btn.textContent === 'Optimizando…') { btn.disabled = false; btn.textContent = '⚡ Optimizar'; }
+    if (btn && btn.textContent === 'Optimizando…') { btn.disabled = false; btn.textContent = 'Optimizar'; }
   }
 }
 
