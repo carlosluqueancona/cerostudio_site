@@ -46,6 +46,8 @@ export async function onRequestGet(context) {
     });
 
     const items = listing.objects
+      // Los thumbnails derivados (<key>.thumb.jpg) no se listan como archivos
+      .filter(o => !o.key.endsWith('.thumb.jpg'))
       .map(o => ({
         key:         o.key,
         url:         `${base}/${o.key}`,

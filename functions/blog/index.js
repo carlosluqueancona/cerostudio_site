@@ -41,10 +41,15 @@ function formatDateEsMx(d) {
   }
 }
 
+/* Cards: thumbnail derivado (480px) — espejo de cardThumbUrl en blog.js */
+function cardThumbUrl(u) {
+  return u && u.startsWith('https://media.cerostudio.ai/') ? u + '.thumb.jpg' : u;
+}
+
 function postCardHtml(post) {
   const hasThumb = !!post.featured_image;
   const thumbHtml = hasThumb
-    ? `<div class="post-card-thumb"><img src="${escAttr(post.featured_image)}" alt="${escAttr(post.title)}" loading="lazy"></div>`
+    ? `<div class="post-card-thumb"><img src="${escAttr(cardThumbUrl(post.featured_image))}" alt="${escAttr(post.title)}" loading="lazy"></div>`
     : '';
   const slug = escAttr(post.slug);
   return `<article class="post-card${hasThumb ? ' has-thumb' : ''}" data-route="/blog/${slug}" style="cursor: pointer;">`

@@ -1264,6 +1264,60 @@ function onDrop(e) {
   if (file) uploadFile(file);
 }
 
+
+/* ── Optimizador de imágenes + thumbnails (puerto de SergioLuque.com) ──────
+   Optimiza EN EL NAVEGADOR antes de subir (Cloudflare no puede correr sharp):
+   lado mayor a 1600px, re-encode JPEG q0.9, transparencias aplanadas a negro.
+   SVG/GIF pasan intactos. Regla "nunca empeorar": si no reduce, sube el original.
+   Tras cada subida se genera un thumbnail derivado <key>.thumb.jpg (480px q0.82)
+   — no-fatal: si falla, el original sirve igual. */
+const CS_OPT = { maxDim: 1600, quality: 0.9 };
+const CS_THUMB = { maxDim: 480, quality: 0.82 };
+const CS_OPT_SKIP = /^image\/(svg\+xml|gif)$/;
+
+/* URL del thumbnail derivado (solo para media propia; externas van directo) */
+function csThumbUrl(u) {
+  return u && u.startsWith('https://media.cerostudio.ai/') ? u + '.thumb.jpg' : u;
+}
+
+async function csOptimizeImage(file, opts) {
+  const { maxDim, quality } = opts || CS_OPT;
+  if (!file.type.startsWith('image/') || CS_OPT_SKIP.test(file.type)) return file;
+  let bmp;
+  try { bmp = await createImageBitmap(file); } catch { return file; }
+  const scale = Math.min(1, maxDim / Math.max(bmp.width, bmp.height));
+  const w = Math.max(1, Math.round(bmp.width * scale));
+  const h = Math.max(1, Math.round(bmp.height * scale));
+  const canvas = document.createElement('canvas');
+  canvas.width = w; canvas.height = h;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) { bmp.close?.(); return file; }
+  ctx.fillStyle = '#000000';           /* matte bajo transparencias */
+  ctx.fillRect(0, 0, w, h);
+  ctx.drawImage(bmp, 0, 0, w, h);
+  bmp.close?.();
+  const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', quality));
+  if (!blob) return file;
+  if (scale === 1 && blob.size >= file.size) return file;  /* nunca empeorar */
+  return new File([blob], file.name.replace(/\.[^.]+$/, '') + '.jpg',
+    { type: 'image/jpeg', lastModified: Date.now() });
+}
+
+/* Genera y sube el thumbnail derivado del original recién subido (no-fatal). */
+async function csUploadThumb(publicUrl, sourceFile) {
+  try {
+    if (!/^image\/(jpeg|png|webp)$/.test(sourceFile.type)) return;
+    const base = 'https://media.cerostudio.ai/';
+    if (!publicUrl || !publicUrl.startsWith(base)) return;
+    const key = publicUrl.slice(base.length) + '.thumb.jpg';
+    const thumb = await csOptimizeImage(sourceFile, CS_THUMB);
+    const fd = new FormData();
+    fd.append('file', thumb);
+    fd.append('key', key);
+    await apiFetch('/upload', { method: 'POST', body: fd });
+  } catch (e) { console.warn('[thumb] no-fatal:', e.message); }
+}
+
 async function uploadFile(file) {
   if (!file) return;
 
@@ -1280,8 +1334,13 @@ async function uploadFile(file) {
     status.style.color = 'var(--red)';
     return;
   }
+  // Optimizar en el navegador ANTES de validar tamaño (fotos de cámara >5MB
+  // quedan bajo el límite tras el re-encode)
+  label.textContent = 'Optimizando…';
+  file = await csOptimizeImage(file, CS_OPT);
+
   if (file.size > 5 * 1024 * 1024) {
-    status.textContent = '✗ El archivo supera 5 MB.';
+    status.textContent = '✗ El archivo supera 5 MB incluso optimizado.';
     status.style.color = 'var(--red)';
     return;
   }
@@ -1305,6 +1364,7 @@ async function uploadFile(file) {
     if (data.ok) {
       document.getElementById('f-featured-url').value = data.url;
       updateImgPreview(data.url);
+      csUploadThumb(data.url, file); /* thumb derivado, no-fatal, background */
       label.textContent = '✓ ' + file.name;
       status.textContent = 'Imagen subida correctamente';
       status.style.color = 'var(--lime)';
@@ -1844,8 +1904,10 @@ async function pfUploadImage(file) {
     status.style.color = 'var(--red)';
     return;
   }
-  status.textContent = 'Subiendo…';
+  status.textContent = 'Optimizando…';
   status.style.color = 'var(--gt)';
+  file = await csOptimizeImage(file, CS_OPT);
+  status.textContent = 'Subiendo…';
 
   const fd = new FormData();
   fd.append('file', file);
@@ -1853,6 +1915,7 @@ async function pfUploadImage(file) {
     const r = await apiFetch('/upload', { method: 'POST', body: fd });
     const d = await r.json();
     if (d.ok) {
+      csUploadThumb(d.url, file); /* thumb derivado, no-fatal */
       document.getElementById('pf-image').value = d.url;
       pfUpdateImagePreview();
       status.textContent = '✓ Imagen subida';
@@ -1922,7 +1985,7 @@ function renderMedia() {
   grid.style.display  = '';
   grid.innerHTML = filtered.map(m => `
     <div class="media-card">
-      <div class="media-thumb"><img src="${esc(m.url)}" alt="${esc(m.key)}" loading="lazy"></div>
+      <div class="media-thumb"><img src="${esc(csThumbUrl(m.url))}" alt="${esc(m.key)}" loading="lazy"></div>
       <div class="media-meta">
         <div class="media-name" title="${esc(m.key)}">${esc(m.key.split('/').pop())}</div>
         <div class="media-sub">${fmtBytes(m.size)} · ${fmtDate(m.uploaded)}</div>
@@ -1989,17 +2052,19 @@ async function mediaUploadFiles(fileList) {
       fail++; errors.push(`${f.name}: tipo no permitido (${f.type || 'desconocido'})`);
       continue;
     }
-    if (f.size > 5 * 1024 * 1024) {
-      fail++; errors.push(`${f.name}: supera 5 MB (${(f.size / 1024 / 1024).toFixed(1)} MB)`);
+    const up = await csOptimizeImage(f, CS_OPT);
+    if (up.size > 5 * 1024 * 1024) {
+      fail++; errors.push(`${f.name}: supera 5 MB incluso optimizado (${(up.size / 1024 / 1024).toFixed(1)} MB)`);
       continue;
     }
     const fd = new FormData();
-    fd.append('file', f);
+    fd.append('file', up);
     try {
       const r = await apiFetch('/upload', { method: 'POST', body: fd });
       const d = await r.json().catch(() => ({}));
       if (d.ok) {
         ok++;
+        csUploadThumb(d.url, up); /* thumb derivado, no-fatal */
       } else {
         fail++;
         errors.push(`${f.name}: ${d.error || `HTTP ${r.status}`}`);
@@ -2060,7 +2125,7 @@ function renderMediaPicker() {
   empty.style.display = 'none';
   grid.innerHTML = filtered.map(m => `
     <div class="media-card pickable" onclick="pickMedia('${esc(m.url)}')">
-      <div class="media-thumb"><img src="${esc(m.url)}" alt="${esc(m.key)}" loading="lazy"></div>
+      <div class="media-thumb"><img src="${esc(csThumbUrl(m.url))}" alt="${esc(m.key)}" loading="lazy"></div>
       <div class="media-meta">
         <div class="media-name" title="${esc(m.key)}">${esc(m.key.split('/').pop())}</div>
         <div class="media-sub">${fmtBytes(m.size)}</div>
@@ -2114,16 +2179,17 @@ async function mediaPickerUpload(fileList) {
       fail++; errors.push(`${f.name}: tipo no permitido (${f.type || 'desconocido'})`);
       continue;
     }
-    if (f.size > 5 * 1024 * 1024) {
-      fail++; errors.push(`${f.name}: supera 5 MB`);
+    const up = await csOptimizeImage(f, CS_OPT);
+    if (up.size > 5 * 1024 * 1024) {
+      fail++; errors.push(`${f.name}: supera 5 MB incluso optimizado`);
       continue;
     }
     const fd = new FormData();
-    fd.append('file', f);
+    fd.append('file', up);
     try {
       const r = await apiFetch('/upload', { method: 'POST', body: fd });
       const d = await r.json().catch(() => ({}));
-      if (d.ok) { ok++; lastUrl = d.url; }
+      if (d.ok) { ok++; lastUrl = d.url; csUploadThumb(d.url, up); /* no-fatal */ }
       else { fail++; errors.push(`${f.name}: ${d.error || `HTTP ${r.status}`}`); console.error('[media picker upload]', f.name, r.status, d); }
     } catch (err) {
       fail++; errors.push(`${f.name}: ${err?.message || 'error de red'}`);

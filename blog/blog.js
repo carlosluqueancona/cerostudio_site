@@ -107,9 +107,15 @@ function navigate(e, path) {
   window.scrollTo(0, 0);
 }
 
+/* Cards: thumbnail derivado (480px, ~19KB) en vez del hero completo.
+   Solo media propia — todo el bucket tiene thumbs (backfill 6 jul 2026). */
+function cardThumbUrl(u) {
+  return u && u.startsWith('https://media.cerostudio.ai/') ? u + '.thumb.jpg' : u;
+}
+
 function postCardHtml(post) {
   const thumbHtml = post.featured_image
-    ? '<div class="post-card-thumb"><img src="' + post.featured_image + '" alt="' + post.title + '" loading="lazy"></div>'
+    ? '<div class="post-card-thumb"><img src="' + cardThumbUrl(post.featured_image) + '" alt="' + post.title + '" loading="lazy"></div>'
     : '';
   return '<article class="post-card' + (post.featured_image ? ' has-thumb' : '') + '" data-route="/blog/' + post.slug + '" style="cursor: pointer;">'
     + thumbHtml

@@ -60,6 +60,8 @@ export async function onRequestDelete(context) {
 
     const key = url.slice(base.length + 1);
     await env.IMAGES.delete(key);
+    // También el thumbnail derivado (no-op si no existe)
+    try { await env.IMAGES.delete(`${key}.thumb.jpg`); } catch {}
     return json({ ok: true }, 200, origin);
   } catch (e) {
     console.error('[upload] DELETE error:', e.message);
@@ -103,11 +105,26 @@ export async function onRequestPost(context) {
     }
     const mime = detectedMime;
 
-    // Nombre único: blog/2026/04/uuid.ext
-    const ext      = EXT_MAP[mime];
-    const now      = new Date();
-    const folder   = `blog/${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}`;
-    const filename = `${folder}/${crypto.randomUUID()}.${ext}`;
+    // Modo thumbnail derivado: el cliente sube <keyOriginal>.thumb.jpg junto a
+    // cada imagen (patrón SergioLuque). Solo se permite ese sufijo — imposible
+    // sobreescribir un original — y debe ser JPEG.
+    const derivedKey = formData.get('key');
+    let filename;
+    if (derivedKey && typeof derivedKey === 'string') {
+      if (!/^(blog|portafolio)\/[A-Za-z0-9/_.-]+\.thumb\.jpg$/.test(derivedKey) || derivedKey.includes('..')) {
+        return json({ ok: false, error: 'key derivada inválida' }, 400, origin);
+      }
+      if (mime !== 'image/jpeg') {
+        return json({ ok: false, error: 'El thumbnail debe ser JPEG' }, 400, origin);
+      }
+      filename = derivedKey;
+    } else {
+      // Nombre único: blog/2026/04/uuid.ext
+      const ext    = EXT_MAP[mime];
+      const now    = new Date();
+      const folder = `blog/${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}`;
+      filename = `${folder}/${crypto.randomUUID()}.${ext}`;
+    }
 
     // Subir a R2
     await env.IMAGES.put(filename, buffer, {
