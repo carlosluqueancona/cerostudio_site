@@ -116,7 +116,11 @@ export async function onRequest(context) {
   if (slug === 'admin') {
     const url = new URL(context.request.url);
     url.pathname = '/blog/admin/index.html';
-    return context.env.ASSETS.fetch(url.toString());
+    const r = await context.env.ASSETS.fetch(url.toString());
+    const out = new Response(r.body, r);
+    // El admin nunca se cachea: ni edge ni browser (evita panel congelado)
+    out.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+    return out;
   }
 
   // Best-effort: look up the post in D1. If D1 is unavailable (local dev

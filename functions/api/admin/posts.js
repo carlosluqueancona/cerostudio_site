@@ -57,6 +57,9 @@ export async function onRequestGet(context) {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
+        /* Sin esto, la Cache Rule de la zona (cache everything) congela la
+           lista en el edge y el admin muestra estados viejos aunque recargues */
+        'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
         'X-Pagination-Limit': String(limit),
         'X-Pagination-Offset': String(offset),
         ...corsHeaders(origin),
