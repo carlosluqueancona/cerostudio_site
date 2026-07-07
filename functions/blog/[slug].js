@@ -11,6 +11,8 @@
  * automatically.
  */
 
+import { requireAuth } from '../api/admin/_shared.js';
+
 const BASE_URL = 'https://cerostudio.ai';
 const DEFAULT_OG_IMAGE = `${BASE_URL}/images/CERO_Studio_SocialShare.png`;
 const PUBLISHER_LOGO = `${BASE_URL}/images/svg/Cero_Studio_AI_Horizontal.svg`;
@@ -123,6 +125,15 @@ export async function onRequest(context) {
     return out;
   }
 
+  // Modo PREVIEW: ?preview=1 + sesión de admin válida → sirve el post aunque
+  // sea borrador o programado (para el botón "Previsualizar" del editor).
+  // Sin sesión, el parámetro se ignora y aplica el gating normal.
+  const wantsPreview = new URL(context.request.url).searchParams.get('preview') === '1';
+  let isPreview = false;
+  if (wantsPreview) {
+    try { isPreview = await requireAuth(context.request, context.env); } catch { isPreview = false; }
+  }
+
   // Best-effort: look up the post in D1. If D1 is unavailable (local dev
   // without binding) or query fails, fall through and serve the SPA shell —
   // the client-side blog.js will still render content from /api/posts.
@@ -130,12 +141,15 @@ export async function onRequest(context) {
   let dbAvailable = false;
   try {
     if (context.env?.DB?.prepare) {
+      const gate = isPreview
+        ? ''
+        : "AND (status = 'published' OR (status = 'scheduled' AND datetime(published_at) <= datetime('now')))";
       post = await context.env.DB.prepare(
         `SELECT title, slug, category, meta_title, meta_description,
                 featured_image, featured_image_alt, excerpt, content,
                 published_at, created_at
            FROM posts
-          WHERE slug = ? AND (status = 'published' OR (status = 'scheduled' AND datetime(published_at) <= datetime('now')))
+          WHERE slug = ? ${gate}
           LIMIT 1`
       ).bind(slug).first();
       dbAvailable = true;
@@ -286,8 +300,14 @@ export async function onRequest(context) {
 
   const transformed = rewriter.transform(assetResponse);
   // Mark response so SSR is verifiable in tests + production debugging
+  const headers = { ...Object.fromEntries(transformed.headers), 'X-Cero-SSR': isPreview ? 'preview' : 'ok' };
+  if (isPreview) {
+    // Un preview de borrador/programado JAMÁS se cachea ni se indexa
+    headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0';
+    headers['X-Robots-Tag'] = 'noindex, nofollow';
+  }
   return new Response(transformed.body, {
     status: transformed.status,
-    headers: { ...Object.fromEntries(transformed.headers), 'X-Cero-SSR': 'ok' },
+    headers,
   });
 }

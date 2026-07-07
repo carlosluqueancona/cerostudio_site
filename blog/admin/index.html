@@ -706,6 +706,10 @@
           </div>
         </div>
 
+        <div>
+          <button type="button" class="btn btn-ghost btn-sm" onclick="previewInBlog()" id="preview-blog-btn" style="width:100%;justify-content:center;">👁 Previsualizar en el blog ↗</button>
+          <p class="help" style="margin-top:4px;">Guarda y abre el post como se verá publicado — funciona con borradores y programados (solo tú lo ves).</p>
+        </div>
         <div id="editor-post-link" style="display:none;">
           <a id="editor-view-link" href="#" target="_blank" class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;">Ver artículo ↗</a>
         </div>
@@ -974,6 +978,22 @@ async function openEditor(id) {
 
   showView('editor');
   document.getElementById('f-title').focus();
+}
+
+/* Previsualizar en el blog: guarda el post y lo abre con ?preview=1 —
+   el server lo sirve aunque sea borrador/programado, solo con tu sesión. */
+async function previewInBlog() {
+  const btn = document.getElementById('preview-blog-btn');
+  btn.disabled = true;
+  try {
+    await savePost();
+    const slug = document.getElementById('f-slug').value.trim()
+      || slugFrom(document.getElementById('f-title').value.trim());
+    if (!slug) { toast('Ponle título al post primero', 'err'); return; }
+    window.open('/blog/' + slug + '?preview=1', '_blank');
+  } finally {
+    btn.disabled = false;
+  }
 }
 
 async function savePost() {

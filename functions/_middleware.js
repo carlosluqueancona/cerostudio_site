@@ -135,8 +135,12 @@ function withCsp(response, pathname) {
   // recargar una vez); el edge de Cloudflare conserva 5 min — y ese caché
   // lo purga el admin al mutar posts (purgeBlogCache). Sin esto, el zone
   // setting inyectaba max-age=300 al browser y Carlos veía contenido viejo.
-  r.headers.set('Cache-Control', 'public, max-age=0, must-revalidate');
-  r.headers.set('CDN-Cache-Control', 'public, max-age=300');
+  // Respetar no-store del downstream (p.ej. preview de borradores en
+  // /blog/x?preview=1 o el HTML del admin): jamás relajarlo a cacheable.
+  if (!(r.headers.get('Cache-Control') || '').includes('no-store')) {
+    r.headers.set('Cache-Control', 'public, max-age=0, must-revalidate');
+    r.headers.set('CDN-Cache-Control', 'public, max-age=300');
+  }
   return r;
 }
 
