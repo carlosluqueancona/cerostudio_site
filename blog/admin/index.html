@@ -987,7 +987,12 @@ async function previewInBlog() {
     const slug = document.getElementById('f-slug').value.trim()
       || slugFrom(document.getElementById('f-title').value.trim());
     if (!slug) { toast('Ponle título al post primero', 'err'); return; }
-    window.open('/blog/' + slug + '?preview=1', '_blank');
+    // Token firmado de 1 h — permite ver borradores/programados sin depender de cookies
+    const d = await apiFetch('/preview-token?slug=' + encodeURIComponent(slug)).then(r => r.json());
+    if (!d.token) { toast(d.error || 'No se pudo generar el preview', 'err'); return; }
+    window.open('/blog/' + slug + '?preview=' + encodeURIComponent(d.token), '_blank');
+  } catch {
+    toast('Error de conexión al generar el preview', 'err');
   } finally {
     btn.disabled = false;
   }

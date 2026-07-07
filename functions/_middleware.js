@@ -138,8 +138,14 @@ function withCsp(response, pathname) {
   // Respetar no-store del downstream (p.ej. preview de borradores en
   // /blog/x?preview=1 o el HTML del admin): jamás relajarlo a cacheable.
   if (!(r.headers.get('Cache-Control') || '').includes('no-store')) {
-    r.headers.set('Cache-Control', 'public, max-age=0, must-revalidate');
-    r.headers.set('CDN-Cache-Control', 'public, max-age=300');
+    if (r.status === 404) {
+      // Un 404 cacheado envenena la URL (p.ej. un programado visitado antes
+      // de su hora, o un preview fallido). Nunca al edge.
+      r.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+    } else {
+      r.headers.set('Cache-Control', 'public, max-age=0, must-revalidate');
+      r.headers.set('CDN-Cache-Control', 'public, max-age=300');
+    }
   }
   return r;
 }

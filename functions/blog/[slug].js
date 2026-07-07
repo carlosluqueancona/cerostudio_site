@@ -11,7 +11,7 @@
  * automatically.
  */
 
-import { requireAuth } from '../api/admin/_shared.js';
+import { requireAuth, verifyJWT } from '../api/admin/_shared.js';
 
 const BASE_URL = 'https://cerostudio.ai';
 const DEFAULT_OG_IMAGE = `${BASE_URL}/images/CERO_Studio_SocialShare.png`;
@@ -128,10 +128,20 @@ export async function onRequest(context) {
   // Modo PREVIEW: ?preview=1 + sesión de admin válida → sirve el post aunque
   // sea borrador o programado (para el botón "Previsualizar" del editor).
   // Sin sesión, el parámetro se ignora y aplica el gating normal.
-  const wantsPreview = new URL(context.request.url).searchParams.get('preview') === '1';
+  const previewParam = new URL(context.request.url).searchParams.get('preview');
   let isPreview = false;
-  if (wantsPreview) {
-    try { isPreview = await requireAuth(context.request, context.env); } catch { isPreview = false; }
+  if (previewParam) {
+    try {
+      if (previewParam === '1') {
+        // Modo cookie (respaldo): requiere sesión admin con Path=/
+        isPreview = await requireAuth(context.request, context.env);
+      } else {
+        // Modo token firmado (principal): el editor lo genera vía
+        // /api/admin/preview-token; no depende de cookies.
+        const payload = await verifyJWT(previewParam, context.env.JWT_SECRET);
+        isPreview = !!payload && payload.prev === slug && payload.exp > Date.now();
+      }
+    } catch { isPreview = false; }
   }
 
   // Best-effort: look up the post in D1. If D1 is unavailable (local dev
