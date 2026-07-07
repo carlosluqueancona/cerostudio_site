@@ -1,5 +1,5 @@
 # Pendientes · cerostudio.ai
-**Actualizado:** 6 julio 2026 (tarde) · (documento vivo — se actualiza en cada sesión)
+**Actualizado:** 6 julio 2026 (noche) · (documento vivo — se actualiza en cada sesión)
 
 ---
 
@@ -35,6 +35,8 @@
 
 | Fecha | Qué |
 |---|---|
+| 6 jul | Caché DOMADO y verificado por Carlos: browser siempre revalida (max-age=0 vía middleware), edge 5 min purgado automáticamente por el admin, y la Cache Rule de la zona corregida a "Respect origin TTL" (tenía override que obligaba a purgar a mano). Editar un post se ve al instante |
+| 6 jul | Admin: tarjeta PROGRAMADOS (azul) en la barra de stats; Borradores ya no cuenta programados |
 | 6 jul | Blog: posts PROGRAMADOS (estado ⏰ con fecha/hora, aparición automática sin cron, "Publicar ahora") + purge automático del edge al crear/editar/publicar/eliminar (secrets CF_ZONE_ID/CF_PURGE_TOKEN configurados y verificados) |
 | 6 jul | Worktrees: los 6 retirados con OK de Carlos — evidencia y SHAs de rescate en `_archivo/worktrees-retirados-2026-07-06/LEEME.md`; commit huérfano anclado con tag `archivo/keen-brahmagupta-mobilenav` |
 | 6 jul | CSP sin `unsafe-inline` en script-src sitewide (admin conserva) — ~50 handlers refactorizados a delegación; verificado en prod sin violaciones |
