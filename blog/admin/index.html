@@ -117,7 +117,7 @@
     }
 
     /* ── Stats ── */
-    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px; }
+    .stats { display:grid; grid-template-columns:repeat(5,1fr); gap:16px; margin-bottom:28px; }
     .stat  { background:var(--surface-1); border:1px solid var(--border); padding:20px 24px; }
     .stat-num { font-family:var(--fd); font-size:30px; font-weight:700; letter-spacing:-0.03em; }
     .stat-lbl { font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--gt); margin-top:4px; }
@@ -345,6 +345,7 @@
     <div class="stats">
       <div class="stat"><div class="stat-num" id="stat-total">—</div><div class="stat-lbl">Artículos</div></div>
       <div class="stat"><div class="stat-num" id="stat-pub" style="color:var(--lime);">—</div><div class="stat-lbl">Publicados</div></div>
+      <div class="stat"><div class="stat-num" id="stat-sched" style="color:#8ab4ff;">—</div><div class="stat-lbl">Programados</div></div>
       <div class="stat"><div class="stat-num" id="stat-draft" style="color:var(--amber);">—</div><div class="stat-lbl">Borradores</div></div>
       <div class="stat"><div class="stat-num" id="stat-cats">—</div><div class="stat-lbl">Categorías</div></div>
     </div>
@@ -822,12 +823,14 @@ function showLoadingState() {
 }
 
 function renderDashboard() {
-  const pub  = allPosts.filter(p => p.status === 'published').length;
-  const cats = new Set(allPosts.map(p => p.category).filter(Boolean)).size;
+  const pub   = allPosts.filter(p => p.status === 'published').length;
+  const sched = allPosts.filter(p => p.status === 'scheduled').length;
+  const cats  = new Set(allPosts.map(p => p.category).filter(Boolean)).size;
 
   document.getElementById('stat-total').textContent = allPosts.length;
   document.getElementById('stat-pub').textContent   = pub;
-  document.getElementById('stat-draft').textContent = allPosts.length - pub;
+  document.getElementById('stat-sched').textContent = sched;
+  document.getElementById('stat-draft').textContent = allPosts.length - pub - sched;
   document.getElementById('stat-cats').textContent  = cats;
 
   // Fill categories datalist for editor
