@@ -35,6 +35,7 @@
 
 | Fecha | Qué |
 |---|---|
+| 6 jul | Blog: posts PROGRAMADOS (estado ⏰ con fecha/hora, aparición automática sin cron, "Publicar ahora") + purge automático del edge al crear/editar/publicar/eliminar (secrets CF_ZONE_ID/CF_PURGE_TOKEN configurados y verificados) |
 | 6 jul | Worktrees: los 6 retirados con OK de Carlos — evidencia y SHAs de rescate en `_archivo/worktrees-retirados-2026-07-06/LEEME.md`; commit huérfano anclado con tag `archivo/keen-brahmagupta-mobilenav` |
 | 6 jul | CSP sin `unsafe-inline` en script-src sitewide (admin conserva) — ~50 handlers refactorizados a delegación; verificado en prod sin violaciones |
 | 6 jul | Navbar tablet: logo 54px blindado + CASOS/BLOG ocultos en 769–1100px |
