@@ -26,7 +26,9 @@
 - [ ] **Reporte de auditoría exprés**: cuando llegue el primer lead, usar la plantilla
   `_dev/plantilla-auditoria-expres.md` (5 hallazgos, 48 h hábiles, ~30-40 min).
 - [ ] **Leer los 6 artículos programados** en el admin antes del 14 jul (badge ⏰) —
-  editar/mover fecha/despublicar lo que no convenza; opcional subirles imagen destacada.
+  editar/mover fecha/despublicar lo que no convenza. Ya tienen HERO 16:9 de marca
+  (estilo Bauhaus-suizo, skill cerostudio-blog); originales en
+  `Claude/Projects/CeroStudio RRSS/Blog/Imagenes_16x9/`.
 - [ ] **Decidir**: el post "¿cuánto cuesta una página web?" trae un <style> que oculta
   el CTA de conversión en ese artículo — ¿fue a propósito o lo quitamos?
 
@@ -40,6 +42,7 @@
 
 | Fecha | Qué |
 |---|---|
+| 6 jul | HEROes 16:9 de marca generados para los 6 posts programados (skill cerostudio-blog + Nano Banana Pro), subidos a R2 y asignados con alt — 2 iterados por target gigante según la guía de la skill |
 | 6 jul | Calendario editorial: 6 artículos SEO de alta intención programados (martes 9:00 CDMX, 14 jul → 18 ago) — tienda en línea, Tiendanube vs Shopify, precio SEO, mantenimiento, IA gratis vs pro, rediseño. Editables en el admin |
 | 6 jul | Plantilla de propuesta/cotización (`_dev/plantilla-propuesta.md`) — cierra el pendiente de TC con vigencia |
 | 6 jul | Caché DOMADO y verificado por Carlos: browser siempre revalida (max-age=0 vía middleware), edge 5 min purgado automáticamente por el admin, y la Cache Rule de la zona corregida a "Respect origin TTL" (tenía override que obligaba a purgar a mano). Editar un post se ve al instante |
