@@ -141,8 +141,10 @@
     .badge-sched { background:rgba(120,170,255,.12); color:#8ab4ff; }
 
     /* ── Search bar ── */
-    .search-wrap { position:relative; margin-bottom:16px; }
-    .search-wrap input { padding-left:36px; }
+    .search-wrap { position:relative; }
+    .search-wrap input { padding-left:36px; height:44px; }
+    /* El botón junto al buscador: misma altura y centrado vertical */
+    .search-wrap + .btn { height:44px; padding-top:0; padding-bottom:0; display:inline-flex; align-items:center; white-space:nowrap; }
     .search-wrap::before {
       content:'⌕'; position:absolute; left:12px; top:50%; transform:translateY(-50%);
       color:var(--gt); font-size:16px; pointer-events:none;
