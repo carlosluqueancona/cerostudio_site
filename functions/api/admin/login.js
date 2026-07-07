@@ -86,7 +86,9 @@ export async function onRequestPost(context) {
       'HttpOnly',
       'Secure',
       'SameSite=Strict',
-      'Path=/api/admin',
+      // Path=/ para que la sesión también viaje a /blog/<slug>?preview=1
+      // (preview de borradores/programados). HttpOnly+Secure+Strict se mantienen.
+      'Path=/',
       'Max-Age=86400',
     ].join('; ');
 

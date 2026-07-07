@@ -591,6 +591,7 @@
     <div class="topbar-actions">
       <span id="editor-saving" style="font-size:12px;color:var(--gt);display:none;">Guardando…</span>
       <button class="btn btn-ghost btn-sm" onclick="showDashboard()">← Dashboard</button>
+      <button class="btn btn-ghost" onclick="previewInBlog()" id="preview-blog-btn">👁 Previsualizar</button>
       <button class="btn btn-primary" onclick="savePost()" id="save-btn">Guardar</button>
     </div>
   </header>
@@ -706,10 +707,6 @@
           </div>
         </div>
 
-        <div>
-          <button type="button" class="btn btn-ghost btn-sm" onclick="previewInBlog()" id="preview-blog-btn" style="width:100%;justify-content:center;">👁 Previsualizar en el blog ↗</button>
-          <p class="help" style="margin-top:4px;">Guarda y abre el post como se verá publicado — funciona con borradores y programados (solo tú lo ves).</p>
-        </div>
         <div id="editor-post-link" style="display:none;">
           <a id="editor-view-link" href="#" target="_blank" class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;">Ver artículo ↗</a>
         </div>
