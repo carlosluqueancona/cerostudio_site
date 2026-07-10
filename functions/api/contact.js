@@ -79,7 +79,8 @@ export async function onRequestPost(context) {
 
   try {
     const body = await request.json();
-    const { nombre, email, empresa, servicio, mensaje, _gotcha } = body;
+    const { nombre, email, empresa, servicio, mensaje, _gotcha,
+            event_id, consent, fbp, fbc, page_url } = body;
 
     // Honeypot — bots rellenan este campo
     if (_gotcha) return json({ ok: true }, 200, origin);
@@ -94,6 +95,16 @@ export async function onRequestPost(context) {
     if (nombre.length > 200 || email.length > 254 || (empresa?.length ?? 0) > 200 ||
         (servicio?.length ?? 0) > 50 || mensaje.length > 5000)
       return json({ error: 'El mensaje excede el tamaño permitido' }, 400, origin);
+
+    // Campos de tracking (Meta CAPI): son metadata, NUNCA deben bloquear el lead.
+    // Si vienen sobredimensionados (p.ej. fbclid largo en tráfico pagado) se ignoran
+    // en vez de rechazar el envío — el core (D1/Resend/CAPI) siempre corre.
+    const trk = {
+      event_id: (typeof event_id === 'string' && event_id.length <= 64)  ? event_id : '',
+      fbp:      (typeof fbp === 'string'      && fbp.length <= 128)       ? fbp      : '',
+      fbc:      (typeof fbc === 'string'      && fbc.length <= 512)       ? fbc      : '',
+      page_url: (typeof page_url === 'string' && page_url.length <= 500)  ? page_url : '',
+    };
 
     // Anti-spam: Turnstile (si está configurado) + rate limit
     const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
@@ -116,6 +127,26 @@ export async function onRequestPost(context) {
       mensaje.trim(),
       now
     ).run();
+
+    // Meta Conversions API (server-side) — no-op total sin las env configuradas.
+    // Solo con consentimiento EXPLÍCITO: el evento Lead lleva PII hasheada
+    // (email/nombre) + IP + User-Agent, así que sin 'accepted' no se envía nada
+    // a Meta (coincide con la política de privacidad publicada).
+    if (env.META_PIXEL_ID && env.META_CAPI_TOKEN && consent === 'accepted') {
+      context.waitUntil?.(sendMetaLead(env, {
+        eventId: trk.event_id || crypto.randomUUID(),
+        email,
+        nombre,
+        formType: servicio?.trim() || 'contacto',
+        ip,
+        ua: request.headers.get('User-Agent') || '',
+        fbp: trk.fbp,
+        fbc: trk.fbc,
+        sourceUrl: sanitizeSourceUrl(trk.page_url) ||
+                   sanitizeSourceUrl(request.headers.get('Referer')) ||
+                   'https://cerostudio.ai/',
+      }).catch(err => console.error('[contact] Meta CAPI error:', err.message)));
+    }
 
     // Enviar email de notificación
     if (env.RESEND_API_KEY) {
@@ -198,4 +229,75 @@ async function sendNotification(env, { nombre, email, empresa, servicio, mensaje
     const err = await res.text();
     throw new Error(`Resend API error ${res.status}: ${err}`);
   }
+}
+
+// ── Meta Conversions API ──────────────────────────────────────────────────────
+// Solo se dispara si META_PIXEL_ID + META_CAPI_TOKEN están en el entorno Y el
+// usuario aceptó cookies (el gating de consentimiento vive en onRequestPost,
+// porque el evento entero lleva PII hasheada + IP + UA).
+
+// Acepta la URL solo si viene de nuestro propio dominio; si no, cadena vacía.
+// Se parsea con URL y se compara el hostname EXACTO — startsWith dejaba pasar
+// hosts como 'cerostudio.ai.evil.com'. Se usa también para el fallback Referer.
+function sanitizeSourceUrl(u) {
+  if (typeof u !== 'string' || !u) return '';
+  try {
+    const { protocol, hostname } = new URL(u);
+    if (protocol === 'https:' &&
+        (hostname === 'cerostudio.ai' || hostname === 'www.cerostudio.ai'))
+      return u;
+  } catch { /* URL inválida → se descarta */ }
+  return '';
+}
+
+async function sha256Hex(s) {
+  const data = new TextEncoder().encode(String(s).trim().toLowerCase());
+  const digest = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(digest))
+    .map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function sendMetaLead(env, p) {
+  // Meta normaliza `fn` como PRIMER nombre y `ln` como apellido; el campo del
+  // form trae el nombre completo, así que se separa para no degradar el match.
+  const parts = String(p.nombre).trim().split(/\s+/);
+  const firstName = parts[0] || '';
+  const lastName  = parts.slice(1).join(' ');
+
+  const user_data = {
+    em: [await sha256Hex(p.email)],
+    fn: [await sha256Hex(firstName)],
+    client_ip_address: p.ip,
+    client_user_agent: p.ua,
+  };
+  if (lastName) user_data.ln = [await sha256Hex(lastName)];
+
+  // Cookies de Meta (fbp/fbc): el consentimiento ya se validó en onRequestPost.
+  if (p.fbp) user_data.fbp = p.fbp;
+  if (p.fbc) user_data.fbc = p.fbc;
+
+  const body = {
+    data: [{
+      event_name: 'Lead',
+      event_time: Math.floor(Date.now() / 1000),
+      event_id: p.eventId,
+      action_source: 'website',
+      event_source_url: p.sourceUrl,
+      user_data,
+      custom_data: { form_type: p.formType },
+    }],
+  };
+
+  if (env.META_TEST_EVENT_CODE) body.test_event_code = env.META_TEST_EVENT_CODE;
+
+  const res = await fetch(
+    `https://graph.facebook.com/v21.0/${env.META_PIXEL_ID}/events?access_token=${env.META_CAPI_TOKEN}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    }
+  );
+
+  if (!res.ok) console.error('[contact] Meta CAPI', res.status, await res.text());
 }

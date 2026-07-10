@@ -27,14 +27,19 @@
         btn.disabled = true;
 
         var fd = new FormData(form);
+        /* event_id para deduplicar Pixel (browser) vs CAPI (server) en Meta */
+        var eventId = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : Date.now() + '-' + Math.random().toString(36).slice(2);
         var payload = {
           nombre: nombre,
           email: email,
           empresa: sitio,
           servicio: 'auditoria-gratis',
           mensaje: 'Solicitud de auditoría exprés gratis.\nSitio a revisar: ' + sitio,
-          cf_turnstile_response: fd.get('cf-turnstile-response') || ''
+          cf_turnstile_response: fd.get('cf-turnstile-response') || '',
+          event_id: eventId,
+          page_url: location.href
         };
+        if (window.CS_META) { payload.consent = window.CS_META.consent() || ''; payload.fbp = window.CS_META.fbp(); payload.fbc = window.CS_META.fbc(); }
 
         fetch('/api/contact', {
           method: 'POST',
@@ -48,7 +53,7 @@
             if (window.turnstile) window.turnstile.reset();
             if (res.ok) {
               window.dataLayer = window.dataLayer || [];
-              window.dataLayer.push({ event: 'lead_form_submit', form_type: 'auditoria-gratis' });
+              window.dataLayer.push({ event: 'lead_form_submit', form_type: 'auditoria-gratis', event_id: eventId });
               setFeedback('success', 'Listo. Tu auditoría llega a tu email en máximo 48 horas hábiles.');
               form.reset();
             } else {

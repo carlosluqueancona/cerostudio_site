@@ -42,6 +42,7 @@
     .badge-type { display: inline-block; padding: 2px 8px; font-size: 11px; font-weight: 700; border-radius: 2px; }
     .badge-essential { background: #1a2a1a; color: #4caf50; }
     .badge-analytics { background: #2a2a1a; color: #ffd700; }
+    .badge-advertising { background: #2a1a22; color: #ff7ab6; }
     .consent-actions { display: flex; gap: 12px; margin: 24px 0; flex-wrap: wrap; }
     .btn-accept { background: #ceff33; color: #000; border: none; padding: 10px 24px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; }
     .btn-reject { background: transparent; border: 1px solid #444; color: #ccc; padding: 10px 24px; font-size: 13px; cursor: pointer; font-family: inherit; }
@@ -79,9 +80,9 @@
       <p>Cuando usas el formulario de contacto recopilamos: nombre, correo electrónico, empresa, servicio de interés y
         mensaje. Estos datos se almacenan en nuestra base de datos segura y se usan exclusivamente para responderte.</p>
       <h3>Cookies y análisis de tráfico</h3>
-      <p>Con tu consentimiento, utilizamos Google Tag Manager y Google Analytics para recopilar datos de navegación
-        anónimos (páginas visitadas, tiempo en sitio, dispositivo, país). No recopilamos datos de tarjetas de crédito ni
-        información financiera.</p>
+      <p>Con tu consentimiento, utilizamos Google Tag Manager, Google Analytics y Meta (Facebook) Pixel y Conversions API
+        para recopilar datos de navegación anónimos (páginas visitadas, tiempo en sitio, dispositivo, país) y medir
+        conversiones de anuncios. No recopilamos datos de tarjetas de crédito ni información financiera.</p>
 
       <h2>3. Política de Cookies</h2>
       <table>
@@ -112,6 +113,18 @@
             <td><span class="badge-type badge-analytics">Analítica</span></td>
             <td>24 horas</td>
             <td>Google Analytics — distingue usuarios en el día en curso.</td>
+          </tr>
+          <tr>
+            <td>_fbp</td>
+            <td><span class="badge-type badge-advertising">Publicidad</span></td>
+            <td>90 días</td>
+            <td>Meta (Facebook) Pixel — distingue navegadores para medir conversiones de anuncios.</td>
+          </tr>
+          <tr>
+            <td>_fbc</td>
+            <td><span class="badge-type badge-advertising">Publicidad</span></td>
+            <td>90 días</td>
+            <td>Meta — guarda el identificador del clic en anuncios (fbclid) para atribuir conversiones.</td>
           </tr>
         </tbody>
       </table>
@@ -156,15 +169,16 @@
       </ul>
 
       <h2>8. Transferencias internacionales</h2>
-      <p>Al aceptar cookies de analítica, tus datos de navegación se transfieren a servidores de Google LLC (EE. UU.).
-        Google participa en el Marco de Privacidad de Datos UE-EE. UU. y ofrece garantías adecuadas conforme al RGPD.
-        Más información: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Política de
+      <p>Al aceptar cookies de analítica y publicidad, tus datos de navegación se transfieren a servidores de Google LLC
+        y Meta Platforms, Inc. (EE. UU.). Ambas empresas participan en el Marco de Privacidad de Datos UE-EE. UU. y
+        ofrecen garantías adecuadas conforme al RGPD. Más información: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Política de
           privacidad de Google</a>.</p>
 
       <h2>9. Conservación de datos</h2>
       <ul>
         <li>Mensajes de contacto: hasta que se resuelva tu consulta y por el tiempo legalmente exigido.</li>
         <li>Datos de analítica (Google Analytics): 14 meses (configuración predeterminada de GA4).</li>
+        <li>Datos de conversión enviados a Meta (Pixel / Conversions API): se rigen por la política de retención de Meta.</li>
       </ul>
 
       <h2>10. Cambios a esta política</h2>
@@ -188,8 +202,9 @@
       <p>When you use the contact form we collect: name, email address, company, service of interest, and message. This
         data is stored in our secure database and used solely to respond to your inquiry.</p>
       <h3>Cookies and traffic analytics</h3>
-      <p>With your consent, we use Google Tag Manager and Google Analytics to collect anonymous browsing data (pages
-        visited, time on site, device type, country). We do not collect credit card or financial information.</p>
+      <p>With your consent, we use Google Tag Manager, Google Analytics and Meta (Facebook) Pixel and Conversions API to
+        collect anonymous browsing data (pages visited, time on site, device type, country) and measure ad conversions.
+        We do not collect credit card or financial information.</p>
 
       <h2>3. Cookie Policy</h2>
       <table>
@@ -220,6 +235,18 @@
             <td><span class="badge-type badge-analytics">Analytics</span></td>
             <td>24 hours</td>
             <td>Google Analytics — distinguishes users on the current day.</td>
+          </tr>
+          <tr>
+            <td>_fbp</td>
+            <td><span class="badge-type badge-advertising">Advertising</span></td>
+            <td>90 days</td>
+            <td>Meta (Facebook) Pixel — distinguishes browsers to measure ad conversions.</td>
+          </tr>
+          <tr>
+            <td>_fbc</td>
+            <td><span class="badge-type badge-advertising">Advertising</span></td>
+            <td>90 days</td>
+            <td>Meta — stores the ad click identifier (fbclid) to attribute conversions.</td>
           </tr>
         </tbody>
       </table>
@@ -263,14 +290,16 @@
       </ul>
 
       <h2>8. International Transfers</h2>
-      <p>By accepting analytics cookies, your browsing data is transferred to Google LLC servers (USA). Google
-        participates in the EU-US Data Privacy Framework and provides adequate safeguards under GDPR. Learn more:
+      <p>By accepting analytics and advertising cookies, your browsing data is transferred to Google LLC and Meta
+        Platforms, Inc. servers (USA). Both companies participate in the EU-US Data Privacy Framework and provide
+        adequate safeguards under GDPR. Learn more:
         <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a>.</p>
 
       <h2>9. Data Retention</h2>
       <ul>
         <li>Contact messages: until your inquiry is resolved and as required by law.</li>
         <li>Analytics data (Google Analytics): 14 months (default GA4 setting).</li>
+        <li>Conversion data sent to Meta (Pixel / Conversions API): governed by Meta's data retention policy.</li>
       </ul>
 
       <h2>10. Changes to This Policy</h2>
@@ -282,6 +311,6 @@
 
 <div id="footer-placeholder"></div>
 <script src="/components/loader.js?v=20260706a" defer></script>
-  <script src="/privacidad/privacidad.js?v=20260706a" defer></script>
+  <script src="/privacidad/privacidad.js?v=20260710a" defer></script>
 </body>
 </html>

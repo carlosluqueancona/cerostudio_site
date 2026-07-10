@@ -1063,6 +1063,12 @@
         payload.cf_turnstile_response = payload['cf-turnstile-response'] || '';
         delete payload['cf-turnstile-response'];
 
+        /* event_id para deduplicar Pixel (browser) vs CAPI (server) en Meta */
+        var eventId = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : Date.now() + '-' + Math.random().toString(36).slice(2);
+        payload.event_id = eventId;
+        payload.page_url = location.href;
+        if (window.CS_META) { payload.consent = window.CS_META.consent() || ''; payload.fbp = window.CS_META.fbp(); payload.fbc = window.CS_META.fbc(); }
+
         fetch(CONTACT_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1076,7 +1082,7 @@
             if (res.ok) {
               /* Conversión medible: GTM define el tag GA4 sobre este evento */
               window.dataLayer = window.dataLayer || [];
-              window.dataLayer.push({ event: 'lead_form_submit', form_type: payload.servicio || 'contacto' });
+              window.dataLayer.push({ event: 'lead_form_submit', form_type: payload.servicio || 'contacto', event_id: eventId });
               setFeedback('success', msgs.success);
               form.reset();
             } else {

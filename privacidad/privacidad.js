@@ -8,8 +8,27 @@
   }
 
   function acceptCookies() {
+    // Ruta preferida: delegar en components/cookie-consent.js (cargado en esta página).
+    // _csAccept guarda el consentimiento, dispara gtag('consent','update') a granted,
+    // pushea cs_consent_granted y carga GTM — sin él, aceptar desde aquí dejaba el
+    // consent en denied hasta la siguiente navegación.
+    if (typeof window._csAccept === 'function') {
+      window._csAccept();
+      updateConsentStatus();
+      return;
+    }
+    // Fallback si _csAccept no existe: replicar el consent update + GTM manualmente.
     saveConsent('accepted');
     updateConsentStatus();
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+    gtag('consent', 'update', {
+      ad_storage: 'granted',
+      ad_user_data: 'granted',
+      ad_personalization: 'granted',
+      analytics_storage: 'granted',
+    });
+    window.dataLayer.push({ event: 'cs_consent_granted' });
     // Load GTM if not already loaded
     if (!window._gtmLoaded) {
       window._gtmLoaded = true;

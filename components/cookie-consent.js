@@ -33,6 +33,45 @@
     })(window, document, 'script', 'dataLayer', GTM_ID);
   }
 
+  // ── Señales de Meta (fbc/fbp) ──────────────────────────────────────
+  // Capturamos fbclid del landing y reconstruimos la cookie _fbc para
+  // que el pixel/CAPI dedupliquen. persistFbcCookie() SOLO se escribe
+  // tras consentimiento aceptado (se invoca desde grantConsent()).
+  function getCookie(name) {
+    try {
+      var m = document.cookie.match('(?:^|; )' + name + '=([^;]*)');
+      return m ? decodeURIComponent(m[1]) : '';
+    } catch (e) { return ''; }
+  }
+
+  function buildFbc() {
+    var c = getCookie('_fbc');
+    if (c) return c;
+    try {
+      var raw = localStorage.getItem('cs_fbclid');
+      if (raw) {
+        var o = JSON.parse(raw);
+        if (o && o.v) return 'fb.1.' + o.ts + '.' + o.v;
+      }
+    } catch (e) {}
+    return '';
+  }
+
+  function persistFbcCookie() {
+    try {
+      if (getCookie('_fbc')) return;
+      var v = buildFbc();
+      if (!v) return;
+      // domain=.cerostudio.ai solo aplica en producción; en previews (*.pages.dev)
+      // el navegador rechaza la cookie por mismatch de dominio y la validación
+      // end-to-end no reflejaría prod. Fuera de prod la escribimos host-only.
+      var host = location.hostname;
+      var onProd = host === 'cerostudio.ai' || host.slice(-14) === '.cerostudio.ai';
+      var domainAttr = onProd ? '; domain=.cerostudio.ai' : '';
+      document.cookie = '_fbc=' + v + '; path=/; max-age=7776000' + domainAttr + '; Secure; SameSite=Lax';
+    } catch (e) {}
+  }
+
   function grantConsent() {
     gtag('consent', 'update', {
       ad_storage: 'granted',
@@ -40,6 +79,8 @@
       ad_personalization: 'granted',
       analytics_storage: 'granted',
     });
+    window.dataLayer.push({ event: 'cs_consent_granted' });
+    persistFbcCookie();
   }
 
   function stored() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
@@ -55,13 +96,13 @@
 
   var T = {
     es: {
-      msg:    'Usamos cookies propias y de terceros (Google Analytics) para analizar el tráfico y mejorar tu experiencia.',
+      msg:    'Usamos cookies propias y de terceros (Google Analytics y Meta Pixel) para analizar el tráfico, medir campañas y mejorar tu experiencia.',
       link:   'Política de cookies',
       accept: 'Aceptar todo',
       reject: 'Solo esenciales',
     },
     en: {
-      msg:    'We use first-party and third-party cookies (Google Analytics) to analyze traffic and improve your experience.',
+      msg:    'We use first-party and third-party cookies (Google Analytics and Meta Pixel) to analyze traffic, measure campaigns and improve your experience.',
       link:   'Cookie policy',
       accept: 'Accept all',
       reject: 'Essential only',
@@ -112,6 +153,22 @@
       '</div>';
     document.body.appendChild(bar);
   }
+
+  // Captura de fbclid del landing (guardado siempre; NO setea cookie
+  // hasta que haya consentimiento — eso lo hace persistFbcCookie()).
+  try {
+    var fbclid = new URLSearchParams(location.search).get('fbclid');
+    if (fbclid) {
+      localStorage.setItem('cs_fbclid', JSON.stringify({ v: fbclid, ts: Date.now() }));
+    }
+  } catch (e) {}
+
+  // API pública para el pixel/GTM: consent actual + cookies de Meta.
+  window.CS_META = {
+    consent: function () { return stored(); },
+    fbp: function () { return getCookie('_fbp'); },
+    fbc: buildFbc,
+  };
 
   var consent = stored();
   if (consent === 'accepted') {
