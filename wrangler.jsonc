@@ -2,6 +2,13 @@
 	"name": "cerostudio-site",
 	"compatibility_date": "2026-04-13",
 	"pages_build_output_dir": ".",
+	"vars": {
+		// Meta Pixel "Cero Studio" (dataset en el business Cero Studio Agencia).
+		// El token va como Secret en el dashboard (META_CAPI_TOKEN), nunca aquí.
+		"META_PIXEL_ID": "2460013067759593",
+		// Temporal: valida eventos CAPI en Events Manager → Probar eventos. Borrar al cerrar la validación.
+		"META_TEST_EVENT_CODE": "TEST9800"
+	},
 	"d1_databases": [
 		{
 			"binding": "DB",
