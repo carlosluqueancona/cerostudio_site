@@ -132,16 +132,6 @@ export async function onRequestPost(context) {
     // Solo con consentimiento EXPLÍCITO: el evento Lead lleva PII hasheada
     // (email/nombre) + IP + User-Agent, así que sin 'accepted' no se envía nada
     // a Meta (coincide con la política de privacidad publicada).
-    // TEMP DEBUG (retirar tras validar CAPI): deja rastro del gate en site_cache.
-    const capiGate = !env.META_PIXEL_ID ? 'skip:no-pixel-id'
-      : !env.META_CAPI_TOKEN ? 'skip:no-token'
-      : consent !== 'accepted' ? 'skip:consent=' + String(consent)
-      : 'queued';
-    context.waitUntil?.(env.DB.prepare(
-      "INSERT INTO site_cache (key, value, updated_at) VALUES ('meta_capi_gate', ?, datetime('now')) " +
-      "ON CONFLICT(key) DO UPDATE SET value=excluded.value, updated_at=excluded.updated_at"
-    ).bind(capiGate).run().catch(() => {}));
-
     if (env.META_PIXEL_ID && env.META_CAPI_TOKEN && consent === 'accepted') {
       context.waitUntil?.(sendMetaLead(env, {
         eventId: trk.event_id || crypto.randomUUID(),
@@ -309,13 +299,5 @@ async function sendMetaLead(env, p) {
     }
   );
 
-  const resText = await res.text();
-  if (!res.ok) console.error('[contact] Meta CAPI', res.status, resText);
-
-  // TEMP DEBUG (retirar tras validar CAPI): respuesta de Graph API en site_cache.
-  // El error de un token inválido dice "Invalid OAuth access token" SIN exponer el token.
-  await env.DB.prepare(
-    "INSERT INTO site_cache (key, value, updated_at) VALUES ('meta_capi_last', ?, datetime('now')) " +
-    "ON CONFLICT(key) DO UPDATE SET value=excluded.value, updated_at=excluded.updated_at"
-  ).bind(res.status + ' ' + resText.slice(0, 500)).run().catch(() => {});
+  if (!res.ok) console.error('[contact] Meta CAPI', res.status, await res.text());
 }
