@@ -148,10 +148,14 @@
         s.msg + ' <a id="cs-bar-link" href="/privacidad/" style="color:#b2f700;text-decoration:underline;">' + s.link + '</a>' +
       '</p>' +
       '<div style="display:flex;gap:10px;flex-shrink:0;">' +
-        '<button id="cs-bar-reject" onclick="window._csReject()" style="background:transparent;border:1px solid #444;color:#ccc;padding:8px 18px;font-size:13px;cursor:pointer;font-family:inherit;white-space:nowrap;">' + s.reject + '</button>' +
-        '<button id="cs-bar-accept" onclick="window._csAccept()" style="background:#b2f700;border:none;color:#000;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;">' + s.accept + '</button>' +
+        '<button id="cs-bar-reject" style="background:transparent;border:1px solid #444;color:#ccc;padding:8px 18px;font-size:13px;cursor:pointer;font-family:inherit;white-space:nowrap;">' + s.reject + '</button>' +
+        '<button id="cs-bar-accept" style="background:#b2f700;border:none;color:#000;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;">' + s.accept + '</button>' +
       '</div>';
     document.body.appendChild(bar);
+    // Listeners programáticos: la CSP (script-src sin 'unsafe-inline') bloquea
+    // los handlers onclick inline — con atributo, el botón queda muerto.
+    bar.querySelector('#cs-bar-reject').addEventListener('click', window._csReject);
+    bar.querySelector('#cs-bar-accept').addEventListener('click', window._csAccept);
   }
 
   // Captura de fbclid del landing (guardado siempre; NO setea cookie
