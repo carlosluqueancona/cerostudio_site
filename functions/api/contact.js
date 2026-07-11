@@ -81,6 +81,12 @@ export async function onRequestPost(context) {
     const body = await request.json();
     const { nombre, email, empresa, servicio, mensaje, _gotcha,
             event_id, consent, fbp, fbc, page_url } = body;
+    // WhatsApp: obligatorio solo en el form de auditoría (client-side); aquí es
+    // opcional porque el form de contacto del home usa este mismo endpoint sin él.
+    // Se sanitiza a dígitos y NUNCA bloquea el lead.
+    const whatsapp = (typeof body.whatsapp === 'string')
+      ? body.whatsapp.replace(/\D/g, '').slice(0, 15)
+      : '';
 
     // Honeypot — bots rellenan este campo
     if (_gotcha) return json({ ok: true }, 200, origin);
@@ -117,14 +123,15 @@ export async function onRequestPost(context) {
 
     // Guardar en D1
     await env.DB.prepare(`
-      INSERT INTO contact_submissions (nombre, email, empresa, servicio, mensaje, leido, created_at)
-      VALUES (?, ?, ?, ?, ?, 0, ?)
+      INSERT INTO contact_submissions (nombre, email, empresa, servicio, mensaje, whatsapp, leido, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, 0, ?)
     `).bind(
       nombre.trim(),
       email.trim().toLowerCase(),
       empresa?.trim()  || '',
       servicio?.trim() || '',
       mensaje.trim(),
+      whatsapp,
       now
     ).run();
 
@@ -137,6 +144,7 @@ export async function onRequestPost(context) {
         eventId: trk.event_id || crypto.randomUUID(),
         email,
         nombre,
+        whatsapp,
         formType: servicio?.trim() || 'contacto',
         ip,
         ua: request.headers.get('User-Agent') || '',
@@ -151,7 +159,7 @@ export async function onRequestPost(context) {
     // Enviar email de notificación
     if (env.RESEND_API_KEY) {
       try {
-        await sendNotification(env, { nombre, email, empresa, servicio, mensaje, now });
+        await sendNotification(env, { nombre, email, empresa, servicio, mensaje, whatsapp, now });
       } catch (err) {
         // El mensaje ya está guardado — no fallar la request si el email falla
         console.error('[contact] Email send error:', err.message);
@@ -174,7 +182,7 @@ function json(data, status = 200, origin = '') {
   });
 }
 
-async function sendNotification(env, { nombre, email, empresa, servicio, mensaje, now }) {
+async function sendNotification(env, { nombre, email, empresa, servicio, mensaje, whatsapp, now }) {
   const fecha = new Date(now).toLocaleString('es-MX', {
     timeZone: 'America/Mexico_City',
     dateStyle: 'full',
@@ -197,6 +205,7 @@ async function sendNotification(env, { nombre, email, empresa, servicio, mensaje
     ``,
     `Nombre:    ${nombre}`,
     `Email:     ${email}`,
+    `WhatsApp:  ${whatsapp ? whatsapp + '  →  https://wa.me/52' + whatsapp : '—'}`,
     `Empresa:   ${empresa || '—'}`,
     `Servicio:  ${servicioLabels[servicio] || servicio || '—'}`,
     `Fecha:     ${fecha}`,
@@ -271,6 +280,13 @@ async function sendMetaLead(env, p) {
     client_user_agent: p.ua,
   };
   if (lastName) user_data.ln = [await sha256Hex(lastName)];
+
+  // Teléfono: Meta lo espera con lada de país y solo dígitos. El form manda
+  // 10 dígitos MX normalizados; si llega más largo ya trae país.
+  if (p.whatsapp) {
+    const phDigits = p.whatsapp.length === 10 ? '52' + p.whatsapp : p.whatsapp;
+    user_data.ph = [await sha256Hex(phDigits)];
+  }
 
   // Cookies de Meta (fbp/fbc): el consentimiento ya se validó en onRequestPost.
   if (p.fbp) user_data.fbp = p.fbp;

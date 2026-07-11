@@ -1565,7 +1565,7 @@ function renderMessages() {
       <div class="msg-card-header">
         <div>
           <div class="msg-card-name">${esc(m.nombre)} ${m.leido ? '' : '<span style="font-size:10px;background:var(--lime);color:var(--on-lime);padding:2px 7px;margin-left:6px;font-family:var(--fd);">NUEVO</span>'}</div>
-          <div class="msg-card-email">${esc(m.email)}</div>
+          <div class="msg-card-email">${esc(m.email)}${m.whatsapp ? ' · 📱 ' + esc(m.whatsapp) : ''}</div>
         </div>
         <div class="msg-card-meta">${fmtDate(m.created_at)}</div>
       </div>
@@ -1578,6 +1578,7 @@ function renderMessages() {
       <div class="msg-body" id="msg-body-${m.id}">${esc(m.mensaje)}
         <div class="msg-actions">
           <a href="mailto:${esc(m.email)}?subject=Re: tu mensaje a Cero Studio" class="btn btn-primary btn-sm">Responder por email</a>
+          ${m.whatsapp ? `<a href="https://wa.me/52${esc(m.whatsapp)}?text=${encodeURIComponent('Hola ' + m.nombre + ', soy Carlos de Cero Studio — recibimos tu solicitud.')}" target="_blank" rel="noopener" class="btn btn-ghost btn-sm" onclick="event.stopPropagation()">Responder por WhatsApp</a>` : ''}
           <button class="btn btn-ghost btn-sm" onclick="toggleLeido(event,${m.id},${m.leido ? 1 : 0})">${m.leido ? 'Marcar sin leer' : 'Marcar leído'}</button>
           <button class="btn btn-danger btn-sm" onclick="deleteMsg(event,${m.id})">Eliminar</button>
         </div>

@@ -18,8 +18,13 @@
         var nombre = form.nombre.value.trim();
         var email = form.email.value.trim();
         var sitio = form.sitio.value.trim();
-        if (!nombre || !email || !sitio) { setFeedback('error', 'Completa los 3 campos para enviarte tu auditoría.'); return; }
+        /* Solo dígitos; acepta "55 1234 5678", "+52 1 55...", etc. */
+        var whatsapp = form.whatsapp.value.replace(/\D/g, '');
+        if (whatsapp.length === 12 && whatsapp.indexOf('52') === 0) whatsapp = whatsapp.slice(2);
+        if (whatsapp.length === 13 && whatsapp.indexOf('521') === 0) whatsapp = whatsapp.slice(3);
+        if (!nombre || !email || !form.whatsapp.value.trim() || !sitio) { setFeedback('error', 'Completa los 4 campos para enviarte tu auditoría.'); return; }
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setFeedback('error', 'Revisa tu email — ahí te mandamos el reporte.'); return; }
+        if (whatsapp.length !== 10) { setFeedback('error', 'Revisa tu WhatsApp — deben ser 10 dígitos (ej. 55 1234 5678).'); return; }
 
         setFeedback('', '');
         btn.classList.add('loading');
@@ -35,6 +40,7 @@
           empresa: sitio,
           servicio: 'auditoria-gratis',
           mensaje: 'Solicitud de auditoría exprés gratis.\nSitio a revisar: ' + sitio,
+          whatsapp: whatsapp,
           cf_turnstile_response: fd.get('cf-turnstile-response') || '',
           event_id: eventId,
           page_url: location.href
