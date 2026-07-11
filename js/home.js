@@ -816,6 +816,7 @@
         es: {
           nombre: 'Nombre *',
           email: 'Email *',
+          whatsapp: 'WhatsApp (10 dígitos) *',
           empresa: 'Empresa / Negocio',
           servicio: '¿Qué servicio necesitas?',
           servicioPh: 'Selecciona una opción',
@@ -825,6 +826,7 @@
         en: {
           nombre: 'Name *',
           email: 'Email *',
+          whatsapp: 'WhatsApp (10 digits) *',
           empresa: 'Company / Business',
           servicio: 'What service do you need?',
           servicioPh: 'Select an option',
@@ -872,6 +874,7 @@
           var setL = function (id, txt) { var el = g(id); if (el) el.textContent = txt; };
           setL('form-l-nombre', form.nombre);
           setL('form-l-email', form.email);
+          setL('form-l-whatsapp', form.whatsapp);
           setL('form-l-empresa', form.empresa);
           setL('form-l-servicio', form.servicio);
           setL('form-l-mensaje', form.mensaje);
@@ -984,6 +987,7 @@
           error: 'Hubo un problema al enviar. Intenta de nuevo o escríbenos a hola@cerostudio.ai.',
           errRequired: 'Por favor completa todos los campos obligatorios (*).',
           errEmail: 'Ingresa un email válido.',
+          errWhatsapp: 'Revisa tu WhatsApp — deben ser 10 dígitos (ej. 55 1234 5678).',
           send: 'Enviar Mensaje',
         },
         en: {
@@ -992,9 +996,18 @@
           error: 'Something went wrong. Try again or reach us at hola@cerostudio.ai.',
           errRequired: 'Please fill in all required fields (*).',
           errEmail: 'Please enter a valid email address.',
+          errWhatsapp: 'Check your WhatsApp — it should be 10 digits (e.g. 55 1234 5678).',
           send: 'Send Message',
         }
       };
+
+      /* Normaliza a 10 dígitos MX: quita todo lo no-numérico y ladas +52/521 */
+      function normalizeWhatsapp(v) {
+        var d = String(v).replace(/\D/g, '');
+        if (d.length === 12 && d.indexOf('52') === 0) d = d.slice(2);
+        if (d.length === 13 && d.indexOf('521') === 0) d = d.slice(3);
+        return d;
+      }
 
       function validateForm(form) {
         var lang = (typeof CS_LANG !== 'undefined' ? CS_LANG : 'es');
@@ -1016,6 +1029,13 @@
         if (emailField && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailField.value.trim())) {
           emailField.classList.add('invalid');
           return { ok: false, msg: msgs.errEmail };
+        }
+
+        /* WhatsApp: 10 dígitos MX */
+        var waField = form.querySelector('[name="whatsapp"]');
+        if (waField && normalizeWhatsapp(waField.value).length !== 10) {
+          waField.classList.add('invalid');
+          return { ok: false, msg: msgs.errWhatsapp };
         }
 
         return { ok: true };
@@ -1058,6 +1078,9 @@
         var fd = new FormData(form);
         var payload = {};
         fd.forEach(function(v, k) { payload[k] = v; });
+
+        /* WhatsApp normalizado a 10 dígitos (el server lo re-sanitiza igual) */
+        if (payload.whatsapp) payload.whatsapp = normalizeWhatsapp(payload.whatsapp);
 
         /* Turnstile: el widget inyecta cf-turnstile-response; el API espera snake_case */
         payload.cf_turnstile_response = payload['cf-turnstile-response'] || '';
