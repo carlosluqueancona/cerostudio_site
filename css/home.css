@@ -314,7 +314,7 @@
       width: 24px;
       height: 2px;
       background: var(--white);
-      transition: all .35s;
+      transition: transform .35s, opacity .35s;
       transform-origin: center;
     }
 
@@ -2709,4 +2709,18 @@
       .nav-links { gap: 22px; }
       .nav-links li:has(> #nav-casos),
       .nav-links li:has(> #nav-blog) { display: none; }
+    }
+
+    /* ── prefers-reduced-motion: se elimina el MOVIMIENTO (marquee, líneas
+       ceroLineSlide); las transiciones de color/fondo .9s se conservan porque
+       ayudan a leer el estado sin marear. duration/delay 0 + forwards = las
+       líneas saltan directo a su estado final, no se pierde información. ── */
+    @media (prefers-reduced-motion: reduce) {
+      .marquee-track { animation: none; }
+      .srv-card.in-view::after,
+      .proc-step.in-view::before,
+      .testi-card.in-view::before {
+        animation-duration: 0s;
+        animation-delay: 0s;
+      }
     }

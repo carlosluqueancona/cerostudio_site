@@ -23,7 +23,9 @@
   margin: 0 0 34px;
 }
 .sv-crumbs a { color: inherit; text-decoration: none; border-bottom: 1px solid transparent; transition: color .2s, border-color .2s; }
-.sv-crumbs a:hover { color: var(--lime); border-bottom-color: var(--lime); }
+@media (hover: hover) {
+  .sv-crumbs a:hover { color: var(--lime); border-bottom-color: var(--lime); }
+}
 .sv-crumbs span { margin: 0 10px; opacity: .4; }
 
 /* ── HERO · portada de la ficha ─────────────────────────────────── */
@@ -274,9 +276,11 @@
   transform-origin: left;
   transition: transform .45s ease;
 }
-.sv-module:hover { background: #101010; }
-.sv-module:hover::before { transform: scaleX(1); }
-.sv-module:hover h3 { color: var(--lime); }
+@media (hover: hover) {
+  .sv-module:hover { background: #101010; }
+  .sv-module:hover::before { transform: scaleX(1); }
+  .sv-module:hover h3 { color: var(--lime); }
+}
 .sv-module .idx {
   font-family: var(--fd);
   font-size: 10px;
@@ -313,7 +317,9 @@
   border-bottom: 1px solid rgba(255, 255, 255, .1);
   transition: background .25s ease;
 }
-.sv-bom-row:hover { background: rgba(178, 247, 0, .04); }
+@media (hover: hover) {
+  .sv-bom-row:hover { background: rgba(178, 247, 0, .04); }
+}
 .sv-bom-row .num {
   font-family: var(--fd);
   font-size: 12px;
@@ -352,7 +358,9 @@
   border-top: 2px solid rgba(255, 255, 255, .16);
   transition: border-color .35s ease;
 }
-.sv-step:hover { border-top-color: var(--lime); }
+@media (hover: hover) {
+  .sv-step:hover { border-top-color: var(--lime); }
+}
 .sv-step::before {
   content: '';
   position: absolute;
@@ -485,7 +493,9 @@
   color: #fff;
   transition: background .25s ease, padding-left .25s ease;
 }
-.sv-catalog-row:hover { background: rgba(178, 247, 0, .05); padding-left: 14px; }
+@media (hover: hover) {
+  .sv-catalog-row:hover { background: rgba(178, 247, 0, .05); padding-left: 14px; }
+}
 .sv-catalog-row .code {
   font-family: var(--fd);
   font-size: 11px;
@@ -500,7 +510,9 @@
   letter-spacing: -.01em;
 }
 .sv-catalog-row .arrow { color: var(--lime); font-size: 18px; transition: transform .25s ease; }
-.sv-catalog-row:hover .arrow { transform: translateX(6px); }
+@media (hover: hover) {
+  .sv-catalog-row:hover .arrow { transform: translateX(6px); }
+}
 
 /* ── Scroll reveal SOLO touch (patrón del sitio: reveal-cards.js corre
    únicamente con hover:none; desktop ya tiene :hover). Ritmo aprobado:
@@ -555,5 +567,16 @@
     grid-template-columns: 1fr !important;
     margin-top: 28px !important;
     gap: 20px;
+  }
+}
+
+/* ── prefers-reduced-motion: la línea svLine salta directo a su estado
+   final (forwards); el sweep de hover en desktop se vuelve instantáneo.
+   Las transiciones de color/fondo se conservan. ── */
+@media (prefers-reduced-motion: reduce) {
+  .sv-module::before { transition-duration: 0s; }
+  .sv-module.in-view::before {
+    animation-duration: 0s;
+    animation-delay: 0s;
   }
 }
