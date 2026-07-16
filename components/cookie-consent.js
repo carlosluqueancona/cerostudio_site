@@ -33,6 +33,24 @@
     })(window, document, 'script', 'dataLayer', GTM_ID);
   }
 
+  // ── Metricool (analytics cookieless) ───────────────────────────────
+  // El tag vivía en GTM como "HTML personalizado", pero la CSP del sitio
+  // (script-src sin 'unsafe-inline') bloquea los inline que inyecta GTM —
+  // por eso Metricool nunca conectaba. Se carga aquí replicando la config
+  // exacta del tag GTM (All Pages, sin gate de consent): be.js no usa
+  // cookies ni storage — manda un único beacon de imagen a
+  // tracker.metricool.com, dominio ya permitido en la CSP.
+  // El tag de GTM debe quedar PAUSADO para no duplicar si la CSP cambia.
+  function loadMetricool() {
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://tracker.metricool.com/resources/be.js';
+    s.onload = function () {
+      try { window.beTracker.t({ hash: '5fa45d6ab94a6653d9973f7b7c2df6d0' }); } catch (e) {}
+    };
+    document.head.appendChild(s);
+  }
+
   // ── Señales de Meta (fbc/fbp) ──────────────────────────────────────
   // Capturamos fbclid del landing y reconstruimos la cookie _fbc para
   // que el pixel/CAPI dedupliquen. persistFbcCookie() SOLO se escribe
@@ -187,4 +205,5 @@
   // GTM carga SIEMPRE (consent mode controla qué pueden hacer los tags).
   // 'rejected' → GTM cargado con consent denied, sin banner.
   loadGTM();
+  loadMetricool();
 })();
