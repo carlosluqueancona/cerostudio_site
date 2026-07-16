@@ -744,26 +744,30 @@
       transition: background .15s ease-out;
     }
 
-    /* Numeral fantasma outline, recortado por el canto de la card */
-    .srv-card::before {
-      content: attr(data-num);
+    /* Glifo fantasma monolínea, recortado por el canto de la card.
+       Sustituye al numeral outline duplicado (el orden lo cargan
+       .srv-num / .proc-num); trazo 1.5px vía non-scaling-stroke. */
+    .card-glyph {
       position: absolute;
-      right: -10px;
-      bottom: -24px;
-      font-family: var(--fd);
-      font-size: clamp(96px, 9vw, 140px);
-      font-weight: 700;
-      line-height: 1;
-      letter-spacing: -.04em;
-      color: transparent;
-      -webkit-text-stroke: 1.5px var(--surface-high);
+      right: -26px;
+      bottom: -34px;
+      width: clamp(150px, 13vw, 185px);
+      height: clamp(150px, 13vw, 185px);
+      color: var(--surface-high);
       pointer-events: none;
       z-index: 0;
-      transition: -webkit-text-stroke-color .35s ease;
+      transition: color .35s ease;
     }
 
-    .srv-card:hover::before {
-      -webkit-text-stroke-color: rgba(178, 247, 0, .45);
+    .card-glyph svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .srv-card:hover .card-glyph,
+    .proc-step:hover .card-glyph {
+      color: rgba(178, 247, 0, .45);
     }
 
     .srv-num,
@@ -1256,27 +1260,8 @@
       background: var(--g2);
     }
 
-    /* Numeral fantasma outline recortado (::before lo ocupa la línea lime) */
-    .proc-step::after {
-      content: attr(data-num);
-      position: absolute;
-      right: -8px;
-      bottom: -30px;
-      font-family: var(--fd);
-      font-size: clamp(96px, 9vw, 140px);
-      font-weight: 700;
-      line-height: 1;
-      letter-spacing: -.04em;
-      color: transparent;
-      -webkit-text-stroke: 1.5px var(--gb);
-      pointer-events: none;
-      z-index: 0;
-      transition: -webkit-text-stroke-color .35s ease;
-    }
-
-    .proc-step:hover::after {
-      -webkit-text-stroke-color: rgba(178, 247, 0, .45);
-    }
+    /* El glifo fantasma de proceso usa .card-glyph (ver sección servicios);
+       ::before lo ocupa la línea lime superior. */
 
     .proc-step-top,
     .proc-title,
@@ -2484,14 +2469,11 @@
         background: var(--surface-high);
         transition: background .9s ease .5s;
       }
-      /* numerales fantasma: encendido lime en touch con el ritmo aprobado */
-      .srv-card.in-view::before {
-        -webkit-text-stroke-color: rgba(178, 247, 0, .45);
-        transition: -webkit-text-stroke-color .9s ease .5s;
-      }
-      .proc-step.in-view::after {
-        -webkit-text-stroke-color: rgba(178, 247, 0, .45);
-        transition: -webkit-text-stroke-color .9s ease .5s;
+      /* glifos fantasma: encendido lime en touch con el ritmo aprobado */
+      .srv-card.in-view .card-glyph,
+      .proc-step.in-view .card-glyph {
+        color: rgba(178, 247, 0, .45);
+        transition: color .9s ease .5s;
       }
       .testi-card.in-view::before {
         animation: ceroLineSlide 1s cubic-bezier(.16,1,.3,1) .5s forwards;
