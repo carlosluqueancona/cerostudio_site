@@ -132,7 +132,7 @@
           const f = document.getElementById('contactForm');
           if (!f) return;
           const sel = f.querySelector('[name="servicio"]');
-          if (sel) sel.value = a.dataset.planService;
+          if (sel) { sel.value = a.dataset.planService; sel.dispatchEvent(new Event('change')); }
           const msg = f.querySelector('[name="mensaje"]');
           if (msg && !msg.value.trim())
             msg.value = CS_LANG === 'en'
@@ -821,7 +821,14 @@
           servicio: '¿Qué servicio necesitas?',
           servicioPh: 'Selecciona una opción',
           mensaje: 'Cuéntanos sobre tu proyecto *',
-          opts: ['Desarrollo Web', 'Tienda eCommerce', 'Branding Digital', 'SEO & Visibilidad', 'Mantenimiento', 'Consultoría Digital', 'Otro']
+          tiene: '¿Ya tienes sitio web? *',
+          tieneSi: 'Sí, ya tengo',
+          tieneNo: 'Todavía no',
+          sitio: 'El link de tu sitio web *',
+          sitioPh: 'minegocio.mx',
+          negocio: 'Nombre y dirección de tu negocio *',
+          negocioPh: 'Tacos El Güero · Av. Coyoacán 309, CDMX',
+          opts: ['Desarrollo Web', 'Tienda eCommerce', 'Branding Digital', 'SEO & Visibilidad', 'Mantenimiento', 'Consultoría Digital', 'Auditoría exprés gratis de mi sitio', 'Otro']
         },
         en: {
           nombre: 'Name *',
@@ -831,7 +838,14 @@
           servicio: 'What service do you need?',
           servicioPh: 'Select an option',
           mensaje: 'Tell us about your project *',
-          opts: ['Web Development', 'eCommerce Store', 'Digital Branding', 'SEO & Visibility', 'Maintenance', 'Digital Consulting', 'Other']
+          tiene: 'Do you already have a website? *',
+          tieneSi: 'Yes, I do',
+          tieneNo: 'Not yet',
+          sitio: 'Your website link *',
+          sitioPh: 'mybusiness.com',
+          negocio: 'Your business name and address *',
+          negocioPh: "Joe's Tacos · 309 Coyoacán Ave, CDMX",
+          opts: ['Web Development', 'eCommerce Store', 'Digital Branding', 'SEO & Visibility', 'Maintenance', 'Digital Consulting', 'Free express audit of my site', 'Other']
         }
       };
 
@@ -878,10 +892,18 @@
           setL('form-l-empresa', form.empresa);
           setL('form-l-servicio', form.servicio);
           setL('form-l-mensaje', form.mensaje);
+          setL('form-l-tiene', form.tiene);
+          setL('form-tgl-si', form.tieneSi);
+          setL('form-tgl-no', form.tieneNo);
+          setL('form-l-sitio', form.sitio);
+          setL('form-l-negocio', form.negocio);
+          var fSitio = g('f-sitio'), fNegocio = g('f-negocio');
+          if (fSitio) fSitio.placeholder = form.sitioPh;
+          if (fNegocio) fNegocio.placeholder = form.negocioPh;
           var sel = f.querySelector('[name="servicio"]');
           if (sel) {
             sel.options[0].text = form.servicioPh;
-            var vals = ['web', 'ecommerce', 'branding', 'seo', 'mantenimiento', 'consultoria', 'otro'];
+            var vals = ['web', 'ecommerce', 'branding', 'seo', 'mantenimiento', 'consultoria', 'auditoria-gratis', 'otro'];
             vals.forEach(function (v, i) {
               var opt = sel.querySelector('[value="' + v + '"]');
               if (opt) opt.text = form.opts[i];
@@ -988,6 +1010,8 @@
           errRequired: 'Por favor completa todos los campos obligatorios (*).',
           errEmail: 'Ingresa un email válido.',
           errWhatsapp: 'Revisa tu WhatsApp — deben ser 10 dígitos (ej. 55 1234 5678).',
+          errSitio: 'Eso no parece un link — escribe algo como minegocio.mx. ¿Todavía no tienes sitio? Marca "Todavía no".',
+          errNegocio: 'Cuéntanos el nombre y la dirección de tu negocio — con eso hacemos tu diagnóstico.',
           send: 'Enviar Mensaje',
         },
         en: {
@@ -997,6 +1021,8 @@
           errRequired: 'Please fill in all required fields (*).',
           errEmail: 'Please enter a valid email address.',
           errWhatsapp: 'Check your WhatsApp — it should be 10 digits (e.g. 55 1234 5678).',
+          errSitio: 'That does not look like a link — try something like mybusiness.com. No website yet? Select "Not yet".',
+          errNegocio: 'Tell us your business name and address — that is what we use for your diagnosis.',
           send: 'Send Message',
         }
       };
@@ -1036,6 +1062,29 @@
         if (waField && normalizeWhatsapp(waField.value).length !== 10) {
           waField.classList.add('invalid');
           return { ok: false, msg: msgs.errWhatsapp };
+        }
+
+        /* Bifurcación de auditoría: con sitio → URL con pinta de dominio;
+           sin sitio → nombre/dirección del negocio. Los campos no llevan
+           required nativo porque viven ocultos fuera de auditoría. */
+        var selServicio = form.querySelector('[name="servicio"]');
+        if (selServicio && selServicio.value === 'auditoria-gratis') {
+          var conSitio = !form.querySelector('[name="tiene_sitio"][value="no"]:checked');
+          if (conSitio) {
+            var sitioField = form.querySelector('[name="sitio"]');
+            var vSitio = sitioField ? sitioField.value.trim() : '';
+            var limpio = vSitio.replace(/^https?:\/\//i, '').trim();
+            if (!vSitio || limpio.indexOf(' ') !== -1 || !/\.[a-zA-Z]{2,}/.test(limpio)) {
+              if (sitioField) sitioField.classList.add('invalid');
+              return { ok: false, msg: msgs.errSitio };
+            }
+          } else {
+            var negField = form.querySelector('[name="negocio"]');
+            if (negField && !negField.value.trim()) {
+              negField.classList.add('invalid');
+              return { ok: false, msg: msgs.errNegocio };
+            }
+          }
         }
 
         return { ok: true };
@@ -1081,6 +1130,16 @@
 
         /* WhatsApp normalizado a 10 dígitos (el server lo re-sanitiza igual) */
         if (payload.whatsapp) payload.whatsapp = normalizeWhatsapp(payload.whatsapp);
+
+        /* Bifurcación de auditoría: fuera de auditoría los campos ocultos no
+           viajan; sin sitio → 'sitio' lleva el nombre/dirección del negocio */
+        if (payload.servicio === 'auditoria-gratis') {
+          if (payload.tiene_sitio === 'no') payload.sitio = payload.negocio || '';
+        } else {
+          delete payload.tiene_sitio;
+          delete payload.sitio;
+        }
+        delete payload.negocio;
 
         /* Turnstile: el widget inyecta cf-turnstile-response; el API espera snake_case */
         payload.cf_turnstile_response = payload['cf-turnstile-response'] || '';
@@ -1133,4 +1192,25 @@
       /* CSP-safe: el form ya no usa onsubmit= inline */
       var _cf = document.getElementById('contactForm');
       if (_cf) _cf.addEventListener('submit', handleSubmit);
+
+      /* Bloque de auditoría: visible solo con servicio=auditoria-gratis;
+         dentro, el toggle "¿Ya tienes sitio?" alterna URL ↔ negocio */
+      if (_cf) {
+        var _sel = _cf.querySelector('[name="servicio"]');
+        var _grpAudit = document.getElementById('grp-audit');
+        var _grpSitio = document.getElementById('grp-sitio');
+        var _grpNegocio = document.getElementById('grp-negocio');
+        var syncAudit = function () {
+          if (!_grpAudit) return;
+          _grpAudit.hidden = !(_sel && _sel.value === 'auditoria-gratis');
+          var noSitio = _cf.querySelector('[name="tiene_sitio"][value="no"]:checked');
+          if (_grpSitio) _grpSitio.hidden = !!noSitio;
+          if (_grpNegocio) _grpNegocio.hidden = !noSitio;
+        };
+        if (_sel) _sel.addEventListener('change', syncAudit);
+        _cf.querySelectorAll('[name="tiene_sitio"]').forEach(function (r) {
+          r.addEventListener('change', syncAudit);
+        });
+        syncAudit();
+      }
     }); // end DOMContentLoaded

@@ -1569,10 +1569,12 @@ function renderMessages() {
         </div>
         <div class="msg-card-meta">${fmtDate(m.created_at)}</div>
       </div>
-      ${m.empresa || m.servicio ? `
+      ${m.empresa || m.servicio || m.tiene_sitio ? `
       <div class="msg-card-tags">
         ${m.empresa  ? `<span class="badge badge-draft">${esc(m.empresa)}</span>`  : ''}
         ${m.servicio ? `<span class="badge badge-pub">${esc(m.servicio)}</span>` : ''}
+        ${m.tiene_sitio === 'si' ? `<span class="badge badge-pub">🌐 con sitio${m.sitio ? ': ' + esc(m.sitio) : ''}</span>` : ''}
+        ${m.tiene_sitio === 'no' ? `<span class="badge badge-draft" style="border-color:var(--lime);color:var(--lime);">📍 SIN SITIO — presencia local${m.sitio ? ': ' + esc(m.sitio) : ''}</span>` : ''}
       </div>` : ''}
       <div class="msg-card-preview">${esc(m.mensaje)}</div>
       <div class="msg-body" id="msg-body-${m.id}">${esc(m.mensaje)}

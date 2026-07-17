@@ -34,7 +34,7 @@
     as="style" data-async>
   <noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"></noscript>
   <link rel="stylesheet" href="/css/base.css?v=20260705a">
-  <link rel="stylesheet" href="/css/home.css?v=20260706b">
+  <link rel="stylesheet" href="/css/home.css?v=20260716b">
   <link rel="stylesheet" href="/css/servicios-spec.css?v=20260705a">
   <script src="/components/cookie-consent.js" defer></script>
   <script src="/components/cursor.js" defer></script>
@@ -163,10 +163,12 @@
         <section class="sv-section" id="solicitar">
           <div class="sv-sec-head">
             <span class="sv-sec-num">02 — Solicitud</span>
-            <h2 class="sv-h2">Tres campos. <span class="t-lime">48 horas.</span></h2>
+            <h2 class="sv-h2">Cuatro campos. <span class="t-lime">48 horas.</span></h2>
           </div>
           <p class="sv-body" style="margin-bottom:40px;">
-            Déjanos tu sitio y tu correo. En máximo 48 horas hábiles recibes tus 5 hallazgos.
+            Déjanos tus datos. En máximo 48 horas hábiles recibes tus 5 hallazgos.
+            ¿Todavía no tienes sitio? También hay diagnóstico para ti: revisamos cómo aparece
+            tu negocio en Google, Maps y redes — y qué te está costando clientes.
             Sin spam y sin llamadas — solo el reporte.
           </p>
           <form id="auditForm" novalidate style="max-width:640px;">
@@ -186,9 +188,27 @@
               <input type="tel" name="whatsapp" id="a-whatsapp" required autocomplete="tel" inputmode="tel" placeholder="55 1234 5678">
             </div>
             <div class="form-group">
-              <label class="form-label" for="a-sitio">La dirección de tu sitio (ej. minegocio.mx) *</label>
-              <input type="text" name="sitio" id="a-sitio" required autocomplete="url" inputmode="url">
+              <span class="form-label" id="a-tiene-label">¿Ya tienes sitio web? *</span>
+              <div class="form-toggle" role="radiogroup" aria-labelledby="a-tiene-label">
+                <label class="form-toggle-opt">
+                  <input type="radio" name="tiene_sitio" value="si" checked>
+                  <span>Sí, ya tengo</span>
+                </label>
+                <label class="form-toggle-opt">
+                  <input type="radio" name="tiene_sitio" value="no">
+                  <span>Todavía no</span>
+                </label>
+              </div>
             </div>
+            <div class="form-group" id="grp-sitio">
+              <label class="form-label" for="a-sitio">El link de tu sitio web *</label>
+              <input type="text" name="sitio" id="a-sitio" autocomplete="url" inputmode="url" placeholder="minegocio.mx">
+            </div>
+            <div class="form-group" id="grp-negocio" hidden>
+              <label class="form-label" for="a-negocio">Nombre y dirección de tu negocio *</label>
+              <input type="text" name="negocio" id="a-negocio" autocomplete="organization" placeholder="Tacos El Güero · Av. Coyoacán 309, CDMX">
+            </div>
+            <p class="form-hint" id="a-promesa">Auditamos velocidad, SEO y conversión de tu sitio — 5 hallazgos accionables.</p>
             <div class="cf-turnstile" data-sitekey="0x4AAAAAADvZCQhWb_BPr0et" data-theme="dark"
               style="margin-bottom:16px;"></div>
             <button type="submit" class="btn-submit ht" id="auditBtn">
@@ -243,7 +263,7 @@
   </div>
   <script src="/components/reveal-cards.js?v=20260705a" defer></script>
   <script src="/components/lang-toggle.js?v=20260604c" defer></script>
-  <script src="/js/audit-form.js?v=20260711a" defer></script>
+  <script src="/js/audit-form.js?v=20260716a" defer></script>
 </body>
 
 </html>

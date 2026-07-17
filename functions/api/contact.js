@@ -20,7 +20,7 @@ function corsHeaders(origin) {
   };
 }
 
-const DEST_EMAIL = 'cerostudiomx@gmail.com';
+const DEST_EMAIL = 'hola@cerostudio.ai';
 const FROM_EMAIL = 'noreply@cerostudio.ai';
 
 // ── Rate limit ────────────────────────────────────────────────────────────────
@@ -88,6 +88,16 @@ export async function onRequestPost(context) {
       ? body.whatsapp.replace(/\D/g, '').slice(0, 15)
       : '';
 
+    // Bifurcación de auditoría: tiene_sitio ('si'/'no') + sitio (URL si tiene;
+    // nombre y dirección del negocio si no — insumo del diagnóstico de presencia
+    // local). Metadata del lead: se sanitiza y NUNCA bloquea el envío.
+    const tieneSitio = (body.tiene_sitio === 'si' || body.tiene_sitio === 'no')
+      ? body.tiene_sitio
+      : '';
+    const sitio = (typeof body.sitio === 'string')
+      ? body.sitio.trim().slice(0, 300)
+      : '';
+
     // Honeypot — bots rellenan este campo
     if (_gotcha) return json({ ok: true }, 200, origin);
 
@@ -123,8 +133,8 @@ export async function onRequestPost(context) {
 
     // Guardar en D1
     await env.DB.prepare(`
-      INSERT INTO contact_submissions (nombre, email, empresa, servicio, mensaje, whatsapp, leido, created_at)
-      VALUES (?, ?, ?, ?, ?, ?, 0, ?)
+      INSERT INTO contact_submissions (nombre, email, empresa, servicio, mensaje, whatsapp, tiene_sitio, sitio, leido, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?)
     `).bind(
       nombre.trim(),
       email.trim().toLowerCase(),
@@ -132,6 +142,8 @@ export async function onRequestPost(context) {
       servicio?.trim() || '',
       mensaje.trim(),
       whatsapp,
+      tieneSitio,
+      sitio,
       now
     ).run();
 
@@ -159,7 +171,7 @@ export async function onRequestPost(context) {
     // Enviar email de notificación
     if (env.RESEND_API_KEY) {
       try {
-        await sendNotification(env, { nombre, email, empresa, servicio, mensaje, whatsapp, now });
+        await sendNotification(env, { nombre, email, empresa, servicio, mensaje, whatsapp, tieneSitio, sitio, now });
       } catch (err) {
         // El mensaje ya está guardado — no fallar la request si el email falla
         console.error('[contact] Email send error:', err.message);
@@ -182,7 +194,7 @@ function json(data, status = 200, origin = '') {
   });
 }
 
-async function sendNotification(env, { nombre, email, empresa, servicio, mensaje, whatsapp, now }) {
+async function sendNotification(env, { nombre, email, empresa, servicio, mensaje, whatsapp, tieneSitio, sitio, now }) {
   const fecha = new Date(now).toLocaleString('es-MX', {
     timeZone: 'America/Mexico_City',
     dateStyle: 'full',
@@ -208,6 +220,8 @@ async function sendNotification(env, { nombre, email, empresa, servicio, mensaje
     `WhatsApp:  ${whatsapp ? whatsapp + '  →  https://wa.me/52' + whatsapp : '—'}`,
     `Empresa:   ${empresa || '—'}`,
     `Servicio:  ${servicioLabels[servicio] || servicio || '—'}`,
+    ...(tieneSitio === 'si' ? [`Sitio:     ${sitio || '—'}  (auditoría de sitio)`] : []),
+    ...(tieneSitio === 'no' ? [`Negocio:   ${sitio || '—'}  (SIN SITIO WEB → diagnóstico de presencia local; candidato a Desarrollo Web)`] : []),
     `Fecha:     ${fecha}`,
     ``,
     `Mensaje:`,

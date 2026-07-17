@@ -50,7 +50,7 @@
       rel="stylesheet">
   </noscript>
   <link rel="stylesheet" href="/css/base.css?v=20260705a">
-  <link rel="stylesheet" href="/css/home.css?v=20260716a">
+  <link rel="stylesheet" href="/css/home.css?v=20260716b">
 
   <!-- ── Structured Data: Organization + WebSite ── -->
   <script type="application/ld+json">
@@ -1039,6 +1039,29 @@
                 <option value="otro">Otro</option>
               </select>
             </div>
+            <div id="grp-audit" hidden>
+              <div class="form-group">
+                <span class="form-label" id="form-l-tiene">¿Ya tienes sitio web? *</span>
+                <div class="form-toggle" role="radiogroup" aria-labelledby="form-l-tiene">
+                  <label class="form-toggle-opt">
+                    <input type="radio" name="tiene_sitio" value="si" checked>
+                    <span id="form-tgl-si">Sí, ya tengo</span>
+                  </label>
+                  <label class="form-toggle-opt">
+                    <input type="radio" name="tiene_sitio" value="no">
+                    <span id="form-tgl-no">Todavía no</span>
+                  </label>
+                </div>
+              </div>
+              <div class="form-group" id="grp-sitio">
+                <label class="form-label" for="f-sitio" id="form-l-sitio">El link de tu sitio web *</label>
+                <input type="text" name="sitio" id="f-sitio" autocomplete="url" inputmode="url" placeholder="minegocio.mx">
+              </div>
+              <div class="form-group" id="grp-negocio" hidden>
+                <label class="form-label" for="f-negocio" id="form-l-negocio">Nombre y dirección de tu negocio *</label>
+                <input type="text" name="negocio" id="f-negocio" autocomplete="organization" placeholder="Tacos El Güero · Av. Coyoacán 309, CDMX">
+              </div>
+            </div>
             <div class="form-group">
               <label class="form-label" for="f-mensaje" id="form-l-mensaje">Cuéntanos sobre tu proyecto *</label>
               <textarea name="mensaje" id="f-mensaje" required></textarea>
@@ -1069,7 +1092,7 @@
   <script defer crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
-  <script src="/js/home.js?v=20260711a" defer></script>
+  <script src="/js/home.js?v=20260716a" defer></script>
 
   <!-- WhatsApp Float -->
   <a href="https://wa.me/525531007101?text=Hola%2C%20me%20interesa%20tener%20un%20sitio%20web%20profesional%20para%20mi%20negocio.%20%C2%BFPueden%20darme%20m%C3%A1s%20informaci%C3%B3n%3F"

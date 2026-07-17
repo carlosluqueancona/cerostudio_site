@@ -1991,6 +1991,59 @@
       color: rgba(255, 255, 255, .22);
     }
 
+    /* ── Toggle segmentado (bifurcación "¿Ya tienes sitio web?") ──
+       El grupo del toggle no lleva la línea lime de focus-within
+       (no hay input de texto que subrayar). */
+    .form-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-top: 8px;
+    }
+
+    .form-group:has(.form-toggle)::after { content: none; }
+
+    .form-toggle-opt input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .form-toggle-opt span {
+      display: block;
+      text-align: center;
+      font-family: var(--fd);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--gray-light, #aaa);
+      background: transparent;
+      border: 1px solid var(--gb);
+      padding: 13px 8px;
+      cursor: pointer;
+      transition: color .2s, background .2s, border-color .2s;
+    }
+
+    .form-toggle-opt input:checked + span {
+      background: var(--lime);
+      border-color: var(--lime);
+      color: var(--on-lime);
+    }
+
+    .form-toggle-opt input:focus-visible + span {
+      outline: 2px solid var(--lime);
+      outline-offset: 2px;
+    }
+
+    .form-hint {
+      font-size: 12.5px;
+      font-weight: 300;
+      color: var(--gt);
+      line-height: 1.6;
+      margin: -12px 0 24px;
+    }
+
     .btn-submit {
       font-family: var(--fd);
       font-size: 15px;
