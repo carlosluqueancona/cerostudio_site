@@ -33,6 +33,8 @@ const STATIC_PAGES = [
   { loc: '/servicios/consultoria-digital/',       priority: '0.8', changefreq: 'monthly' },
   { loc: '/diseno-web-para-clinicas/',            priority: '0.8', changefreq: 'monthly' },
   { loc: '/auditoria-gratis/',                    priority: '0.8', changefreq: 'monthly' },
+  { loc: '/recursos/',                            priority: '0.8', changefreq: 'weekly'  },
+  { loc: '/recursos/5-errores-web/',              priority: '0.8', changefreq: 'monthly' },
   { loc: '/en/services/web-development/',         priority: '0.7', changefreq: 'monthly' },
   { loc: '/en/services/online-stores/',           priority: '0.7', changefreq: 'monthly' },
   { loc: '/en/services/digital-branding/',        priority: '0.7', changefreq: 'monthly' },
