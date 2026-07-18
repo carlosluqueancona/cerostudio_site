@@ -16,11 +16,11 @@
 # preexistente detectado 2026-07-04, pendiente de resolver poniendo los
 # headers desde el middleware). Se mantiene actualizado para cuando aplique.
 /
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://challenges.cloudflare.com https://cdnjs.cloudflare.com https://www.googletagmanager.com https://connect.facebook.net https://tracker.metricool.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://analytics.google.com https://connect.facebook.net https://www.facebook.com https://tracker.metricool.com; frame-src https://challenges.cloudflare.com; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://intake.cerostudio.ai
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://challenges.cloudflare.com https://cdnjs.cloudflare.com https://www.googletagmanager.com https://connect.facebook.net https://tracker.metricool.com https://static.hotjar.com https://script.hotjar.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://script.hotjar.com; img-src 'self' data: https:; connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://analytics.google.com https://connect.facebook.net https://www.facebook.com https://tracker.metricool.com https://*.hotjar.com https://*.hotjar.io wss://ws.hotjar.com; frame-src https://challenges.cloudflare.com https://vars.hotjar.com; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://intake.cerostudio.ai
 
 # Blog público
 /blog/*
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.googletagmanager.com https://connect.facebook.net https://tracker.metricool.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://analytics.google.com https://connect.facebook.net https://www.facebook.com https://tracker.metricool.com; object-src 'none'; frame-ancestors 'none'; base-uri 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.googletagmanager.com https://connect.facebook.net https://tracker.metricool.com https://static.hotjar.com https://script.hotjar.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com https://script.hotjar.com; connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://analytics.google.com https://connect.facebook.net https://www.facebook.com https://tracker.metricool.com https://*.hotjar.com https://*.hotjar.io wss://ws.hotjar.com; object-src 'none'; frame-ancestors 'none'; base-uri 'self'
 
 # Admin panel — más permisivo para permitir uploads a R2
 /blog/admin/*
@@ -28,7 +28,7 @@
 
 # Portal cliente
 /proyecto/*
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://intake.cerostudio.ai; object-src 'none'; frame-ancestors 'none'; base-uri 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com https://script.hotjar.com; connect-src 'self' https://intake.cerostudio.ai; object-src 'none'; frame-ancestors 'none'; base-uri 'self'
 
 # Formulario de intake / brief
 /brief/*
