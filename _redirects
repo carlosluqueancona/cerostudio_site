@@ -18,6 +18,9 @@
 # ── Guard: tooling interno (_dev/) jamás se sirve, aunque Pages lo suba ──
 /_dev/* / 302
 
+# Atajo memorable al tab de descargas del admin (la SPA maneja login primero)
+/blog/admin/descargas /blog/admin/#descargas 302
+
 # Typo común: el estándar es llms.txt (plural, servido por functions/llms.txt.js)
 /llm.txt /llms.txt 301
 

@@ -336,6 +336,7 @@
       <button class="btn btn-ghost btn-sm" id="tab-media-btn"   onclick="switchTab('media')">Media</button>
       <button class="btn btn-ghost btn-sm" id="tab-msgs-btn"    onclick="switchTab('messages')">Mensajes <span id="unread-badge" style="display:none;background:var(--lime);color:var(--on-lime);border-radius:99px;padding:1px 7px;font-size:10px;margin-left:4px;"></span></button>
       <button class="btn btn-ghost btn-sm" id="tab-llms-btn"    onclick="switchTab('llms')">llms.txt</button>
+      <button class="btn btn-ghost btn-sm" id="tab-desc-btn"    onclick="switchTab('descargas')">Descargas</button>
       <a href="/blog/" target="_blank" class="btn btn-ghost btn-sm">Ver blog ↗</a>
       <button class="btn btn-ghost btn-sm" onclick="logout()">Salir</button>
     </div>
@@ -579,6 +580,50 @@
       <div id="llms-sections" style="display:none;"></div>
     </div><!-- /tab-llms -->
 
+    <!-- ── TAB: Descargas de recursos (lead magnets) ──────────────────────── -->
+    <div id="tab-descargas" style="display:none;">
+      <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:18px;">
+        <h2 style="font-family:var(--fd);font-size:18px;font-weight:700;margin:0;">Descargas de recursos</h2>
+        <span style="font-family:var(--fb);font-size:11px;color:var(--gt);">conteo server-side · completo, con o sin cookies</span>
+        <button class="btn btn-ghost btn-sm" onclick="loadDescargas()" style="margin-left:auto;">Refrescar</button>
+      </div>
+      <div id="desc-loading" style="color:var(--gt);font-size:13px;">Cargando…</div>
+      <div id="desc-content" style="display:none;">
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;">
+          <div style="flex:1;min-width:140px;border:1px solid var(--border);background:var(--surface-1);padding:16px 18px;">
+            <div style="font-family:var(--fb);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gt);">Total</div>
+            <div id="desc-total" style="font-family:var(--fd);font-size:34px;font-weight:700;color:var(--lime);line-height:1.2;">—</div>
+          </div>
+          <div style="flex:1;min-width:140px;border:1px solid var(--border);background:var(--surface-1);padding:16px 18px;">
+            <div style="font-family:var(--fb);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gt);">Hoy</div>
+            <div id="desc-hoy" style="font-family:var(--fd);font-size:34px;font-weight:700;line-height:1.2;">—</div>
+          </div>
+          <div style="flex:1;min-width:140px;border:1px solid var(--border);background:var(--surface-1);padding:16px 18px;">
+            <div style="font-family:var(--fb);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gt);">Móvil</div>
+            <div id="desc-movil" style="font-family:var(--fd);font-size:34px;font-weight:700;line-height:1.2;">—</div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);background:var(--surface-1);padding:16px 18px;margin-bottom:20px;">
+          <div style="font-family:var(--fb);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gt);margin-bottom:12px;">Últimos 14 días</div>
+          <div id="desc-chart" style="display:flex;align-items:flex-end;gap:4px;height:90px;"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-bottom:20px;">
+          <div style="border:1px solid var(--border);background:var(--surface-1);padding:16px 18px;">
+            <div style="font-family:var(--fb);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gt);margin-bottom:10px;">Por canal (UTM)</div>
+            <div class="table-wrap"><table style="font-size:12px;" id="desc-fuentes"></table></div>
+          </div>
+          <div style="border:1px solid var(--border);background:var(--surface-1);padding:16px 18px;">
+            <div style="font-family:var(--fb);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gt);margin-bottom:10px;">Por guía</div>
+            <div class="table-wrap"><table style="font-size:12px;" id="desc-slugs"></table></div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);background:var(--surface-1);padding:16px 18px;">
+          <div style="font-family:var(--fb);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gt);margin-bottom:10px;">Últimas descargas</div>
+          <div class="table-wrap"><table style="font-size:12px;" id="desc-ultimas"></table></div>
+        </div>
+      </div>
+    </div><!-- /tab-descargas -->
+
   </main>
 </div>
 
@@ -738,6 +783,7 @@ async function init() {
       allPosts = await r.json();
       renderDashboard();
       showView('dashboard');
+      if (location.hash === '#descargas') switchTab('descargas');
     } else {
       showView('login');
     }
@@ -780,6 +826,7 @@ document.getElementById('login-form').addEventListener('submit', async e => {
     if (r.ok && data.ok) {
       await refreshDashboard();
       showView('dashboard');
+      if (location.hash === '#descargas') switchTab('descargas');
     } else {
       errEl.textContent = data.error || 'Error al iniciar sesión';
       errEl.style.display = 'block';
@@ -1408,15 +1455,85 @@ function switchTab(tab) {
   document.getElementById('tab-portfolio').style.display  = tab === 'portfolio' ? '' : 'none';
   document.getElementById('tab-media').style.display      = tab === 'media'     ? '' : 'none';
   document.getElementById('tab-llms').style.display       = tab === 'llms'      ? '' : 'none';
+  document.getElementById('tab-descargas').style.display  = tab === 'descargas' ? '' : 'none';
   document.getElementById('tab-posts-btn').classList.toggle('tab-active',  tab === 'posts');
   document.getElementById('tab-msgs-btn').classList.toggle('tab-active',   tab === 'messages');
   document.getElementById('tab-port-btn').classList.toggle('tab-active',   tab === 'portfolio');
   document.getElementById('tab-media-btn').classList.toggle('tab-active',  tab === 'media');
   document.getElementById('tab-llms-btn').classList.toggle('tab-active',   tab === 'llms');
+  document.getElementById('tab-desc-btn').classList.toggle('tab-active',   tab === 'descargas');
   if (tab === 'messages') loadMessages();
   if (tab === 'portfolio') loadPortfolio();
   if (tab === 'media') loadMedia();
   if (tab === 'llms') loadLlms();
+  if (tab === 'descargas') loadDescargas();
+}
+
+// ── Descargas de recursos (conteo server-side, tabla descargas_recursos) ────
+async function loadDescargas() {
+  const loading = document.getElementById('desc-loading');
+  const content = document.getElementById('desc-content');
+  loading.style.display = ''; content.style.display = 'none';
+  try {
+    const r = await apiFetch('/descargas');
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const d = await r.json();
+
+    // Stats principales
+    const hoy = new Date().toLocaleDateString('sv-SE', { timeZone: 'America/Mexico_City' }); // YYYY-MM-DD
+    const diaHoy = (d.por_dia || []).find(x => x.dia === hoy);
+    const movil = (d.por_dispositivo || []).find(x => x.device === 'mobile');
+    document.getElementById('desc-total').textContent = d.total;
+    document.getElementById('desc-hoy').textContent   = diaHoy ? diaHoy.n : 0;
+    document.getElementById('desc-movil').textContent = d.total
+      ? Math.round(((movil?.n || 0) / d.total) * 100) + '%' : '—';
+
+    // Gráfica de barras: últimos 14 días calendario (rellena huecos con 0)
+    const porDia = Object.fromEntries((d.por_dia || []).map(x => [x.dia, x.n]));
+    const dias = [];
+    for (let i = 13; i >= 0; i--) {
+      const t = new Date(Date.now() - i * 864e5);
+      const k = t.toLocaleDateString('sv-SE', { timeZone: 'America/Mexico_City' });
+      dias.push({ k, n: porDia[k] || 0 });
+    }
+    const max = Math.max(1, ...dias.map(x => x.n));
+    document.getElementById('desc-chart').innerHTML = dias.map(x =>
+      '<div title="' + x.k + ': ' + x.n + '" style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:100%;">' +
+        '<div style="font-family:var(--fb);font-size:9px;color:var(--gt);text-align:center;margin-bottom:2px;">' + (x.n || '') + '</div>' +
+        '<div style="background:' + (x.n ? 'var(--lime)' : 'var(--border)') + ';height:' + (x.n ? Math.max(6, Math.round((x.n / max) * 60)) : 2) + 'px;"></div>' +
+        '<div style="font-family:var(--fb);font-size:8px;color:var(--gt);text-align:center;margin-top:4px;">' + x.k.slice(8) + '</div>' +
+      '</div>').join('');
+
+    // Tablas
+    const th = s => '<th style="text-align:left;padding:6px 8px;color:var(--gt);font-size:10px;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--border);">' + s + '</th>';
+    const td = s => '<td style="padding:6px 8px;border-bottom:1px solid var(--border);">' + s + '</td>';
+    const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+    document.getElementById('desc-fuentes').innerHTML =
+      '<tr>' + th('Fuente') + th('Medio') + th('N') + '</tr>' +
+      ((d.por_fuente || []).map(f => '<tr>' + td(esc(f.fuente)) + td(esc(f.medio) || '—') + td('<b>' + f.n + '</b>') + '</tr>').join('') ||
+        '<tr>' + td('Sin datos aún') + '</tr>');
+
+    document.getElementById('desc-slugs').innerHTML =
+      '<tr>' + th('Guía') + th('N') + '</tr>' +
+      ((d.por_slug || []).map(s => '<tr>' + td(esc(s.slug)) + td('<b>' + s.n + '</b>') + '</tr>').join('') ||
+        '<tr>' + td('Sin datos aún') + '</tr>');
+
+    document.getElementById('desc-ultimas').innerHTML =
+      '<tr>' + th('Fecha (CDMX)') + th('Guía') + th('Fuente') + th('País') + th('Disp.') + th('Cookies') + '</tr>' +
+      ((d.ultimas || []).map(u => '<tr>' +
+        td(new Date(u.created_at).toLocaleString('es-MX', { timeZone: 'America/Mexico_City', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })) +
+        td(esc(u.slug)) +
+        td(esc(u.utm_source) ? esc(u.utm_source) + (u.utm_medium ? '/' + esc(u.utm_medium) : '') : '(directo)') +
+        td(esc(u.country) || '—') +
+        td(u.device === 'mobile' ? '📱' : '💻') +
+        td(u.consent ? '<span style="color:var(--lime);">✓</span>' : '—') +
+      '</tr>').join('') || '<tr>' + td('Sin descargas aún') + '</tr>');
+
+    loading.style.display = 'none'; content.style.display = '';
+  } catch (e) {
+    loading.textContent = 'Error cargando descargas: ' + e.message;
+  }
 }
 
 // ── llms.txt (overrides por sección en site_settings) ───────────────────────
