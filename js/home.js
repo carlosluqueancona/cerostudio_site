@@ -223,20 +223,91 @@
         // Respect prefers-reduced-motion: skip animation entirely, render a static frame
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        /* ── RUTA PRINCIPAL: OffscreenCanvas + Web Worker ─────────────
-           Toda la matemática (~250k evaluaciones de campo/frame) y el
-           rasterizado se van a js/hero-field-worker.js en un hilo aparte.
-           El main thread queda libre → el cursor rAF y el scroll nunca
-           compiten con la animación. El código inline de abajo queda solo
-           como fallback (Safari <16.4) a densidad reducida. */
-        if (window.Worker && canvas.transferControlToOffscreen) {
-          const off = canvas.transferControlToOffscreen();
-          const worker = new Worker('/js/hero-field-worker.js?v=20260720c');
-          worker.postMessage({
-            type: 'init', canvas: off,
-            w: window.innerWidth, h: window.innerHeight,
-            reduced: prefersReducedMotion
-          }, [off]);
+        /* ── RUTA PRINCIPAL: Web Worker en dos sabores ────────────────
+           La matemática (~250k evaluaciones de campo/frame) SIEMPRE va a
+           js/hero-field-worker.js en un hilo aparte, a densidad completa:
+
+           · render  (Chrome/Edge/Firefox): OffscreenCanvas transferido —
+             el worker también rasteriza. Main thread 100% libre.
+           · compute (Safari/WebKit): su OffscreenCanvas 2D en worker
+             rasteriza por SOFTWARE y se traba, así que el worker solo
+             CALCULA y manda polilíneas empacadas (Float32Array
+             transferible); el main solo hace ≤6 stroke() con GPU (~2-4ms
+             por frame a 30fps). navigator.vendor: 'Apple Computer, Inc.'
+             en Safari; Chrome/Edge reportan 'Google Inc.'
+
+           El código inline de abajo queda solo como fallback sin Worker. */
+        const isSafari = /apple/i.test(navigator.vendor || '');
+        if (window.Worker && (canvas.transferControlToOffscreen || isSafari)) {
+          const useOffscreen = !isSafari && !!canvas.transferControlToOffscreen;
+          const worker = new Worker('/js/hero-field-worker.js?v=20260720f');
+
+          if (useOffscreen) {
+            const off = canvas.transferControlToOffscreen();
+            worker.postMessage({
+              type: 'init', canvas: off,
+              w: window.innerWidth, h: window.innerHeight,
+              reduced: prefersReducedMotion
+            }, [off]);
+          } else {
+            const mctx = canvas.getContext('2d');
+            let buckets = null, pendingBuf = null, rafDraw = 0, LW = 0, LH = 0;
+            var sizeCanvasMain = function () {
+              LW = window.innerWidth; LH = window.innerHeight;
+              /* Safari: 0.55× — el raster en main thread debe ser lo más
+                 barato posible; las líneas difusas aguantan la res baja */
+              const RES = LW < 768 ? .8 : .55;
+              canvas.width = Math.round(LW * RES);
+              canvas.height = Math.round(LH * RES);
+              mctx.setTransform(RES, 0, 0, RES, 0, 0);
+            };
+            sizeCanvasMain();
+            /* dibuja el ÚLTIMO frame recibido en el siguiente rAF (si llegan
+               dos antes de pintar, el viejo se descarta — nunca hay cola) */
+            const drawBuf = function () {
+              rafDraw = 0;
+              const f = pendingBuf; pendingBuf = null;
+              if (!f || !buckets) return;
+              const a = new Float32Array(f);
+              let o = 0;
+              const nb = a[o++];
+              mctx.clearRect(0, 0, LW, LH);
+              /* sin 'lighter' en Safari: el blending aditivo es lo más caro
+                 de su raster; source-over se ve un poco más plano pero fluye */
+              for (let i = 0; i < nb; i++) {
+                const nl = a[o++];
+                if (!nl) continue;
+                const p = new Path2D();
+                for (let l = 0; l < nl; l++) {
+                  const np = a[o++];
+                  p.moveTo(a[o], a[o + 1]); o += 2;
+                  for (let j = 1; j < np; j++) { p.lineTo(a[o], a[o + 1]); o += 2; }
+                }
+                const b = buckets[i];
+                mctx.strokeStyle = b.lime
+                  ? 'rgba(178,247,0,' + b.alpha + ')'
+                  : 'rgba(255,255,255,' + b.alpha + ')';
+                mctx.lineWidth = b.lw;
+                mctx.stroke(p);
+              }
+            };
+            worker.onmessage = function (e) {
+              const m = e.data;
+              if (m.type === 'frame') {
+                pendingBuf = m.buf;
+                if (!rafDraw) rafDraw = requestAnimationFrame(drawBuf);
+              } else if (m.type === 'buckets') buckets = m.buckets;
+            };
+            worker.postMessage({
+              type: 'init',
+              w: window.innerWidth, h: window.innerHeight,
+              reduced: prefersReducedMotion,
+              /* Safari: 24fps y polilíneas con la mitad de puntos — menos
+                 lineTo() y menos raster en el main thread */
+              fps: 24, decimate: 2
+            });
+          }
+
           if (!prefersReducedMotion) {
             /* el worker anima con setInterval (su rAF es poco confiable), así
                que el main thread lo pausa cuando el hero sale del viewport O
@@ -252,6 +323,7 @@
             document.addEventListener('visibilitychange', sendVis);
           }
           window.addEventListener('resize', () => {
+            if (!useOffscreen) sizeCanvasMain();
             worker.postMessage({ type: 'size', w: window.innerWidth, h: window.innerHeight });
           });
           return;

@@ -6,19 +6,28 @@
    para que el main thread (cursor rAF, scroll, GSAP) nunca comparta
    presupuesto de frame con las ~250k evaluaciones de campo por render.
 
+   DOS MODOS (según el init):
+     render  — init trae canvas (OffscreenCanvas transferido): el worker
+               calcula Y rasteriza. Chrome/Edge/Firefox.
+     compute — init SIN canvas: el worker solo calcula y manda las
+               polilíneas empacadas ({type:'frame', buf}) + los estilos
+               ({type:'buckets'}); el main las traza. Safari/WebKit, donde
+               el OffscreenCanvas 2D en worker rasteriza por software.
+
    PROTOCOLO (mensajes desde home.js):
-     { type:'init', canvas, w, h, reduced }  canvas transferido + tamaño
-                                             (reduced = prefers-reduced-motion:
-                                              un solo frame estático, sin loop)
-     { type:'size', w, h }                   resize — el worker es dueño del
-                                             canvas, el main ya no puede tocarlo
-     { type:'vis',  visible }                IntersectionObserver del hero:
+     { type:'init', canvas?, w, h, reduced } canvas opcional (ver modos);
+                                             reduced = prefers-reduced-motion:
+                                             un solo frame estático, sin loop
+     { type:'size', w, h }                   resize (en modo render el worker
+                                             es dueño del canvas)
+     { type:'vis',  visible }                hero en viewport Y pestaña visible:
                                              pausa/reanuda el loop
    ═══════════════════════════════════════════════════════════════════════ */
 'use strict';
 
-let canvas = null, ctx = null;
+let canvas = null, ctx = null, mode = 'render';
 let W = 0, H = 0, t = 0, seeds = [], reduced = false;
+let decimate = 1;   /* modo compute: guardar 1 de cada N puntos (la física avanza igual) */
 
 // More poles than hero3 (8 vs 6), tighter spread for wilder crossings
 const poles = [
@@ -56,6 +65,7 @@ function bucketFor(seed) {
 
 function setSize(w, h) {
   W = w; H = h;
+  if (!canvas) return;   /* modo 'compute': el canvas lo dimensiona el main */
   /* Backing store a 0.7× en desktop (las líneas difusas no lo delatan);
      mobile a 1× — ya corre a resolución CSS sin DPR. */
   const RES = W < 768 ? 1 : 0.7;
@@ -125,9 +135,10 @@ function field(x, y) {
   return { vx: fx / mag, vy: fy / mag };
 }
 
-function renderFrame() {
-  ctx.clearRect(0, 0, W, H);
-  ctx.globalCompositeOperation = 'lighter';
+/* Avanza la simulación un paso y devuelve las polilíneas por cubeta.
+   Compartido por los dos modos: 'render' las traza aquí mismo, 'compute'
+   las empaca y las manda al main thread. */
+function computePolylines() {
   t += .0085;  // ~2× faster time than hero3 (.004)
 
   currentPoles = poles.map(p => ({
@@ -136,32 +147,72 @@ function renderFrame() {
     q: p.q
   }));
 
-  const paths = new Array(BUCKETS.length).fill(null);
+  const byBucket = BUCKETS.map(() => []);
   for (const seed of seeds) {
     const drift = t * seed.driftSpd;
     let x = seed.x + Math.sin(drift + seed.x * .002) * seed.drift;
     let y = seed.y + Math.cos(drift * .8 + seed.y * .002) * seed.drift * .7;
 
-    const p = paths[seed.bucket] || (paths[seed.bucket] = new Path2D());
-    p.moveTo(x, y);
+    const pts = [x, y];
     for (let s = 0; s < seed.steps; s++) {
       const { vx, vy } = field(x, y);
       x += vx * seed.step;
       y += vy * seed.step;
       if (x < -80 || x > W + 80 || y < -80 || y > H + 80) break;
-      p.lineTo(x, y);
+      if (s % decimate === 0) pts.push(x, y);
     }
+    byBucket[seed.bucket].push(pts);
   }
+  return byBucket;
+}
+
+function renderFrame() {
+  const byBucket = computePolylines();
+  ctx.clearRect(0, 0, W, H);
+  ctx.globalCompositeOperation = 'lighter';
 
   for (let i = 0; i < BUCKETS.length; i++) {
-    if (!paths[i]) continue;
+    const lines = byBucket[i];
+    if (!lines.length) continue;
+    const p = new Path2D();
+    for (const pts of lines) {
+      p.moveTo(pts[0], pts[1]);
+      for (let j = 2; j < pts.length; j += 2) p.lineTo(pts[j], pts[j + 1]);
+    }
     const b = BUCKETS[i];
     ctx.strokeStyle = b.lime
       ? `rgba(178,247,0,${b.alpha})`
       : `rgba(255,255,255,${b.alpha})`;
     ctx.lineWidth = b.lw;
-    ctx.stroke(paths[i]);
+    ctx.stroke(p);
   }
+}
+
+/* Modo 'compute': empaca las polilíneas en un Float32Array transferible.
+   Formato: [nBuckets, por cubeta: nLíneas, por línea: nPuntos, x,y…] */
+function postFrame() {
+  const byBucket = computePolylines();
+  let n = 1;
+  for (const lines of byBucket) {
+    n += 1;
+    for (const pts of lines) n += 1 + pts.length;
+  }
+  const buf = new Float32Array(n);
+  let o = 0;
+  buf[o++] = byBucket.length;
+  for (const lines of byBucket) {
+    buf[o++] = lines.length;
+    for (const pts of lines) {
+      buf[o++] = pts.length / 2;
+      buf.set(pts, o);
+      o += pts.length;
+    }
+  }
+  postMessage({ type: 'frame', buf: buf.buffer }, [buf.buffer]);
+}
+
+function tick() {
+  if (mode === 'render') renderFrame(); else postFrame();
 }
 
 /* ── Loop a 30 fps con setInterval ──────────────────────────────────────
@@ -171,11 +222,11 @@ function renderFrame() {
    costando solo ~21ms). Los timers de un dedicated worker sí disparan a
    ritmo estable; el main thread nos pausa vía 'vis' cuando el hero sale
    del viewport o la pestaña se oculta. */
-const frameInterval = 1000 / 30;
-let timerId = null;
+let frameMs = 1000 / 30;   /* modo compute puede pedir otro fps vía init */
+let timerId = null, inited = false;
 
 function start() {
-  if (!timerId && !reduced && canvas) timerId = setInterval(renderFrame, frameInterval);
+  if (!timerId && !reduced && inited) timerId = setInterval(tick, frameMs);
 }
 function stop() {
   if (timerId) { clearInterval(timerId); timerId = null; }
@@ -184,17 +235,24 @@ function stop() {
 onmessage = function (e) {
   const m = e.data;
   if (m.type === 'init') {
-    canvas = m.canvas;
-    ctx = canvas.getContext('2d');
+    mode = m.canvas ? 'render' : 'compute';
+    if (m.canvas) {
+      canvas = m.canvas;
+      ctx = canvas.getContext('2d');
+    }
     reduced = !!m.reduced;
+    if (m.fps) frameMs = 1000 / m.fps;
+    decimate = m.decimate || 1;
     setSize(m.w, m.h);
     buildSeeds();
-    renderFrame();   /* primer frame inmediato (y único si reduced) */
+    if (mode === 'compute') postMessage({ type: 'buckets', buckets: BUCKETS });
+    inited = true;
+    tick();   /* primer frame inmediato (y único si reduced) */
   } else if (m.type === 'size') {
-    if (!canvas) return;
+    if (!inited) return;
     setSize(m.w, m.h);
     buildSeeds();
-    if (reduced) renderFrame();
+    if (reduced) tick();
   } else if (m.type === 'vis') {
     if (m.visible) start(); else stop();
   }
