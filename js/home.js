@@ -223,6 +223,40 @@
         // Respect prefers-reduced-motion: skip animation entirely, render a static frame
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+        /* ── RUTA PRINCIPAL: OffscreenCanvas + Web Worker ─────────────
+           Toda la matemática (~250k evaluaciones de campo/frame) y el
+           rasterizado se van a js/hero-field-worker.js en un hilo aparte.
+           El main thread queda libre → el cursor rAF y el scroll nunca
+           compiten con la animación. El código inline de abajo queda solo
+           como fallback (Safari <16.4) a densidad reducida. */
+        if (window.Worker && canvas.transferControlToOffscreen) {
+          const off = canvas.transferControlToOffscreen();
+          const worker = new Worker('/js/hero-field-worker.js?v=20260720c');
+          worker.postMessage({
+            type: 'init', canvas: off,
+            w: window.innerWidth, h: window.innerHeight,
+            reduced: prefersReducedMotion
+          }, [off]);
+          if (!prefersReducedMotion) {
+            /* el worker anima con setInterval (su rAF es poco confiable), así
+               que el main thread lo pausa cuando el hero sale del viewport O
+               la pestaña se oculta — si no, seguiría quemando CPU de fondo.
+               El primer callback del IO llega con el estado actual → arranca solo. */
+            let heroVis = true;
+            const sendVis = () => worker.postMessage({
+              type: 'vis', visible: heroVis && document.visibilityState === 'visible'
+            });
+            new IntersectionObserver(entries => {
+              heroVis = entries[0].isIntersecting; sendVis();
+            }, { threshold: 0 }).observe(canvas.parentElement);
+            document.addEventListener('visibilitychange', sendVis);
+          }
+          window.addEventListener('resize', () => {
+            worker.postMessage({ type: 'size', w: window.innerWidth, h: window.innerHeight });
+          });
+          return;
+        }
+
         const ctx = canvas.getContext('2d');
         let W, H, t = 0, seeds = [];
 
@@ -239,13 +273,25 @@
         ];
 
         function resize() {
-          W = canvas.width = window.innerWidth;
-          H = canvas.height = window.innerHeight;
+          W = window.innerWidth;
+          H = window.innerHeight;
+          /* Backing store a 0.7× en desktop: las líneas son difusas y el canvas
+             estirado por CSS (width/height:100%) no se distingue a simple vista,
+             pero el rasterizado con 'lighter' cuesta ~la mitad. Mobile ya corre
+             a resolución CSS (sin DPR) — se queda en 1×. Toda la matemática
+             sigue en px lógicos vía setTransform. */
+          const RES = W < 768 ? 1 : 0.7;
+          canvas.width = Math.round(W * RES);
+          canvas.height = Math.round(H * RES);
+          ctx.setTransform(RES, 0, 0, RES, 0, 0);
         }
 
         function buildSeeds() {
           const isMobile = W < 768;
-          const LINES = isMobile ? 60 : 130;  // more lines for density
+          /* FALLBACK sin worker: densidad reducida (60 vs 130 líneas) — aquí
+             la animación comparte hilo con el cursor y no hay otra forma de
+             no bloquearlo. La versión completa vive en hero-field-worker.js. */
+          const LINES = isMobile ? 45 : 60;
           seeds = [];
 
           // Perimeter seeds
@@ -257,8 +303,8 @@
               x: W * .5 + Math.cos(a) * W * .47,
               y: H * .5 + Math.sin(a) * H * .45,
               lime,
-              step: (isMobile ? 11 : 6) + Math.random() * 8,          // 6–14 px per step (was fixed 5)
-              steps: (isMobile ? 70 : 140) + Math.floor(Math.random() * (isMobile ? 60 : 120)), // 140–260 steps (was fixed 200)
+              step: (isMobile ? 11 : 7) + Math.random() * 8,
+              steps: (isMobile ? 60 : 90) + Math.floor(Math.random() * (isMobile ? 40 : 70)),   // fallback: trazos más cortos
               drift: 30 + Math.random() * 55,         // drift amplitude 30–85px
               driftSpd: .3 + Math.random() * .5,     // drift speed per seed
               lw: lime ? .8 + Math.random() * 1.6 : .4 + Math.random() * .8,
@@ -268,7 +314,7 @@
 
           // Extra seeds near each pole for chaotic density
           for (const p of poles) {
-            const innerLines = isMobile ? 3 : 6;
+            const innerLines = isMobile ? 2 : 3;   /* fallback: mitad de líneas por polo */
             for (let k = 0; k < innerLines; k++) {
               const a = (k / innerLines) * Math.PI * 2;
               const lime = p.q > 0;
@@ -285,6 +331,33 @@
               });
             }
           }
+
+          for (const s of seeds) s.bucket = bucketFor(s);
+        }
+
+        /* Cubetas de estilo: en vez de ~178 stroke() por frame (uno por línea),
+           las polilíneas se acumulan en un Path2D por cubeta y se trazan en
+           ≤6 stroke(). El alpha/grosor de cada línea (random de origen) se
+           cuantiza a la cubeta más cercana — el ojo no distingue la diferencia.
+           Nota: cruces de líneas de la MISMA cubeta ya no suman con 'lighter'
+           (un solo stroke pinta cada px una vez); entre cubetas sí siguen sumando. */
+        const BUCKETS = [
+          { lime: true,  alpha: .32, lw: 1.1 },
+          { lime: true,  alpha: .48, lw: 1.8 },
+          { lime: true,  alpha: .62, lw: 2.4 },
+          { lime: false, alpha: .09, lw: .6 },
+          { lime: false, alpha: .14, lw: .9 },
+          { lime: false, alpha: .19, lw: 1.2 },
+        ];
+        function bucketFor(seed) {
+          let best = 0, bd = 1e9;
+          for (let i = 0; i < BUCKETS.length; i++) {
+            const b = BUCKETS[i];
+            if (b.lime !== seed.lime) continue;
+            const d = Math.abs(b.alpha - seed.alpha) + Math.abs(b.lw - seed.lw) * .15;
+            if (d < bd) { bd = d; best = i; }
+          }
+          return best;
         }
 
         let currentPoles = [];
@@ -305,9 +378,11 @@
         }
 
         let rafId;
-        // 30 fps cap on mobile, 60 fps on desktop (reduces CPU/GPU ~50% on phones)
-        const targetFPS = (W && W < 768) ? 30 : 60;
-        let frameInterval = 1000 / targetFPS;
+        /* 30 fps en TODOS los dispositivos: el drift de los polos es lento y a
+           30fps no se percibe la diferencia, pero cada frame saltado deja los
+           ~16ms completos libres para el cursor rAF y el scroll (el field era
+           quien se los comía en desktop). */
+        const frameInterval = 1000 / 30;
         let lastFrameTime = 0;
 
         function renderFrame() {
@@ -321,25 +396,31 @@
             q: p.q
           }));
 
+          const paths = new Array(BUCKETS.length).fill(null);
           for (const seed of seeds) {
             const drift = t * seed.driftSpd;
             let x = seed.x + Math.sin(drift + seed.x * .002) * seed.drift;
             let y = seed.y + Math.cos(drift * .8 + seed.y * .002) * seed.drift * .7;
 
-            ctx.beginPath(); ctx.moveTo(x, y);
+            const p = paths[seed.bucket] || (paths[seed.bucket] = new Path2D());
+            p.moveTo(x, y);
             for (let s = 0; s < seed.steps; s++) {
               const { vx, vy } = field(x, y);
               x += vx * seed.step;
               y += vy * seed.step;
               if (x < -80 || x > W + 80 || y < -80 || y > H + 80) break;
-              ctx.lineTo(x, y);
+              p.lineTo(x, y);
             }
+          }
 
-            ctx.strokeStyle = seed.lime
-              ? `rgba(178,247,0,${seed.alpha})`
-              : `rgba(255,255,255,${seed.alpha})`;
-            ctx.lineWidth = seed.lw;
-            ctx.stroke();
+          for (let i = 0; i < BUCKETS.length; i++) {
+            if (!paths[i]) continue;
+            const b = BUCKETS[i];
+            ctx.strokeStyle = b.lime
+              ? `rgba(178,247,0,${b.alpha})`
+              : `rgba(255,255,255,${b.alpha})`;
+            ctx.lineWidth = b.lw;
+            ctx.stroke(paths[i]);
           }
         }
 
@@ -351,8 +432,6 @@
         }
 
         resize(); buildSeeds();
-        // Recompute target FPS after resize knows dimensions
-        frameInterval = 1000 / ((W < 768) ? 30 : 60);
 
         if (prefersReducedMotion) {
           // Render a single static frame and exit — no animation loop
@@ -368,7 +447,6 @@
         }
         window.addEventListener('resize', () => {
           resize(); buildSeeds();
-          frameInterval = 1000 / ((W < 768) ? 30 : 60);
           if (prefersReducedMotion) renderFrame();
         });
       })();
