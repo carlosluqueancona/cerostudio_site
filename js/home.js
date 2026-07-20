@@ -240,13 +240,14 @@
         const isSafari = /apple/i.test(navigator.vendor || '');
         if (window.Worker && (canvas.transferControlToOffscreen || isSafari)) {
           const useOffscreen = !isSafari && !!canvas.transferControlToOffscreen;
-          const worker = new Worker('/js/hero-field-worker.js?v=20260720f');
+          const worker = new Worker('/js/hero-field-worker.js?v=20260720g');
 
           if (useOffscreen) {
             const off = canvas.transferControlToOffscreen();
             worker.postMessage({
               type: 'init', canvas: off,
               w: window.innerWidth, h: window.innerHeight,
+              dpr: window.devicePixelRatio || 1,
               reduced: prefersReducedMotion
             }, [off]);
           } else {
@@ -254,9 +255,10 @@
             let buckets = null, pendingBuf = null, rafDraw = 0, LW = 0, LH = 0;
             var sizeCanvasMain = function () {
               LW = window.innerWidth; LH = window.innerHeight;
-              /* Safari: 0.55× — el raster en main thread debe ser lo más
-                 barato posible; las líneas difusas aguantan la res baja */
-              const RES = LW < 768 ? .8 : .55;
+              /* Safari: 1× CSS (sin DPR) — equilibrio nitidez/costo: a 0.55×
+                 las líneas se veían pixeladas; el raster sigue acotado por
+                 24fps + sin 'lighter' + decimate 2:1 */
+              const RES = 1;
               canvas.width = Math.round(LW * RES);
               canvas.height = Math.round(LH * RES);
               mctx.setTransform(RES, 0, 0, RES, 0, 0);
@@ -324,7 +326,10 @@
           }
           window.addEventListener('resize', () => {
             if (!useOffscreen) sizeCanvasMain();
-            worker.postMessage({ type: 'size', w: window.innerWidth, h: window.innerHeight });
+            worker.postMessage({
+              type: 'size', w: window.innerWidth, h: window.innerHeight,
+              dpr: window.devicePixelRatio || 1
+            });
           });
           return;
         }

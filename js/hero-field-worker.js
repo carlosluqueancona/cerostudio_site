@@ -28,6 +28,7 @@
 let canvas = null, ctx = null, mode = 'render';
 let W = 0, H = 0, t = 0, seeds = [], reduced = false;
 let decimate = 1;   /* modo compute: guardar 1 de cada N puntos (la física avanza igual) */
+let dpr = 1;        /* modo render: devicePixelRatio del main (el worker no lo conoce) */
 
 // More poles than hero3 (8 vs 6), tighter spread for wilder crossings
 const poles = [
@@ -66,9 +67,10 @@ function bucketFor(seed) {
 function setSize(w, h) {
   W = w; H = h;
   if (!canvas) return;   /* modo 'compute': el canvas lo dimensiona el main */
-  /* Backing store a 0.7× en desktop (las líneas difusas no lo delatan);
-     mobile a 1× — ya corre a resolución CSS sin DPR. */
-  const RES = W < 768 ? 1 : 0.7;
+  /* Nitidez Retina: DPR hasta 2× en desktop (el costo extra vive en este
+     hilo, el main no se entera). Mobile a 1× CSS — pantallas chicas +
+     DPR 3 dispararían el raster sin ganancia visible con líneas difusas. */
+  const RES = W < 768 ? 1 : Math.min(dpr, 2);
   canvas.width = Math.round(W * RES);
   canvas.height = Math.round(H * RES);
   ctx.setTransform(RES, 0, 0, RES, 0, 0);
@@ -243,6 +245,7 @@ onmessage = function (e) {
     reduced = !!m.reduced;
     if (m.fps) frameMs = 1000 / m.fps;
     decimate = m.decimate || 1;
+    dpr = m.dpr || 1;
     setSize(m.w, m.h);
     buildSeeds();
     if (mode === 'compute') postMessage({ type: 'buckets', buckets: BUCKETS });
@@ -250,6 +253,7 @@ onmessage = function (e) {
     tick();   /* primer frame inmediato (y único si reduced) */
   } else if (m.type === 'size') {
     if (!inited) return;
+    if (m.dpr) dpr = m.dpr;
     setSize(m.w, m.h);
     buildSeeds();
     if (reduced) tick();
