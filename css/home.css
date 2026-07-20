@@ -1424,6 +1424,11 @@
       margin-left: -.5ch;
     }
 
+    .testi-quote::after {
+      content: '”';
+      color: var(--lime);
+    }
+
     .testi-meta {
       display: flex;
       flex-direction: column;
