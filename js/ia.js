@@ -255,7 +255,13 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ negocio: negocio, giro: giro, ciudad: ciudad, lang: LANG, turnstile: token })
       })
-        .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
+        .then(function (res) {
+          return res.text().then(function (txt) {
+            var data = null;
+            try { data = JSON.parse(txt); } catch (e) { data = { ok: false, error: 'Error ' + res.status + ' del servidor (' + txt.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 120) + ')' }; }
+            return { ok: res.ok, data: data, status: res.status };
+          });
+        })
         .then(function (r) {
           setBusy(false);
           resetTurnstile(form);
@@ -286,12 +292,13 @@
             }
           });
         })
-        .catch(function () {
+        .catch(function (err) {
+          if (window.console && console.error) console.error('[ia] simulador:', err);
           setBusy(false);
           resetTurnstile(form);
           aiTxt.textContent = '';
           result.hidden = true;
-          setError(T.offline);
+          setError(T.offline + (err && err.message ? ' (' + String(err.message).slice(0, 80) + ')' : ''));
         });
     });
   }
