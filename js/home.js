@@ -767,7 +767,7 @@
           /* ── NOSOTROS */
           'nos-eyebrow': { t: 'Por qué Cero' },
           'nos-title': { h: 'Por qué Cero <span class="t-lime">y no otra agencia</span>' },
-          'nos-desc': { h: 'Sé lo que es apostarle todo a un negocio propio y que nadie te encuentre. Soy <strong>Carlos Luque</strong>, fundador de Cero Studio: llevo más de 25 años haciendo que las páginas vendan — desde la radio por internet hasta el home del sitio del INEGI.<br><br>Aquí no hay ejecutivo de cuenta ni "déjame lo consulto": tú hablas conmigo, yo diseño y programo tu sitio, y lo entrego en la fecha que firmamos. El precio que ves es el que pagas y tu sitio nace listo para Google <strong>y para ChatGPT, Gemini y Perplexity</strong>. No te vendo una página bonita — te entrego <strong>un sitio que vende mientras tú atiendes tu negocio</strong>.' },
+          'nos-desc': { h: 'Sé lo que es apostarle todo a un negocio propio y que nadie te encuentre. Soy <strong>Carlos Luque</strong>, fundador de Cero Studio: llevo más de 25 años haciendo que las páginas vendan — desde la radio por internet hasta el home del sitio del INEGI.<br><br>Aquí no hay ejecutivo de cuenta ni "déjame lo consulto": <strong>tú hablas conmigo</strong>, yo diseño y programo tu sitio, y lo entrego <strong>en la fecha que firmamos</strong>. <strong>El precio que ves es el que pagas</strong> y tu sitio nace listo para Google y para ChatGPT, Gemini y Perplexity. No te vendo una página bonita — te entrego <strong>un sitio que vende</strong> mientras tú atiendes tu negocio.' },
           'stat-l1': { t: 'Negocios atendidos en 25 años' },
           'stat-l2': { t: 'Años de experiencia' },
           'stat-l3': { t: 'Sitios lanzados' },
@@ -1008,7 +1008,7 @@
           /* ── NOSOTROS */
           'nos-eyebrow': { t: 'Why Cero' },
           'nos-title': { h: 'Why Cero <span class="t-lime">and not another agency</span>' },
-          'nos-desc': { h: 'I know what it\'s like to bet everything on your own business and have nobody find you. I\'m <strong>Carlos Luque</strong>, founder of Cero Studio: I\'ve spent more than 25 years making websites sell — from internet radio to the homepage of Mexico\'s national statistics institute (INEGI).<br><br>There\'s no account manager here and no "let me check with the team": you talk to me, I design and build your site, and I deliver it on the date we sign. The price you see is the price you pay, and your site is born ready for Google <strong>and for ChatGPT, Gemini and Perplexity</strong>. I\'m not selling you a pretty page — I\'m handing you <strong>a site that sells while you run your business</strong>.' },
+          'nos-desc': { h: 'I know what it\'s like to bet everything on your own business and have nobody find you. I\'m <strong>Carlos Luque</strong>, founder of Cero Studio: I\'ve spent more than 25 years making websites sell — from internet radio to the homepage of Mexico\'s national statistics institute (INEGI).<br><br>There\'s no account manager here and no "let me check with the team": <strong>you talk to me</strong>, I design and build your site, and I deliver it <strong>on the date we sign</strong>. <strong>The price you see is the price you pay</strong>, and your site is born ready for Google and for ChatGPT, Gemini and Perplexity. I\'m not selling you a pretty page — I\'m handing you <strong>a site that sells</strong> while you run your business.' },
           'stat-l1': { t: 'Businesses served in 25 years' },
           'stat-l2': { t: 'Years of experience' },
           'stat-l3': { t: 'Sites launched' },
