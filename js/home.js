@@ -701,7 +701,7 @@
           'mob-bar-main': { t: 'Cotizar mi proyecto' },
           /* ── HERO */
           'heroEyebrow': { t: 'Clientes, no solo visitas.' },
-          'heroSub': { t: 'Sitios web y tiendas en línea hechos a la medida de cómo compra tu cliente — por quien lleva 25 años haciendo que las páginas vendan. Desde $299 USD (≈ $5,400 MXN), precio cerrado, fecha por escrito y trato directo con el fundador.' },
+          'heroSub': { t: 'Tu negocio ya es bueno. Te falta el sitio que lo demuestre y convierta a quien te busca en cliente — hecho a tu medida, desde $299 USD (≈ $5,400 MXN) y listo en 5 días hábiles.' },
           'hero-btn-audit': { t: 'Auditoría gratis de mi sitio →' },
           'hero-btn-quote': { t: 'Iniciar Proyecto' },
           'heroProof': { h: '25+ años de oficio · Hablas directo con Carlos · Fecha de entrega por escrito · Agencia Tiendanube Partner certificada — <a href="/casos-de-exito/" data-href-es="/casos-de-exito/" data-href-en="/en/case-studies/">Ver casos de éxito →</a>' },
@@ -942,7 +942,7 @@
           'mob-bar-main': { t: 'Get a quote' },
           /* ── HERO */
           'heroEyebrow': { t: 'Customers, not just clicks.' },
-          'heroSub': { t: 'Websites and online stores built around how your customer buys — by someone who has spent 25 years making websites sell. From $299 USD, fixed price, delivery date in writing, and you deal directly with the founder.' },
+          'heroSub': { t: 'Your business is already good. What\'s missing is a website that proves it and turns the people looking for you into customers — built for you, from $299 USD, live in 5 business days.' },
           'hero-btn-audit': { t: 'Free audit of my site →' },
           'hero-btn-quote': { t: 'Start Your Project' },
           'heroProof': { h: '25+ years of craft · You talk directly with Carlos · Delivery date in writing · Certified Tiendanube Partner Agency — <a href="/en/case-studies/" data-href-es="/casos-de-exito/" data-href-en="/en/case-studies/">See case studies →</a>' },
