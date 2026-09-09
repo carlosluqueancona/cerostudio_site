@@ -442,6 +442,23 @@
                 </div>
               </div>
               <div>
+                <label style="font-size:11px;color:var(--gt);display:block;margin-bottom:4px;">VIDEO DE HOVER (opcional)</label>
+                <div style="display:flex;gap:8px;align-items:stretch;">
+                  <input id="pf-video" type="text" placeholder="Se llena solo al subir el archivo" oninput="pfUpdateVideoPreview()" style="flex:1;min-width:0;background:var(--surface-2);border:1px solid var(--border);color:var(--white);padding:9px 12px;font-family:var(--fb);font-size:14px;">
+                  <button type="button" class="btn btn-ghost btn-sm" onclick="document.getElementById('pf-video-file').click()" style="white-space:nowrap;">↑ Subir</button>
+                  <button type="button" class="btn btn-ghost btn-sm" onclick="pfClearVideo()" style="white-space:nowrap;" title="Quitar el video de esta card">✕ Quitar</button>
+                  <input type="file" id="pf-video-file" accept="video/webm,video/mp4" onchange="pfUploadVideo(this.files[0])" style="display:none;">
+                </div>
+                <div id="pf-video-status" style="font-size:11px;margin-top:6px;color:var(--gt);min-height:16px;"></div>
+                <p style="font-size:11px;color:var(--gt);margin:6px 0 0;line-height:1.5;">
+                  Se reproduce en bucle al pasar el mouse sobre la card, solo en computadora.
+                  WebM o MP4, 3 segundos, sin audio, máximo 3 MB.
+                </p>
+                <div id="pf-video-preview-wrap" style="display:none;margin-top:8px;">
+                  <video id="pf-video-preview" muted loop playsinline autoplay style="max-width:240px;max-height:140px;border:1px solid var(--border);background:var(--surface-2);object-fit:cover;"></video>
+                </div>
+              </div>
+              <div>
                 <label style="font-size:11px;color:var(--gt);display:block;margin-bottom:4px;">CATEGORÍA ESPAÑOL *</label>
                 <input id="pf-cat-es" type="text" required placeholder="Industria · Tipo" style="width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--white);padding:9px 12px;font-family:var(--fb);font-size:14px;">
               </div>
@@ -1846,6 +1863,8 @@ function openPortItem(id) {
   document.getElementById('pf-name').value    = item?.name       || '';
   document.getElementById('pf-url').value     = item?.url        || '';
   document.getElementById('pf-image').value   = item?.image      || '';
+  document.getElementById('pf-video').value   = item?.video      || '';
+  pfUpdateVideoPreview();
   document.getElementById('pf-cat-es').value  = item?.cat_es     || '';
   document.getElementById('pf-cat-en').value  = item?.cat_en     || '';
   document.getElementById('pf-desc-es').value = item?.desc_es    || '';
@@ -1898,6 +1917,7 @@ async function savePortItem(e) {
     name:          document.getElementById('pf-name').value.trim(),
     url:           document.getElementById('pf-url').value.trim(),
     image:         document.getElementById('pf-image').value.trim(),
+    video:         document.getElementById('pf-video').value.trim(),
     cat_es:        document.getElementById('pf-cat-es').value.trim(),
     cat_en:        document.getElementById('pf-cat-en').value.trim(),
     desc_es:       document.getElementById('pf-desc-es').value.trim(),
@@ -2009,6 +2029,53 @@ function pfUpdateImagePreview() {
   if (!url) { wrap.style.display = 'none'; img.removeAttribute('src'); return; }
   img.src = url;
   wrap.style.display = '';
+}
+
+/* ── Video de hover del portafolio ───────────────────────────────
+   Sube el loop a R2 (portafolio/video/) y guarda la URL en el campo.
+   El backend valida magic bytes y el límite de 3 MB. */
+function pfUpdateVideoPreview() {
+  const url  = document.getElementById('pf-video').value.trim();
+  const wrap = document.getElementById('pf-video-preview-wrap');
+  const v    = document.getElementById('pf-video-preview');
+  if (url) { v.src = url; wrap.style.display = 'block'; v.play().catch(() => {}); }
+  else { v.removeAttribute('src'); v.load(); wrap.style.display = 'none'; }
+}
+
+function pfClearVideo() {
+  document.getElementById('pf-video').value = '';
+  document.getElementById('pf-video-status').textContent = '';
+  pfUpdateVideoPreview();
+}
+
+async function pfUploadVideo(file) {
+  if (!file) return;
+  const status = document.getElementById('pf-video-status');
+  const show = (msg, color) => { status.textContent = msg; status.style.color = color; };
+  if (!['video/webm', 'video/mp4'].includes(file.type)) {
+    return show('✗ Tipo no permitido. Usa WebM o MP4.', 'var(--red)');
+  }
+  if (file.size > 3 * 1024 * 1024) {
+    return show('✗ El video supera 3 MB. Recórtalo a 3 s y baja la calidad.', 'var(--red)');
+  }
+  show('Subiendo… (' + Math.round(file.size / 1024) + ' KB)', 'var(--gt)');
+  const fd = new FormData();
+  fd.append('file', file);
+  try {
+    const r = await apiFetch('/upload', { method: 'POST', body: fd });
+    const d = await r.json();
+    if (d.ok) {
+      document.getElementById('pf-video').value = d.url;
+      pfUpdateVideoPreview();
+      show('✓ Video subido — recuerda guardar el proyecto', 'var(--lime)');
+    } else {
+      show('✗ ' + (d.error || 'Error al subir'), 'var(--red)');
+    }
+  } catch (e) {
+    show('✗ Error de red al subir', 'var(--red)');
+  } finally {
+    document.getElementById('pf-video-file').value = '';
+  }
 }
 
 async function pfUploadImage(file) {

@@ -105,6 +105,9 @@ function buildPortfolioHTML(items, lang = 'es') {
        ("0"/"1"). Sin Number(), el string "0" sería truthy y renderizaría el
        enlace + badge pese a tener la bandera desactivada en la base de datos. */
     const showLink = item.show_link == null ? 1 : Number(item.show_link);
+    /* Loop de hover opcional (se sube desde el admin): js/home.js lo monta
+       sobre la imagen solo en escritorio con mouse. Sin video, no cambia nada. */
+    const vid = item.video ? ` data-video-src="${esc(item.video)}"` : '';
     const inner = `  <div class="port-card-img-wrap">
     <img src="${esc(item.image)}" alt="${esc(item.name)}" class="port-card-img" loading="lazy" width="640" height="400">${showLink ? `
     <div class="port-card-badge"><span data-i18n="port-badge">${badgeLabel}</span></div>` : ''}
@@ -115,8 +118,8 @@ function buildPortfolioHTML(items, lang = 'es') {
     <p class="port-card-desc" id="port-d${n}">${esc(item[descKey])}</p>
   </div>`;
     return showLink
-      ? `<a href="${esc(item.url)}" target="_blank" rel="noopener" class="port-card ht">\n${inner}\n</a>`
-      : `<div class="port-card port-card--no-link">\n${inner}\n</div>`;
+      ? `<a href="${esc(item.url)}" target="_blank" rel="noopener" class="port-card ht"${vid}>\n${inner}\n</a>`
+      : `<div class="port-card port-card--no-link"${vid}>\n${inner}\n</div>`;
   }).join('\n');
 }
 
@@ -212,6 +215,15 @@ function validateProject(body) {
   if (url && !/^https?:\/\//i.test(url)) {
     return 'La URL del proyecto debe empezar con http:// o https://';
   }
+  // video (loop de hover) es opcional; si viene debe ser URL o ruta y terminar en webm/mp4.
+  if (body?.video) {
+    if (!/^(https?:\/\/|\/)/i.test(body.video)) {
+      return 'El video debe ser una URL (https://…) o una ruta que empiece con /';
+    }
+    if (!/\.(webm|mp4)(\?.*)?$/i.test(body.video)) {
+      return 'El video debe ser un archivo .webm o .mp4';
+    }
+  }
   // service_tags es opcional; normalize ya filtra inválidos silenciosamente.
   // url_sitio (muestra para cero-prospector) es opcional pero si viene debe ser http(s).
   if (body?.url_sitio && !/^https?:\/\//i.test(body.url_sitio)) {
@@ -303,12 +315,12 @@ export async function onRequestPost(context) {
   if (validationError) return json({ error: validationError }, 400, origin);
 
   try {
-    const { name, url, image, cat_es, cat_en, desc_es, desc_en, sort_order, visible, show_link, service_tags, giros, usar_como_muestra, url_sitio, orden_muestra } = body;
+    const { name, url, image, video, cat_es, cat_en, desc_es, desc_en, sort_order, visible, show_link, service_tags, giros, usar_como_muestra, url_sitio, orden_muestra } = body;
     const tagsCSV = normalizeServiceTags(service_tags);
     const girosJSON = normalizeGiros(giros);
     const r = await env.DB.prepare(
-      'INSERT INTO portfolio_items (name, url, image, cat_es, cat_en, desc_es, desc_en, sort_order, visible, show_link, service_tags, giros, usar_como_muestra, url_sitio, orden_muestra) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
-    ).bind(name, url || '', image, cat_es, cat_en, desc_es, desc_en, sort_order ?? 0, visible ?? 1, show_link ?? 1, tagsCSV, girosJSON, Number(usar_como_muestra) ? 1 : 0, url_sitio || '', parseInt(orden_muestra, 10) || 0).run();
+      'INSERT INTO portfolio_items (name, url, image, video, cat_es, cat_en, desc_es, desc_en, sort_order, visible, show_link, service_tags, giros, usar_como_muestra, url_sitio, orden_muestra) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    ).bind(name, url || '', image, video || '', cat_es, cat_en, desc_es, desc_en, sort_order ?? 0, visible ?? 1, show_link ?? 1, tagsCSV, girosJSON, Number(usar_como_muestra) ? 1 : 0, url_sitio || '', parseInt(orden_muestra, 10) || 0).run();
     const rebuildInfo = await tryRebuild(env);
     return json({ success: true, id: r.meta.last_row_id, ...rebuildInfo }, 201, origin);
   } catch (e) {
@@ -333,12 +345,12 @@ export async function onRequestPut(context) {
   if (validationError) return json({ error: validationError }, 400, origin);
 
   try {
-    const { name, url, image, cat_es, cat_en, desc_es, desc_en, sort_order, visible, show_link, service_tags, giros, usar_como_muestra, url_sitio, orden_muestra } = body;
+    const { name, url, image, video, cat_es, cat_en, desc_es, desc_en, sort_order, visible, show_link, service_tags, giros, usar_como_muestra, url_sitio, orden_muestra } = body;
     const tagsCSV = normalizeServiceTags(service_tags);
     const girosJSON = normalizeGiros(giros);
     const res = await env.DB.prepare(
-      'UPDATE portfolio_items SET name=?, url=?, image=?, cat_es=?, cat_en=?, desc_es=?, desc_en=?, sort_order=?, visible=?, show_link=?, service_tags=?, giros=?, usar_como_muestra=?, url_sitio=?, orden_muestra=? WHERE id=?'
-    ).bind(name, url || '', image, cat_es, cat_en, desc_es, desc_en, sort_order ?? 0, visible ?? 1, show_link ?? 1, tagsCSV, girosJSON, Number(usar_como_muestra) ? 1 : 0, url_sitio || '', parseInt(orden_muestra, 10) || 0, id).run();
+      'UPDATE portfolio_items SET name=?, url=?, image=?, video=?, cat_es=?, cat_en=?, desc_es=?, desc_en=?, sort_order=?, visible=?, show_link=?, service_tags=?, giros=?, usar_como_muestra=?, url_sitio=?, orden_muestra=? WHERE id=?'
+    ).bind(name, url || '', image, video || '', cat_es, cat_en, desc_es, desc_en, sort_order ?? 0, visible ?? 1, show_link ?? 1, tagsCSV, girosJSON, Number(usar_como_muestra) ? 1 : 0, url_sitio || '', parseInt(orden_muestra, 10) || 0, id).run();
     if (!res.meta.changes) return json({ error: 'No encontrado' }, 404, origin);
     const rebuildInfo = await tryRebuild(env);
     return json({ success: true, ...rebuildInfo }, 200, origin);

@@ -231,9 +231,9 @@
       }
 
       /* ── PORTAFOLIO: hover con video ─────────────────────────────
-         Convención: /images/portafolio/video/<slug>.webm (+ .mp4 opcional),
-         donde <slug> sale del nombre de la card. Solo en desktop con mouse;
-         un video a la vez; si el archivo no existe, la card queda igual. */
+         El loop se sube desde el admin (campo "Video de hover" del portafolio)
+         y llega en data-video-src. Solo en escritorio con mouse; un video a la
+         vez; sin video la card se comporta igual que siempre. */
       var _pvInit = false;
       function initPortfolioVideo() {
         if (_pvInit) return;
@@ -243,30 +243,19 @@
         _pvInit = true;
         var playing = null;
 
-        function slugOf(card) {
-          if (card.dataset.slug) return card.dataset.slug;
-          var n = card.querySelector('.port-card-name');
-          if (!n) return '';
-          return n.textContent.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-            .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-        }
-
         function mount(card) {
-          if (card.dataset.video) return null;           /* 'none' o ya montado */
+          if (card.dataset.videoState) return null;      /* 'none' o ya montado */
           var wrap = card.querySelector('.port-card-img-wrap');
-          var slug = slugOf(card);
-          if (!wrap || !slug) { card.dataset.video = 'none'; return null; }
-          card.dataset.video = 'loading';
+          var src = card.dataset.videoSrc;               /* lo pone el CMS al guardar el proyecto */
+          if (!wrap || !src) { card.dataset.videoState = 'none'; return null; }
+          card.dataset.videoState = 'loading';
           var v = document.createElement('video');
           v.className = 'port-card-video';
           v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'none';
           v.setAttribute('muted', ''); v.setAttribute('playsinline', ''); v.setAttribute('aria-hidden', 'true');
-          var base = '/images/portafolio/video/' + slug;
-          var s1 = document.createElement('source'); s1.src = base + '.webm'; s1.type = 'video/webm';
-          var s2 = document.createElement('source'); s2.src = base + '.mp4'; s2.type = 'video/mp4';
-          v.appendChild(s1); v.appendChild(s2);
-          v.addEventListener('error', function () { card.dataset.video = 'none'; if (v.parentNode) v.parentNode.removeChild(v); }, true);
-          var reveal = function () { card.dataset.video = 'ok'; if (card.dataset.hovering) v.classList.add('is-on'); };
+          v.src = src;
+          v.addEventListener('error', function () { card.dataset.videoState = 'none'; if (v.parentNode) v.parentNode.removeChild(v); }, true);
+          var reveal = function () { card.dataset.videoState = 'ok'; if (card.dataset.hovering) v.classList.add('is-on'); };
           v.addEventListener('canplay', reveal);
           v.addEventListener('loadeddata', reveal);
           v.addEventListener('playing', reveal);
@@ -276,7 +265,7 @@
 
         document.addEventListener('mouseover', function (e) {
           var card = e.target.closest && e.target.closest('.port-card');
-          if (!card || card.dataset.video === 'none') return;
+          if (!card || card.dataset.videoState === 'none') return;
           var v = card.querySelector('.port-card-video') || mount(card);
           if (!v) return;
           if (playing && playing !== v) { playing.pause(); playing.classList.remove('is-on'); }

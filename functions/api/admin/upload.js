@@ -10,9 +10,11 @@
 
 import { corsHeaders, extractToken, json, purgeUrls, verifyJWT } from './_shared.js';
 
-const MAX_SIZE    = 5 * 1024 * 1024; // 5 MB
-const ALLOWED     = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
-const EXT_MAP     = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/gif': 'gif' };
+const MAX_SIZE    = 5 * 1024 * 1024; // 5 MB (imágenes)
+const MAX_SIZE_VID = 3 * 1024 * 1024; // 3 MB (loops de hover del portafolio)
+const ALLOWED     = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'video/webm', 'video/mp4'];
+const EXT_MAP     = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/gif': 'gif', 'video/webm': 'webm', 'video/mp4': 'mp4' };
+const isVideo     = (m) => m === 'video/webm' || m === 'video/mp4';
 
 // ── Magic bytes detection ─────────────────────────────────────────────────────
 function detectMimeFromBytes(buffer) {
@@ -27,6 +29,10 @@ function detectMimeFromBytes(buffer) {
       b[8] === 0x57 && b[9] === 0x45 && b[10] === 0x42 && b[11] === 0x50) return 'image/webp';
   // GIF87a / GIF89a: GIF8
   if (b[0] === 0x47 && b[1] === 0x49 && b[2] === 0x46 && b[3] === 0x38) return 'image/gif';
+  // WebM (contenedor Matroska): 1A 45 DF A3
+  if (b[0] === 0x1A && b[1] === 0x45 && b[2] === 0xDF && b[3] === 0xA3) return 'video/webm';
+  // MP4 / QuickTime: 'ftyp' en el offset 4
+  if (b[4] === 0x66 && b[5] === 0x74 && b[6] === 0x79 && b[7] === 0x70) return 'video/mp4';
   return null;
 }
 
@@ -94,16 +100,21 @@ export async function onRequestPost(context) {
 
     // Validar tamaño
     const buffer = await file.arrayBuffer();
-    if (buffer.byteLength > MAX_SIZE) {
-      return json({ ok: false, error: 'El archivo supera el límite de 5 MB' }, 400, origin);
-    }
 
     // Validar tipo MIME por magic bytes (el campo file.type viene del cliente y puede ser falso)
     const detectedMime = detectMimeFromBytes(buffer);
     if (!detectedMime) {
-      return json({ ok: false, error: 'Tipo de archivo no permitido. Usa JPG, PNG, WebP o GIF.' }, 400, origin);
+      return json({ ok: false, error: 'Tipo de archivo no permitido. Usa JPG, PNG, WebP, GIF, WebM o MP4.' }, 400, origin);
     }
     const mime = detectedMime;
+
+    // Límite por tipo: los loops del portafolio deben ser ligeros (cargan en hover)
+    const limit = isVideo(mime) ? MAX_SIZE_VID : MAX_SIZE;
+    if (buffer.byteLength > limit) {
+      return json({ ok: false, error: isVideo(mime)
+        ? 'El video supera el límite de 3 MB. Recórtalo a 3 s y baja la calidad (ver LEEME de la carpeta de videos).'
+        : 'El archivo supera el límite de 5 MB' }, 400, origin);
+    }
 
     // Modo thumbnail derivado: el cliente sube <keyOriginal>.thumb.jpg junto a
     // cada imagen (patrón SergioLuque). Solo se permite ese sufijo — imposible
@@ -140,7 +151,9 @@ export async function onRequestPost(context) {
       // Nombre único: blog/2026/04/uuid.ext
       const ext    = EXT_MAP[mime];
       const now    = new Date();
-      const folder = `blog/${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}`;
+      const folder = isVideo(mime)
+        ? 'portafolio/video'
+        : `blog/${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}`;
       filename = `${folder}/${crypto.randomUUID()}.${ext}`;
     }
 

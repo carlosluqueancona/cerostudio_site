@@ -66,6 +66,9 @@ export async function onRequestGet(context) {
     const items = listing.objects
       // Los thumbnails derivados (<key>.thumb.jpg) no se listan como archivos
       .filter(o => !o.key.endsWith('.thumb.jpg'))
+      // Los loops de hover del portafolio (portafolio/video/) no son imágenes:
+      // se administran desde el campo "Video de hover" de cada proyecto.
+      .filter(o => !/^portafolio\/video\//.test(o.key))
       .map(o => ({
         key:         o.key,
         url:         `${base}/${o.key}`,
