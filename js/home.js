@@ -230,6 +230,71 @@
         if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { st.forEach(function (s) { s.r = null; }); });
       }
 
+      /* ── PORTAFOLIO: hover con video ─────────────────────────────
+         Convención: /images/portafolio/video/<slug>.webm (+ .mp4 opcional),
+         donde <slug> sale del nombre de la card. Solo en desktop con mouse;
+         un video a la vez; si el archivo no existe, la card queda igual. */
+      var _pvInit = false;
+      function initPortfolioVideo() {
+        if (_pvInit) return;
+        if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+        if (window.innerWidth < 1024) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        _pvInit = true;
+        var playing = null;
+
+        function slugOf(card) {
+          if (card.dataset.slug) return card.dataset.slug;
+          var n = card.querySelector('.port-card-name');
+          if (!n) return '';
+          return n.textContent.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+        }
+
+        function mount(card) {
+          if (card.dataset.video) return null;           /* 'none' o ya montado */
+          var wrap = card.querySelector('.port-card-img-wrap');
+          var slug = slugOf(card);
+          if (!wrap || !slug) { card.dataset.video = 'none'; return null; }
+          card.dataset.video = 'loading';
+          var v = document.createElement('video');
+          v.className = 'port-card-video';
+          v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'none';
+          v.setAttribute('muted', ''); v.setAttribute('playsinline', ''); v.setAttribute('aria-hidden', 'true');
+          var base = '/images/portafolio/video/' + slug;
+          var s1 = document.createElement('source'); s1.src = base + '.webm'; s1.type = 'video/webm';
+          var s2 = document.createElement('source'); s2.src = base + '.mp4'; s2.type = 'video/mp4';
+          v.appendChild(s1); v.appendChild(s2);
+          v.addEventListener('error', function () { card.dataset.video = 'none'; if (v.parentNode) v.parentNode.removeChild(v); }, true);
+          v.addEventListener('canplay', function () { card.dataset.video = 'ok'; if (card.matches(':hover')) v.classList.add('is-on'); });
+          wrap.appendChild(v);
+          return v;
+        }
+
+        document.addEventListener('mouseover', function (e) {
+          var card = e.target.closest && e.target.closest('.port-card');
+          if (!card || card.dataset.video === 'none') return;
+          var v = card.querySelector('.port-card-video') || mount(card);
+          if (!v) return;
+          if (playing && playing !== v) { playing.pause(); playing.classList.remove('is-on'); }
+          playing = v;
+          var pr = v.play();   /* preload='none': play() dispara la descarga */
+          if (pr && pr.catch) pr.catch(function () {});
+        }, { passive: true });
+
+        document.addEventListener('mouseout', function (e) {
+          var card = e.target.closest && e.target.closest('.port-card');
+          if (!card || (e.relatedTarget && card.contains(e.relatedTarget))) return;
+          var v = card.querySelector('.port-card-video');
+          if (!v) return;
+          v.classList.remove('is-on');
+          v.pause();
+          if (playing === v) playing = null;
+        }, { passive: true });
+      }
+      document.addEventListener('csComponentsReady', initPortfolioVideo);
+      setTimeout(initPortfolioVideo, 2500);   /* el portafolio llega por SSR o por el CMS */
+
       /* ── NAV ───────────────────────────────────────────────────── */
       window.addEventListener('scroll', () => {
         var nb = document.getElementById('navbar');

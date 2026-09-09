@@ -1134,6 +1134,22 @@
       }
     }
 
+    /* Hover con video (plan 2026-09): si existe /images/portafolio/video/<slug>.webm
+       lo monta js/home.js sobre la imagen; sin archivo, la card no cambia. */
+    .port-card-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity .35s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .port-card-video.is-on { opacity: 1; }
+    .port-card-badge { z-index: 2; }
+
     /* En TOUCH el muro también arranca monocromo (como escritorio) y enciende
        a color cuando la card cruza el centro de la pantalla (.port-card--lit,
        lo pone reveal-cards.js) o mientras se presiona (:active). */
