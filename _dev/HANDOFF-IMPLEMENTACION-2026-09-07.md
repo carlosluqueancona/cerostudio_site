@@ -46,3 +46,10 @@ Triple espejo del home (index.html + en/index.html + dicts ES/EN de js/home.js) 
 - **Siguiente tarea acordada (pospuesta):** hover con video en el portafolio — spec en la sección 5, punto 3. Después: campaña Meta apuntando a `/ia/` (lead magnet), públicos y creativos.
 - **Insumos que Carlos aún debe dar** (sección 4 del plan): testimonio real de Sergio Luque, logo Seminuevos, testimonio Dr. Salas, fuentes del 93 %/78 %, rondas/anticipo de garantías, tiempo de entrega Tiendanube, decisión sobre /en/free-audit/.
 - **Cómo trabajar con poco presupuesto de tokens:** un agente por tarea, prompts con archivos exclusivos, `effort: high` solo en creativo; leer por rangos; verificar con `node --check`, grep y una captura (`_dev/scripts/shot.py`), no con revisores extra.
+
+## 7. NUEVA DIRECCIÓN (8 sep, decisión de Carlos en proceso): de "sitios web" a "sistema que consigue y atiende clientes"
+- Motivo: mercado saturado de sitios de ~$700 MXN. Cambiar de categoría (sistema con IA que responde, agenda y da seguimiento) y pasar a ingreso recurrente. La IA es el cómo, no el qué: vender el resultado.
+- Ya disponible: WhatsApp Business ligado a Twilio (Carlos). Arquitectura propuesta: Pages Function webhook de Twilio → Workers AI (guion por giro, horario, escalamiento a humano) → agenda (Google Calendar existente) + seguimiento automático; reporte mensual. Sin agentes autónomos por cliente (Hermes solo para operar la agencia).
+- Precios PROPUESTOS (no publicar sin OK): mantener Launch/Pro/Premium como ancla; nuevo "Sistema de clientes": instalación desde $8,900 MXN + $1,900 MXN/mes; escalón Pro instalación desde $19,900 MXN + $3,500 MXN/mes (= mantenimiento completo). Sin contrato anual, cancela con 30 días.
+- Plan de validación antes de reposicionar todo el home: 1) landing `/ventas/` (ES/EN) con el simulador `/ia/` como gancho, 2) piloto en el propio WhatsApp de Cero Studio, 3) 3–5 clientes actuales. Si convierte, reposicionar hero/servicios/precios (triple espejo) y campaña Meta.
+- Pendientes previos siguen: revisar preview de `feat/ventas-2026-09`, merge a main con OK, hover con video pospuesto.
