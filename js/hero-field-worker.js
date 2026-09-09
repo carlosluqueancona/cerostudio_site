@@ -42,6 +42,10 @@ const poles = [
   { fx: .88, fy: .42, q: -1 },  // right-side extra
 ];
 let currentPoles = [];
+/* Cajas de las palabras del H1 (coords CSS del viewport): las líneas las
+   rodean y las semillas cercanas a la palabra lime se encienden en lime. */
+let words = [];
+let limeBox = null;
 
 /* Cubetas de estilo: las polilíneas se acumulan en un Path2D por cubeta y se
    trazan en ≤6 stroke() por frame en vez de uno por línea. */
@@ -119,7 +123,7 @@ function buildSeeds() {
     }
   }
 
-  for (const s of seeds) s.bucket = bucketFor(s);
+  for (const s of seeds) { s.bucket = bucketFor(s); s.lime0 = s.lime; s.alpha0 = s.alpha; s.lw0 = s.lw; s.lit = false; }
 }
 
 function field(x, y) {
@@ -132,6 +136,18 @@ function field(x, y) {
     const force = p.q / (d2 * .0008 + d);
     fx += dx * force;
     fy += dy * force;
+  }
+  for (let i = 0; i < words.length; i++) {
+    const w = words[i];
+    const cx = Math.max(w.l, Math.min(x, w.r)), cy = Math.max(w.t, Math.min(y, w.b));
+    let dx = x - cx, dy = y - cy;
+    let d = Math.sqrt(dx * dx + dy * dy);
+    if (d < 1) { dy = 1; d = 1; }          /* dentro de la letra: empuja hacia abajo */
+    if (d < 170) {
+      let f = 1 - d / 170; f *= f;
+      fx += dx / d * f * 3.4;
+      fy += dy / d * f * 3.4;
+    }
   }
   const mag = Math.sqrt(fx * fx + fy * fy) + .0001;
   return { vx: fx / mag, vy: fy / mag };
@@ -161,6 +177,10 @@ function computePolylines() {
       x += vx * seed.step;
       y += vy * seed.step;
       if (x < -80 || x > W + 80 || y < -80 || y > H + 80) break;
+      /* la línea que toca la palabra lime se enciende en lime (una sola vez) */
+      if (limeBox && !seed.lit && x > limeBox.l - 24 && x < limeBox.r + 24 && y > limeBox.t - 16 && y < limeBox.b + 16) {
+        seed.lit = true; seed.lime = true; seed.alpha = Math.max(seed.alpha, .45); seed.lw = Math.max(seed.lw, 1.4); seed.bucket = bucketFor(seed);
+      }
       if (s % decimate === 0) pts.push(x, y);
     }
     byBucket[seed.bucket].push(pts);
@@ -257,6 +277,10 @@ onmessage = function (e) {
     setSize(m.w, m.h);
     buildSeeds();
     if (reduced) tick();
+  } else if (m.type === 'words') {
+    words = m.words || [];
+    limeBox = words.find(w => w.lime) || null;
+    for (const sd of seeds) { if (sd.lit) { sd.lit = false; sd.lime = sd.lime0; sd.alpha = sd.alpha0; sd.lw = sd.lw0; sd.bucket = bucketFor(sd); } }
   } else if (m.type === 'vis') {
     if (m.visible) start(); else stop();
   }

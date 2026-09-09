@@ -79,7 +79,7 @@
           var node = typeof el === 'string' ? document.getElementById(el) : el;
           if (node) _scrDone.push(new Promise(res => setTimeout(() => new TextScramble(node).run(text).then(res), delay)));
         });
-        Promise.all(_scrDone).then(initHeroType);
+        Promise.all(_scrDone).then(function () { initHeroType(); sendHeroWords(); setTimeout(startHeroWordCycle, 2200); });
 
         setTimeout(() => {
           gsap.to('#heroSub', { opacity: 1, duration: .85, ease: 'power3.out' });
@@ -96,6 +96,53 @@
          en touch el peso "respira" con el scroll del primer viewport.
          Solo transform + font-variation-settings, lerp en rAF. Se llama al
          terminar el scramble (runHeroEntrance). Sin reacción con reduced-motion. */
+      /* ── HERO: campo que rodea al titular ───────────────────────
+         Manda al worker las cajas de cada palabra (coords del viewport):
+         las líneas las esquivan y las que tocan la palabra lime se encienden. */
+      function sendHeroWords() {
+        var w = window.__csHeroWorker; if (!w) return;
+        var sy = window.scrollY, words = [];
+        document.querySelectorAll('.hero-static-title span[data-hero-line]').forEach(function (el) {
+          var r = document.createRange(); r.selectNodeContents(el);
+          var b = r.getBoundingClientRect();
+          if (b.width) words.push({ l: b.left, t: b.top + sy, r: b.right, b: b.bottom + sy, lime: el.classList.contains('t-lime') });
+        });
+        w.postMessage({ type: 'words', words: words });
+      }
+      var _hwT = null;
+      window.addEventListener('resize', function () { clearTimeout(_hwT); _hwT = setTimeout(sendHeroWords, 200); });
+
+      /* ── HERO: la última palabra cuenta el sistema completo ───────
+         VENDE. → AGENDA. → COBRA. → RESPONDE. con el mismo scramble; el primer
+         render y el texto estático siguen siendo VENDE./SELLS. (LCP y SEO). */
+      var HERO_WORDS = { es: ['VENDE.', 'AGENDA.', 'COBRA.', 'RESPONDE.'], en: ['SELLS.', 'BOOKS.', 'CHARGES.', 'REPLIES.'] };
+      function startHeroWordCycle() {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var el = document.getElementById('scrL3'); if (!el) return;
+        var all = HERO_WORDS[(typeof CS_LANG !== 'undefined' && CS_LANG) || 'es'], i = 0, scr = new TextScramble(el);
+        /* solo palabras que caben en el renglón (mide con la fuente real; se recalcula al redimensionar) */
+        var list = all;
+        function fit() {
+          try {
+            var line = el.parentNode, cs = getComputedStyle(el);
+            var c = document.createElement('canvas').getContext('2d');
+            c.font = cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
+            var used = 0; Array.prototype.forEach.call(line.children, function (n) { if (n !== el) used += n.getBoundingClientRect().width; });
+            var room = line.getBoundingClientRect().width - used;
+            var ls = parseFloat(cs.letterSpacing) || 0;
+            list = all.filter(function (w) { return c.measureText(w).width + ls * w.length <= room * .98; });
+            if (list.indexOf(all[0]) < 0) list.unshift(all[0]);
+          } catch (e) { list = [all[0]]; }
+        }
+        fit(); window.addEventListener('resize', function () { setTimeout(fit, 250); });
+        setInterval(function () {
+          if (list.length < 2) return;
+          if (document.hidden || window.scrollY > window.innerHeight * .8) return;
+          i = (i + 1) % list.length;
+          scr.run(list[i]).then(sendHeroWords);
+        }, 3400);
+      }
+
       function initHeroType() {
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         var hero = document.getElementById('hero');
@@ -130,6 +177,15 @@
         function kick() { if (!raf) raf = requestAnimationFrame(tick); }
         function rest() { st.forEach(function (s) { s.tw = W_MAX; }); kick(); }
 
+        /* respiración: el peso oscila solo (ciclo ~7 s) cuando el puntero no manda */
+        var breathing = true, t0 = performance.now();
+        setInterval(function () {
+          if (!breathing || document.hidden || window.scrollY > window.innerHeight * .8) return;
+          var tt = (performance.now() - t0) / 1000;
+          st.forEach(function (s, i) { s.tw = W_MAX - 34 * (.5 + .5 * Math.sin(tt * (2 * Math.PI / 7) + i * .9)); });
+          kick();
+        }, 100);
+
         if (window.matchMedia('(hover: none)').matches) {
           /* touch: respira con el scroll; cada renglón entra un poco después */
           var lastT = -1;
@@ -137,7 +193,7 @@
             var sy = window.scrollY, vh = window.innerHeight;
             var tt = Math.min(sy / (vh * .6), 1);
             if (tt === lastT) return;
-            lastT = tt;
+            lastT = tt; breathing = tt === 0;
             st.forEach(function (s, i) {
               var t = Math.max(0, Math.min(1, tt * 1.3 - i * .1));
               t = t * t * (3 - 2 * t);
@@ -162,8 +218,8 @@
           });
           kick();
         }
-        hero.addEventListener('mousemove', function (e) { px = e.clientX; py = e.clientY; inside = true; aim(); }, { passive: true });
-        hero.addEventListener('mouseleave', function () { inside = false; rest(); });
+        hero.addEventListener('mousemove', function (e) { px = e.clientX; py = e.clientY; inside = true; breathing = false; aim(); }, { passive: true });
+        hero.addEventListener('mouseleave', function () { inside = false; rest(); breathing = true; });
         window.addEventListener('scroll', function () { if (inside) aim(); }, { passive: true });
         var rT = null;
         window.addEventListener('resize', function () {
@@ -376,7 +432,8 @@
         const isSafari = /apple/i.test(navigator.vendor || '');
         if (window.Worker && (canvas.transferControlToOffscreen || isSafari)) {
           const useOffscreen = !isSafari && !!canvas.transferControlToOffscreen;
-          const worker = new Worker('/js/hero-field-worker.js?v=20260720g');
+          const worker = new Worker('/js/hero-field-worker.js?v=20260908a');
+          window.__csHeroWorker = worker;   /* el hero manda las cajas del H1 (campo que rodea al texto) */
 
           if (useOffscreen) {
             const off = canvas.transferControlToOffscreen();
