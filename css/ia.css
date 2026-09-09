@@ -317,3 +317,22 @@
   .ia-chat::before { transition: none; transform: scaleX(1); }
   .ia-chat.in-view::before { animation: none; }
 }
+
+/* /ventas/ */
+/* Variante de .sv-gauge sin cifra inventada: solo el bloque de texto,
+   a una columna (evita la columna vacía del .sv-gauge-num que no usamos). */
+.sv-gauge--text { grid-template-columns: 1fr; }
+
+/* pricing-grid con 2 planes (Esencial/Pro): sin huérfanos ni columna vacía
+   del repeat(3,1fr) por defecto de home.css. Solo aplica cuando hay
+   exactamente 2 .plan-card — el resto de pages con 3 planes no se ve afectado. */
+.pricing-grid:has(.plan-card:nth-child(2):last-child) {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* /ventas/: 3 módulos → 3 columnas (sin celda vacía); 1 col en móvil */
+.sv-modules--3 { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 760px) { .sv-modules--3 { grid-template-columns: 1fr; } }

@@ -37,6 +37,7 @@
     '/casos-de-exito/respirar-es-vivir/': '/en/case-studies/respirar-es-vivir/',
     '/casos-de-exito/seminuevos-coapa/': '/en/case-studies/seminuevos-coapa/',
     '/ia/':                             '/en/ai/',
+    '/ventas/':                         '/en/sales/',
     // Embudo sin versión EN todavía (D12): el toggle manda al home EN.
     '/recursos/':                       '/en/',
     '/recursos/5-errores-web/':         '/en/',
