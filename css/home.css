@@ -55,6 +55,10 @@
       --fd: 'Space Grotesk', sans-serif;
       --fb: 'Inter', sans-serif;
       --nh: 72px;
+
+      /* ── Alerta (stakes): único bloque en rojo del home ── */
+      --alert: #ff6464;
+      --alert-rgb: 255, 100, 100;
     }
 
     html {
@@ -218,7 +222,9 @@
       transition: transform .6s cubic-bezier(.76, 0, .24, 1), visibility 0s;
     }
 
-    #mobileNav a {
+    /* :not(.mnav-*) — las filas CTA del menú (base.css) tienen su propio
+       tamaño; con la misma especificidad esta regla (carga después) las pisaba */
+    #mobileNav a:not(.mnav-cta):not(.mnav-wa) {
       font-family: var(--fd);
       font-size: clamp(36px, 8vw, 56px);
       font-weight: 700;
@@ -227,7 +233,7 @@
       transition: color .2s;
     }
 
-    #mobileNav a:hover {
+    #mobileNav a:not(.mnav-cta):not(.mnav-wa):hover {
       color: var(--lime);
     }
 
@@ -426,6 +432,9 @@
     @media (max-width: 768px) {
       .hero-sep { display: none; }
       .hero-static-title span[data-hero-line] { display: block; }
+      /* 2.º renglón entero ("QUE VENDE." / "THAT SELLS.") → 3 renglones en móvil */
+      .hero-line:nth-child(2) .hero-sep,
+      .hero-line:nth-child(2) span[data-hero-line] { display: inline; }
     }
 
     .hero-static-sub {
@@ -441,6 +450,32 @@
       display: flex;
       gap: 14px;
       flex-wrap: wrap;
+    }
+
+    /* Línea de prueba bajo los botones (mismo registro que el eyebrow, sin
+       línea ::before). Arranca en opacity:0 y la revela runHeroEntrance junto
+       con #heroActions — NO aplica a .hero-static-title (LCP). */
+    .hero-proof {
+      opacity: 0;
+      margin-top: 22px;
+      max-width: 620px;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: .14em;
+      line-height: 1.9;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .55);
+    }
+
+    .hero-proof a {
+      color: var(--lime);
+      white-space: nowrap;
+      border-bottom: 1px solid transparent;
+      transition: border-color .2s;
+    }
+
+    .hero-proof a:hover {
+      border-bottom-color: var(--lime);
     }
 
     /* ============================================================ BUTTONS */
@@ -537,6 +572,19 @@
       border-bottom: 1px solid rgba(0, 0, 0, .18);
       background: var(--lime);
       padding: 18px 0;
+    }
+
+    /* Etiqueta del ticker: eyebrow centrado sobre el lime (sin ::before) */
+    .ticker-label {
+      text-align: center;
+      font-family: var(--fd);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+      color: rgba(19, 31, 0, .6);
+      padding: 0 24px;
+      margin-bottom: 14px;
     }
 
     .ticker-track {
@@ -773,7 +821,8 @@
 
     .srv-num,
     .srv-title,
-    .srv-desc {
+    .srv-desc,
+    .srv-link {
       position: relative;
       z-index: 1;
     }
@@ -819,10 +868,28 @@
     }
 
     .srv-desc {
-      font-size: 14px;
-      font-weight: 300;
-      color: var(--gt);
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--gray-light);
       line-height: 1.6;
+    }
+
+    /* Salida a la ficha del servicio (mismo registro que .testi-case) */
+    .srv-link {
+      display: inline-block;
+      margin-top: 18px;
+      font-family: var(--fd);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .45);
+      transition: color .2s;
+    }
+
+    .srv-card:hover .srv-link,
+    .srv-link:hover {
+      color: var(--lime);
     }
 
     /* ============================================================ PORTAFOLIO
@@ -860,6 +927,30 @@
       #portafolio .port-grid {
         grid-template-columns: repeat(4, 1fr);
       }
+    }
+
+    /* Colapsado (HOME-CRO-03): #port-more quita .is-collapsed. La card CTA
+       cuenta como celda, por eso 5 proyectos + CTA en 3 y 2 columnas
+       (filas completas, sin huérfanos) y 7 + CTA en 4 columnas. */
+    .port-grid.is-collapsed #portfolio-dynamic > .port-card:nth-child(n+6) {
+      display: none;
+    }
+
+    @media (min-width: 1600px) {
+      #portafolio .port-grid.is-collapsed #portfolio-dynamic > .port-card:nth-child(n+6) {
+        display: flex;
+      }
+      #portafolio .port-grid.is-collapsed #portfolio-dynamic > .port-card:nth-child(n+8) {
+        display: none;
+      }
+    }
+
+    .port-more-wrap {
+      margin-top: 28px;
+    }
+
+    #port-more {
+      cursor: pointer;
     }
 
     /* Each card is an anchor tag — opens in new tab */
@@ -980,7 +1071,7 @@
     }
 
     .port-card-cat {
-      font-size: 9px;
+      font-size: 10px;
       font-weight: 400;
       letter-spacing: .32em;
       text-transform: uppercase;
@@ -1005,8 +1096,8 @@
     }
 
     .port-card-desc {
-      font-size: 12px;
-      font-weight: 300;
+      font-size: 13px;
+      font-weight: 400;
       color: var(--gt);
       line-height: 1.65;
       display: -webkit-box;
@@ -1074,7 +1165,7 @@
       color: var(--lime);
       background: var(--bg);
       padding: 13px 28px;
-      transition: gap .2s ease, opacity .2s;
+      transition: gap .2s ease, background .15s ease-out, color .15s ease-out, transform .15s ease-out, box-shadow .15s ease-out;
     }
 
     .port-cta-btn::after {
@@ -1085,8 +1176,17 @@
       transition: transform .2s ease;
     }
 
+    /* Placa de la casa (inversa: placa negra sobre lime) */
     .port-cta:hover .port-cta-btn {
-      opacity: .9;
+      background: #fff;
+      color: #000;
+      transform: translate(-3px, -3px);
+      box-shadow: 3px 3px 0 0 var(--bg);
+    }
+
+    .port-cta:active .port-cta-btn {
+      transform: none;
+      box-shadow: none;
     }
 
     .port-cta:hover .port-cta-btn::after {
@@ -1124,6 +1224,26 @@
 
     .nos-img-wrap {
       position: relative;
+      overflow: hidden;
+    }
+
+    /* Línea cinética inferior (sustituye al cuadro lime de esquina .nos-frame,
+       retirado — D9). Hover en desktop; .in-view en touch (reveal-cards.js). */
+    .nos-img-wrap::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--lime);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .6s cubic-bezier(.16, 1, .3, 1);
+    }
+
+    .nos-img-wrap:hover::after {
+      transform: scaleX(1);
     }
 
     .nos-img {
@@ -1142,14 +1262,11 @@
       filter: none;
     }
 
-    .nos-frame {
-      position: absolute;
-      bottom: -16px;
-      right: -16px;
-      width: 64px;
-      height: 64px;
-      background: var(--lime);
-      pointer-events: none;
+    .nos-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
     }
 
     .nos-quote {
@@ -1334,9 +1451,9 @@
     }
 
     .proc-desc {
-      font-size: 13px;
-      font-weight: 300;
-      color: var(--gt);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--gray-light);
       line-height: 1.8;
     }
 
@@ -1431,10 +1548,57 @@
 
     .testi-meta {
       display: flex;
-      flex-direction: column;
-      gap: 4px;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
       border-top: 1px solid var(--gb);
       padding-top: 18px;
+    }
+
+    .testi-who {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    /* Logo del cliente: gris y atenuado; se enciende con la card */
+    .testi-logo {
+      height: 28px;
+      width: auto;
+      max-width: 110px;
+      flex-shrink: 0;
+      object-fit: contain;
+      opacity: .5;
+      filter: grayscale(1);
+      transition: opacity .35s ease, filter .35s ease;
+    }
+
+    .testi-card:hover .testi-logo,
+    .testi-card.in-view .testi-logo {
+      opacity: 1;
+      filter: none;
+    }
+
+    /* Salida al caso de éxito */
+    .testi-case {
+      display: inline-block;
+      align-self: flex-start;
+      margin-top: 18px;
+      font-family: var(--fd);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .45);
+      transition: color .2s;
+    }
+
+    .testi-card:hover .testi-case,
+    .testi-card.in-view .testi-case,
+    .testi-case:hover {
+      color: var(--lime);
     }
 
     .testi-name {
@@ -1455,8 +1619,8 @@
     }
 
     .testi-role {
-      font-size: 11px;
-      font-weight: 300;
+      font-size: 12px;
+      font-weight: 400;
       letter-spacing: .12em;
       text-transform: uppercase;
       color: var(--gt);
@@ -1532,11 +1696,36 @@
       background: var(--bg);
       padding: 18px 44px;
       text-decoration: none;
-      transition: background .15s ease-out, color .15s ease-out;
+      transition: background .15s ease-out, color .15s ease-out, transform .15s ease-out, box-shadow .15s ease-out;
     }
 
+    /* Placa inversa (negra) sobre la franja lime */
     .dominate-btn:hover {
-      background: var(--surface-lowest);
+      background: #fff;
+      color: #000;
+      transform: translate(-3px, -3px);
+      box-shadow: 3px 3px 0 0 var(--bg);
+    }
+
+    .dominate-btn:active {
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Transicional del cierre: ghost oscuro sobre lime (btn-ghost es lime sobre negro) */
+    .dominate-audit {
+      font-size: 12px;
+      letter-spacing: .12em;
+      color: var(--bg);
+      border-color: rgba(0, 0, 0, .35);
+      padding: 12px 24px;
+      text-align: center;
+    }
+
+    .dominate-audit:hover {
+      color: var(--bg);
+      border-color: var(--bg);
+      background: rgba(0, 0, 0, .06);
     }
 
     @media (max-width: 768px) {
@@ -1619,10 +1808,12 @@
       background: var(--surface-low);
       color: var(--white);
       position: relative;
+      box-shadow: inset 0 0 0 1px rgba(var(--lime-rgb), .45);
     }
 
     .plan-featured:hover {
       background: var(--surface-high);
+      box-shadow: inset 0 0 0 1px var(--lime);
     }
 
     /* "Más solicitado": de sticker de esquina a lomo lime del plan */
@@ -1710,20 +1901,59 @@
       color: var(--gt);
     }
 
+    /* Ancla: va ARRIBA del precio; solo el número lleva el tachado (lime) */
     .plan-old-price {
-      font-size: 11px;
-      font-weight: 300;
-      color: rgba(255, 255, 255, .28);
+      font-family: var(--fd);
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, .55);
+      margin-bottom: 8px;
+    }
+
+    .plan-old-price s {
       text-decoration: line-through;
-      margin-bottom: 4px;
+      text-decoration-color: var(--lime);
+      text-decoration-thickness: 1.5px;
+      color: rgba(255, 255, 255, .7);
+    }
+
+    /* "Ahorras $X USD · precio de portafolio" */
+    .plan-saving {
+      font-family: var(--fd);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin: 8px 0 0;
     }
 
     .plan-delivery {
-      font-size: 11px;
-      font-weight: 300;
+      font-size: 12px;
+      font-weight: 400;
       color: var(--gt);
       margin-bottom: 36px;
       padding-bottom: 36px;
+    }
+
+    /* Upsell de mantenimiento y alcance explícito (Premium) */
+    .plan-after,
+    .plan-excludes {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--gray-light);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .plan-after a {
+      color: var(--lime);
+      border-bottom: 1px solid transparent;
+      transition: border-color .2s;
+    }
+
+    .plan-after a:hover {
+      border-bottom-color: var(--lime);
     }
 
     .plan-featured .plan-delivery {
@@ -1740,16 +1970,16 @@
     }
 
     .plan-features li {
-      font-size: 13px;
-      font-weight: 300;
-      color: var(--gt);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--gray-light);
       position: relative;
       padding-left: 22px;
       line-height: 1.5;
     }
 
     .plan-featured .plan-features li {
-      color: rgba(255, 255, 255, .75);
+      color: rgba(255, 255, 255, .85);
     }
 
     /* Cuadrado lime de la casa en vez del checkmark de template.
@@ -1773,7 +2003,7 @@
       text-transform: uppercase;
       text-align: center;
       padding: 14px 20px;
-      transition: background .15s ease-out, color .15s ease-out, transform .15s ease-out;
+      transition: background .15s ease-out, color .15s ease-out, transform .15s ease-out, box-shadow .15s ease-out;
     }
 
 
@@ -1783,8 +2013,17 @@
       color: var(--bg);
     }
 
+    /* Placa de la casa (misma que .btn-primary) */
     .plan-cta-primary:hover {
-      background: var(--lime-bright);
+      background: #fff;
+      color: #000;
+      transform: translate(-3px, -3px);
+      box-shadow: 3px 3px 0 0 var(--lime);
+    }
+
+    .plan-cta-primary:active {
+      transform: none;
+      box-shadow: none;
     }
 
     .plan-cta-ghost {
@@ -1806,11 +2045,7 @@
       background: #111;
     }
 
-    @media (max-width: 1100px) {
-      .pricing-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
+    @media (max-width: 1100px) { /* cabecera de precios apilada en tablet y móvil */
       .precios-top {
         flex-direction: column;
         align-items: flex-start;
@@ -1821,9 +2056,109 @@
       }
     }
 
+    @media (min-width: 769px) and (max-width: 1100px) { /* solo tablet: en ≤768 manda la columna única */
+      .pricing-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      /* 3 cards → 3 columnas compactas (2+1 dejaría huérfano al Premium) */
+      .pricing-grid:has(:nth-child(3):last-child) {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .plan-card {
+        padding: 60px 22px 32px;
+      }
+
+      .plan-badge {
+        padding: 7px 22px;
+      }
+
+      .plan-price {
+        font-size: clamp(36px, 4.2vw, 48px);
+      }
+
+    }
+
+    /* Operaciones grandes → ficha de tiendas (bajo el grid de #tiendas) */
+    .tiendas-custom {
+      margin-top: 28px;
+      max-width: 680px;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--gray-light);
+      line-height: 1.7;
+    }
+
+    .tiendas-custom a {
+      color: var(--lime);
+      white-space: nowrap;
+      border-bottom: 1px solid transparent;
+      transition: border-color .2s;
+    }
+
+    .tiendas-custom a:hover {
+      border-bottom-color: var(--lime);
+    }
+
+    /* Móvil (MOB-03): 1 columna compacta, destacado primero, bullets clampeados */
     @media (max-width: 768px) {
       .pricing-grid {
         grid-template-columns: 1fr;
+      }
+
+      .plan-card {
+        padding: 56px 24px 32px;
+      }
+
+      .plan-badge {
+        padding: 7px 24px;
+      }
+
+      /* recupera el tamaño de escritorio (la regla tablet lo compacta) */
+      .plan-price {
+        font-size: 42px;
+      }
+
+      .plan-delivery {
+        margin-bottom: 22px;
+        padding-bottom: 22px;
+      }
+
+      .plan-features {
+        gap: 10px;
+        margin-bottom: 28px;
+      }
+
+      .plan-featured {
+        order: -1;
+      }
+
+      .plan-features--clamp li:nth-child(n+7) {
+        display: none;
+      }
+
+      /* "Ver todo lo que incluye (+N)" — lo inserta syncPlanClamp (home.js) */
+      .plan-more {
+        align-self: flex-start;
+        font-family: var(--fd);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .2em;
+        text-transform: uppercase;
+        color: var(--lime);
+        background: transparent;
+        border: 0;
+        border-bottom: 1px solid rgba(var(--lime-rgb), .4);
+        padding: 2px 0;
+        margin: -14px 0 28px;
+        min-height: 44px;
+        cursor: pointer;
+      }
+
+      .plan-cta {
+        padding: 16px 20px;
+        min-height: 48px;
       }
     }
 
@@ -1891,7 +2226,7 @@
     }
 
     .contact-link-label {
-      font-size: 9px;
+      font-size: 10px;
       font-weight: 400;
       letter-spacing: .32em;
       text-transform: uppercase;
@@ -1922,6 +2257,78 @@
     .contact-link-row:hover .contact-link-arrow {
       opacity: 1;
       transform: translateX(0);
+    }
+
+    /* Fila de prueba bajo los canales: 3 hechos ya publicados, separados
+       por riel lime (mismo lenguaje que .testi-dash) */
+    .contact-proof {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      margin-top: 28px;
+      border-top: 1px solid var(--gb);
+      padding-top: 24px;
+    }
+
+    .contact-proof-item {
+      flex: 1;
+      min-width: 0;
+      padding-right: 18px;
+    }
+
+    .contact-proof-item + .contact-proof-item {
+      padding-left: 18px;
+      border-left: 1px solid rgba(var(--lime-rgb), .35);
+    }
+
+    .contact-proof-num {
+      display: block;
+      font-family: var(--fd);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 6px;
+      white-space: nowrap;
+    }
+
+    .contact-proof-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--gray-light);
+      line-height: 1.5;
+    }
+
+    /* Cita corta enlazada al caso */
+    .form-quote {
+      margin: 32px 0 0;
+      padding-left: 22px;
+      border-left: 2px solid var(--lime);
+    }
+
+    .form-quote blockquote {
+      font-size: 15px;
+      font-weight: 300;
+      color: rgba(255, 255, 255, .85);
+      line-height: 1.6;
+      letter-spacing: -.01em;
+      margin-bottom: 10px;
+    }
+
+    .form-quote figcaption a {
+      font-family: var(--fd);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .45);
+      transition: color .2s;
+    }
+
+    .form-quote figcaption a:hover {
+      color: var(--lime);
     }
 
     /* Formulario editorial de línea: label real + campo transparente +
@@ -2143,6 +2550,118 @@
       color: #ff6464;
     }
 
+    /* Línea de confianza bajo el submit */
+    .form-reassure {
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(255, 255, 255, .55);
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    /* ── Panel post-envío (lo arma showFormDone en home.js) ──
+       form.is-done oculta campos, Turnstile y submit; el panel entra con
+       @keyframes (1s, .5s de espera) — sin transition rápida. */
+    @keyframes ceroDoneIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    form.is-done .form-group,
+    form.is-done .form-row-2,
+    form.is-done #grp-audit,
+    form.is-done .cf-turnstile,
+    form.is-done .btn-submit,
+    form.is-done .form-feedback {
+      display: none;
+    }
+
+    .form-done {
+      border-left: 2px solid var(--lime);
+      padding: 28px 24px;
+      background: rgba(var(--lime-rgb), .05);
+      opacity: 0;
+      animation: ceroDoneIn 1s cubic-bezier(.16, 1, .3, 1) .5s forwards;
+    }
+
+    .form-done-title {
+      font-family: var(--fd);
+      font-size: clamp(20px, 2vw, 26px);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -.01em;
+      margin-bottom: 20px;
+    }
+
+    .form-done-steps {
+      padding-left: 18px;
+      margin-bottom: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .form-done-steps li {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--gray-light);
+      line-height: 1.6;
+      padding-left: 4px;
+    }
+
+    .form-done-steps li::marker {
+      font-family: var(--fd);
+      font-weight: 700;
+      color: var(--lime);
+    }
+
+    .form-done-steps a {
+      color: var(--lime);
+      border-bottom: 1px solid transparent;
+      transition: border-color .2s;
+    }
+
+    .form-done-steps a:hover {
+      border-bottom-color: var(--lime);
+    }
+
+    .form-done-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .form-done-actions .btn-primary,
+    .form-done-actions .btn-ghost {
+      font-size: 12px;
+      letter-spacing: .12em;
+      padding: 14px 22px;
+      text-align: center;
+    }
+
+    .form-done-actions .btn-ghost {
+      padding: 12px 20px;
+    }
+
+    .form-done-again {
+      font-family: var(--fd);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .45);
+      background: transparent;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+      transition: color .2s;
+    }
+
+    .form-done-again:hover {
+      color: var(--lime);
+    }
+
     /* Field-level validation highlight */
     .form-group input.invalid,
     .form-group select.invalid,
@@ -2280,8 +2799,32 @@
         display: none;
       }
 
+      /* área de toque 44×44 sin mover el icono */
       .nav-ham {
         display: flex;
+        padding: 14px 10px;
+        margin-right: -10px;
+      }
+
+      /* menú: cabe en viewports bajos (SE/Android 640) y con las filas CTA */
+      #mobileNav {
+        gap: clamp(12px, 2.4vh, 28px);
+        padding: calc(var(--nh) + 8px) 24px 32px;
+        overflow-y: auto;
+        justify-content: safe center;
+      }
+
+      #mobileNav a:not(.mnav-cta):not(.mnav-wa) {
+        font-size: clamp(30px, 7.4vw, 56px);
+        line-height: 1.15;
+      }
+
+      #mobileNav a,
+      .lang-btn-mobile {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
       }
 
       section {
@@ -2301,8 +2844,29 @@
         padding-top: 56px;
       }
 
+      /* hero compacto: CTA dentro del primer viewport (in-app browsers) */
       #hero {
-        padding: calc(var(--nh) + 40px) 24px 80px;
+        min-height: 100vh;
+        min-height: 100svh;
+        padding: calc(var(--nh) + 28px) 24px 64px;
+      }
+
+      .hero-static-eyebrow {
+        margin-bottom: 22px;
+      }
+
+      /* 15vw: PRESENCIA cabe a 360/375 con ≥28px de aire (sin tocar opacity) */
+      .hero-static-title {
+        font-size: clamp(50px, 15vw, 68px);
+        margin-bottom: 28px;
+      }
+
+      .hero-static-sub {
+        margin-bottom: 32px;
+      }
+
+      .hero-proof {
+        margin-top: 20px;
       }
 
       #orb-a {
@@ -2358,6 +2922,32 @@
         grid-template-columns: 1fr;
       }
 
+      /* 16px: sin zoom automático de iOS al enfocar; toques ≥44px */
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        font-size: 16px;
+        padding: 14px 2px;
+      }
+
+      .form-group textarea {
+        min-height: 120px;
+      }
+
+      .form-toggle-opt span {
+        padding: 15px 8px;
+        min-height: 44px;
+      }
+
+      .contact-link-row {
+        min-height: 56px;
+      }
+
+      .lang-btn {
+        padding: 12px 16px;
+        font-size: 11px;
+      }
+
       footer {
         padding: 56px 24px 32px;
       }
@@ -2384,6 +2974,96 @@
     }
 
     @media (max-width: 520px) {
+      /* Botones apilados a todo lo ancho, en un solo renglón (MOB-06).
+         13px/.06em para que el ghost del hero ES quepa a 360px sin partirse */
+      .hero-static-actions,
+      .sv-cta-row,
+      .nos-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+
+      .hero-static-actions .btn-primary,
+      .hero-static-actions .btn-ghost,
+      .sv-cta-row .btn-primary,
+      .sv-cta-row .btn-ghost,
+      .nos-actions .btn-primary,
+      .nos-actions .btn-ghost {
+        width: 100%;
+        text-align: center;
+        padding-left: 16px;
+        padding-right: 16px;
+        font-size: 13px;
+        letter-spacing: .06em;
+        white-space: nowrap;
+      }
+
+      .dominate-action {
+        width: 100%;
+      }
+
+      .dominate-btn,
+      .dominate-audit {
+        width: 100%;
+        text-align: center;
+      }
+
+      /* Glifo compacto: menos aire muerto en 1 columna (MOB-08) */
+      .srv-card {
+        padding: 32px 22px 68px;
+      }
+
+      .proc-step {
+        padding: 36px 22px 80px;
+      }
+
+      .card-glyph {
+        width: 118px;
+        height: 118px;
+        right: -20px;
+        bottom: -26px;
+      }
+
+      .srv-desc,
+      .proc-desc {
+        font-size: 14px;
+      }
+
+      .nos-img {
+        height: min(72vw, 460px);
+      }
+
+      .nos-grid {
+        gap: 40px;
+      }
+
+      /* prueba de contacto en columna */
+      .contact-proof {
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .contact-proof-item {
+        padding-right: 0;
+      }
+
+      .contact-proof-item + .contact-proof-item {
+        padding-left: 0;
+        padding-top: 14px;
+        border-left: 0;
+        border-top: 1px solid rgba(var(--lime-rgb), .35);
+      }
+
+      .form-done {
+        padding: 24px 18px;
+      }
+
+      .form-done-actions .btn-primary,
+      .form-done-actions .btn-ghost {
+        width: 100%;
+      }
+
       .proc-grid {
         grid-template-columns: 1fr;
         gap: 0;
@@ -2545,6 +3225,15 @@
       .testi-card.in-view::before {
         animation: ceroLineSlide 1s cubic-bezier(.16,1,.3,1) .5s forwards;
       }
+      .testi-card.in-view .testi-logo,
+      .testi-card.in-view .testi-case {
+        transition-duration: .9s;
+        transition-delay: .5s;
+      }
+      /* retrato: la línea inferior entra al verse (.in-view vía reveal-cards.js) */
+      .nos-img-wrap.in-view::after {
+        animation: ceroLineSlide 1s cubic-bezier(.16,1,.3,1) .5s forwards;
+      }
     }
 
     /* ── FAQ ─────────────────────────────────────────────────────── */
@@ -2600,19 +3289,35 @@
     /* ── STAKES (SB7: lo que se pierde sin actuar) ───────────────── */
     #stakes .section-title { margin-bottom: 56px; }
 
+    /* Rojo (--alert) solo aquí: la pérdida se ve distinta a la ganancia (lime) */
     .stakes-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1px;
-      background: rgba(255, 255, 255, .12);
-      border: 1px solid rgba(255, 255, 255, .12);
+      background: rgba(var(--alert-rgb), .18);
+      border: 1px solid rgba(var(--alert-rgb), .18);
     }
 
     .stakes-card {
-      background: var(--black);
+      background: var(--surface-lowest);
       padding: 40px 34px;
       position: relative;
+      overflow: hidden;
       transition: background .3s ease;
+    }
+
+    /* línea roja superior — misma cinética que .srv-card::after */
+    .stakes-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--alert);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .45s ease;
     }
 
     .stakes-card::before {
@@ -2628,8 +3333,9 @@
       transition: -webkit-text-stroke-color .4s ease;
     }
 
-    .stakes-card:hover { background: #101010; }
-    .stakes-card:hover::before { -webkit-text-stroke-color: rgba(178, 247, 0, .55); }
+    .stakes-card:hover { background: #160f0f; }
+    .stakes-card:hover::after { transform: scaleX(1); }
+    .stakes-card:hover::before { -webkit-text-stroke-color: rgba(var(--alert-rgb), .7); }
 
     .stakes-card h3 {
       font-family: var(--fd);
@@ -2663,19 +3369,33 @@
     }
     .stakes-cta:hover { border-bottom-color: var(--lime); }
 
+    /* #stakes-cta pasó a .btn-primary (placa lime = la salida); conserva el aire */
+    #stakes-cta { margin-top: 40px; }
+
+    /* Transicional (auditoría gratis) junto a la placa */
+    .stakes-cta-alt {
+      margin-left: 28px;
+      font-size: 12px;
+      letter-spacing: .08em;
+      color: rgba(255, 255, 255, .7);
+    }
+    .stakes-cta-alt:hover { color: var(--lime); }
+
     @media (max-width: 860px) {
       .stakes-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 520px) {
       .stakes-grid { gap: 0; background: transparent; border-left: 0; border-right: 0; }
-      .stakes-card { border-bottom: 1px solid rgba(255, 255, 255, .12); padding: 30px 4px; }
+      .stakes-card { border-bottom: 1px solid rgba(var(--alert-rgb), .18); padding: 30px 4px; }
       .stakes-card:last-child { border-bottom: 0; }
+      .stakes-cta-alt { display: block; margin: 14px 0 0; }
     }
 
     @media (hover: none) {
-      .stakes-card.in-view { background: #101010; }
-      .stakes-card.in-view::before { -webkit-text-stroke-color: rgba(178, 247, 0, .45); transition: -webkit-text-stroke-color .9s ease .5s; }
+      .stakes-card.in-view { background: #160f0f; transition: background .9s ease .5s; }
+      .stakes-card.in-view::after { animation: ceroLineSlide 1s cubic-bezier(.16,1,.3,1) .5s forwards; }
+      .stakes-card.in-view::before { -webkit-text-stroke-color: rgba(var(--alert-rgb), .6); transition: -webkit-text-stroke-color .9s ease .5s; }
     }
 
     /* ── Franja de resultados (prueba social con métricas reales) ── */

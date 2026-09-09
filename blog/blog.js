@@ -155,8 +155,10 @@ async function renderList() {
   root.innerHTML = `
     <header class="blog-hero">
       <div class="section-inner">
-        <div class="eyebrow">Nuestro Blog</div>
-        <h1 class="section-title">Insights sobre diseño <br class="pc-only"> y tecnología</h1>
+        <div class="eyebrow">Blog · Para dueños de negocio</div>
+        <h1 class="section-title">Lo que nadie te explica <br class="pc-only">antes de invertir en tu sitio</h1>
+        <p class="blog-hero-sub">Precios reales, comparativas sin comisión y lo que sí mueve ventas en México. Escrito por Carlos Luque, sin tecnicismos.</p>
+        <a class="blog-hero-res" href="/recursos/5-errores-web/"><span class="code">REC-01 · Guía gratis</span><span>5 errores que le cuestan a tu web ahora mismo — PDF, sin registro</span><span class="arrow">→</span></a>
       </div>
     </header>
 
@@ -170,7 +172,7 @@ async function renderList() {
     </div>
   `;
 
-  document.title = 'Blog — Cero Studio';
+  document.title = 'Blog · Precios reales y guías para vender más en línea | Cero Studio';
 }
 
 async function loadMore() {
@@ -211,18 +213,30 @@ async function loadMore() {
   }
 }
 
-// CTA de conversión de artículos — mismo markup que functions/blog/[slug].js (SSR)
-const ARTICLE_CTA_END = `
-      <aside class="article-cta" data-label="Cero Studio">
-        <h2 class="article-cta-title">¿Tu sitio se ve bien <em>pero no vende?</em></h2>
-        <p class="article-cta-text">Diseñamos sitios que convierten visitas en clientes. Cuéntanos tu proyecto y recibe una propuesta clara en menos de 24 horas.</p>
-        <div class="article-cta-row">
-          <a href="/#contacto" class="article-cta-btn">Cotizar mi proyecto →</a>
-          <a href="https://wa.me/525531007101?text=Hola%2C%20le%C3%AD%20un%20art%C3%ADculo%20de%20su%20blog%20y%20quiero%20cotizar%20mi%20proyecto." class="article-cta-wa" target="_blank" rel="noopener">WhatsApp directo</a>
-        </div>
-      </aside>`;
+// CTA final por categoría — mismo markup y mapa que functions/blog/[slug].js (SSR).
+// Primario = siguiente paso natural del tema; secundario = ficha; WhatsApp siempre.
+const CTA_BY_CAT = {
+  'Diseño Web': { t: '¿Tu sitio se ve bien <em>pero no vende?</em>', p: 'Revisamos tu sitio actual gratis y en 48 horas te decimos qué lo está frenando. Y si lo que necesitas es uno nuevo, tienes propuesta en menos de 24 horas.', b1: ['Auditoría gratis de mi sitio', '/auditoria-gratis/'], b2: ['Ver planes de desarrollo web', '/servicios/desarrollo-web/'] },
+  'SEO': { t: '¿Google y la IA <em>te encuentran?</em>', p: 'Te decimos gratis, en 48 horas, si tu sitio aparece donde tus clientes buscan — y qué le falta para rankear en Google y salir en ChatGPT.', b1: ['Auditoría SEO + IA gratis', '/auditoria-gratis/'], b2: ['Ver servicio SEO + AI Search', '/servicios/seo/'] },
+  'eCommerce': { t: '¿Tu tienda recibe visitas <em>y no vende?</em>', p: 'Somos Agencia Tiendanube Partner certificada. Te decimos si te conviene Tiendanube o una tienda a la medida — y qué arreglar hoy en la que ya tienes.', b1: ['Cotizar mi tienda', '/servicios/tiendas-ecommerce/'], b2: ['Auditoría gratis de mi tienda', '/auditoria-gratis/'] },
+  'Estrategia Digital': { t: 'Antes de invertir, <em>un segundo par de ojos.</em>', p: 'Primera consulta gratis con Carlos: te decimos qué sí vale la pena hacer en tu caso y qué no. Sin compromiso.', b1: ['Agendar consulta gratis', 'https://calendar.app.google/Mk3sTdFWsaaaUNnj6'], b2: ['Ver consultoría digital', '/servicios/consultoria-digital/'] },
+  'Casos de Éxito': { t: '¿Quieres resultados así <em>en tu negocio?</em>', p: 'Cuéntanos qué vendes y a quién. Recibes una propuesta clara en menos de 24 horas.', b1: ['Cotizar mi proyecto', '/#contacto'], b2: ['Ver más casos de éxito', '/casos-de-exito/'] }
+};
+CTA_BY_CAT['Inteligencia Artificial'] = CTA_BY_CAT['SEO'];
+CTA_BY_CAT['Marketing Digital'] = CTA_BY_CAT['Estrategia Digital'];
+const CTA_DEFAULT = { t: '¿Tu sitio se ve bien <em>pero no vende?</em>', p: 'Diseñamos sitios que convierten visitas en clientes. Cuéntanos tu proyecto y recibe una propuesta clara en menos de 24 horas.', b1: ['Cotizar mi proyecto', '/#contacto'], b2: ['Auditoría gratis de mi sitio', '/auditoria-gratis/'] };
 
-const ARTICLE_CTA_MID = `<div class="article-cta-inline"><span>¿Necesitas un sitio que venda?</span> <a href="/#contacto">Cotiza gratis — respuesta en 24 horas →</a></div>`;
+function ctaEndFor(cat) {
+  const c = CTA_BY_CAT[cat] || CTA_DEFAULT;
+  return `<aside class="article-cta" data-label="Siguiente paso"><h2 class="article-cta-title">${c.t}</h2><p class="article-cta-text">${c.p}</p><div class="article-cta-row"><a href="${c.b1[1]}" class="article-cta-btn">${c.b1[0]} →</a><a href="${c.b2[1]}" class="article-cta-wa">${c.b2[0]}</a><a href="https://wa.me/525531007101?text=Hola%2C%20le%C3%AD%20un%20art%C3%ADculo%20de%20su%20blog%20y%20quiero%20cotizar%20mi%20proyecto." class="article-cta-wa" target="_blank" rel="noopener">WhatsApp directo</a></div></aside>`;
+}
+
+// CTA inline: transicional (auditoría gratis), nunca cotización a media lectura
+const ARTICLE_CTA_MID = '<div class="article-cta-inline"><span>¿No sabes si esto le pasa a tu sitio?</span> <a href="/auditoria-gratis/">Pídenos la auditoría exprés gratis — 5 hallazgos en 48 horas →</a></div>';
+
+// Caja de autor (BLOG-03) — mismo markup que functions/blog/[slug].js.
+// Retrato Color; el B/N lo pone blog.css (filter: grayscale) — sin acento de esquina.
+const ARTICLE_AUTHOR = '<aside class="article-author"><img src="/images/Carlos_Luque_2026-Color.webp" alt="Carlos Luque — Fundador, Cero Studio" width="88" height="120" loading="lazy"><div><p class="article-author-name">Carlos Luque</p><p class="article-author-bio">Fundador de Cero Studio. Más de 25 años construyendo presencia digital para negocios en México. Escribe esto para que decidas con datos, no con vendedores.</p><a href="/nosotros/" class="article-author-more">Conoce a Carlos →</a></div></aside>';
 
 // Inserta el CTA inline a la mitad del artículo (solo si hay ≥8 párrafos)
 function withMidCta(content) {
@@ -257,7 +271,7 @@ async function renderPost(slug) {
           <div class="post-card-cat" style="margin-bottom: 24px;">${post.category || 'General'}</div>
           <h1 class="article-title">${post.title}</h1>
           <div class="article-meta">
-            Publicado el ${formatDate(post.published_at)} • Cero Studio
+            Por <a href="/nosotros/" class="article-author-link">Carlos Luque</a> · Fundador de Cero Studio · ${formatDate(post.published_at)}
           </div>
           ${heroImg}
         </header>
@@ -265,7 +279,8 @@ async function renderPost(slug) {
         <div class="article-content">
           ${withMidCta(post.content)}
         </div>
-${ARTICLE_CTA_END}
+${ARTICLE_AUTHOR}
+${ctaEndFor(post.category)}
       </article>
     `;
     

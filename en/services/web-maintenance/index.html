@@ -38,9 +38,9 @@
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
     as="style" data-async>
   <noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="/css/base.css?v=20260705a">
-  <link rel="stylesheet" href="/css/home.css?v=20260720c">
-  <link rel="stylesheet" href="/css/servicios-spec.css?v=20260705a">
+  <link rel="stylesheet" href="/css/base.css?v=20260907a">
+  <link rel="stylesheet" href="/css/home.css?v=20260907c">
+  <link rel="stylesheet" href="/css/servicios-spec.css?v=20260907a">
   <script src="/components/cookie-consent.js" defer></script>
   <script src="/components/cursor.js" defer></script>
 
@@ -57,20 +57,20 @@
         "provider": { "@type": "Organization", "name": "Cero Studio", "url": "https://cerostudio.ai/", "logo": "https://cerostudio.ai/images/svg/Cero_Studio_AI_Horizontal.svg" },
         "areaServed": { "@type": "Country", "name": "Mexico" },
         "url": "https://cerostudio.ai/en/services/web-maintenance/",
-        "offers": { "@type": "Offer", "priceCurrency": "USD", "price": "499", "priceSpecification": { "@type": "PriceSpecification", "priceCurrency": "USD", "minPrice": "499" }, "availability": "https://schema.org/InStock" }
+        "offers": { "@type": "Offer", "priceCurrency": "MXN", "price": "800", "priceSpecification": { "@type": "UnitPriceSpecification", "priceCurrency": "MXN", "minPrice": "800", "unitText": "MONTH" }, "availability": "https://schema.org/InStock" }
       },
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://cerostudio.ai/en/" },
-          { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://cerostudio.ai/en/#services" },
+          { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://cerostudio.ai/en/#servicios" },
           { "@type": "ListItem", "position": 3, "name": "Web Maintenance", "item": "https://cerostudio.ai/en/services/web-maintenance/" }
         ]
       },
       {
         "@type": "FAQPage",
         "mainEntity": [
-          { "@type": "Question", "name": "How much does web maintenance cost in Mexico?", "acceptedAnswer": { "@type": "Answer", "text": "The basic plan starts at 800 MXN per month and includes security updates, daily backups, uptime monitoring and monthly report. The complete plan from 3,500 MXN per month adds unlimited content changes, monthly speed optimization and priority support. For online stores or complex sites, custom quote based on volume of changes and requirements." } },
+          { "@type": "Question", "name": "How much does website maintenance cost?", "acceptedAnswer": { "@type": "Answer", "text": "The basic plan starts at 800 MXN per month and includes security updates, daily backups, uptime monitoring and monthly report. The complete plan from 3,500 MXN per month adds unlimited content changes, monthly speed optimization and priority support. For online stores or complex sites, custom quote based on volume of changes and requirements." } },
           { "@type": "Question", "name": "What exactly is included?", "acceptedAnswer": { "@type": "Answer", "text": "Plugin/framework/dependency security updates, automatic daily backups with quick restoration, 24/7 uptime monitoring with alerts, content changes (texts, images, prices, products), monthly Core Web Vitals review with optimizations, automatic SSL renewal, vulnerability scanning and monthly report with everything we did." } },
           { "@type": "Question", "name": "What is NOT included?", "acceptedAnswer": { "@type": "Answer", "text": "Doesn't include new feature development (those are quoted separately), redesigns, massive content migration from another platform, recovery of hacked sites without previous backup (we try but without guarantee) or hosting beyond the first year (after that it's normal renewal). If you need any of this, we quote it as an additional project." } },
           { "@type": "Question", "name": "What platforms do you support?", "acceptedAnswer": { "@type": "Answer", "text": "Sites built by Cero Studio (HTML/CSS/JS on Cloudflare Pages, modern static sites), WordPress (with or without WooCommerce), Shopify (store configuration and maintenance, not platform code), and sites on common frameworks (Next.js, Astro, etc.). For exotic platforms, we evaluate case by case before committing." } },
@@ -85,7 +85,7 @@
 
 <body>
   <div class="site-wrapper">
-    <script src="/components/loader.js?v=20260706a" defer></script>
+    <script src="/components/loader.js?v=20260907a" defer></script>
     <svg class="noise" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;opacity:.05;z-index:1000;">
       <filter id="nf"><feTurbulence type="fractalNoise" baseFrequency=".68" numOctaves="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
       <rect width="100%" height="100%" filter="url(#nf)"/>
@@ -97,11 +97,12 @@
       <div class="sv-sheet">
 
         <nav class="sv-crumbs" aria-label="Breadcrumb">
-          <a href="/en/">Home</a><span>›</span><a href="/en/#services">Services</a><span>›</span><span aria-current="page">Web Maintenance</span>
+          <a href="/en/">Home</a><span>›</span><a href="/en/#servicios">Services</a><span>›</span><span aria-current="page">Web Maintenance</span>
         </nav>
 
         <!-- ── SHEET · cover ───────────────────────────────────────── -->
         <header class="sv-hero">
+          <span class="card-glyph sv-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><g stroke="currentColor" stroke-width="1.5"><polygon points="12,3 19.8,7.5 19.8,16.5 12,21 4.2,16.5 4.2,7.5" vector-effect="non-scaling-stroke"/><circle cx="12" cy="12" r="4.2" vector-effect="non-scaling-stroke"/></g></svg></span>
           <div>
             <p class="sv-code">SRV-05 · Web Maintenance</p>
             <h1 class="sv-h1">Web support <em>365 days a year.</em></h1>
@@ -113,14 +114,16 @@
               <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Schedule a Free Call</a>
               <a href="https://wa.me/525531007101?text=Hi%2C%20I%20saw%20your%20Web%20Maintenance%20page%20and%20I%27d%20like%20more%20information." target="_blank" rel="noopener" class="btn-ghost ht">Send WhatsApp</a>
             </div>
+            <p class="sv-cta-alt">Rather get a written quote? <a href="/en/?servicio=mantenimiento#contacto">Request a quote by form →</a></p>
           </div>
           <aside class="sv-specs" aria-label="Service specifications">
             <p class="sv-specs-title">Specifications</p>
             <dl>
               <div class="row"><dt>Response</dt><dd><strong>&lt; 2h business hours</strong> site down · changes in 24h</dd></div>
-              <div class="row"><dt>Investment</dt><dd>From <strong>$800 MXN/mo</strong> · complete plan from $3,500</dd></div>
+              <div class="row"><dt>Investment</dt><dd>From <strong>$800 MXN/mo</strong> (≈ $46 USD) · complete plan from $3,500 MXN (≈ $196 USD)</dd></div>
               <div class="row"><dt>Includes</dt><dd>Security · daily backups · 24/7 monitoring · report</dd></div>
               <div class="row"><dt>Contract</dt><dd>Month-to-month, no annual contract · cancel with 30 days notice</dd></div>
+              <div class="row"><dt>Billing</dt><dd>Recurring plans are billed in Mexican pesos; we accept payment in USD or MXN.</dd></div>
             </dl>
             <p class="sv-stamp">Cero Studio · Service sheet · MX</p>
           </aside>
@@ -209,10 +212,11 @@
           </div>
           <div class="sv-faq">
             <details class="faq-item">
-              <summary>How much does web maintenance cost in Mexico?</summary>
-              <p>Basic plan from <strong>$800 MXN/mo</strong> (security + backups + monitoring + report).
-                Complete plan from <strong>$3,500 MXN/mo</strong> (adds unlimited content changes +
-                monthly optimization + priority support). For stores or complex sites, quote by volume.</p>
+              <summary>How much does website maintenance cost?</summary>
+              <p>Basic plan from <strong>$800 MXN/mo</strong> (≈ $46 USD — security + backups + monitoring + report).
+                Complete plan from <strong>$3,500 MXN/mo</strong> (≈ $196 USD — adds unlimited content changes +
+                monthly optimization + priority support). For stores or complex sites, quoted by volume.
+                Recurring plans are billed in Mexican pesos; we accept payment in USD or MXN.</p>
             </details>
             <details class="faq-item">
               <summary>What exactly is included?</summary>
@@ -245,14 +249,34 @@
           </div>
         </section>
 
+        <!-- ── Proof · published results (SV-01/PS-04) ─────────────── -->
+        <section class="sv-proof" data-label="Sites we keep looking after" aria-label="Case studies">
+          <div class="sv-proof-grid">
+            <a class="sv-proof-card ht" href="/en/case-studies/seminuevos-coapa/">
+              <span class="sv-proof-num">Self-managed</span>
+              <span class="sv-proof-label">Total independence</span>
+              <blockquote class="sv-proof-quote">“Excellent commitment, professionalism and level of service from Carlos. Thank you for your valuable collaboration!”</blockquote>
+              <span class="sv-proof-who">Ricardo Lora · Seminuevos Coapa</span>
+            </a>
+            <a class="sv-proof-card ht" href="/en/case-studies/mainoflex/">
+              <span class="sv-proof-num">24/7</span>
+              <span class="sv-proof-label">Catalogue &amp; contact</span>
+              <p class="sv-proof-desc">Its products and contact channels —WhatsApp, form, maps— available around the clock, ready to capture prospects the moment they decide.</p>
+              <span class="sv-proof-who">Mainoflex · Anti-vibration solutions</span>
+            </a>
+          </div>
+          <a class="sv-proof-all" href="/en/case-studies/">See all case studies →</a>
+        </section>
+
         <!-- ── Work order (final CTA) ──────────────────────────────── -->
         <section class="sv-order" data-label="Work order">
           <h2>Is your site <span class="t-lime">protected and backed up?</span></h2>
-          <p>We review your site for free and tell you exactly what state it's in. No commitment.</p>
+          <p>We'll review your site for free and tell you exactly where it stands — security, speed and backups — and what to fix first. No commitment.</p>
           <div class="sv-cta-row">
-            <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Schedule a Free Review</a>
+            <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Book a Free Review</a>
             <a href="https://wa.me/525531007101?text=Hi%2C%20I%20saw%20your%20Web%20Maintenance%20page%20and%20I%27d%20like%20more%20information." target="_blank" rel="noopener" class="btn-ghost ht">Send WhatsApp</a>
           </div>
+          <p class="sv-cta-alt">Rather get a written quote? <a href="/en/?servicio=mantenimiento#contacto">Request a quote by form →</a></p>
         </section>
 
         <!-- ── § 06 · Service catalog ──────────────────────────────── -->
@@ -275,8 +299,8 @@
 
     <div id="footer-placeholder"></div>
   </div>
-  <script src="/components/reveal-cards.js?v=20260705a" defer></script>
-  <script src="/components/lang-toggle.js?v=20260604c" defer></script>
+  <script src="/components/reveal-cards.js?v=20260907a" defer></script>
+  <script src="/components/lang-toggle.js?v=20260907a" defer></script>
 </body>
 
 </html>

@@ -764,3 +764,93 @@ footer {
   font-weight: 500;
   border-bottom: 1px solid var(--lime);
 }
+
+/* ── Portada: promesa + tira al recurso gratis (BLOG-07) ────────── */
+.blog-hero-sub {
+  font-family: var(--fb);
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, .7);
+  max-width: 620px;
+  margin: 20px auto 0;
+}
+/* Mismo lenguaje que .sv-catalog-row de las fichas (código · nombre · flecha) */
+.blog-hero-res {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 20px;
+  align-items: center;
+  max-width: 720px;
+  margin: 32px auto 0;
+  padding: 16px 20px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  text-align: left;
+  color: #fff;
+  font-family: var(--fd);
+  font-size: 15px;
+  font-weight: 500;
+  transition: border-color .25s ease;
+}
+.blog-hero-res:hover { border-color: var(--lime); }
+.blog-hero-res .code {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--lime);
+  white-space: nowrap;
+}
+.blog-hero-res .arrow { color: var(--lime); font-size: 18px; transition: transform .25s ease; }
+.blog-hero-res:hover .arrow { transform: translateX(6px); }
+@media (max-width: 600px) {
+  .blog-hero-res { grid-template-columns: 1fr auto; }
+  .blog-hero-res .code { grid-column: 1 / -1; }
+}
+
+/* ── Byline + caja de autor (BLOG-03): Carlos como guía ──────────── */
+.article-author-link {
+  color: #fff;
+  border-bottom: 1px solid var(--lime);
+}
+.article-author-link:hover { color: var(--lime); }
+.article-author {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 20px;
+  align-items: start;
+  border-top: 1px solid rgba(255, 255, 255, .12);
+  padding: 32px 0;
+  margin-top: 56px;
+}
+/* Retrato Color → B/N por CSS (regla: BN en contexto de lectura), sin acento de esquina */
+.article-author img {
+  width: 88px;
+  height: 120px;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(1);
+}
+.article-author-name {
+  font-family: var(--fd);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  margin: 0 0 6px;
+}
+.article-author-bio {
+  font-family: var(--fb);
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, .7);
+  margin: 0 0 12px;
+}
+.article-author-more {
+  font-family: var(--fd);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--lime);
+}

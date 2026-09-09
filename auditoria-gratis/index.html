@@ -34,9 +34,13 @@
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
     as="style" data-async>
   <noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="/css/base.css?v=20260705a">
-  <link rel="stylesheet" href="/css/home.css?v=20260720c">
-  <link rel="stylesheet" href="/css/servicios-spec.css?v=20260705a">
+  <link rel="stylesheet" href="/css/base.css?v=20260907a">
+  <link rel="stylesheet" href="/css/home.css?v=20260907c">
+  <link rel="stylesheet" href="/css/servicios-spec.css?v=20260907a">
+  <style>
+    /* El éxito del form enlaza la guía gratis: subrayado para que se lea como link */
+    .form-feedback a { text-decoration: underline; text-underline-offset: 3px; }
+  </style>
   <script src="/components/cookie-consent.js" defer></script>
   <script src="/components/cursor.js" defer></script>
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
@@ -100,7 +104,7 @@
 
 <body>
   <div class="site-wrapper">
-    <script src="/components/loader.js?v=20260706a" defer></script>
+    <script src="/components/loader.js?v=20260907a" defer></script>
     <svg class="noise" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
       style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;opacity:.05;z-index:1000;">
       <filter id="nf"><feTurbulence type="fractalNoise" baseFrequency=".68" numOctaves="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
@@ -137,6 +141,8 @@
               <div class="row"><dt>Costo</dt><dd><strong>$0</strong> · sin letra chica</dd></div>
               <div class="row"><dt>Entregable</dt><dd><strong>5 hallazgos accionables</strong> priorizados</dd></div>
               <div class="row"><dt>Compromiso</dt><dd>Ninguno · el reporte es tuyo</dd></div>
+              <div class="row"><dt>Contacto</dt><dd><strong>Sin llamadas de venta</strong> · solo el reporte</dd></div>
+              <div class="row"><dt>Lo revisa</dt><dd><strong>Carlos Luque</strong> · no un robot</dd></div>
             </dl>
             <p class="sv-stamp">Cero Studio · Diagnóstico exprés · MX</p>
           </aside>
@@ -164,7 +170,7 @@
         <section class="sv-section" id="solicitar">
           <div class="sv-sec-head">
             <span class="sv-sec-num">02 — Solicitud</span>
-            <h2 class="sv-h2">Cuatro campos. <span class="t-lime">48 horas.</span></h2>
+            <h2 class="sv-h2">Cuatro datos. <span class="t-lime">48 horas.</span></h2>
           </div>
           <p class="sv-body" style="margin-bottom:40px;">
             Déjanos tus datos. En máximo 48 horas hábiles recibes tus 5 hallazgos.
@@ -177,17 +183,18 @@
             <div class="form-row-2">
               <div class="form-group">
                 <label class="form-label" for="a-nombre">Nombre *</label>
-                <input type="text" name="nombre" id="a-nombre" required>
+                <input type="text" name="nombre" id="a-nombre" required autocomplete="name">
               </div>
               <div class="form-group">
                 <label class="form-label" for="a-email">Email *</label>
-                <input type="email" name="email" id="a-email" required>
+                <input type="email" name="email" id="a-email" required autocomplete="email" inputmode="email">
               </div>
             </div>
             <div class="form-group">
               <label class="form-label" for="a-whatsapp">WhatsApp (10 dígitos) *</label>
               <input type="tel" name="whatsapp" id="a-whatsapp" required autocomplete="tel" inputmode="tel" placeholder="55 1234 5678">
             </div>
+            <p class="form-hint">Solo para avisarte cuando tu reporte esté listo. Sin llamadas de venta — lo prometido.</p>
             <div class="form-group">
               <span class="form-label" id="a-tiene-label">¿Ya tienes sitio web? *</span>
               <div class="form-toggle" role="radiogroup" aria-labelledby="a-tiene-label">
@@ -241,16 +248,17 @@
             </details>
             <details class="faq-item">
               <summary>¿Y si no tengo sitio todavía?</summary>
-              <p>Entonces no necesitas auditoría — necesitas un sitio que venda desde el día uno.
-                Mira los <a href="/#precios">planes de desarrollo web</a>: pago único, entrega en 5 a 21
-                días hábiles y fecha garantizada por escrito.</p>
+              <p>También te sirve: marca «Todavía no» y revisamos cómo aparece tu negocio en Google,
+                Maps y redes — y qué te está costando clientes. Y si lo que necesitas es un sitio que
+                venda desde el día uno, mira los <a href="/#precios">planes de desarrollo web</a>: pago
+                único, entrega en 5 a 21 días hábiles y fecha garantizada por escrito.</p>
             </details>
           </div>
         </section>
 
         <!-- ── Orden de trabajo (CTA final) ────────────────────────── -->
         <section class="sv-order" data-label="Diagnóstico exprés">
-          <h2>Son 3 campos y 48 horas. <span class="t-lime">Lo demás lo hacemos nosotros.</span></h2>
+          <h2>Son 4 datos y 48 horas. <span class="t-lime">Lo demás lo hacemos nosotros.</span></h2>
           <p>5 hallazgos accionables de tu sitio actual. Gratis y sin compromiso.</p>
           <div class="sv-cta-row">
             <a href="#solicitar" class="btn-primary ht">Solicitar mi auditoría gratis</a>
@@ -262,9 +270,9 @@
 
     <div id="footer-placeholder"></div>
   </div>
-  <script src="/components/reveal-cards.js?v=20260705a" defer></script>
-  <script src="/components/lang-toggle.js?v=20260604c" defer></script>
-  <script src="/js/audit-form.js?v=20260716a" defer></script>
+  <script src="/components/reveal-cards.js?v=20260907a" defer></script>
+  <script src="/components/lang-toggle.js?v=20260907a" defer></script>
+  <script src="/js/audit-form.js?v=20260907a" defer></script>
 </body>
 
 </html>

@@ -36,10 +36,14 @@
     '/casos-de-exito/mainoflex/':       '/en/case-studies/mainoflex/',
     '/casos-de-exito/respirar-es-vivir/': '/en/case-studies/respirar-es-vivir/',
     '/casos-de-exito/seminuevos-coapa/': '/en/case-studies/seminuevos-coapa/',
+    // Embudo sin versión EN todavía (D12): el toggle manda al home EN.
+    '/recursos/':                       '/en/',
+    '/recursos/5-errores-web/':         '/en/',
+    '/auditoria-gratis/':               '/en/',
   };
-  // Invertir el mapa para EN → ES.
+  // Invertir el mapa para EN → ES (gana la primera: '/en/' → '/').
   var EN_TO_ES = {};
-  Object.keys(ES_TO_EN).forEach(function (k) { EN_TO_ES[ES_TO_EN[k]] = k; });
+  Object.keys(ES_TO_EN).forEach(function (k) { if (!EN_TO_ES[ES_TO_EN[k]]) EN_TO_ES[ES_TO_EN[k]] = k; });
 
   function isEnglish(pathname) {
     return pathname === '/en' || pathname === '/en/' || pathname.indexOf('/en/') === 0;

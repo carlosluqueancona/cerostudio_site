@@ -40,8 +40,14 @@
         return limpio.indexOf(' ') === -1 && /\.[a-zA-Z]{2,}/.test(limpio);
       }
 
+      /* Solo el estado success lleva HTML (string propia, sin datos del
+         usuario): enlaza la guía gratis como siguiente paso. Todo lo demás
+         (errores del servidor incluidos) va por textContent. */
+      var SUCCESS_HTML = 'Listo. Tu auditoría llega a tu email en máximo 48 horas hábiles. Mientras tanto, <a href="/recursos/5-errores-web/">descarga la guía de los 5 errores</a> — tres los arreglas tú esta semana.';
+
       function setFeedback(type, msg) {
-        feedback.textContent = msg;
+        if (type === 'success') feedback.innerHTML = SUCCESS_HTML;
+        else feedback.textContent = msg;
         feedback.className = 'form-feedback ' + type;
       }
 
@@ -57,7 +63,7 @@
         var whatsapp = form.whatsapp.value.replace(/\D/g, '');
         if (whatsapp.length === 12 && whatsapp.indexOf('52') === 0) whatsapp = whatsapp.slice(2);
         if (whatsapp.length === 13 && whatsapp.indexOf('521') === 0) whatsapp = whatsapp.slice(3);
-        if (!nombre || !email || !form.whatsapp.value.trim() || !sitio) { setFeedback('error', 'Completa los 4 campos para enviarte tu auditoría.'); return; }
+        if (!nombre || !email || !form.whatsapp.value.trim() || !sitio) { setFeedback('error', 'Completa los 4 datos para enviarte tu auditoría.'); return; }
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setFeedback('error', 'Revisa tu email — ahí te mandamos el reporte.'); return; }
         if (whatsapp.length !== 10) { setFeedback('error', 'Revisa tu WhatsApp — deben ser 10 dígitos (ej. 55 1234 5678).'); return; }
         if (conSitio && !pareceDominio(sitio)) { setFeedback('error', 'Eso no parece un link — escribe algo como minegocio.mx. ¿Todavía no tienes sitio? Marca "Todavía no" y te diagnosticamos igual.'); return; }
@@ -100,7 +106,7 @@
             if (res.ok) {
               window.dataLayer = window.dataLayer || [];
               window.dataLayer.push({ event: 'lead_form_submit', form_type: 'auditoria-gratis', segmento_sitio: conSitio ? 'con-sitio' : 'sin-sitio', event_id: eventId });
-              setFeedback('success', 'Listo. Tu auditoría llega a tu email en máximo 48 horas hábiles.');
+              setFeedback('success');
               form.reset();
               syncToggle();
             } else {

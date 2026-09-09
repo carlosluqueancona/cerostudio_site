@@ -37,9 +37,9 @@
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
     as="style" data-async>
   <noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="/css/base.css?v=20260705a">
-  <link rel="stylesheet" href="/css/home.css?v=20260720c">
-  <link rel="stylesheet" href="/css/servicios-spec.css?v=20260705a">
+  <link rel="stylesheet" href="/css/base.css?v=20260907a">
+  <link rel="stylesheet" href="/css/home.css?v=20260907c">
+  <link rel="stylesheet" href="/css/servicios-spec.css?v=20260907a">
   <script src="/components/cookie-consent.js" defer></script>
   <script src="/components/cursor.js" defer></script>
 
@@ -63,9 +63,10 @@
         "url": "https://cerostudio.ai/servicios/tiendas-ecommerce/",
         "offers": {
           "@type": "Offer",
-          "priceCurrency": "USD",
-          "price": "1800",
-          "priceSpecification": { "@type": "PriceSpecification", "priceCurrency": "USD", "minPrice": "1800" },
+          "name": "Tienda Esencial (Tiendanube)",
+          "priceCurrency": "MXN",
+          "price": "6000",
+          "priceSpecification": { "@type": "PriceSpecification", "priceCurrency": "MXN", "minPrice": "6000" },
           "availability": "https://schema.org/InStock"
         }
       },
@@ -119,7 +120,7 @@
 
 <body>
   <div class="site-wrapper">
-    <script src="/components/loader.js?v=20260706a" defer></script>
+    <script src="/components/loader.js?v=20260907a" defer></script>
     <svg class="noise" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
       style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;opacity:.05;z-index:1000;">
       <filter id="nf"><feTurbulence type="fractalNoise" baseFrequency=".68" numOctaves="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
@@ -137,18 +138,21 @@
 
         <!-- ── FICHA · portada ─────────────────────────────────────── -->
         <header class="sv-hero">
+          <span class="card-glyph sv-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><g stroke="currentColor" stroke-width="1.5"><path d="M2.5 4.5h3l2.6 10.5h10.4l2.5-8H6.8" vector-effect="non-scaling-stroke"/><circle cx="9.6" cy="19.5" r="1.6" vector-effect="non-scaling-stroke"/><circle cx="17.4" cy="19.5" r="1.6" vector-effect="non-scaling-stroke"/></g></svg></span>
           <div>
             <p class="sv-code">SRV-02 · Tiendas eCommerce</p>
             <h1 class="sv-h1">Tu tienda online <em>vendiendo 24/7.</em></h1>
             <p class="sv-lead">
-              Para negocios que pierden ventas cuando cierran: eCommerce con pagos locales, inventario,
-              checkout optimizado y experiencia que convierte — todo lo que necesitas para dejar de
-              depender de WhatsApp e Instagram para cerrar ventas. Tu negocio escalando mientras duermes.
+              Para negocios que pierden ventas cuando cierran. Dos rutas y una sola persona al frente: tu tienda en
+              Tiendanube montada por una <strong>Agencia Tiendanube Partner certificada</strong> — configurada para cobrar
+              con OXXO, Mercado Pago y SPEI desde el día uno — o un eCommerce a la medida cuando tu operación ya pide
+              inventario, bodegas o ERP. Pago único, sin comisión por venta, y dejas de cerrar cada pedido por WhatsApp.
             </p>
             <div class="sv-cta-row">
               <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Agendar Llamada Gratis</a>
               <a href="https://wa.me/525531007101?text=Hola%2C%20vi%20su%20p%C3%A1gina%20de%20Tiendas%20eCommerce%20y%20me%20interesa%20cotizaci%C3%B3n." target="_blank" rel="noopener" class="btn-ghost ht">Enviar WhatsApp</a>
             </div>
+            <p class="sv-cta-alt">¿Prefieres que te cotice por escrito? <a href="/?servicio=ecommerce#contacto">Pedir cotización por formulario →</a></p>
             <div style="display:flex;align-items:center;gap:16px;margin-top:36px;">
               <img src="/images/tiendanube-partner.webp" alt="Agencia Tiendanube Partner · Empresa Certificada"
                 width="76" height="76" loading="lazy" decoding="async"
@@ -161,10 +165,11 @@
           <aside class="sv-specs" aria-label="Especificaciones del servicio">
             <p class="sv-specs-title">Especificaciones</p>
             <dl>
-              <div class="row"><dt>Entrega</dt><dd><strong>4–8 semanas</strong> según alcance</dd></div>
-              <div class="row"><dt>Inversión</dt><dd>Desde <strong>$6,000 MXN</strong> · pago único</dd></div>
+              <div class="row"><dt>Entrega</dt><dd>Tiendanube · se confirma en tu propuesta · a la medida <strong>4–8 semanas</strong></dd></div>
+              <div class="row"><dt>Inversión</dt><dd>Tiendanube desde <strong>$6,000 MXN</strong> · a la medida por cotización</dd></div>
               <div class="row"><dt>Incluye</dt><dd>Pagos MX (OXXO · Mercado Pago · Stripe) · inventario · SEO eCommerce</dd></div>
               <div class="row"><dt>Garantía</dt><dd>Sin comisión por venta · pago único</dd></div>
+              <div class="row"><dt>Certificación</dt><dd><strong>Agencia Tiendanube Partner certificada</strong> · eCommerce a medida por cotización</dd></div>
             </dl>
             <p class="sv-stamp">Cero Studio · Ficha de servicio · MX</p>
           </aside>
@@ -225,9 +230,9 @@
             <div class="sv-bom-row"><span class="num">04</span><h3>Checkout optimizado</h3><p>3 pasos, autofill nativo, recuperación de carritos abandonados.</p></div>
             <div class="sv-bom-row"><span class="num">05</span><h3>SEO para eCommerce</h3><p>Schema Product, breadcrumbs, URLs amigables, meta por producto.</p></div>
             <div class="sv-bom-row"><span class="num">06</span><h3>Panel admin</h3><p>Pedidos, clientes, productos, cupones — todo desde un panel intuitivo.</p></div>
-            <div class="sv-bom-row"><span class="num">07</span><h3>Integraciones de envío</h3><p>Envíame, DHL, Fedex, Estafeta. Cálculo de costo automático.</p></div>
+            <div class="sv-bom-row"><span class="num">07</span><h3>Integraciones de envío <span style="color:rgba(255,255,255,.45);font-weight:400;">· a la medida</span></h3><p>Envíame, DHL, Fedex, Estafeta. Cálculo de costo automático.</p></div>
             <div class="sv-bom-row"><span class="num">08</span><h3>WhatsApp Business</h3><p>Botón flotante con mensaje precargado por producto.</p></div>
-            <div class="sv-bom-row"><span class="num">09</span><h3>Email transaccional</h3><p>Confirmación de compra, status de envío y emails de seguimiento.</p></div>
+            <div class="sv-bom-row"><span class="num">09</span><h3>Email transaccional <span style="color:rgba(255,255,255,.45);font-weight:400;">· a la medida / Tienda Premium</span></h3><p>Confirmación de compra, status de envío y emails de seguimiento.</p></div>
             <div class="sv-bom-row"><span class="num">10</span><h3>Capacitación + soporte</h3><p>Te enseñamos a operar la tienda y soporte post-lanzamiento.</p></div>
           </div>
         </section>
@@ -254,6 +259,12 @@
           </div>
           <p class="sv-body">Arranca con una tienda en Tiendanube — somos Agencia Partner certificada — o vamos por un
             eCommerce a medida. En ambos casos el desarrollo es pago único y no cobramos comisión por venta.</p>
+
+          <!-- ¿Cuál me conviene? · dos rutas (SV-05) -->
+          <div class="sv-modules" style="margin-top:40px;margin-bottom:48px;">
+            <div class="sv-module"><span class="idx">RUTA A</span><h3>Tienda en Tiendanube</h3><p>Ideal si empiezas o tu catálogo es chico o mediano y quieres cobrar cuanto antes. Plataforma probada en México, panel simple para que tú administres productos, precios y stock. Desde $6,000 MXN, pago único.</p></div>
+            <div class="sv-module"><span class="idx">RUTA B</span><h3>eCommerce a la medida</h3><p>Ideal si ya vendes y necesitas ERP, multi-bodega, reglas de envío propias o un checkout fuera de lo estándar. Se cotiza por alcance; 4 a 8 semanas.</p></div>
+          </div>
 
           <div class="pricing-grid" style="margin-top:48px;">
 
@@ -295,7 +306,7 @@
                 <li>Branding completo</li>
                 <li>SEO avanzado + automatizaciones (carrito abandonado, correos)</li>
               </ul>
-              <a href="https://wa.me/525531007101?text=Hola%2C%20me%20interesa%20la%20Tienda%20Premium." target="_blank" rel="noopener" class="plan-cta plan-cta-primary">Pedir cotización →</a>
+              <a href="https://wa.me/525531007101?text=Hola%2C%20me%20interesa%20la%20Tienda%20Premium." target="_blank" rel="noopener" class="plan-cta plan-cta-ghost">Quiero la Premium →</a>
             </div>
 
           </div>
@@ -356,6 +367,25 @@
           </div>
         </section>
 
+        <!-- ── Prueba · resultados publicados (SV-01/PS-04) ─────────── -->
+        <section class="sv-proof" data-label="Catálogos en línea que ya venden" aria-label="Casos de éxito">
+          <div class="sv-proof-grid">
+            <a class="sv-proof-card ht" href="/casos-de-exito/mainoflex/">
+              <span class="sv-proof-num">24/7</span>
+              <span class="sv-proof-label">Catálogo y contacto</span>
+              <blockquote class="sv-proof-quote">“Nuestro nuevo sitio web optimizó la captación de clientes y aumentó nuestras ventas un 40% en dos meses.”</blockquote>
+              <span class="sv-proof-who">Jesús Bernal · Mainoflex</span>
+            </a>
+            <a class="sv-proof-card ht" href="/casos-de-exito/seminuevos-coapa/">
+              <span class="sv-proof-num">2013 → hoy</span>
+              <span class="sv-proof-label">de un sitio viejo a un catálogo que vende</span>
+              <blockquote class="sv-proof-quote">“Excelente compromiso, profesionalismo y nivel de servicio de parte de Carlos. ¡Gracias por su valiosa colaboración!”</blockquote>
+              <span class="sv-proof-who">Ricardo Lora · Seminuevos Coapa</span>
+            </a>
+          </div>
+          <a class="sv-proof-all" href="/casos-de-exito/">Ver todos los casos de éxito →</a>
+        </section>
+
         <!-- ── Orden de trabajo (CTA final) ────────────────────────── -->
         <section class="sv-order" data-label="Orden de trabajo">
           <h2>Tu próxima venta <span class="t-lime">no debería depender de WhatsApp.</span></h2>
@@ -364,13 +394,14 @@
             <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Agendar Llamada Gratis</a>
             <a href="https://wa.me/525531007101?text=Hola%2C%20vi%20su%20p%C3%A1gina%20de%20Tiendas%20eCommerce%20y%20me%20interesa%20cotizaci%C3%B3n." target="_blank" rel="noopener" class="btn-ghost ht">Enviar WhatsApp</a>
           </div>
+          <p class="sv-cta-alt">¿Prefieres que te cotice por escrito? <a href="/?servicio=ecommerce#contacto">Pedir cotización por formulario →</a></p>
         </section>
 
         <!-- ── § 07 · Catálogo de servicios ────────────────────────── -->
         <section class="sv-section">
           <div class="sv-sec-head">
             <span class="sv-sec-num">07 — Catálogo</span>
-            <h2 class="sv-h2">Servicios que potencian tu tienda en línea.</h2>
+            <h2 class="sv-h2">Otros servicios — y dos cosas gratis para empezar.</h2>
           </div>
           <div class="sv-catalog">
             <a href="/servicios/desarrollo-web/" class="sv-catalog-row"><span class="code">SRV-01</span><span class="name">Desarrollo Web</span><span class="arrow">→</span></a>
@@ -379,6 +410,8 @@
             <a href="/servicios/mantenimiento/" class="sv-catalog-row"><span class="code">SRV-05</span><span class="name">Mantenimiento Web</span><span class="arrow">→</span></a>
             <a href="/servicios/consultoria-digital/" class="sv-catalog-row"><span class="code">SRV-06</span><span class="name">Consultoría Digital</span><span class="arrow">→</span></a>
             <a href="/diseno-web-para-clinicas/" class="sv-catalog-row"><span class="code">SRV-07</span><span class="name">Diseño Web para Clínicas</span><span class="arrow">→</span></a>
+            <a href="/auditoria-gratis/" class="sv-catalog-row"><span class="code">AUD-00</span><span class="name">Auditoría exprés gratis · 5 hallazgos en 48 h</span><span class="arrow">→</span></a>
+            <a href="/recursos/5-errores-web/" class="sv-catalog-row"><span class="code">REC-01</span><span class="name">Guía gratis · 5 errores que le cuestan a tu web</span><span class="arrow">→</span></a>
           </div>
         </section>
 
@@ -387,8 +420,8 @@
 
     <div id="footer-placeholder"></div>
   </div>
-  <script src="/components/reveal-cards.js?v=20260705a" defer></script>
-  <script src="/components/lang-toggle.js?v=20260604c" defer></script>
+  <script src="/components/reveal-cards.js?v=20260907a" defer></script>
+  <script src="/components/lang-toggle.js?v=20260907a" defer></script>
 </body>
 
 </html>

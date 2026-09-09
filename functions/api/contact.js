@@ -217,7 +217,7 @@ async function sendNotification(env, { nombre, email, empresa, servicio, mensaje
     ``,
     `Nombre:    ${nombre}`,
     `Email:     ${email}`,
-    `WhatsApp:  ${whatsapp ? whatsapp + '  →  https://wa.me/52' + whatsapp : '—'}`,
+    `WhatsApp:  ${whatsapp ? whatsapp + '  →  https://wa.me/' + (whatsapp.length === 10 ? '52' + whatsapp : whatsapp) : '—'}`,
     `Empresa:   ${empresa || '—'}`,
     `Servicio:  ${servicioLabels[servicio] || servicio || '—'}`,
     ...(tieneSitio === 'si' ? [`Sitio:     ${sitio || '—'}  (auditoría de sitio)`] : []),

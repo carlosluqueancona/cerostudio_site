@@ -50,8 +50,8 @@
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
       rel="stylesheet">
   </noscript>
-  <link rel="stylesheet" href="/css/base.css?v=20260705a">
-  <link rel="stylesheet" href="/css/home.css?v=20260720c">
+  <link rel="stylesheet" href="/css/base.css?v=20260907a">
+  <link rel="stylesheet" href="/css/home.css?v=20260907c">
 
   <!-- ── Structured Data: Organization + WebSite ── -->
   <script type="application/ld+json">
@@ -122,7 +122,7 @@
       {
         "@type": "Question",
         "name": "¿Cuánto cuesta una página web profesional?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Tres planes de pago único: Cero Launch $299 USD (≈ $5,400 MXN) con entrega en 5 días hábiles, Cero Pro $999 USD (≈ $17,900 MXN) — el más solicitado — y Cero Premium desde $1,800 USD (≈ $32,000 MXN). Sin mensualidades ocultas: el precio que ves es el precio que pagas." }
+        "acceptedAnswer": { "@type": "Answer", "text": "Tres planes de pago único: Cero Launch $299 USD (≈ $5,400 MXN) con entrega en 5 días hábiles, Cero Pro $999 USD (≈ $17,900 MXN) — el más solicitado — y Cero Premium desde $1,800 USD (≈ $32,000 MXN). Sin mensualidades ocultas: el precio que ves es el precio que pagas. Si quieres que cuidemos el sitio después del lanzamiento, el mantenimiento es opcional desde $800 MXN al mes, sin contrato anual." }
       },
       {
         "@type": "Question",
@@ -147,7 +147,12 @@
       {
         "@type": "Question",
         "name": "¿Cómo empiezo mi proyecto?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Manda el formulario de contacto o agenda una llamada gratis. Recibes respuesta en menos de 24 horas con una propuesta clara, y tu sitio se lanza en la fecha acordada. La primera consulta es gratis y sin compromiso." }
+        "acceptedAnswer": { "@type": "Answer", "text": "Manda el formulario de contacto o agenda una llamada gratis. Recibes respuesta en menos de 24 horas con una propuesta clara, y tu sitio se lanza en la fecha acordada. ¿Todavía no estás listo? Pide primero la auditoría gratis de tu sitio: 5 hallazgos en 48 horas, sin llamadas de venta." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Y si mejor lo hago yo en Wix o con una plantilla?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Puedes — y para probar una idea está bien. El problema llega cuando tu negocio ya es serio y el sitio no: una plantilla que se ve igual a otras mil, carga lenta, SEO a medias y cero presencia en ChatGPT. Aquí el diseño se hace a la medida de cómo compra tu cliente, el precio es cerrado y hablas directo con quien lo construye. El Cero Launch sale en 5 días hábiles por $299 USD (≈ $5,400 MXN), pago único, y el sitio es tuyo." }
       }
     ]
   }
@@ -158,7 +163,7 @@
   <!-- End Google Tag Manager (noscript) -->
 
   <div class="site-wrapper">
-    <script src="/components/loader.js?v=20260706a" defer></script>
+    <script src="/components/loader.js?v=20260907a" defer></script>
 
     <svg class="noise" xmlns="http://www.w3.org/2000/svg">
       <filter id="nf">
@@ -192,12 +197,13 @@
           <span class="hero-line"><span data-hero-line="scrL1" id="scrL1">PRESENCIA</span><span class="hero-sep">&nbsp;</span><span data-hero-line="scrL2a" id="scrL2a">DIGITAL</span></span>
           <span class="hero-line"><span class="t-outline" data-hero-line="scrL2b" id="scrL2b">QUE</span><span class="hero-sep">&nbsp;</span><span class="t-lime" data-hero-line="scrL3" id="scrL3">VENDE.</span></span>
         </h1>
-        <p class="hero-static-sub" id="heroSub">Consigue el sitio web o la tienda online que tu negocio merece:
-          diseño de nivel internacional que convierte visitas en clientes.</p>
+        <p class="hero-static-sub" id="heroSub">Sitios web y tiendas en línea hechos a la medida de cómo compra tu cliente — por quien lleva 25 años haciendo que las páginas vendan. Desde $299 USD (≈ $5,400 MXN), precio cerrado, fecha por escrito y trato directo con el fundador.</p>
         <div class="hero-static-actions" id="heroActions">
           <a href="#contacto" class="btn-primary ht" id="hero-btn-quote">Iniciar Proyecto</a>
-          <a href="#portafolio" class="btn-ghost   ht" id="hero-btn-portfolio">Ver Portafolio</a>
+          <a href="/auditoria-gratis/" class="btn-ghost   ht" id="hero-btn-audit">Auditoría gratis de mi sitio →</a>
         </div>
+        <!-- plan 2026-09: línea de prueba del hero (A2 la revela con #heroActions, A3 la estiliza) -->
+        <p class="hero-proof" id="heroProof">25+ años de oficio · Hablas directo con Carlos · Fecha de entrega por escrito · Agencia Tiendanube Partner certificada — <a href="/casos-de-exito/" data-href-es="/casos-de-exito/" data-href-en="/en/case-studies/">Ver casos de éxito →</a></p>
       </div>
     </section>
 
@@ -213,6 +219,8 @@
 
     <!-- TICKER -->
     <div id="ticker">
+      <!-- plan 2026-09: etiqueta del ticker (D11) -->
+      <p class="ticker-label" id="ticker-label">Marcas con las que Carlos ha trabajado</p>
       <div class="ticker-track">
         <div class="ticker-group">
           <div class="ticker-item"><img loading="lazy" decoding="async" src="images/logos_ticker/MAINOFLEX -Logo_FINAL_Alto_contrste-1000px.webp"
@@ -262,41 +270,46 @@
           <div>
             <p class="eyebrow sr" id="srv-eyebrow">01 — Servicios</p>
             <h2 class="section-title sr" id="srv-title">Todo lo que necesitas<br>para <span
-                class="t-outline">crecer</span> en línea</h2>
+                class="t-outline">vender</span> en línea</h2>
           </div>
-          <p class="srv-header-desc sr" id="srv-desc">Desde el diseño hasta el lanzamiento, cubrimos cada aspecto de tu
-            presencia digital con estándares de nivel internacional.</p>
+          <p class="srv-header-desc sr" id="srv-desc">Escoge solo lo que tu negocio necesita hoy. Cada servicio está hecho para lo mismo: que te encuentren, que confíen en ti y que te compren.</p>
         </div>
         <div class="srv-grid">
           <div class="srv-card sr ht"><span class="card-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><g stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="4" width="19" height="16" vector-effect="non-scaling-stroke"/><line x1="2.5" y1="8" x2="21.5" y2="8" vector-effect="non-scaling-stroke"/><line x1="9.5" y1="8" x2="9.5" y2="20" vector-effect="non-scaling-stroke"/><line x1="12.5" y1="11.5" x2="18.5" y2="11.5" vector-effect="non-scaling-stroke"/><line x1="12.5" y1="14.5" x2="16.5" y2="14.5" vector-effect="non-scaling-stroke"/></g><circle cx="5" cy="6" r=".8" fill="currentColor"/><circle cx="7.6" cy="6" r=".8" fill="currentColor"/></svg></span><span class="srv-num">01</span>
             <h3 class="srv-title" id="srv-t1">Desarrollo Web</h3>
             <p class="srv-desc" id="srv-d1">Sitios rápidos, modernos y optimizados que generan confianza y convierten
               visitantes en clientes desde el primer clic.</p>
+            <a class="srv-link" href="/servicios/desarrollo-web/" data-href-es="/servicios/desarrollo-web/" data-href-en="/en/services/web-development/" id="srv-l1">Ver ficha →</a><!-- plan 2026-09: link a ficha -->
           </div>
           <div class="srv-card sr ht"><span class="card-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><g stroke="currentColor" stroke-width="1.5"><path d="M2.5 4.5h3l2.6 10.5h10.4l2.5-8H6.8" vector-effect="non-scaling-stroke"/><circle cx="9.6" cy="19.5" r="1.6" vector-effect="non-scaling-stroke"/><circle cx="17.4" cy="19.5" r="1.6" vector-effect="non-scaling-stroke"/></g></svg></span><span class="srv-num">02</span>
             <h3 class="srv-title" id="srv-t2">Tiendas eCommerce</h3>
             <p class="srv-desc" id="srv-d2">Tu negocio abierto 24/7. Tiendas online completas con pasarelas de pago,
               inventario y experiencia de compra fluida.</p>
+            <a class="srv-link" href="/servicios/tiendas-ecommerce/" data-href-es="/servicios/tiendas-ecommerce/" data-href-en="/en/services/online-stores/" id="srv-l2">Ver ficha →</a><!-- plan 2026-09: link a ficha -->
           </div>
           <div class="srv-card sr ht"><span class="card-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><g stroke="currentColor" stroke-width="1.5"><path d="M4.5 13a7.5 7.5 0 0 1 15 0v2.5" vector-effect="non-scaling-stroke"/><path d="M7.5 13a4.5 4.5 0 0 1 9 0v5" vector-effect="non-scaling-stroke"/><path d="M10.5 13a1.5 1.5 0 0 1 3 0v7" vector-effect="non-scaling-stroke"/><path d="M4.5 13v2" vector-effect="non-scaling-stroke"/></g></svg></span><span class="srv-num">03</span>
             <h3 class="srv-title" id="srv-t3">Branding Digital</h3>
             <p class="srv-desc" id="srv-d3">Identidad visual profesional que diferencia tu marca y genera la confianza
               que tu audiencia necesita ver.</p>
+            <a class="srv-link" href="/servicios/branding-digital/" data-href-es="/servicios/branding-digital/" data-href-en="/en/services/digital-branding/" id="srv-l3">Ver ficha →</a><!-- plan 2026-09: link a ficha -->
           </div>
           <div class="srv-card sr ht"><span class="card-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><g stroke="currentColor" stroke-width="1.5"><circle cx="10.5" cy="10.5" r="7" vector-effect="non-scaling-stroke"/><line x1="15.6" y1="15.6" x2="21" y2="21" vector-effect="non-scaling-stroke"/><path d="M10.5 6.8l1.1 2.6 2.6 1.1-2.6 1.1-1.1 2.6-1.1-2.6-2.6-1.1 2.6-1.1z" vector-effect="non-scaling-stroke"/></g></svg></span><span class="srv-num">04</span>
             <h3 class="srv-title" id="srv-t4">SEO + AI Search</h3>
             <p class="srv-desc" id="srv-d4">Posicionamiento en Google + visibilidad en ChatGPT, Claude, Gemini y
               Perplexity. Que tus clientes te encuentren — buscando o preguntando.</p>
+            <a class="srv-link" href="/servicios/seo/" data-href-es="/servicios/seo/" data-href-en="/en/services/seo/" id="srv-l4">Ver ficha →</a><!-- plan 2026-09: link a ficha -->
           </div>
           <div class="srv-card sr ht"><span class="card-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><g stroke="currentColor" stroke-width="1.5"><polygon points="12,3 19.8,7.5 19.8,16.5 12,21 4.2,16.5 4.2,7.5" vector-effect="non-scaling-stroke"/><circle cx="12" cy="12" r="4.2" vector-effect="non-scaling-stroke"/></g></svg></span><span class="srv-num">05</span>
             <h3 class="srv-title" id="srv-t5">Mantenimiento</h3>
             <p class="srv-desc" id="srv-d5">Soporte técnico continuo, actualizaciones de seguridad y optimización para
               que tu sitio funcione perfecto siempre.</p>
+            <a class="srv-link" href="/servicios/mantenimiento/" data-href-es="/servicios/mantenimiento/" data-href-en="/en/services/web-maintenance/" id="srv-l5">Ver ficha →</a><!-- plan 2026-09: link a ficha -->
           </div>
           <div class="srv-card sr ht"><span class="card-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><g stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9" vector-effect="non-scaling-stroke"/><polygon points="15.8,8.2 13.1,13.1 8.2,15.8 10.9,10.9" vector-effect="non-scaling-stroke"/><line x1="12" y1="3" x2="12" y2="4.8" vector-effect="non-scaling-stroke"/></g><circle cx="12" cy="12" r=".9" fill="currentColor"/></svg></span><span class="srv-num">06</span>
             <h3 class="srv-title" id="srv-t6">Consultoría Digital</h3>
             <p class="srv-desc" id="srv-d6">Estrategia digital personalizada para escalar tu negocio. Tomamos las
               decisiones correctas antes de escribir código.</p>
+            <a class="srv-link" href="/servicios/consultoria-digital/" data-href-es="/servicios/consultoria-digital/" data-href-en="/en/services/digital-consulting/" id="srv-l6">Ver ficha →</a><!-- plan 2026-09: link a ficha -->
           </div>
         </div>
       </div>
@@ -318,7 +331,7 @@
            href values: update with real URLs before launch.
            Each card opens in a new tab.
       ── -->
-        <div class="port-grid">
+        <div class="port-grid is-collapsed"><!-- plan 2026-09: colapsado a 6 cards; #port-more lo expande -->
 
           <div id="portfolio-dynamic" style="display:contents;"><!-- 1 — Modelle -->
           <a href="https://www.agenciamodelle.com.mx/" target="_blank" rel="noopener" class="port-card ht">
@@ -527,12 +540,17 @@
           <a href="#contacto" class="port-card port-cta ht">
             <div class="port-cta-inner">
               <div class="port-cta-q" id="port-cta-q">¿Tu negocio<br>aquí?</div>
-              <div class="port-cta-sub" id="port-cta-sub">Únete a +150 negocios exitosos</div>
+              <div class="port-cta-sub" id="port-cta-sub">Tu caso puede ser el siguiente: 3× retorno en IMVEC, +40% en Mainoflex</div>
               <span class="port-cta-btn" id="port-cta-btn">Iniciar Proyecto</span>
             </div>
           </a>
 
         </div><!-- /port-grid -->
+
+        <!-- plan 2026-09: expande el portafolio colapsado (cuenta en A2) -->
+        <div class="port-more-wrap" style="text-align:center;">
+          <button type="button" class="btn-ghost ht" id="port-more">Ver todos los proyectos →</button>
+        </div>
 
         <div class="port-cases-link sr" style="margin-top:48px;text-align:center;">
           <a href="/casos-de-exito/" class="btn-ghost ht" id="port-cases-btn">Ver casos de éxito a fondo →</a>
@@ -560,7 +578,9 @@
             <p id="stakes-3p">Cerca del 30% de las búsquedas ya terminan en ChatGPT, Gemini o Perplexity. Si tu negocio no está en sus fuentes, la IA recomienda a otro.</p>
           </div>
         </div>
-        <a href="#contacto" class="stakes-cta sr" id="stakes-cta">Deja de perder clientes →</a>
+        <a href="#contacto" class="btn-primary ht sr" id="stakes-cta">Deja de perder clientes →</a>
+        <!-- plan 2026-09: CTA transicional (auditoría gratis) -->
+        <a href="/auditoria-gratis/" class="stakes-cta stakes-cta-alt sr" id="stakes-cta-audit">¿Ya tienes sitio? Pide tu auditoría gratis: 5 hallazgos en 48 h →</a>
       </div>
     </section>
 
@@ -572,26 +592,19 @@
               <img src="/images/Carlos_Luque_2026-Color.webp"
                 srcset="/images/Carlos_Luque_2026-Color.webp 1x, /images/Carlos_Luque_2026-Color@2x.webp 2x" alt="Carlos Luque — Fundador, Cero Studio"
                 class="nos-img" loading="lazy" width="731" height="1000">
-              <div class="nos-frame"></div>
-            </div>
+            </div><!-- plan 2026-09: .nos-frame retirado (D9); línea cinética en A3 -->
             <p class="nos-quote" id="nos-quote">Un sitio web no es un gasto. Es el <span style="color:var(--lime);">vendedor</span> más <span style="color:var(--lime);">trabajador</span> que nunca te pide vacaciones.
             </p>
           </div>
           <div>
-            <p class="eyebrow sr" id="nos-eyebrow">Nosotros</p>
-            <h2 class="section-title sr" style="margin-bottom:32px;" id="nos-title">La agencia detrás de tu crecimiento
-              <span class="t-lime">digital</span>
-            </h2>
-            <p class="nos-desc sr" id="nos-desc">Somos <strong>Cero Studio</strong>, una agencia digital fundada con una
-              misión clara: ayudar a emprendedores y negocios a competir y ganar en el mundo digital.<br><br>Combinamos
-              diseño de nivel internacional con una comprensión profunda del mercado mexicano y de cómo compra tu cliente.
-              No hacemos sitios genéricos — construimos <strong>herramientas de negocio</strong> que trabajan mientras
-              tú descansas.</p>
+            <p class="eyebrow sr" id="nos-eyebrow">Por qué Cero</p>
+            <h2 class="section-title sr" style="margin-bottom:32px;" id="nos-title">Por qué Cero <span class="t-lime">y no otra agencia</span></h2>
+            <p class="nos-desc sr" id="nos-desc">Sé lo que es apostarle todo a un negocio propio y que nadie te encuentre. Soy <strong>Carlos Luque</strong>, fundador de Cero Studio: llevo más de 25 años haciendo que las páginas vendan — desde la radio por internet hasta el home del sitio del INEGI.<br><br>Aquí no hay ejecutivo de cuenta ni "déjame lo consulto": tú hablas conmigo, yo diseño y programo tu sitio, y lo entrego en la fecha que firmamos. El precio que ves es el que pagas y tu sitio nace listo para Google <strong>y para ChatGPT</strong>. No te vendo una página bonita — te entrego <strong>una herramienta que trabaja mientras tú descansas</strong>.</p>
             <img src="images/firma.webp" alt="Firma Carlos Luque" class="nos-firma sr" width="4000" height="1194">
             <div class="stats-grid sr">
               <div class="stat-item">
                 <div class="stat-num" data-target="150" data-suffix="+">0<span class="stat-sfx">+</span></div>
-                <div class="stat-label" id="stat-l1">Clientes atendidos</div>
+                <div class="stat-label" id="stat-l1">Negocios atendidos en 25 años</div>
               </div>
               <div class="stat-item">
                 <div class="stat-num" data-target="25" data-suffix="">0</div>
@@ -599,14 +612,14 @@
               </div>
               <div class="stat-item">
                 <div class="stat-num" data-target="50" data-suffix="+">0<span class="stat-sfx">+</span></div>
-                <div class="stat-label" id="stat-l3">Proyectos entregados</div>
+                <div class="stat-label" id="stat-l3">Sitios lanzados</div>
               </div>
               <div class="stat-item">
                 <div class="stat-num" data-target="100" data-suffix="%">0<span class="stat-sfx">%</span></div>
-                <div class="stat-label" id="stat-l4">Satisfacción garantizada</div>
+                <div class="stat-label" id="stat-l4">Entrega en fecha, por escrito</div>
               </div>
             </div>
-            <div class="sr" style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
+            <div class="nos-actions sr">
               <a href="#contacto" class="btn-primary ht" id="nos-btn">Iniciar Proyecto</a>
               <a href="/nosotros/" class="btn-ghost ht" id="nos-historia" data-href-es="/nosotros/" data-href-en="/en/about-us/">Con quién vas a trabajar →</a>
             </div>
@@ -630,9 +643,8 @@
               <span class="proc-num">01</span>
               <span class="proc-dash"></span>
             </div>
-            <h3 class="proc-title" id="proc-t1">Diagnóstico</h3>
-            <p class="proc-desc" id="proc-d1">Analizamos tu negocio, tu competencia y tu mercado. Identificamos
-              exactamente qué está funcionando, qué está fallando y por qué.</p>
+            <h3 class="proc-title" id="proc-t1">Nos cuentas</h3>
+            <p class="proc-desc" id="proc-d1">Llenas el formulario o agendas una llamada gratis. En menos de 24 horas recibes una propuesta clara: qué necesitas, cuánto cuesta y cuándo se entrega.</p>
           </div>
 
           <div class="proc-step sr ht">
@@ -641,9 +653,8 @@
               <span class="proc-num">02</span>
               <span class="proc-dash"></span>
             </div>
-            <h3 class="proc-title" id="proc-t2">Estrategia</h3>
-            <p class="proc-desc" id="proc-d2">Plan a medida: qué servicios necesitas, en qué orden y con qué presupuesto
-              para maximizar el retorno desde el primer mes.</p>
+            <h3 class="proc-title" id="proc-t2">Apruebas</h3>
+            <p class="proc-desc" id="proc-d2">Precio cerrado y fecha de entrega por escrito. Si nos atrasamos, tu primer mes de mantenimiento corre por nuestra cuenta.</p>
           </div>
 
           <div class="proc-step sr ht">
@@ -652,9 +663,8 @@
               <span class="proc-num">03</span>
               <span class="proc-dash"></span>
             </div>
-            <h3 class="proc-title" id="proc-t3">Ejecución</h3>
-            <p class="proc-desc" id="proc-d3">Diseño, desarrollo, SEO y lo que haga falta. Tú apruebas, nosotros
-              entregamos en tiempo y forma. Sin cobros sorpresa.</p>
+            <h3 class="proc-title" id="proc-t3">Construimos</h3>
+            <p class="proc-desc" id="proc-d3">Diseño, textos que venden, SEO y desarrollo. Revisas avances por WhatsApp y apruebas cada etapa; nosotros entregamos en tiempo y forma.</p>
           </div>
 
           <div class="proc-step sr ht">
@@ -663,9 +673,8 @@
               <span class="proc-num">04</span>
               <span class="proc-dash"></span>
             </div>
-            <h3 class="proc-title" id="proc-t4">Resultados</h3>
-            <p class="proc-desc" id="proc-d4">Reportes claros cada mes: visitas, leads generados, conversiones y ventas.
-              Sin tecnicismos — solo los números que importan a tu negocio.</p>
+            <h3 class="proc-title" id="proc-t4">Vendes</h3>
+            <p class="proc-desc" id="proc-d4">Tu sitio sale al aire, te capacitamos para editarlo y te acompañamos después del lanzamiento. Si quieres que siga creciendo con SEO o mantenimiento, recibes reportes mensuales con lo que importa: visitas, leads y ventas.</p>
           </div>
 
         </div>
@@ -688,30 +697,41 @@
             <div class="testi-top" aria-hidden="true"><span class="testi-idx">/01</span><span class="testi-dash"></span></div>
             <blockquote class="testi-quote" id="testi-q1">No siempre teníamos las ideas claras, pero Carlos siempre aportó
               soluciones. Logramos triplicar el valor de nuestra inversión en ventas.</blockquote>
-            <figcaption class="testi-meta">
-              <span class="testi-name" id="testi-n1">Gustavo Carrillo</span>
-              <span class="testi-role" id="testi-r1">Dueño · IMVEC.MX</span>
+            <figcaption class="testi-meta"><!-- plan 2026-09: logo + link al caso -->
+              <div class="testi-who">
+                <span class="testi-name" id="testi-n1">Gustavo Carrillo</span>
+                <span class="testi-role" id="testi-r1">Dueño · IMVEC.MX</span>
+              </div>
+              <img class="testi-logo" src="/images/casos/imvec/logo-blanco.webp" alt="IMVEC" width="1400" height="541" loading="lazy" decoding="async">
             </figcaption>
+            <a class="testi-case" href="/casos-de-exito/imvec/" data-href-es="/casos-de-exito/imvec/" data-href-en="/en/case-studies/imvec/" id="testi-c1">Ver el caso IMVEC →</a>
           </figure>
 
           <figure class="testi-card sr ht">
             <div class="testi-top" aria-hidden="true"><span class="testi-idx">/02</span><span class="testi-dash"></span></div>
             <blockquote class="testi-quote" id="testi-q2">Excelente compromiso, profesionalismo y nivel de servicio
               de parte de Carlos. ¡Gracias por su valiosa colaboración!</blockquote>
-            <figcaption class="testi-meta">
-              <span class="testi-name" id="testi-n2">Ricardo Lora</span>
-              <span class="testi-role" id="testi-r2">Seminuevos Coapa · CDMX</span>
+            <figcaption class="testi-meta"><!-- plan 2026-09: sin logo (insumo pendiente) + link al caso -->
+              <div class="testi-who">
+                <span class="testi-name" id="testi-n2">Ricardo Lora</span>
+                <span class="testi-role" id="testi-r2">Seminuevos Coapa · CDMX</span>
+              </div>
             </figcaption>
+            <a class="testi-case" href="/casos-de-exito/seminuevos-coapa/" data-href-es="/casos-de-exito/seminuevos-coapa/" data-href-en="/en/case-studies/seminuevos-coapa/" id="testi-c2">Ver el caso Seminuevos Coapa →</a>
           </figure>
 
           <figure class="testi-card sr ht">
             <div class="testi-top" aria-hidden="true"><span class="testi-idx">/03</span><span class="testi-dash"></span></div>
             <blockquote class="testi-quote" id="testi-q3">Nuestro nuevo sitio web optimizó la captación de clientes
               y aumentó nuestras ventas un 40% en dos meses.</blockquote>
-            <figcaption class="testi-meta">
-              <span class="testi-name" id="testi-n3">Jesús Bernal</span>
-              <span class="testi-role" id="testi-r3">Mainoflex · Soluciones antivibratorias</span>
+            <figcaption class="testi-meta"><!-- plan 2026-09: logo + link al caso -->
+              <div class="testi-who">
+                <span class="testi-name" id="testi-n3">Jesús Bernal</span>
+                <span class="testi-role" id="testi-r3">Mainoflex · Soluciones antivibratorias</span>
+              </div>
+              <img class="testi-logo" src="/images/casos/mainoflex/logo-blanco.webp" alt="Mainoflex" width="250" height="300" loading="lazy" decoding="async">
             </figcaption>
+            <a class="testi-case" href="/casos-de-exito/mainoflex/" data-href-es="/casos-de-exito/mainoflex/" data-href-en="/en/case-studies/mainoflex/" id="testi-c3">Ver el caso Mainoflex →</a>
           </figure>
 
         </div>
@@ -727,10 +747,10 @@
             <p class="eyebrow" style="margin-bottom:28px;" id="precios-eyebrow">Inversión</p>
             <h2 class="precios-headline" id="precios-headline">Precios<br><em>sin letra chica.</em></h2>
             <p style="font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--lime);margin-top:18px;"
-              id="precios-urgency">Solo disponible para los primeros 5 clientes del mes</p>
+              id="precios-urgency">Precio de portafolio · 5 lugares al mes</p>
           </div>
           <div class="precios-trust">
-            <p id="precios-trust-text">Pago único. Sin sorpresas al final.<br>Fecha de entrega garantizada por escrito.</p>
+            <p id="precios-trust-text">Pago único. Sin sorpresas al final.<br>Fecha de entrega por escrito: si nos atrasamos, <strong>tu primer mes de mantenimiento corre por nuestra cuenta</strong>.</p>
           </div>
         </div>
 
@@ -757,9 +777,10 @@
           <!-- CERO LAUNCH -->
           <div class="plan-card sr">
             <p class="plan-name" id="launch-name">Cero Launch</p>
+            <p class="plan-old-price" id="launch-old-price"><span>Precio regular</span> <s>$499 USD</s></p><!-- plan 2026-09: ancla arriba del precio -->
             <div class="plan-price"><sup>$</sup>299<span>USD</span></div>
             <p class="plan-price-mxn" id="launch-price-mxn">≈ $5,400 MXN*</p>
-            <p class="plan-old-price" id="launch-old-price">Precio regular: $499 USD</p>
+            <p class="plan-saving" id="launch-saving">Ahorras $200 USD · precio de portafolio</p>
             <p class="plan-delivery" id="launch-delivery">pago único · entrega 5 días hábiles</p>
             <ul class="plan-features" id="launch-features">
               <li><strong>Identidad visual básica incluida</strong> — logo, paleta, tipografía</li>
@@ -772,6 +793,7 @@
             </ul>
             <p style="font-size:12px;font-weight:400;color:var(--gray-light);margin-bottom:24px;" id="launch-note">Ideal para:
               restaurantes, consultorios, salones, servicios locales.</p>
+            <p class="plan-after" id="launch-after">Después del lanzamiento: mantenimiento opcional desde $800 MXN/mes, sin contrato anual → <a href="/servicios/mantenimiento/" data-href-es="/servicios/mantenimiento/" data-href-en="/en/services/web-maintenance/">ver planes</a></p><!-- plan 2026-09: upsell mantenimiento -->
             <a href="#contacto" class="plan-cta plan-cta-ghost" id="launch-cta" data-plan-service="web" data-plan-name="Cero Launch">Quiero empezar →</a>
           </div>
 
@@ -779,9 +801,10 @@
           <div class="plan-card plan-featured sr">
             <span class="plan-badge" id="pro-badge">Más solicitado</span>
             <p class="plan-name" id="pro-name">Cero Pro</p>
+            <p class="plan-old-price" id="pro-old-price"><span>Precio regular</span> <s>$2,500 USD</s></p><!-- plan 2026-09: ancla arriba del precio -->
             <div class="plan-price"><sup>$</sup>999<span>USD</span></div>
             <p class="plan-price-mxn" id="pro-price-mxn">≈ $17,900 MXN*</p>
-            <p class="plan-old-price" id="pro-old-price">Precio regular: $2,500 USD</p>
+            <p class="plan-saving" id="pro-saving">Ahorras $1,501 USD · precio de portafolio</p>
             <p class="plan-delivery" id="pro-delivery">pago único · entrega 21 días hábiles</p>
             <ul class="plan-features" id="pro-features">
               <li><strong>Identidad profesional incluida</strong> — logo, paleta, tipografía + guidelines mini</li>
@@ -798,34 +821,39 @@
             </ul>
             <p style="font-size:12px;font-weight:400;color:var(--gray-light);margin-bottom:24px;" id="pro-note">Ideal
               para: negocios establecidos, profesionales independientes, empresas listas para crecer.</p>
+            <p class="plan-after" id="pro-after">Después del lanzamiento: mantenimiento opcional desde $800 MXN/mes, sin contrato anual → <a href="/servicios/mantenimiento/" data-href-es="/servicios/mantenimiento/" data-href-en="/en/services/web-maintenance/">ver planes</a></p><!-- plan 2026-09: upsell mantenimiento -->
             <a href="#contacto" class="plan-cta plan-cta-primary" id="pro-cta" data-plan-service="web" data-plan-name="Cero Pro">Quiero el Cero Pro →</a>
           </div>
 
           <!-- CERO PREMIUM -->
           <div class="plan-card sr">
             <p class="plan-name" id="premium-name">Cero Premium</p>
+            <p class="plan-old-price" id="premium-old-price"><span>Precio regular</span> <s>desde $4,500 USD</s></p><!-- plan 2026-09: ancla arriba del precio -->
             <div class="plan-custom" id="premium-price-display">Desde $1,800<span>USD</span></div>
             <p class="plan-price-mxn" id="premium-price-mxn">desde ≈ $32,000 MXN*</p>
-            <p class="plan-old-price" id="premium-old-price">Precio regular: desde $4,500 USD</p>
+            <p class="plan-saving" id="premium-saving">Ahorras desde $2,700 USD · precio de portafolio</p>
             <p class="plan-delivery" id="premium-delivery">cotización personalizada · entrega a convenir</p>
             <ul class="plan-features" id="premium-features">
               <li>Todo lo del plan Cero Pro</li>
               <li><strong>Identidad integral + guidelines completos</strong></li>
               <li>Funciones avanzadas a la medida</li>
               <li>Estrategia digital incluida</li>
-              <li>Account manager dedicado</li>
+              <li>Seguimiento prioritario y directo con Carlos</li>
             </ul>
             <p style="font-size:12px;font-weight:400;color:var(--gray-light);margin-bottom:24px;" id="premium-note">Ideal para:
               negocios con múltiples servicios y necesidades a la medida.</p>
-            <a href="#contacto" class="plan-cta plan-cta-primary" id="premium-cta" data-plan-service="web" data-plan-name="Cero Premium">Pedir cotización →</a>
+            <p class="plan-excludes" id="premium-excludes">No incluye tienda en línea: si vendes productos, mira los planes de tienda ↓</p><!-- plan 2026-09: alcance explícito -->
+            <p class="plan-after" id="premium-after">Después del lanzamiento: mantenimiento opcional desde $800 MXN/mes, sin contrato anual → <a href="/servicios/mantenimiento/" data-href-es="/servicios/mantenimiento/" data-href-en="/en/services/web-maintenance/">ver planes</a></p><!-- plan 2026-09: upsell mantenimiento -->
+            <a href="#contacto" class="plan-cta plan-cta-ghost" id="premium-cta" data-plan-service="web" data-plan-name="Cero Premium">Pedir cotización →</a>
           </div>
 
         </div>
 
         <p style="margin-top:36px;font-size:12px;font-weight:400;color:var(--gray-light);border-left:2px solid var(--lime);padding-left:16px;line-height:1.8;max-width:680px;"
           id="precios-condition">
-          Precios especiales de lanzamiento, válidos solo para los primeros 5 clientes de cada mes. Condición: Cero
-          Studio publica el proyecto en su portafolio con nombre del negocio y resultados reales.<br>
+          ¿Por qué cuesta menos? Porque cada mes tomamos solo 5 proyectos a precio de portafolio: tú pagas menos y Cero
+          Studio publica tu caso con el nombre de tu negocio y resultados reales. Cuando se llenan los 5 lugares, el
+          siguiente proyecto entra al precio regular.<br>
           <span style="color:rgba(255,255,255,.45);" id="precios-currency-note">* Aceptamos pago en USD o MXN.</span>
         </p>
 
@@ -869,7 +897,7 @@
               <li>Dominio incluido (primer año)</li>
             </ul>
             <p style="font-size:12px;font-weight:400;color:var(--gray-light);margin-bottom:24px;" id="tienda-esencial-note">Ideal
-              para: marcas que empiezan, catálogo chico.</p>
+              para: empiezas a vender en línea, pocos productos y una sola categoría; tú subes el catálogo.</p>
             <a href="#contacto" class="plan-cta plan-cta-ghost" id="tienda-esencial-cta" data-plan-service="ecommerce" data-plan-name="Tienda Esencial">Quiero empezar →</a>
           </div>
 
@@ -886,7 +914,7 @@
               <li>Integraciones (Instagram Shopping)</li>
             </ul>
             <p style="font-size:12px;font-weight:400;color:var(--gray-light);margin-bottom:24px;" id="tienda-pro-note">Ideal
-              para: catálogo mediano en crecimiento.</p>
+              para: ya vendes por Instagram o WhatsApp y te quedas corto; varias categorías y quieres que Google te encuentre.</p>
             <a href="#contacto" class="plan-cta plan-cta-primary" id="tienda-pro-cta" data-plan-service="ecommerce" data-plan-name="Tienda Pro">Quiero la Tienda Pro →</a>
           </div>
 
@@ -902,11 +930,14 @@
               <li>SEO avanzado + automatizaciones (carrito abandonado, correos)</li>
             </ul>
             <p style="font-size:12px;font-weight:400;color:var(--gray-light);margin-bottom:24px;" id="tienda-premium-note">Ideal
-              para: marca establecida.</p>
-            <a href="#contacto" class="plan-cta plan-cta-primary" id="tienda-premium-cta" data-plan-service="ecommerce" data-plan-name="Tienda Premium">Quiero la Premium →</a>
+              para: marca con volumen que quiere diseño propio, identidad completa y automatizaciones que recuperan carritos.</p>
+            <a href="#contacto" class="plan-cta plan-cta-ghost" id="tienda-premium-cta" data-plan-service="ecommerce" data-plan-name="Tienda Premium">Quiero la Premium →</a>
           </div>
 
         </div>
+
+        <!-- plan 2026-09: ruta a eCommerce a la medida (operaciones grandes) -->
+        <p class="tiendas-custom sr" id="tiendas-custom">¿Operación grande? Catálogo extenso, ERP, multi-bodega o venta B2B → eCommerce a la medida, cotizado por alcance. <a href="/servicios/tiendas-ecommerce/" data-href-es="/servicios/tiendas-ecommerce/" data-href-en="/en/services/online-stores/">Ver cómo trabajamos →</a></p>
 
         <p style="margin-top:36px;font-size:12px;font-weight:400;color:var(--gray-light);border-left:2px solid var(--lime);padding-left:16px;line-height:1.8;max-width:680px;"
           id="tiendas-condition">
@@ -921,8 +952,10 @@
     <div class="dominate-section">
       <p class="dominate-headline" id="dominate-headline">¿Listo<br>para<br>dominar?</p>
       <div class="dominate-action">
-        <p class="dominate-sub" id="dominate-sub">Primera consulta gratis.<br>Sin compromisos.</p>
+        <p class="dominate-sub" id="dominate-sub">Primera consulta gratis.<br>Fecha de entrega por escrito.</p>
         <a href="#contacto" class="dominate-btn" id="dominate-cta">Iniciar Proyecto</a>
+        <!-- plan 2026-09: CTA transicional del cierre -->
+        <a href="/auditoria-gratis/" class="btn-ghost ht dominate-audit" id="dominate-audit">¿Todavía no estás listo? Pide la auditoría gratis de tu sitio →</a>
       </div>
     </div>
 
@@ -937,7 +970,9 @@
             <summary class="faq-q ht" id="faq-q1">¿Cuánto cuesta una página web profesional?</summary>
             <p class="faq-a" id="faq-a1">Tres planes de pago único: Cero Launch $299 USD (≈ $5,400 MXN) con entrega
               en 5 días hábiles, Cero Pro $999 USD (≈ $17,900 MXN) — el más solicitado — y Cero Premium desde
-              $1,800 USD (≈ $32,000 MXN). Sin mensualidades ocultas: el precio que ves es el precio que pagas.</p>
+              $1,800 USD (≈ $32,000 MXN). Sin mensualidades ocultas: el precio que ves es el precio que pagas. Si quieres
+              que cuidemos el sitio después del lanzamiento, el mantenimiento es opcional desde $800 MXN al mes, sin
+              contrato anual.</p>
           </details>
           <details class="faq-item sr">
             <summary class="faq-q ht" id="faq-q2">¿En cuánto tiempo está listo mi sitio?</summary>
@@ -966,7 +1001,17 @@
             <summary class="faq-q ht" id="faq-q6">¿Cómo empiezo mi proyecto?</summary>
             <p class="faq-a" id="faq-a6">Manda el formulario de contacto o agenda una llamada gratis. Recibes
               respuesta en menos de 24 horas con una propuesta clara, y tu sitio se lanza en la fecha acordada.
-              La primera consulta es gratis y sin compromiso.</p>
+              ¿Todavía no estás listo? Pide primero la auditoría gratis de tu sitio: 5 hallazgos en 48 horas, sin
+              llamadas de venta.</p>
+          </details>
+          <!-- plan 2026-09: objeción DIY (Wix / plantilla) -->
+          <details class="faq-item sr">
+            <summary class="faq-q ht" id="faq-q7">¿Y si mejor lo hago yo en Wix o con una plantilla?</summary>
+            <p class="faq-a" id="faq-a7">Puedes — y para probar una idea está bien. El problema llega cuando tu negocio
+              ya es serio y el sitio no: una plantilla que se ve igual a otras mil, carga lenta, SEO a medias y cero
+              presencia en ChatGPT. Aquí el diseño se hace a la medida de cómo compra tu cliente, el precio es cerrado y
+              hablas directo con quien lo construye. El Cero Launch sale en 5 días hábiles por $299 USD (≈ $5,400 MXN),
+              pago único, y el sitio es tuyo.</p>
           </details>
         </div>
       </div>
@@ -978,18 +1023,18 @@
         <div class="contacto-grid">
           <div>
             <p class="eyebrow sr" id="contact-eyebrow">Contacto</p>
-            <h2 class="section-title sr" style="margin-bottom:28px;" id="contact-title">¿Listo para el<br><span
-                class="t-outline">siguiente</span> nivel?</h2>
-            <p class="contacto-sub sr" id="contact-sub">Cuéntanos sobre tu proyecto. Respondemos en menos de 24 horas y
-              la primera consulta es completamente gratis.</p>
+            <h2 class="section-title sr" style="margin-bottom:28px;" id="contact-title">Cuéntanos de tu negocio.<br>En 24 h tienes <span
+                class="t-outline">propuesta</span>.</h2>
+            <p class="contacto-sub sr" id="contact-sub">Sin cotizaciones eternas: nos dices qué vendes y a quién, y te
+              regresamos un plan claro con precio cerrado y fecha de entrega por escrito. La primera consulta es gratis.</p>
             <div class="contact-links sr">
               <a href="mailto:hola@cerostudio.ai" class="contact-link-row ht">
                 <div><span class="contact-link-label">Email</span><span
                     class="contact-link-val">hola@cerostudio.ai</span></div><span class="contact-link-arrow">→</span>
               </a>
-              <a href="https://wa.me/525531007101?text=Hola%2C%20me%20interesa%20tener%20un%20sitio%20web%20profesional%20para%20mi%20negocio.%20%C2%BFPueden%20darme%20m%C3%A1s%20informaci%C3%B3n%3F"
-                data-wa-es="https://wa.me/525531007101?text=Hola%2C%20me%20interesa%20tener%20un%20sitio%20web%20profesional%20para%20mi%20negocio.%20%C2%BFPueden%20darme%20m%C3%A1s%20informaci%C3%B3n%3F"
-                data-wa-en="https://wa.me/525531007101?text=Hi%2C%20I%27m%20interested%20in%20having%20a%20professional%20website%20for%20my%20business.%20Can%20you%20give%20me%20more%20information%3F"
+              <a href="https://wa.me/525531007101?text=Hola%2C%20quiero%20un%20sitio%20que%20venda%20para%20mi%20negocio.%20%C2%BFMe%20ayudas%20a%20elegir%20el%20plan%20correcto%3F"
+                data-wa-es="https://wa.me/525531007101?text=Hola%2C%20quiero%20un%20sitio%20que%20venda%20para%20mi%20negocio.%20%C2%BFMe%20ayudas%20a%20elegir%20el%20plan%20correcto%3F"
+                data-wa-en="https://wa.me/525531007101?text=Hi%2C%20I%20want%20a%20website%20that%20sells%20for%20my%20business.%20Can%20you%20help%20me%20pick%20the%20right%20plan%3F"
                 target="_blank" rel="noopener" class="contact-link-row ht">
                 <div><span class="contact-link-label">WhatsApp</span><span class="contact-link-val">+52 55 3100
                     7101</span></div><span class="contact-link-arrow">→</span>
@@ -1000,6 +1045,16 @@
                     class="contact-link-val">@cerostudioai</span></div><span class="contact-link-arrow">→</span>
               </a>
             </div>
+            <!-- plan 2026-09: prueba junto al formulario -->
+            <div class="contact-proof sr">
+              <div class="contact-proof-item"><span class="contact-proof-num" id="contact-p1n">≤ 24 h</span><span class="contact-proof-label" id="contact-p1">Te respondemos</span></div>
+              <div class="contact-proof-item"><span class="contact-proof-num" id="contact-p2n">Por escrito</span><span class="contact-proof-label" id="contact-p2">Fecha de entrega garantizada</span></div>
+              <div class="contact-proof-item"><span class="contact-proof-num" id="contact-p3n">150+</span><span class="contact-proof-label" id="contact-p3">Negocios en 25 años</span></div>
+            </div>
+            <figure class="form-quote sr">
+              <blockquote id="contact-quote">«Excelente compromiso, profesionalismo y nivel de servicio de parte de Carlos.»</blockquote>
+              <figcaption><a href="/casos-de-exito/seminuevos-coapa/" data-href-es="/casos-de-exito/seminuevos-coapa/" data-href-en="/en/case-studies/seminuevos-coapa/" id="contact-quote-cite">Ricardo Lora · Seminuevos Coapa · ver caso →</a></figcaption>
+            </figure>
           </div>
           <form id="contactForm" class="sr" novalidate>
             <!-- Honeypot anti-spam: oculto para humanos, bots lo rellenan -->
@@ -1007,11 +1062,11 @@
             <div class="form-row-2">
               <div class="form-group">
                 <label class="form-label" for="f-nombre" id="form-l-nombre">Nombre *</label>
-                <input type="text" name="nombre" id="f-nombre" required>
+                <input type="text" name="nombre" id="f-nombre" required autocomplete="name">
               </div>
               <div class="form-group">
                 <label class="form-label" for="f-email" id="form-l-email">Email *</label>
-                <input type="email" name="email" id="f-email" required>
+                <input type="email" name="email" id="f-email" required autocomplete="email" inputmode="email">
               </div>
             </div>
             <div class="form-group">
@@ -1020,7 +1075,7 @@
             </div>
             <div class="form-group">
               <label class="form-label" for="f-empresa" id="form-l-empresa">Empresa / Negocio</label>
-              <input type="text" name="empresa" id="f-empresa">
+              <input type="text" name="empresa" id="f-empresa" autocomplete="organization">
             </div>
             <div class="form-group">
               <label class="form-label" for="f-servicio" id="form-l-servicio">¿Qué servicio necesitas?</label>
@@ -1060,22 +1115,26 @@
               </div>
             </div>
             <div class="form-group">
-              <label class="form-label" for="f-mensaje" id="form-l-mensaje">Cuéntanos sobre tu proyecto *</label>
-              <textarea name="mensaje" id="f-mensaje" required></textarea>
+              <label class="form-label" for="f-mensaje" id="form-l-mensaje">¿Qué vendes y qué quieres lograr con tu sitio? *</label>
+              <textarea name="mensaje" id="f-mensaje" required enterkeyhint="send" placeholder="Ej. Tengo una estética en Coyoacán, hoy vendo por Instagram y quiero un sitio donde mis clientas agenden en línea. Me interesa el Cero Pro."></textarea>
             </div>
             <div class="cf-turnstile" data-sitekey="0x4AAAAAADvZCQhWb_BPr0et" data-theme="dark"
               style="margin-bottom:16px;"></div>
             <button type="submit" class="btn-submit ht" id="submitBtn">
               <span class="btn-submit-spinner"></span>
-              <span id="submitBtnLabel">Enviar Mensaje</span>
+              <span id="submitBtnLabel">Quiero mi propuesta →</span>
             </button>
+            <!-- plan 2026-09: feedback junto al botón + reassurance -->
+            <div class="form-feedback" id="formFeedback"></div>
+            <p class="form-reassure" id="form-reassure">Respuesta en menos de 24 h · Sin compromiso · Hablas directo con Carlos</p>
             <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener"
               class="btn-ghost ht" style="display:block;text-align:center;margin-top:12px;"
               id="agenda-link">O agenda una llamada gratis →</a>
-            <a href="https://wa.me/525531007101?text=Hola%2C%20me%20interesa%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20servicios."
+            <a href="https://wa.me/525531007101?text=Hola%2C%20quiero%20un%20sitio%20que%20venda%20para%20mi%20negocio.%20%C2%BFMe%20ayudas%20a%20elegir%20el%20plan%20correcto%3F"
+              data-wa-es="https://wa.me/525531007101?text=Hola%2C%20quiero%20un%20sitio%20que%20venda%20para%20mi%20negocio.%20%C2%BFMe%20ayudas%20a%20elegir%20el%20plan%20correcto%3F"
+              data-wa-en="https://wa.me/525531007101?text=Hi%2C%20I%20want%20a%20website%20that%20sells%20for%20my%20business.%20Can%20you%20help%20me%20pick%20the%20right%20plan%3F"
               target="_blank" rel="noopener" class="btn-ghost ht" style="display:block;text-align:center;margin-top:12px;"
-              id="contact-wa">Enviar WhatsApp</a>
-            <div class="form-feedback" id="formFeedback"></div>
+              id="contact-wa">Mejor por WhatsApp →</a>
           </form>
         </div>
       </div>
@@ -1089,19 +1148,10 @@
   <script defer crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
-  <script src="/js/home.js?v=20260720g" defer></script>
+  <script src="/js/home.js?v=20260907b" defer></script>
 
-  <!-- WhatsApp Float -->
-  <a href="https://wa.me/525531007101?text=Hola%2C%20me%20interesa%20tener%20un%20sitio%20web%20profesional%20para%20mi%20negocio.%20%C2%BFPueden%20darme%20m%C3%A1s%20informaci%C3%B3n%3F"
-    data-wa-es="https://wa.me/525531007101?text=Hola%2C%20me%20interesa%20tener%20un%20sitio%20web%20profesional%20para%20mi%20negocio.%20%C2%BFPueden%20darme%20m%C3%A1s%20informaci%C3%B3n%3F"
-    data-wa-en="https://wa.me/525531007101?text=Hi%2C%20I%27m%20interested%20in%20having%20a%20professional%20website%20for%20my%20business.%20Can%20you%20give%20me%20more%20information%3F"
-    target="_blank" rel="noopener" class="float-wa ht" aria-label="Contáctanos por WhatsApp">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-      <path
-        d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" />
-    </svg>
-  </a>
-  <script src="/components/reveal-cards.js?v=20260705a" defer></script>
+  <!-- plan 2026-09: .float-wa retirado del home; ahora vive en el partial del footer (D4). Copia en _archivo/float-wa-home-2026-09-07/ -->
+  <script src="/components/reveal-cards.js?v=20260907a" defer></script>
 </body>
 
 </html>

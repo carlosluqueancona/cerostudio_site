@@ -44,9 +44,9 @@
   <noscript><link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
       rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="/css/base.css?v=20260705a">
+  <link rel="stylesheet" href="/css/base.css?v=20260907a">
   <!-- home.css provides navbar+footer styles for the middleware-injected partials -->
-  <link rel="stylesheet" href="/css/home.css?v=20260720c">
+  <link rel="stylesheet" href="/css/home.css?v=20260907c">
 
   <style>
     /* ── Case study page styles (.cs-*) — kinetic brutalism CS ──
@@ -159,6 +159,16 @@
     .cs-quote-t:nth-last-of-type(2)::after{content:"\201D";color:var(--lime,#b2f700);font-weight:800}
     .cs-quote-cite{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6);font-style:normal;margin:8px 0 0}
 
+    /* MAKE IT YOURS — cross-link case → services → pricing */
+    .cs-next{margin:0 0 72px;padding:40px;background:var(--surface-lowest,#0e0e0e);border:1px solid rgba(255,255,255,.08);border-left:3px solid var(--lime,#b2f700)}
+    .cs-next-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.55);margin:0 0 18px}
+    .cs-next-eyebrow::before{content:'↳ ';color:var(--lime,#b2f700)}
+    .cs-next-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(24px,3vw,36px);font-weight:600;letter-spacing:-.02em;line-height:1.15;color:#fff;margin:0 0 14px;max-width:24ch}
+    .cs-next-p{font-family:Inter,sans-serif;font-size:15px;line-height:1.65;font-weight:300;color:rgba(255,255,255,.7);margin:0;max-width:56ch}
+    .cs-next-chips{list-style:none;display:flex;flex-wrap:wrap;gap:10px;margin:24px 0 0;padding:0}
+    .cs-next-chips a{display:inline-block;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff;padding:12px 18px;border:1px solid rgba(255,255,255,.14);text-decoration:none;transition:border-color .2s,color .2s}
+    .cs-next-chips a:hover{border-color:var(--lime,#b2f700);color:var(--lime,#b2f700)}
+
     /* CTA */
     .cs-cta{text-align:center;padding:64px 24px 120px}
     .cs-cta-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,4.4vw,52px);font-weight:600;letter-spacing:-.025em;line-height:1.1;margin:0 auto 18px;max-width:24ch}
@@ -195,11 +205,15 @@
       .cs-plan .cs-step{border-bottom:1px solid rgba(255,255,255,.08)}
       .cs-results{grid-template-columns:1fr;gap:0;background:transparent;border:0}
       .cs-results .cs-result{border-bottom:1px solid rgba(255,255,255,.08)}
+      .cs-next{padding:32px 24px}
     }
     @media (max-width:520px){
       .cs-wrap{padding-top:100px}
       .cs-cta{padding-bottom:80px}
       .cs-cta-actions .btn-primary,.cs-cta-actions .btn-ghost{width:100%;text-align:center}
+      .cs-next{padding:28px 20px}
+      .cs-next-chips li{width:100%}
+      .cs-next-chips a{display:block;text-align:center}
     }
   </style>
 
@@ -234,7 +248,7 @@
         "@type": "BreadcrumbList",
         "@id": "https://cerostudio.ai/en/case-studies/imvec/#breadcrumb",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://cerostudio.ai/" },
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://cerostudio.ai/en/" },
           { "@type": "ListItem", "position": 2, "name": "Case Studies", "item": "https://cerostudio.ai/en/case-studies/" },
           { "@type": "ListItem", "position": 3, "name": "IMVEC", "item": "https://cerostudio.ai/en/case-studies/imvec/" }
         ]
@@ -254,7 +268,7 @@
     <main id="main-content">
       <div class="cs-wrap">
         <nav class="cs-breadcrumb" aria-label="Breadcrumb">
-          <a href="/">Home</a><span>/</span><a href="/en/case-studies/">Case Studies</a><span>/</span>IMVEC
+          <a href="/en/">Home</a><span>/</span><a href="/en/case-studies/">Case Studies</a><span>/</span>IMVEC
         </nav>
 
         <!-- HERO -->
@@ -271,7 +285,7 @@
             </ul>
             <div class="cs-cta-row">
               <a href="https://imvec.mx/" target="_blank" rel="noopener" class="btn-primary ht">Visit the site →</a>
-              <a href="/#contacto" class="btn-ghost ht">I want something like this</a>
+              <a href="/en/?ref=imvec&servicio=branding#contacto" class="btn-ghost ht">I want something like this</a>
             </div>
           </div>
           <figure class="cs-shot">
@@ -460,13 +474,27 @@
         </div>
       </section>
 
+      <!-- MAKE IT YOURS — cross-link case → services → pricing [NC-04] -->
+      <div class="cs-wrap" style="padding-top:0">
+        <aside class="cs-next">
+          <p class="cs-next-eyebrow">Make it yours</p>
+          <h2 class="cs-next-h">Want a result like this for your business?</h2>
+          <p class="cs-next-p">This is what you'd hire to get there. No guessing: here's the service and here's the price.</p>
+          <ul class="cs-next-chips">
+            <li><a href="/en/services/digital-branding/" class="ht">Digital branding →</a></li>
+            <li><a href="/en/services/web-development/" class="ht">Web development →</a></li>
+            <li><a href="/en/#precios" class="ht">See plans &amp; pricing →</a></li>
+          </ul>
+        </aside>
+      </div>
+
       <!-- FINAL CTA -->
       <section class="cs-cta">
         <h2 class="cs-cta-h">Does your business run on word of mouth too?</h2>
         <p class="cs-cta-sub">If you have the craft but not the presence, let's talk. We'll build the brand and website your work already deserves. First consultation free, reply within 24 hours.</p>
         <div class="cs-cta-actions">
           <a href="https://imvec.mx/" target="_blank" rel="noopener" class="btn-ghost ht">See the live site →</a>
-          <a href="/#contacto" class="btn-primary ht">Let's start your project</a>
+          <a href="/en/?ref=imvec&servicio=branding#contacto" class="btn-primary ht">Let's start your project</a>
         </div>
       </section>
     </main>
@@ -474,10 +502,10 @@
     <div id="footer-placeholder"></div>
   </div>
 
-  <script src="/components/loader.js?v=20260706a" defer></script>
-  <script src="/components/reveal-cards.js?v=20260705a" defer></script>
+  <script src="/components/loader.js?v=20260907a" defer></script>
+  <script src="/components/reveal-cards.js?v=20260907a" defer></script>
   <script src="/components/cursor.js" defer></script>
-  <script src="/components/lang-toggle.js?v=20260604c" defer></script>
+  <script src="/components/lang-toggle.js?v=20260907a" defer></script>
 </body>
 
 </html>

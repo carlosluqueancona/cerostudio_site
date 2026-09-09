@@ -80,7 +80,8 @@
 
         setTimeout(() => {
           gsap.to('#heroSub', { opacity: 1, duration: .85, ease: 'power3.out' });
-          gsap.to('#heroActions', { opacity: 1, duration: .75, ease: 'power3.out', delay: .18 });
+          /* plan 2026-09: #heroProof (línea de prueba) entra con los botones */
+          gsap.to('#heroActions, #heroProof', { opacity: 1, duration: .75, ease: 'power3.out', delay: .18 });
         }, 1600);
       }
 
@@ -127,14 +128,46 @@
       });
 
       /* ── PLAN CTA → preselecciona servicio y prellena mensaje ──── */
+      /* plan 2026-09 (LEAD-04): el plan elegido también contextualiza los
+         WhatsApp del home + chrome y se guarda para el panel post-envío */
+      var CS_WA_NUM = '525531007101';
+      var CS_PLAN = null; /* { service, name } del último CTA de plan clicado */
+      function planWaText(service, name, lang) {
+        if (service === 'ecommerce') {
+          var store = name.replace(/^Tienda\s+/, '');
+          return lang === 'en'
+            ? "Hi, I'm interested in the " + (store === 'Esencial' ? 'Essential' : store) + " Tiendanube store. What's next?"
+            : 'Hola, me interesa la ' + name + ' en Tiendanube. ¿Qué sigue?';
+        }
+        if (service === 'auditoria-gratis') {
+          return lang === 'en'
+            ? "Hi, I'd like my free express audit — my site is: "
+            : 'Hola, quiero mi auditoría exprés gratis — mi sitio es: ';
+        }
+        return lang === 'en'
+          ? "Hi, I saw your pricing on cerostudio.ai and I'm interested in the " + name + ' plan. What do you need from me to get started?'
+          : 'Hola, vi los precios en cerostudio.ai y me interesa el plan ' + name + '. ¿Qué necesitas de mí para empezar?';
+      }
+      function waHref(text) { return 'https://wa.me/' + CS_WA_NUM + '?text=' + encodeURIComponent(text); }
+      /* Actualiza href + data-wa-es/en (así setLang, que re-aplica data-wa-*, no pisa el contexto) */
+      function setContextWa(service, name) {
+        var es = waHref(planWaText(service, name, 'es')), en = waHref(planWaText(service, name, 'en'));
+        document.querySelectorAll('#contact-wa, .contact-link-row[href*="wa.me"], .float-wa, .mob-bar-wa, #mnav-wa').forEach(function (el) {
+          el.dataset.waEs = es; el.dataset.waEn = en;
+          el.href = CS_LANG === 'en' ? en : es;
+        });
+      }
       document.querySelectorAll('[data-plan-service]').forEach(a => {
         a.addEventListener('click', () => {
           const f = document.getElementById('contactForm');
           if (!f) return;
           const sel = f.querySelector('[name="servicio"]');
           if (sel) { sel.value = a.dataset.planService; sel.dispatchEvent(new Event('change')); }
+          CS_PLAN = { service: a.dataset.planService, name: a.dataset.planName };
+          setContextWa(CS_PLAN.service, CS_PLAN.name);
           const msg = f.querySelector('[name="mensaje"]');
-          if (msg && !msg.value.trim())
+          /* la auditoría captura el sitio en su propio bloque: no prellena "plan" */
+          if (msg && !msg.value.trim() && a.dataset.planService !== 'auditoria-gratis')
             msg.value = CS_LANG === 'en'
               ? "I'm interested in the " + a.dataset.planName + ' plan.'
               : 'Me interesa el plan ' + a.dataset.planName + '.';
@@ -552,37 +585,52 @@
           'nav-precios': { t: 'Precios' },
           'nav-contacto': { t: 'Contacto' },
           'nav-blog': { t: 'Blog' },
-          'nav-cta': { t: 'Hablemos' },
+          'nav-cta': { t: 'Iniciar Proyecto' },
           'mnav-servicios': { t: 'Servicios' },
           'mnav-portafolio': { t: 'Portafolio' },
           'mnav-nosotros': { t: 'Nosotros' },
           'mnav-precios': { t: 'Precios' },
           'mnav-contacto': { t: 'Contacto' },
           'mnav-blog': { t: 'Blog' },
+          /* plan 2026-09: chrome site-wide (partials de WS-E) */
+          'mnav-cta': { t: 'Iniciar Proyecto' },
+          'mnav-wa': { t: 'WhatsApp directo' },
+          'mob-bar-main': { t: 'Cotizar mi proyecto' },
           /* ── HERO */
           'heroEyebrow': { t: 'Clientes, no solo visitas.' },
-          'heroSub': { t: 'Consigue el sitio web o la tienda online que tu negocio merece: diseño de nivel internacional que convierte visitas en clientes.' },
-          'hero-btn-portfolio': { t: 'Ver Portafolio' },
+          'heroSub': { t: 'Sitios web y tiendas en línea hechos a la medida de cómo compra tu cliente — por quien lleva 25 años haciendo que las páginas vendan. Desde $299 USD (≈ $5,400 MXN), precio cerrado, fecha por escrito y trato directo con el fundador.' },
+          'hero-btn-audit': { t: 'Auditoría gratis de mi sitio →' },
           'hero-btn-quote': { t: 'Iniciar Proyecto' },
+          'heroProof': { h: '25+ años de oficio · Hablas directo con Carlos · Fecha de entrega por escrito · Agencia Tiendanube Partner certificada — <a href="/casos-de-exito/" data-href-es="/casos-de-exito/" data-href-en="/en/case-studies/">Ver casos de éxito →</a>' },
           /* ── MARQUEE */
           'marquee-1': { h: 'Diseño Web <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Desarrollo <em>·</em> Consultoría <em>·</em> Mantenimiento <em>·</em> Identidad Visual <em>·</em>' },
           'marquee-2': { h: 'Diseño Web <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Desarrollo <em>·</em> Consultoría <em>·</em> Mantenimiento <em>·</em> Identidad Visual <em>·</em>' },
+          'ticker-label': { t: 'Marcas con las que Carlos ha trabajado' },
           /* ── SERVICIOS */
           'srv-eyebrow': { t: '01 — Servicios' },
-          'srv-title': { h: 'Todo lo que necesitas<br>para <span class="t-outline">crecer</span> en línea' },
-          'srv-desc': { t: 'Desde el diseño hasta el lanzamiento, cubrimos cada aspecto de tu presencia digital con estándares de nivel internacional.' },
+          'srv-title': { h: 'Todo lo que necesitas<br>para <span class="t-outline">vender</span> en línea' },
+          'srv-desc': { t: 'Escoge solo lo que tu negocio necesita hoy. Cada servicio está hecho para lo mismo: que te encuentren, que confíen en ti y que te compren.' },
           'srv-t1': { t: 'Desarrollo Web' }, 'srv-d1': { t: 'Sitios rápidos, modernos y optimizados que generan confianza y convierten visitantes en clientes desde el primer clic.' },
           'srv-t2': { t: 'Tiendas eCommerce' }, 'srv-d2': { t: 'Tu negocio abierto 24/7. Tiendas online completas con pasarelas de pago, inventario y experiencia de compra fluida.' },
           'srv-t3': { t: 'Branding Digital' }, 'srv-d3': { t: 'Identidad visual profesional que diferencia tu marca y genera la confianza que tu audiencia necesita ver.' },
           'srv-t4': { t: 'SEO + AI Search' }, 'srv-d4': { t: 'Posicionamiento en Google + visibilidad en ChatGPT, Claude, Gemini y Perplexity. Que tus clientes te encuentren — buscando o preguntando.' },
           'srv-t5': { t: 'Mantenimiento' }, 'srv-d5': { t: 'Soporte técnico continuo, actualizaciones de seguridad y optimización para que tu sitio funcione perfecto siempre.' },
           'srv-t6': { t: 'Consultoría Digital' }, 'srv-d6': { t: 'Estrategia digital personalizada para escalar tu negocio. Tomamos las decisiones correctas antes de escribir código.' },
+          'srv-l1': { t: 'Ver ficha →' },
+          'srv-l2': { t: 'Ver ficha →' },
+          'srv-l3': { t: 'Ver ficha →' },
+          'srv-l4': { t: 'Ver ficha →' },
+          'srv-l5': { t: 'Ver ficha →' },
+          'srv-l6': { t: 'Ver ficha →' },
           /* ── PORTAFOLIO */
           'port-title': { h: 'Proyectos que hacen<br>la <span class="t-outline">diferencia</span>' },
           'port-start-btn': { t: 'Iniciar Proyecto' },
           'port-cta-q': { h: '¿Tu negocio<br>aquí?' },
-          'port-cta-sub': { t: 'Únete a +150 negocios exitosos' },
+          'port-cta-sub': { t: 'Tu caso puede ser el siguiente: 3× retorno en IMVEC, +40% en Mainoflex' },
           'port-cta-btn': { t: 'Iniciar Proyecto' },
+          'port-more': { t: 'Ver todos los proyectos →' }, /* plan 2026-09: A2 sustituye por «Ver los N proyectos →» con el conteo real */
+          'plan-more': { t: 'Ver todo lo que incluye' }, /* plan 2026-09: pricing móvil; JS concatena (+N) */
+          'plan-less': { t: 'Ver menos' },
           'port-badge': { t: 'Ver Proyecto →' },
           'port-c1': { t: 'Agencia · Modelos & Producción BTL' },
           'port-d1': { t: 'Plataforma digital para agencia de modelos, edecanes y producción de eventos corporativos.' },
@@ -614,23 +662,23 @@
           'port-d14': { t: 'Asesoría especializada en bioseguridad, sanidad animal y optimización de producción avícola.' },
 
           /* ── NOSOTROS */
-          'nos-eyebrow': { t: 'Nosotros' },
-          'nos-title': { h: 'La agencia detrás de tu crecimiento <span class="t-lime">digital</span>' },
-          'nos-desc': { h: 'Somos <strong>Cero Studio</strong>, una agencia digital fundada con una misión clara: ayudar a emprendedores y negocios a competir y ganar en el mundo digital.<br><br>Combinamos diseño de nivel internacional con una comprensión profunda del mercado mexicano y de cómo compra tu cliente. No hacemos sitios genéricos — construimos <strong>herramientas de negocio</strong> que trabajan mientras tú descansas.' },
-          'stat-l1': { t: 'Clientes atendidos' },
+          'nos-eyebrow': { t: 'Por qué Cero' },
+          'nos-title': { h: 'Por qué Cero <span class="t-lime">y no otra agencia</span>' },
+          'nos-desc': { h: 'Sé lo que es apostarle todo a un negocio propio y que nadie te encuentre. Soy <strong>Carlos Luque</strong>, fundador de Cero Studio: llevo más de 25 años haciendo que las páginas vendan — desde la radio por internet hasta el home del sitio del INEGI.<br><br>Aquí no hay ejecutivo de cuenta ni "déjame lo consulto": tú hablas conmigo, yo diseño y programo tu sitio, y lo entrego en la fecha que firmamos. El precio que ves es el que pagas y tu sitio nace listo para Google <strong>y para ChatGPT</strong>. No te vendo una página bonita — te entrego <strong>una herramienta que trabaja mientras tú descansas</strong>.' },
+          'stat-l1': { t: 'Negocios atendidos en 25 años' },
           'stat-l2': { t: 'Años de experiencia' },
-          'stat-l3': { t: 'Proyectos entregados' },
-          'stat-l4': { t: 'Satisfacción garantizada' },
+          'stat-l3': { t: 'Sitios lanzados' },
+          'stat-l4': { t: 'Entrega en fecha, por escrito' },
           'nos-btn': { t: 'Iniciar Proyecto' },
           'nos-historia': { t: 'Con quién vas a trabajar →' },
           'nos-quote': { h: 'Un sitio web no es un gasto. Es el <span style="color:var(--lime);">vendedor</span> más <span style="color:var(--lime);">trabajador</span> que nunca te pide vacaciones.' },
           /* ── PROCESO */
           'proc-eyebrow': { t: 'Cómo Trabajamos' },
           'proc-headline': { h: 'Sin sorpresas,<br><span class="t-outline">sin rodeos.</span>' },
-          'proc-t1': { t: 'Diagnóstico' }, 'proc-d1': { t: 'Analizamos tu negocio, tu competencia y tu mercado. Identificamos exactamente qué está funcionando, qué está fallando y por qué.' },
-          'proc-t2': { t: 'Estrategia' }, 'proc-d2': { t: 'Plan a medida: qué servicios necesitas, en qué orden y con qué presupuesto para maximizar el retorno desde el primer mes.' },
-          'proc-t3': { t: 'Ejecución' }, 'proc-d3': { t: 'Diseño, desarrollo, SEO y lo que haga falta. Tú apruebas, nosotros entregamos en tiempo y forma. Sin cobros sorpresa.' },
-          'proc-t4': { t: 'Resultados' }, 'proc-d4': { t: 'Reportes claros cada mes: visitas, leads generados, conversiones y ventas. Sin tecnicismos — solo los números que importan a tu negocio.' },
+          'proc-t1': { t: 'Nos cuentas' }, 'proc-d1': { t: 'Llenas el formulario o agendas una llamada gratis. En menos de 24 horas recibes una propuesta clara: qué necesitas, cuánto cuesta y cuándo se entrega.' },
+          'proc-t2': { t: 'Apruebas' }, 'proc-d2': { t: 'Precio cerrado y fecha de entrega por escrito. Si nos atrasamos, tu primer mes de mantenimiento corre por nuestra cuenta.' },
+          'proc-t3': { t: 'Construimos' }, 'proc-d3': { t: 'Diseño, textos que venden, SEO y desarrollo. Revisas avances por WhatsApp y apruebas cada etapa; nosotros entregamos en tiempo y forma.' },
+          'proc-t4': { t: 'Vendes' }, 'proc-d4': { t: 'Tu sitio sale al aire, te capacitamos para editarlo y te acompañamos después del lanzamiento. Si quieres que siga creciendo con SEO o mantenimiento, recibes reportes mensuales con lo que importa: visitas, leads y ventas.' },
           /* ── TESTIMONIOS (PLACEHOLDER — sustituir por reales) */
           'testi-eyebrow': { t: 'Testimonios' },
           'testi-title': { h: 'Lo que dicen<br>quienes ya <span class="t-lime">venden</span>' },
@@ -640,11 +688,14 @@
           'testi-n2': { t: 'Ricardo Lora' }, 'testi-r2': { t: 'Seminuevos Coapa · CDMX' },
           'testi-q3': { t: 'Nuestro nuevo sitio web optimizó la captación de clientes y aumentó nuestras ventas un 40% en dos meses.' },
           'testi-n3': { t: 'Jesús Bernal' }, 'testi-r3': { t: 'Mainoflex · Soluciones antivibratorias' },
+          'testi-c1': { t: 'Ver el caso IMVEC →' },
+          'testi-c2': { t: 'Ver el caso Seminuevos Coapa →' },
+          'testi-c3': { t: 'Ver el caso Mainoflex →' },
           /* ── PRECIOS */
           'precios-eyebrow': { t: 'Inversión' },
           'precios-headline': { h: 'Precios<br><em>sin letra chica.</em>' },
-          'precios-urgency': { t: 'Solo disponible para los primeros 5 clientes del mes' },
-          'precios-trust-text': { h: 'Pago único. Sin sorpresas al final.<br>Fecha de entrega garantizada por escrito.' },
+          'precios-urgency': { t: 'Precio de portafolio · 5 lugares al mes' },
+          'precios-trust-text': { h: 'Pago único. Sin sorpresas al final.<br>Fecha de entrega por escrito: si nos atrasamos, <strong>tu primer mes de mantenimiento corre por nuestra cuenta</strong>.' },
           'res-l1': { t: 'retorno de su inversión en ventas' },
           'res-c1': { t: 'IMVEC · ver caso →' },
           'res-l2': { t: 'más ventas en 2 meses' },
@@ -652,26 +703,34 @@
           'res-l3': { t: 'proyectos entregados' },
           'res-c3': { t: 'Ver todos los casos →' },
           'dominate-headline': { h: '¿Listo<br>para<br>dominar?' },
-          'dominate-sub': { h: 'Primera consulta gratis.<br>Sin compromisos.' },
+          'dominate-sub': { h: 'Primera consulta gratis.<br>Fecha de entrega por escrito.' },
           'dominate-cta': { t: 'Iniciar Proyecto' },
-          'launch-old-price': { t: 'Precio regular: $499 USD' },
+          'dominate-audit': { t: '¿Todavía no estás listo? Pide la auditoría gratis de tu sitio →' },
+          'launch-old-price': { h: '<span>Precio regular</span> <s>$499 USD</s>' },
+          'launch-saving': { t: 'Ahorras $200 USD · precio de portafolio' },
           'launch-delivery': { t: 'pago único · entrega 5 días hábiles' },
           'launch-features': { h: '<li><strong>Identidad visual básica incluida</strong> — logo, paleta, tipografía</li><li>Una página de alto impacto con 4 secciones (hero, servicios, sobre ti, contacto)</li><li>Diseño responsive — celular y computadora</li><li>SEO básico configurado desde el inicio</li><li>Formulario de contacto incluido</li><li>Dominio <strong>.com</strong> incluido el primer año (o conectamos el tuyo si ya lo tienes)</li><li>Cambios de contenido a través de Cero Studio</li>' },
           'launch-note': { t: 'Ideal para: restaurantes, consultorios, salones, servicios locales.' },
+          'launch-after': { h: 'Después del lanzamiento: mantenimiento opcional desde $800 MXN/mes, sin contrato anual → <a href="/servicios/mantenimiento/" data-href-es="/servicios/mantenimiento/" data-href-en="/en/services/web-maintenance/">ver planes</a>' },
           'launch-cta': { t: 'Quiero empezar →' },
           'pro-badge': { t: 'Más solicitado' },
-          'pro-old-price': { t: 'Precio regular: $2,500 USD' },
+          'pro-old-price': { h: '<span>Precio regular</span> <s>$2,500 USD</s>' },
+          'pro-saving': { t: 'Ahorras $1,501 USD · precio de portafolio' },
           'pro-delivery': { t: 'pago único · entrega 21 días hábiles' },
           'pro-features': { h: '<li><strong>Identidad profesional incluida</strong> — logo, paleta, tipografía + guidelines mini</li><li>4 a 6 páginas con diseño de nivel internacional</li><li>Tú editas el contenido — sin depender de nosotros</li><li>Blog incluido para posicionarte como experto</li><li>Animaciones y microinteracciones premium</li><li>SEO avanzado + Google Search Console</li><li>Google Analytics + Tag Manager configurados</li><li>Botón de WhatsApp integrado</li><li>Dominio <strong>.com</strong> incluido el primer año (o conectamos el tuyo si ya lo tienes)</li><li>Responsive — celular, tablet y escritorio</li><li>Formulario de contacto profesional</li>' },
           'pro-note': { t: 'Ideal para: negocios establecidos, profesionales independientes, empresas listas para crecer.' },
+          'pro-after': { h: 'Después del lanzamiento: mantenimiento opcional desde $800 MXN/mes, sin contrato anual → <a href="/servicios/mantenimiento/" data-href-es="/servicios/mantenimiento/" data-href-en="/en/services/web-maintenance/">ver planes</a>' },
           'pro-cta': { t: 'Quiero el Cero Pro →' },
           'premium-price-display': { h: 'Desde $1,800<span>USD</span>' },
-          'premium-old-price': { t: 'Precio regular: desde $4,500 USD' },
+          'premium-old-price': { h: '<span>Precio regular</span> <s>desde $4,500 USD</s>' },
+          'premium-saving': { t: 'Ahorras desde $2,700 USD · precio de portafolio' },
           'premium-delivery': { t: 'cotización personalizada · entrega a convenir' },
-          'premium-features': { h: '<li>Todo lo del plan Cero Pro</li><li><strong>Identidad integral + guidelines completos</strong></li><li>Funciones avanzadas a la medida</li><li>Estrategia digital incluida</li><li>Account manager dedicado</li>' },
+          'premium-features': { h: '<li>Todo lo del plan Cero Pro</li><li><strong>Identidad integral + guidelines completos</strong></li><li>Funciones avanzadas a la medida</li><li>Estrategia digital incluida</li><li>Seguimiento prioritario y directo con Carlos</li>' },
           'premium-note': { t: 'Ideal para: negocios con múltiples servicios y necesidades a la medida.' },
+          'premium-excludes': { t: 'No incluye tienda en línea: si vendes productos, mira los planes de tienda ↓' },
+          'premium-after': { h: 'Después del lanzamiento: mantenimiento opcional desde $800 MXN/mes, sin contrato anual → <a href="/servicios/mantenimiento/" data-href-es="/servicios/mantenimiento/" data-href-en="/en/services/web-maintenance/">ver planes</a>' },
           'premium-cta': { t: 'Pedir cotización →' },
-          'precios-condition': { h: 'Precios especiales de lanzamiento, válidos solo para los primeros 5 clientes de cada mes. Condición: Cero Studio publica el proyecto en su portafolio con nombre del negocio y resultados reales.<br><span style="color:rgba(255,255,255,.45);" id="precios-currency-note">* Aceptamos pago en USD o MXN.</span>' },
+          'precios-condition': { h: '¿Por qué cuesta menos? Porque cada mes tomamos solo 5 proyectos a precio de portafolio: tú pagas menos y Cero Studio publica tu caso con el nombre de tu negocio y resultados reales. Cuando se llenan los 5 lugares, el siguiente proyecto entra al precio regular.<br> <span style="color:rgba(255,255,255,.45);" id="precios-currency-note">* Aceptamos pago en USD o MXN.</span>' },
           /* ── TIENDAS EN LÍNEA */
           'tiendas-eyebrow': { t: 'Tiendas en línea' },
           'tiendas-headline': { h: 'Vende<br><em>en línea.</em>' },
@@ -681,19 +740,20 @@
           'tienda-esencial-name': { t: 'Tienda Esencial' },
           'tienda-esencial-delivery': { t: 'pago único · marcas que empiezan' },
           'tienda-esencial-features': { h: '<li>Tienda en TiendaNube con template configurado a tu marca</li><li>Administras tu catálogo desde un panel simple — productos, precios y stock, cuando quieras</li><li>Pasarela de pago + envíos configurados</li><li>Conexión a Instagram + botón de WhatsApp</li><li>Dominio incluido (primer año)</li>' },
-          'tienda-esencial-note': { t: 'Ideal para: marcas que empiezan, catálogo chico.' },
+          'tienda-esencial-note': { t: 'Ideal para: empiezas a vender en línea, pocos productos y una sola categoría; tú subes el catálogo.' },
           'tienda-esencial-cta': { t: 'Quiero empezar →' },
           'tienda-pro-badge': { t: 'Más solicitado' },
           'tienda-pro-name': { t: 'Tienda Pro' },
           'tienda-pro-delivery': { t: 'pago único · catálogo en crecimiento' },
           'tienda-pro-features': { h: '<li>Todo lo de Tienda Esencial</li><li>Diseño alineado a tu marca</li><li>SEO básico + categorías organizadas</li><li>Integraciones (Instagram Shopping)</li>' },
-          'tienda-pro-note': { t: 'Ideal para: catálogo mediano en crecimiento.' },
+          'tienda-pro-note': { t: 'Ideal para: ya vendes por Instagram o WhatsApp y te quedas corto; varias categorías y quieres que Google te encuentre.' },
           'tienda-pro-cta': { t: 'Quiero la Tienda Pro →' },
           'tienda-premium-name': { t: 'Tienda Premium' },
           'tienda-premium-delivery': { t: 'pago único · marca establecida' },
           'tienda-premium-features': { h: '<li>Todo lo de Tienda Pro</li><li>Diseño 100% personalizado</li><li>Branding completo</li><li>SEO avanzado + automatizaciones (carrito abandonado, correos)</li>' },
-          'tienda-premium-note': { t: 'Ideal para: marca establecida.' },
+          'tienda-premium-note': { t: 'Ideal para: marca con volumen que quiere diseño propio, identidad completa y automatizaciones que recuperan carritos.' },
           'tienda-premium-cta': { t: 'Quiero la Premium →' },
+          'tiendas-custom': { h: '¿Operación grande? Catálogo extenso, ERP, multi-bodega o venta B2B → eCommerce a la medida, cotizado por alcance. <a href="/servicios/tiendas-ecommerce/" data-href-es="/servicios/tiendas-ecommerce/" data-href-en="/en/services/online-stores/">Ver cómo trabajamos →</a>' },
           'tiendas-condition': { t: 'Mensualidad opcional de soporte y carga de producto desde $800 MXN/mes. El plan de TiendaNube (~$99–249/mes) y la comisión de la pasarela de pago (~3.8% + IVA por venta) los cubre el cliente.' },
           /* ── STAKES */
           'stakes-eyebrow': { t: 'Lo que está en juego' },
@@ -705,11 +765,12 @@
           'stakes-3t': { t: 'Las respuestas de IA donde no existes' },
           'stakes-3p': { t: 'Cerca del 30% de las búsquedas ya terminan en ChatGPT, Gemini o Perplexity. Si tu negocio no está en sus fuentes, la IA recomienda a otro.' },
           'stakes-cta': { t: 'Deja de perder clientes →' },
+          'stakes-cta-audit': { t: '¿Ya tienes sitio? Pide tu auditoría gratis: 5 hallazgos en 48 h →' },
           /* ── FAQ */
           'faq-eyebrow': { t: 'Preguntas frecuentes' },
           'faq-title': { h: 'Lo que todos preguntan<br>antes de <span class="t-lime">empezar</span>' },
           'faq-q1': { t: '¿Cuánto cuesta una página web profesional?' },
-          'faq-a1': { t: 'Tres planes de pago único: Cero Launch $299 USD (≈ $5,400 MXN) con entrega en 5 días hábiles, Cero Pro $999 USD (≈ $17,900 MXN) — el más solicitado — y Cero Premium desde $1,800 USD (≈ $32,000 MXN). Sin mensualidades ocultas: el precio que ves es el precio que pagas.' },
+          'faq-a1': { t: 'Tres planes de pago único: Cero Launch $299 USD (≈ $5,400 MXN) con entrega en 5 días hábiles, Cero Pro $999 USD (≈ $17,900 MXN) — el más solicitado — y Cero Premium desde $1,800 USD (≈ $32,000 MXN). Sin mensualidades ocultas: el precio que ves es el precio que pagas. Si quieres que cuidemos el sitio después del lanzamiento, el mantenimiento es opcional desde $800 MXN al mes, sin contrato anual.' },
           'faq-q2': { t: '¿En cuánto tiempo está listo mi sitio?' },
           'faq-a2': { t: 'Entre 5 y 21 días hábiles según el plan. Conoces tu fecha de entrega desde el día uno y va garantizada por escrito: si nos atrasamos, tu mantenimiento corre por nuestra cuenta durante 1 mes.' },
           'faq-q3': { t: '¿Qué incluye mi sitio para vender y no solo verse bien?' },
@@ -719,14 +780,25 @@
           'faq-q5': { t: '¿Trabajan con negocios fuera de la Ciudad de México?' },
           'faq-a5': { t: 'Sí — atendemos a emprendedores y negocios de todo México, 100% remoto: reuniones por videollamada, avances por WhatsApp y comunicación directa con Carlos, sin intermediarios.' },
           'faq-q6': { t: '¿Cómo empiezo mi proyecto?' },
-          'faq-a6': { t: 'Manda el formulario de contacto o agenda una llamada gratis. Recibes respuesta en menos de 24 horas con una propuesta clara, y tu sitio se lanza en la fecha acordada. La primera consulta es gratis y sin compromiso.' },
+          'faq-a6': { t: 'Manda el formulario de contacto o agenda una llamada gratis. Recibes respuesta en menos de 24 horas con una propuesta clara, y tu sitio se lanza en la fecha acordada. ¿Todavía no estás listo? Pide primero la auditoría gratis de tu sitio: 5 hallazgos en 48 horas, sin llamadas de venta.' },
+          'faq-q7': { t: '¿Y si mejor lo hago yo en Wix o con una plantilla?' },
+          'faq-a7': { t: 'Puedes — y para probar una idea está bien. El problema llega cuando tu negocio ya es serio y el sitio no: una plantilla que se ve igual a otras mil, carga lenta, SEO a medias y cero presencia en ChatGPT. Aquí el diseño se hace a la medida de cómo compra tu cliente, el precio es cerrado y hablas directo con quien lo construye. El Cero Launch sale en 5 días hábiles por $299 USD (≈ $5,400 MXN), pago único, y el sitio es tuyo.' },
           /* ── CONTACTO */
           'contact-eyebrow': { t: 'Contacto' },
-          'contact-title': { h: '¿Listo para el<br><span class="t-outline">siguiente</span> nivel?' },
-          'contact-sub': { t: 'Cuéntanos sobre tu proyecto. Respondemos en menos de 24 horas y la primera consulta es completamente gratis.' },
-          'submitBtnLabel': { t: 'Enviar Mensaje' },
+          'contact-title': { h: 'Cuéntanos de tu negocio.<br>En 24 h tienes <span class="t-outline">propuesta</span>.' },
+          'contact-sub': { t: 'Sin cotizaciones eternas: nos dices qué vendes y a quién, y te regresamos un plan claro con precio cerrado y fecha de entrega por escrito. La primera consulta es gratis.' },
+          'contact-p1n': { t: '≤ 24 h' },
+          'contact-p1': { t: 'Te respondemos' },
+          'contact-p2n': { t: 'Por escrito' },
+          'contact-p2': { t: 'Fecha de entrega garantizada' },
+          'contact-p3n': { t: '150+' },
+          'contact-p3': { t: 'Negocios en 25 años' },
+          'contact-quote': { t: '«Excelente compromiso, profesionalismo y nivel de servicio de parte de Carlos.»' },
+          'contact-quote-cite': { t: 'Ricardo Lora · Seminuevos Coapa · ver caso →' },
+          'submitBtnLabel': { t: 'Quiero mi propuesta →' },
+          'form-reassure': { t: 'Respuesta en menos de 24 h · Sin compromiso · Hablas directo con Carlos' },
           'agenda-link': { t: 'O agenda una llamada gratis →' },
-          'contact-wa': { t: 'Enviar WhatsApp' },
+          'contact-wa': { t: 'Mejor por WhatsApp →' },
           /* ── FOOTER */
           'footer-tagline': { t: 'Diseñamos el futuro digital de tu negocio.' },
           'footer-partner-text': { h: 'Agencia <strong style="font-weight:600;color:#fff;">Tiendanube Partner</strong> certificada' },
@@ -755,36 +827,51 @@
           'nav-nosotros': { t: 'About' },
           'nav-precios': { t: 'Pricing' },
           'nav-contacto': { t: 'Contact' },
-          'nav-cta': { t: "Let's Talk" },
+          'nav-cta': { t: 'Start Your Project' },
           'mnav-servicios': { t: 'Services' },
           'mnav-portafolio': { t: 'Portfolio' },
           'mnav-nosotros': { t: 'About' },
           'mnav-precios': { t: 'Pricing' },
           'mnav-contacto': { t: 'Contact' },
+          /* plan 2026-09: chrome site-wide (partials de WS-E) */
+          'mnav-cta': { t: 'Start Your Project' },
+          'mnav-wa': { t: 'WhatsApp us directly' },
+          'mob-bar-main': { t: 'Get a quote' },
           /* ── HERO */
           'heroEyebrow': { t: 'Customers, not just clicks.' },
-          'heroSub': { t: 'Get the website or online store your business deserves: international-level design that turns visitors into customers.' },
-          'hero-btn-portfolio': { t: 'View Portfolio' },
+          'heroSub': { t: 'Websites and online stores built around how your customer buys — by someone who has spent 25 years making websites sell. From $299 USD, fixed price, delivery date in writing, and you deal directly with the founder.' },
+          'hero-btn-audit': { t: 'Free audit of my site →' },
           'hero-btn-quote': { t: 'Start Your Project' },
+          'heroProof': { h: '25+ years of craft · You talk directly with Carlos · Delivery date in writing · Certified Tiendanube Partner Agency — <a href="/en/case-studies/" data-href-es="/casos-de-exito/" data-href-en="/en/case-studies/">See case studies →</a>' },
           /* ── MARQUEE */
           'marquee-1': { h: 'Web Design <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Development <em>·</em> Consulting <em>·</em> Maintenance <em>·</em> Visual Identity <em>·</em>' },
           'marquee-2': { h: 'Web Design <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Development <em>·</em> Consulting <em>·</em> Maintenance <em>·</em> Visual Identity <em>·</em>' },
+          'ticker-label': { t: 'Brands Carlos has worked with' },
           /* ── SERVICIOS */
           'srv-eyebrow': { t: '01 — Services' },
-          'srv-title': { h: 'Everything you need<br>to <span class="t-outline">grow</span> online' },
-          'srv-desc': { t: 'From design to launch, we cover every aspect of your digital presence to international standards.' },
+          'srv-title': { h: 'Everything you need<br>to <span class="t-outline">sell</span> online' },
+          'srv-desc': { t: 'Pick only what your business needs today. Every service is built for the same thing: getting you found, trusted and bought from.' },
           'srv-t1': { t: 'Web Development' }, 'srv-d1': { t: 'Fast, modern, optimized websites that build trust and convert visitors into customers from the first click.' },
           'srv-t2': { t: 'eCommerce Stores' }, 'srv-d2': { t: 'Your business open 24/7. Complete online stores with payment gateways, inventory, and seamless shopping experience.' },
           'srv-t3': { t: 'Digital Branding' }, 'srv-d3': { t: 'Professional visual identity that sets your brand apart and builds the trust your audience needs to see.' },
           'srv-t4': { t: 'SEO + AI Search' }, 'srv-d4': { t: 'Google rankings + visibility in ChatGPT, Claude, Gemini and Perplexity. So your customers find you — searching or asking.' },
           'srv-t5': { t: 'Maintenance' }, 'srv-d5': { t: 'Continuous technical support, security updates, and optimization so your site runs perfectly at all times.' },
           'srv-t6': { t: 'Digital Consulting' }, 'srv-d6': { t: 'Personalized digital strategy to scale your business. We make the right decisions before writing a single line of code.' },
+          'srv-l1': { t: 'See details →' },
+          'srv-l2': { t: 'See details →' },
+          'srv-l3': { t: 'See details →' },
+          'srv-l4': { t: 'See details →' },
+          'srv-l5': { t: 'See details →' },
+          'srv-l6': { t: 'See details →' },
           /* ── PORTAFOLIO */
           'port-title': { h: 'Projects that make<br>a <span class="t-outline">difference</span>' },
           'port-start-btn': { t: 'Start Your Project' },
           'port-cta-q': { h: 'Your business<br>here?' },
-          'port-cta-sub': { t: 'Join +150 successful businesses' },
+          'port-cta-sub': { t: 'Your case could be next: 3× return at IMVEC, +40% at Mainoflex' },
           'port-cta-btn': { t: 'Start Your Project' },
+          'port-more': { t: 'See all projects →' }, /* plan 2026-09: A2 sustituye por «See all N projects →» con el conteo real */
+          'plan-more': { t: 'See everything included' }, /* plan 2026-09: pricing móvil; JS concatena (+N) */
+          'plan-less': { t: 'Show less' },
           'port-badge': { t: 'View Project →' },
           'port-c1': { t: 'Agency · Models & BTL Production' },
           'port-d1': { t: 'Digital platform for modeling agency, promotional staff and corporate event production.' },
@@ -816,23 +903,23 @@
           'port-d14': { t: 'Specialized advisory in biosecurity, animal health, and poultry production optimization.' },
 
           /* ── NOSOTROS */
-          'nos-eyebrow': { t: 'About Us' },
-          'nos-title': { h: 'The agency behind your <span class="t-lime">digital</span> growth' },
-          'nos-desc': { h: "We are <strong>Cero Studio</strong>, a digital agency founded with a clear mission: to help entrepreneurs and businesses compete and win in the digital world.<br><br>We combine international-level design with a deep understanding of the Mexican market and how your customers buy. We don't build generic sites — we build <strong>business tools</strong> that work while you rest." },
-          'stat-l1': { t: 'Clients served' },
+          'nos-eyebrow': { t: 'Why Cero' },
+          'nos-title': { h: 'Why Cero <span class="t-lime">and not another agency</span>' },
+          'nos-desc': { h: 'I know what it\'s like to bet everything on your own business and have nobody find you. I\'m <strong>Carlos Luque</strong>, founder of Cero Studio: I\'ve spent more than 25 years making websites sell — from internet radio to the homepage of Mexico\'s national statistics institute (INEGI).<br><br>There\'s no account manager here and no "let me check with the team": you talk to me, I design and build your site, and I deliver it on the date we sign. The price you see is the price you pay, and your site is born ready for Google <strong>and for ChatGPT</strong>. I\'m not selling you a pretty page — I\'m handing you <strong>a tool that works while you rest</strong>.' },
+          'stat-l1': { t: 'Businesses served in 25 years' },
           'stat-l2': { t: 'Years of experience' },
-          'stat-l3': { t: 'Projects delivered' },
-          'stat-l4': { t: 'Satisfaction guaranteed' },
+          'stat-l3': { t: 'Sites launched' },
+          'stat-l4': { t: 'On-time delivery, in writing' },
           'nos-btn': { t: 'Start Your Project' },
           'nos-historia': { t: "Who you'll work with →" },
           'nos-quote': { h: "A website isn't an expense. It's the <span style=\"color:var(--lime);\">hardest-working</span> <span style=\"color:var(--lime);\">employee</span> you'll never have to pay overtime." },
           /* ── PROCESO */
           'proc-eyebrow': { t: 'How We Work' },
           'proc-headline': { h: 'No surprises,<br><span class="t-outline">no detours.</span>' },
-          'proc-t1': { t: 'Discovery' }, 'proc-d1': { t: 'We analyze your business, competition, and market. We identify exactly what is working, what is not, and why.' },
-          'proc-t2': { t: 'Strategy' }, 'proc-d2': { t: 'A custom plan: which services you need, in what order, and with what budget to maximize returns from month one.' },
-          'proc-t3': { t: 'Execution' }, 'proc-d3': { t: 'Design, development, SEO — whatever it takes. You approve, we deliver on time. No surprise charges.' },
-          'proc-t4': { t: 'Results' }, 'proc-d4': { t: 'Clear monthly reports: visits, leads generated, conversions, and sales. No jargon — just the numbers that matter to your business.' },
+          'proc-t1': { t: 'You tell us' }, 'proc-d1': { t: 'Fill in the form or book a free call. Within 24 hours you get a clear proposal: what you need, what it costs and when it ships.' },
+          'proc-t2': { t: 'You approve' }, 'proc-d2': { t: 'Fixed price and a delivery date in writing. If we run late, your first month of maintenance is on us.' },
+          'proc-t3': { t: 'We build' }, 'proc-d3': { t: 'Design, copy that sells, SEO and development. You review progress over WhatsApp and sign off on each stage; we deliver on time.' },
+          'proc-t4': { t: 'You sell' }, 'proc-d4': { t: 'Your site goes live, we train you to edit it and we stay with you after launch. If you want it to keep growing with SEO or maintenance, you get monthly reports on what matters: visits, leads and sales.' },
           /* ── TESTIMONIOS (PLACEHOLDER — replace with real ones) */
           'testi-eyebrow': { t: 'Testimonials' },
           'testi-title': { h: 'What businesses<br>already <span class="t-lime">selling</span> say' },
@@ -842,11 +929,14 @@
           'testi-n2': { t: 'Ricardo Lora' }, 'testi-r2': { t: 'Seminuevos Coapa · Mexico City' },
           'testi-q3': { t: 'Our new website optimized how we bring in clients and grew our sales by 40% in two months.' },
           'testi-n3': { t: 'Jesús Bernal' }, 'testi-r3': { t: 'Mainoflex · Anti-vibration solutions' },
+          'testi-c1': { t: 'See the IMVEC case →' },
+          'testi-c2': { t: 'See the Seminuevos Coapa case →' },
+          'testi-c3': { t: 'See the Mainoflex case →' },
           /* ── PRECIOS */
           'precios-eyebrow': { t: 'Investment' },
           'precios-headline': { h: 'Pricing<br><em>no hidden fees.</em>' },
-          'precios-urgency': { t: 'Available for the first 5 clients each month' },
-          'precios-trust-text': { h: 'One-time payment. No surprises at the end.<br>Delivery date guaranteed in writing.' },
+          'precios-urgency': { t: 'Portfolio pricing · 5 spots a month' },
+          'precios-trust-text': { h: 'One-time payment. No surprises at the end.<br>Delivery date in writing: if we run late, <strong>your first month of maintenance is on us</strong>.' },
           'res-l1': { t: 'return on their sales investment' },
           'res-c1': { t: 'IMVEC · view case →' },
           'res-l2': { t: 'more sales in 2 months' },
@@ -854,48 +944,57 @@
           'res-l3': { t: 'projects delivered' },
           'res-c3': { t: 'View all case studies →' },
           'dominate-headline': { h: 'Ready<br>to<br>dominate?' },
-          'dominate-sub': { h: 'Free first consultation.<br>No commitments.' },
+          'dominate-sub': { h: 'Free first consultation.<br>Delivery date in writing.' },
           'dominate-cta': { t: 'Start Your Project' },
-          'launch-old-price': { t: 'Regular price: $499 USD' },
+          'dominate-audit': { t: 'Not ready yet? Get the free audit of your site first →' },
+          'launch-old-price': { h: '<span>Regular price</span> <s>$499 USD</s>' },
+          'launch-saving': { t: 'You save $200 USD · portfolio pricing' },
           'launch-delivery': { t: 'one-time payment · delivered in 5 business days' },
           'launch-features': { h: '<li><strong>Basic visual identity included</strong> — logo, palette, typography</li><li>A high-impact one-page site with 4 sections (hero, services, about, contact)</li><li>Responsive design — phone and desktop</li><li>Basic SEO configured from day one</li><li>Contact form included</li><li><strong>.com</strong> domain included the first year (or we connect yours if you already have one)</li><li>Content updates handled by Cero Studio</li>' },
           'launch-note': { t: 'Best for: restaurants, clinics, salons, local service businesses.' },
+          'launch-after': { h: 'After launch: optional maintenance from $800 MXN/mo, no annual contract → <a href="/en/services/web-maintenance/" data-href-es="/servicios/mantenimiento/" data-href-en="/en/services/web-maintenance/">see plans</a>' },
           'launch-cta': { t: 'Get started →' },
           'pro-badge': { t: 'Most popular' },
-          'pro-old-price': { t: 'Regular price: $2,500 USD' },
+          'pro-old-price': { h: '<span>Regular price</span> <s>$2,500 USD</s>' },
+          'pro-saving': { t: 'You save $1,501 USD · portfolio pricing' },
           'pro-delivery': { t: 'one-time payment · delivered in 21 business days' },
-          'pro-features': { h: '<li><strong>Professional identity included</strong> — logo, palette, typography + mini guidelines</li><li>4 to 6 pages with international-level design</li><li>You edit your content — no waiting on us</li><li>Blog included to position you as an expert</li><li>Premium animations and microinteractions</li><li>Advanced SEO + Google Search Console</li><li>Google Analytics + Tag Manager setup</li><li>WhatsApp button integrated</li><li><strong>.com</strong> domain included the first year (or we connect yours if you already have one)</li><li>Responsive — phone, tablet, and desktop</li><li>Professional contact form</li>' },
+          'pro-features': { h: '<li><strong>Professional identity included</strong> — logo, palette, typography + mini guidelines</li><li>4 to 6 pages, designed from scratch around your brand</li><li>You edit your content — no waiting on us</li><li>Blog included to position you as an expert</li><li>Premium animations and microinteractions</li><li>Advanced SEO + Google Search Console</li><li>Google Analytics + Tag Manager setup</li><li>WhatsApp button integrated</li><li><strong>.com</strong> domain included the first year (or we connect yours if you already have one)</li><li>Responsive — phone, tablet, and desktop</li><li>Professional contact form</li>' },
           'pro-note': { t: 'Best for: established businesses, independent professionals, companies ready to grow.' },
-          'pro-cta': { t: 'I want Cero Pro →' },
+          'pro-after': { h: 'After launch: optional maintenance from $800 MXN/mo, no annual contract → <a href="/en/services/web-maintenance/" data-href-es="/servicios/mantenimiento/" data-href-en="/en/services/web-maintenance/">see plans</a>' },
+          'pro-cta': { t: 'Get Cero Pro →' },
           'premium-price-display': { h: 'From $1,800<span>USD</span>' },
-          'premium-old-price': { t: 'Regular price: from $4,500 USD' },
-          'premium-delivery': { t: 'custom quote · timeline to be agreed' },
-          'premium-features': { h: '<li>Everything in Cero Pro</li><li><strong>Full identity + complete guidelines</strong></li><li>Custom advanced features</li><li>Digital strategy included</li><li>Dedicated account manager</li>' },
+          'premium-old-price': { h: '<span>Regular price</span> <s>from $4,500 USD</s>' },
+          'premium-saving': { t: 'You save from $2,700 USD · portfolio pricing' },
+          'premium-delivery': { t: 'custom quote · timeline agreed up front' },
+          'premium-features': { h: '<li>Everything in Cero Pro</li><li><strong>Full identity + complete guidelines</strong></li><li>Custom advanced features</li><li>Digital strategy included</li><li>Priority, direct follow-up with Carlos</li>' },
           'premium-note': { t: 'Best for: businesses with multiple services and custom needs.' },
+          'premium-excludes': { t: 'Does not include an online store: if you sell products, see the store plans ↓' },
+          'premium-after': { h: 'After launch: optional maintenance from $800 MXN/mo, no annual contract → <a href="/en/services/web-maintenance/" data-href-es="/servicios/mantenimiento/" data-href-en="/en/services/web-maintenance/">see plans</a>' },
           'premium-cta': { t: 'Request a quote →' },
-          'precios-condition': { h: 'Special launch pricing, valid only for the first 5 clients each month. Condition: Cero Studio may feature the project in its portfolio with the business name and real results.<br><span style="color:rgba(255,255,255,.45);" id="precios-currency-note">* We accept payment in USD or MXN.</span>' },
+          'precios-condition': { h: 'Why does it cost less? Because each month we take on only 5 projects at portfolio pricing: you pay less, and Cero Studio publishes your case with your business name and real results. Once the 5 spots are filled, the next project comes in at the regular price.<br><span style="color:rgba(255,255,255,.45);" id="precios-currency-note">* We accept payment in USD or MXN.</span>' },
           /* ── TIENDAS EN LÍNEA */
           'tiendas-eyebrow': { t: 'Online stores' },
           'tiendas-headline': { h: 'Sell<br><em>online.</em>' },
           'tiendas-urgency': { t: 'A store built to sell, not just to look good' },
-          'tiendas-trust-text': { h: 'One-time payment for the build.<br>The platform and payment gateway are covered by your business.' },
+          'tiendas-trust-text': { h: 'One-time payment for the build, billed in Mexican pesos (we also take USD).<br>The Tiendanube plan and payment gateway are paid by your business.' },
           'tiendas-partner-caption': { h: 'Certified <strong style="font-weight:600;color:#fff;">Tiendanube Partner</strong> Agency<br>We build your online store in Mexico' },
-          'tienda-esencial-name': { t: 'Store Essential' },
+          'tienda-esencial-name': { t: 'Store Essentials' },
           'tienda-esencial-delivery': { t: 'one-time payment · brands just starting out' },
           'tienda-esencial-features': { h: '<li>TiendaNube store with a template configured to your brand</li><li>Manage your catalog from a simple panel — products, prices and stock, anytime</li><li>Payment gateway + shipping configured</li><li>Instagram connection + WhatsApp button</li><li>Domain included (first year)</li>' },
-          'tienda-esencial-note': { t: 'Best for: brands just starting out, small catalog.' },
-          'tienda-esencial-cta': { t: 'I want to start →' },
+          'tienda-esencial-note': { t: 'Best for: you\'re starting to sell online, a few products in one category; you upload the catalog.' },
+          'tienda-esencial-cta': { t: 'Start my store →' },
           'tienda-pro-badge': { t: 'Most popular' },
           'tienda-pro-name': { t: 'Store Pro' },
           'tienda-pro-delivery': { t: 'one-time payment · growing catalog' },
-          'tienda-pro-features': { h: '<li>Everything in Store Essential</li><li>Design aligned with your brand</li><li>Basic SEO + organized categories</li><li>Integrations (Instagram Shopping)</li>' },
-          'tienda-pro-note': { t: 'Best for: medium, growing catalog.' },
-          'tienda-pro-cta': { t: 'I want Store Pro →' },
+          'tienda-pro-features': { h: '<li>Everything in Store Essentials</li><li>Design aligned with your brand</li><li>Basic SEO + organized categories</li><li>Integrations (Instagram Shopping)</li>' },
+          'tienda-pro-note': { t: 'Best for: you already sell on Instagram or WhatsApp and it\'s not enough; several categories and you want Google to find you.' },
+          'tienda-pro-cta': { t: 'Get Store Pro →' },
           'tienda-premium-name': { t: 'Store Premium' },
           'tienda-premium-delivery': { t: 'one-time payment · established brand' },
           'tienda-premium-features': { h: '<li>Everything in Store Pro</li><li>100% custom design</li><li>Full branding</li><li>Advanced SEO + automations (abandoned cart, emails)</li>' },
-          'tienda-premium-note': { t: 'Best for: established brands.' },
-          'tienda-premium-cta': { t: 'I want Store Premium →' },
+          'tienda-premium-note': { t: 'Best for: a brand with volume that wants its own design, full identity and automations that recover abandoned carts.' },
+          'tienda-premium-cta': { t: 'Get Store Premium →' },
+          'tiendas-custom': { h: 'Running a larger operation? Large catalog, ERP, multi-warehouse or B2B → custom eCommerce, quoted by scope. <a href="/en/services/online-stores/" data-href-es="/servicios/tiendas-ecommerce/" data-href-en="/en/services/online-stores/">See how we work →</a>' },
           'tiendas-condition': { t: 'Optional support and product-upload retainer from $800 MXN/month. The TiendaNube plan (~$99–249/month) and the payment gateway fee (~3.8% + tax per sale) are covered by the client.' },
           /* ── STAKES */
           'stakes-eyebrow': { t: "What's at stake" },
@@ -907,28 +1006,40 @@
           'stakes-3t': { t: "The AI answers where you don't exist" },
           'stakes-3p': { t: "About 30% of searches now end in ChatGPT, Gemini or Perplexity. If your business isn't in their sources, the AI recommends someone else." },
           'stakes-cta': { t: 'Stop losing customers →' },
+          'stakes-cta-audit': { t: 'Already have a site? Get a free audit: 5 findings in 48 hours →' },
           /* ── FAQ */
           'faq-eyebrow': { t: 'FAQ' },
-          'faq-title': { h: 'What everyone asks<br>before <span class="t-lime">starting</span>' },
+          'faq-title': { h: 'The questions everyone asks<br>before <span class="t-lime">getting started</span>' },
           'faq-q1': { t: 'How much does a professional website cost?' },
-          'faq-a1': { t: 'Three one-time-payment plans: Cero Launch at $299 USD delivered in 5 business days, Cero Pro at $999 USD — our most requested — and Cero Premium from $1,800 USD. No hidden monthly fees: the price you see is the price you pay.' },
+          'faq-a1': { t: 'Three one-time-payment plans: Cero Launch at $299 USD delivered in 5 business days, Cero Pro at $999 USD — our most requested — and Cero Premium from $1,800 USD. No hidden monthly fees: the price you see is the price you pay. If you\'d like us to look after the site after launch, maintenance is optional from $800 MXN a month, no annual contract.' },
           'faq-q2': { t: 'How long until my site is ready?' },
           'faq-a2': { t: 'Between 5 and 21 business days depending on the plan. You know your delivery date from day one and it\'s guaranteed in writing: if we run late, your maintenance is on us for 1 month.' },
           'faq-q3': { t: 'What does my site include so it sells, not just looks good?' },
           'faq-a3': { t: 'Custom design (zero generic templates), SEO configured from the start, responsive design, a contact form and copy written to turn visitors into customers. Your site works for you 24/7.' },
           'faq-q4': { t: 'What is AI search optimization (AEO/GEO)?' },
           'faq-a4': { t: 'About 30% of searches now end in an answer from ChatGPT, Gemini or Perplexity instead of a click. We optimize your site (schema, llms.txt, quotable content) so AI recommends you. If you are not in its sources, that customer will never know you exist.' },
-          'faq-q5': { t: 'Do you work with businesses outside Mexico City?' },
-          'faq-a5': { t: 'Yes — we work with entrepreneurs and businesses across Mexico, 100% remote: video calls, updates over WhatsApp and direct communication with Carlos, no middlemen.' },
+          'faq-q5': { t: 'Do you work with clients outside Mexico?' },
+          'faq-a5': { t: 'Yes. Everything is 100% remote — video calls, updates over WhatsApp and a direct line to Carlos in English, no middlemen. Most of our clients run businesses in Mexico; if you\'re an English-speaking owner based here, or a company that wants to sell to Mexican customers, you get a team that already knows how people here search, trust and pay. We invoice in USD or MXN.' },
           'faq-q6': { t: 'How do I start my project?' },
-          'faq-a6': { t: 'Send the contact form or schedule a free call. You get a reply within 24 hours with a clear proposal, and your site launches on the agreed date. The first consult is free, no strings attached.' },
+          'faq-a6': { t: 'Send the contact form or book a free call. You\'ll hear back within 24 hours with a clear proposal, and your site launches on the agreed date. Not ready yet? Start with a free audit of your site: 5 findings in 48 hours, no sales calls.' },
+          'faq-q7': { t: 'What if I just build it myself on Wix or with a template?' },
+          'faq-a7': { t: 'You can — and to test an idea, that\'s fine. The trouble starts when your business gets serious and your site doesn\'t: a template that looks like a thousand others, slow loading, half-done SEO and zero presence in ChatGPT. Here the design is built around how your customer buys, the price is fixed, and you talk directly to the person building it. Cero Launch ships in 5 business days for $299 USD, one-time payment, and the site is yours.' },
           /* ── CONTACTO */
           'contact-eyebrow': { t: 'Contact' },
-          'contact-title': { h: 'Ready for the<br><span class="t-outline">next</span> level?' },
-          'contact-sub': { t: 'Tell us about your project. We respond in under 24 hours and the first consultation is completely free.' },
-          'submitBtnLabel': { t: 'Send Message' },
+          'contact-title': { h: 'Tell us about your business.<br>Proposal within <span class="t-outline">24 hours</span>.' },
+          'contact-sub': { t: 'No endless quoting: tell us what you sell and to whom, and we send back a clear plan with a fixed price and a delivery date in writing. The first consultation is free.' },
+          'contact-p1n': { t: '≤ 24 h' },
+          'contact-p1': { t: 'We reply' },
+          'contact-p2n': { t: 'In writing' },
+          'contact-p2': { t: 'Guaranteed delivery date' },
+          'contact-p3n': { t: '150+' },
+          'contact-p3': { t: 'Businesses in 25 years' },
+          'contact-quote': { t: '“Outstanding commitment, professionalism and level of service from Carlos.”' },
+          'contact-quote-cite': { t: 'Ricardo Lora · Seminuevos Coapa · view case →' },
+          'submitBtnLabel': { t: 'Send me my proposal →' },
+          'form-reassure': { t: 'Reply within 24 hours · No strings attached · You talk directly with Carlos' },
           'agenda-link': { t: 'Or schedule a free call →' },
-          'contact-wa': { t: 'Send a WhatsApp' },
+          'contact-wa': { t: 'Message us on WhatsApp' },
           /* ── FOOTER */
           'footer-tagline': { t: 'We design the digital future of your business.' },
           'footer-partner-text': { h: 'Certified <strong style="font-weight:600;color:#fff;">Tiendanube Partner</strong> Agency' },
@@ -972,10 +1083,12 @@
           nombre: 'Nombre *',
           email: 'Email *',
           whatsapp: 'WhatsApp (10 dígitos) *',
+          whatsappPh: '55 1234 5678', /* plan 2026-09: placeholder por idioma (EN-04) */
           empresa: 'Empresa / Negocio',
           servicio: '¿Qué servicio necesitas?',
           servicioPh: 'Selecciona una opción',
-          mensaje: 'Cuéntanos sobre tu proyecto *',
+          mensaje: '¿Qué vendes y qué quieres lograr con tu sitio? *',
+          mensajePh: 'Ej. Tengo una estética en Coyoacán, hoy vendo por Instagram y quiero un sitio donde mis clientas agenden en línea. Me interesa el Cero Pro.', /* plan 2026-09: placeholder guía (A2 lo aplica en setLang) */
           tiene: '¿Ya tienes sitio web? *',
           tieneSi: 'Sí, ya tengo',
           tieneNo: 'Todavía no',
@@ -988,11 +1101,13 @@
         en: {
           nombre: 'Name *',
           email: 'Email *',
-          whatsapp: 'WhatsApp (10 digits) *',
+          whatsapp: 'WhatsApp / mobile (with country code) *', /* plan 2026-09: EN acepta 10–15 dígitos (EN-04) */
+          whatsappPh: '+1 512 555 1234',
           empresa: 'Company / Business',
           servicio: 'What service do you need?',
           servicioPh: 'Select an option',
-          mensaje: 'Tell us about your project *',
+          mensaje: 'What do you sell, and what should your site achieve? *',
+          mensajePh: 'E.g. I run a dental clinic in Mexico City, I get most clients from Instagram and I want a site where patients can book online. I\'m interested in Cero Pro.',
           tiene: 'Do you already have a website? *',
           tieneSi: 'Yes, I do',
           tieneNo: 'Not yet',
@@ -1055,6 +1170,10 @@
           var fSitio = g('f-sitio'), fNegocio = g('f-negocio');
           if (fSitio) fSitio.placeholder = form.sitioPh;
           if (fNegocio) fNegocio.placeholder = form.negocioPh;
+          /* plan 2026-09: placeholders guía de WhatsApp y mensaje por idioma */
+          var fWa = g('f-whatsapp'), fMsg = g('f-mensaje');
+          if (fWa) fWa.placeholder = form.whatsappPh;
+          if (fMsg) fMsg.placeholder = form.mensajePh;
           var sel = f.querySelector('[name="servicio"]');
           if (sel) {
             sel.options[0].text = form.servicioPh;
@@ -1127,6 +1246,63 @@
           });
         }
         window._csLangReady = true;
+
+        /* plan 2026-09: textos dependientes del DOM (conteo de cards, clamp de bullets) */
+        syncPortMore(lang);
+        syncPlanClamp(lang);
+      }
+
+      /* ── PORTAFOLIO COLAPSADO (HOME-CRO-03) ─────────────────────
+         Cuenta las .port-card que inyectó el SSR en #portfolio-dynamic; con ≤6
+         no hay nada que expandir y el botón se oculta. */
+      function syncPortMore(lang) {
+        var btn = document.getElementById('port-more');
+        if (!btn) return;
+        var grid = document.querySelector('.port-grid');
+        var n = document.querySelectorAll('#portfolio-dynamic .port-card').length;
+        if (n <= 6 || !grid || !grid.classList.contains('is-collapsed')) { btn.style.display = 'none'; return; }
+        btn.style.display = '';
+        btn.textContent = lang === 'en' ? 'See all ' + n + ' projects →' : 'Ver los ' + n + ' proyectos →';
+        if (!btn._csBound) {
+          btn._csBound = true;
+          btn.addEventListener('click', function () {
+            grid.classList.remove('is-collapsed');
+            btn.style.display = 'none';
+          });
+        }
+      }
+
+      /* ── PRICING MÓVIL: bullets colapsables (MOB-03) ────────────
+         Corre tras setLang porque *-features se re-escriben con h:. Con >6 li
+         en ≤768px: .plan-features--clamp + botón .plan-more/.plan-less. */
+      function syncPlanClamp(lang) {
+        if (!window.matchMedia('(max-width:768px)').matches) return;
+        var dict = CS_I18N[lang];
+        document.querySelectorAll('ul.plan-features').forEach(function (ul) {
+          var extra = ul.querySelectorAll('li').length - 6;
+          var btn = ul.nextElementSibling;
+          if (!(btn && btn.classList.contains('plan-more'))) btn = null;
+          if (extra < 2) { /* con 1 sobrante no vale la pena colapsar */
+            ul.classList.remove('plan-features--clamp');
+            if (btn) btn.remove();
+            return;
+          }
+          if (!btn) {
+            ul.classList.add('plan-features--clamp');
+            btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'plan-more';
+            ul.insertAdjacentElement('afterend', btn);
+            btn.addEventListener('click', function () {
+              var open = ul.classList.toggle('plan-features--clamp');
+              btn.classList.toggle('plan-less', !open);
+              btn.textContent = open ? btn.dataset.more : btn.dataset.less;
+            });
+          }
+          btn.dataset.more = dict['plan-more'].t + ' (+' + extra + ')';
+          btn.dataset.less = dict['plan-less'].t;
+          btn.textContent = ul.classList.contains('plan-features--clamp') ? btn.dataset.more : btn.dataset.less;
+        });
       }
 
       /* Desde jul 2026 existe /en/index.html real: el toggle NAVEGA entre las
@@ -1167,7 +1343,20 @@
           errWhatsapp: 'Revisa tu WhatsApp — deben ser 10 dígitos (ej. 55 1234 5678).',
           errSitio: 'Eso no parece un link — escribe algo como minegocio.mx. ¿Todavía no tienes sitio? Marca "Todavía no".',
           errNegocio: 'Cuéntanos el nombre y la dirección de tu negocio — con eso hacemos tu diagnóstico.',
-          send: 'Enviar Mensaje',
+          errBot: 'No pudimos verificar que eres humano. Recarga la página e inténtalo de nuevo, o escríbenos por WhatsApp.', /* plan 2026-09: 403 de Turnstile en el idioma del usuario */
+          send: 'Quiero mi propuesta →',
+          /* plan 2026-09: panel post-envío (.form-done) */
+          doneTitle: 'Listo, {nombre}. Tu proyecto ya está en la bandeja de Carlos.',
+          doneStep1: 'En menos de 24 horas te escribimos por WhatsApp al {whatsapp} con una propuesta clara.',
+          doneStep2: 'Si quieres adelantar, agenda ahora tu llamada gratis.',
+          doneStep3: 'Mientras tanto, mira cómo le fue a <a href="/casos-de-exito/imvec/">IMVEC (3× retorno)</a> y a <a href="/casos-de-exito/mainoflex/">Mainoflex (+40% ventas en 2 meses)</a>.',
+          doneCal: 'Agendar mi llamada ahora →',
+          doneCases: 'Ver casos de éxito →',
+          doneCasesHref: '/casos-de-exito/',
+          doneWa: 'Seguir por WhatsApp →',
+          doneWaText: 'Hola, acabo de enviar el formulario desde cerostudio.ai — me interesa {plan}. ¿Seguimos por aquí?',
+          doneWaTextPlain: 'Hola, acabo de enviar el formulario desde cerostudio.ai. ¿Seguimos por aquí?',
+          doneAgain: 'Enviar otro mensaje',
         },
         en: {
           sending: 'Sending...',
@@ -1175,10 +1364,22 @@
           error: 'Something went wrong. Try again or reach us at hola@cerostudio.ai.',
           errRequired: 'Please fill in all required fields (*).',
           errEmail: 'Please enter a valid email address.',
-          errWhatsapp: 'Check your WhatsApp — it should be 10 digits (e.g. 55 1234 5678).',
+          errWhatsapp: 'Check your number — include your country code, e.g. +1 512 555 1234 or +52 55 1234 5678.', /* plan 2026-09: EN-04 */
           errSitio: 'That does not look like a link — try something like mybusiness.com. No website yet? Select "Not yet".',
           errNegocio: 'Tell us your business name and address — that is what we use for your diagnosis.',
-          send: 'Send Message',
+          errBot: "We couldn't verify you're human. Reload the page and try again, or message us on WhatsApp.",
+          send: 'Send me my proposal →',
+          doneTitle: "Done, {nombre}. Your project just landed in Carlos's inbox.",
+          doneStep1: "Within 24 hours we'll message you on WhatsApp at {whatsapp} with a clear proposal.",
+          doneStep2: 'Want to move faster? Book your free call now.',
+          doneStep3: 'In the meantime, see how it went for <a href="/en/case-studies/imvec/">IMVEC (3× return)</a> and <a href="/en/case-studies/mainoflex/">Mainoflex (+40% sales in 2 months)</a>.',
+          doneCal: 'Book my call now →',
+          doneCases: 'See case studies →',
+          doneCasesHref: '/en/case-studies/',
+          doneWa: 'Continue on WhatsApp →',
+          doneWaText: "Hi, I just sent the form on cerostudio.ai — I'm interested in {plan}. Can we continue here?",
+          doneWaTextPlain: 'Hi, I just sent the form on cerostudio.ai. Can we continue here?',
+          doneAgain: 'Send another message',
         }
       };
 
@@ -1212,9 +1413,10 @@
           return { ok: false, msg: msgs.errEmail };
         }
 
-        /* WhatsApp: 10 dígitos MX */
+        /* WhatsApp: 10 dígitos MX; en /en/ se aceptan 10–15 con lada (EN-04) */
         var waField = form.querySelector('[name="whatsapp"]');
-        if (waField && normalizeWhatsapp(waField.value).length !== 10) {
+        var waLen = waField ? normalizeWhatsapp(waField.value).length : 10;
+        if (waField && (lang === 'en' ? (waLen < 10 || waLen > 15) : waLen !== 10)) {
           waField.classList.add('invalid');
           return { ok: false, msg: msgs.errWhatsapp };
         }
@@ -1243,6 +1445,88 @@
         }
 
         return { ok: true };
+      }
+
+      /* ── PANEL POST-ENVÍO (.form-done) ──────────────────────────
+         Oculta campos/Turnstile/submit vía form.is-done (CSS de A3) y arma el
+         panel con DOM (nombre y WhatsApp del lead van como texto, nunca HTML). */
+      var CS_CAL_URL = 'https://calendar.app.google/Mk3sTdFWsaaaUNnj6';
+      function showFormDone(form, lang, lead) {
+        var m = FORM_MSGS[lang];
+        var old = form.querySelector('.form-done');
+        if (old) old.remove();
+        clearFeedback();
+
+        var panel = document.createElement('div');
+        panel.className = 'form-done';
+        panel.setAttribute('role', 'status');
+
+        var title = document.createElement('h3');
+        title.className = 'form-done-title';
+        title.textContent = m.doneTitle.replace('{nombre}', lead.nombre.trim().split(/\s+/)[0] || '');
+        panel.appendChild(title);
+
+        var ol = document.createElement('ol');
+        ol.className = 'form-done-steps';
+        var li1 = document.createElement('li');
+        li1.textContent = m.doneStep1.replace('{whatsapp}', lead.whatsapp);
+        var li2 = document.createElement('li');
+        li2.textContent = m.doneStep2;
+        var li3 = document.createElement('li');
+        li3.innerHTML = m.doneStep3; /* texto fijo del dict con links a los casos */
+        ol.appendChild(li1); ol.appendChild(li2); ol.appendChild(li3);
+        panel.appendChild(ol);
+
+        /* WhatsApp prellenado con el plan clicado o, en su defecto, el servicio del select */
+        var what = CS_PLAN ? CS_PLAN.name : '';
+        if (!what && lead.servicio) {
+          var vals = ['web', 'ecommerce', 'branding', 'seo', 'mantenimiento', 'consultoria', 'auditoria-gratis', 'otro'];
+          var idx = vals.indexOf(lead.servicio);
+          if (idx !== -1 && lead.servicio !== 'otro') what = CS_FORM[lang].opts[idx];
+        }
+        var waText = what ? m.doneWaText.replace('{plan}', what) : m.doneWaTextPlain;
+
+        var actions = document.createElement('div');
+        actions.className = 'form-done-actions';
+        var mk = function (cls, href, txt, blank) {
+          var a = document.createElement('a');
+          a.className = cls; a.href = href; a.textContent = txt;
+          if (blank) { a.target = '_blank'; a.rel = 'noopener'; }
+          return a;
+        };
+        actions.appendChild(mk('btn-primary ht form-done-cal', CS_CAL_URL, m.doneCal, true));
+        actions.appendChild(mk('btn-ghost ht form-done-cases', m.doneCasesHref, m.doneCases, false));
+        actions.appendChild(mk('btn-ghost ht form-done-wa', waHref(waText), m.doneWa, true));
+        panel.appendChild(actions);
+
+        var again = document.createElement('button');
+        again.type = 'button';
+        again.className = 'form-done-again';
+        again.textContent = m.doneAgain;
+        panel.appendChild(again);
+
+        /* Los enlaces secundarios bajo el submit duplicarían los del panel */
+        var aside = ['form-reassure', 'agenda-link', 'contact-wa'].map(function (id) { return document.getElementById(id); });
+        aside.forEach(function (el) {
+          if (!el) return;
+          if (el.dataset.csDisp === undefined) el.dataset.csDisp = el.style.display; /* agenda-link/contact-wa traen display:block inline */
+          el.style.display = 'none';
+        });
+
+        again.addEventListener('click', function () {
+          panel.remove();
+          form.classList.remove('is-done');
+          aside.forEach(function (el) { if (el) el.style.display = el.dataset.csDisp || ''; });
+          form.reset();
+          if (typeof syncAudit === 'function') syncAudit();
+          clearFeedback();
+          var first = form.querySelector('[name="nombre"]');
+          if (first) first.focus();
+        });
+
+        form.classList.add('is-done');
+        form.appendChild(panel);
+        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
 
       function setFeedback(type, msg) {
@@ -1284,6 +1568,7 @@
         fd.forEach(function(v, k) { payload[k] = v; });
 
         /* WhatsApp normalizado a 10 dígitos (el server lo re-sanitiza igual) */
+        var waTyped = (payload.whatsapp || '').trim(); /* tal cual lo escribió, para el panel post-envío */
         if (payload.whatsapp) payload.whatsapp = normalizeWhatsapp(payload.whatsapp);
 
         /* Bifurcación de auditoría: fuera de auditoría los campos ocultos no
@@ -1320,8 +1605,13 @@
               /* Conversión medible: GTM define el tag GA4 sobre este evento */
               window.dataLayer = window.dataLayer || [];
               window.dataLayer.push({ event: 'lead_form_submit', form_type: payload.servicio || 'contacto', event_id: eventId });
-              setFeedback('success', msgs.success);
+              /* plan 2026-09 (HOME-CRO-06/LEAD-01): panel post-envío en lugar de la línea de éxito */
+              showFormDone(form, lang, { nombre: payload.nombre || '', whatsapp: waTyped, servicio: payload.servicio || '' });
               form.reset();
+              if (typeof syncAudit === 'function') syncAudit();
+            } else if (res.status === 403) {
+              /* plan 2026-09 (HOME-CRO-05): Turnstile falló → mensaje en el idioma del usuario */
+              setFeedback('error', msgs.errBot);
             } else {
               return res.json().then(function (data) {
                 var errMsg = (data && data.error) ? data.error
@@ -1367,5 +1657,25 @@
           r.addEventListener('change', syncAudit);
         });
         syncAudit();
+
+        /* plan 2026-09 (SV-07/NC-05/LEAD-02): ?servicio= y ?ref= desde fichas y
+           casos. Solo lectura en cliente (no fragmenta la caché SSR) y con
+           whitelist: nada de la URL llega al textarea tal cual. */
+        try {
+          var REF_CASES = { imvec: 'IMVEC', mainoflex: 'Mainoflex', 'respirar-es-vivir': 'Respirar es Vivir', 'seminuevos-coapa': 'Seminuevos Coapa', 'sergio-luque': 'Sergio Luque' };
+          var qs = new URLSearchParams(location.search);
+          var refCase = REF_CASES[qs.get('ref')];
+          var refServ = qs.get('servicio');
+          if (refServ && _sel && Array.prototype.some.call(_sel.options, function (o) { return o.value === refServ; })) {
+            _sel.value = refServ;
+            _sel.dispatchEvent(new Event('change')); /* → syncAudit */
+          }
+          var refMsg = _cf.querySelector('[name="mensaje"]');
+          if (refCase && refMsg && !refMsg.value.trim()) {
+            refMsg.value = CS_IS_EN_HOME
+              ? 'I saw the ' + refCase + ' case study and I want a result like that for my business.'
+              : 'Vi el caso de ' + refCase + ' y quiero un resultado así para mi negocio.';
+          }
+        } catch (e) { /* URLSearchParams no disponible: sin prefill */ }
       }
     }); // end DOMContentLoaded

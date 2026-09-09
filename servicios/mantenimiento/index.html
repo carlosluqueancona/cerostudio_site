@@ -37,9 +37,9 @@
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
     as="style" data-async>
   <noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="/css/base.css?v=20260705a">
-  <link rel="stylesheet" href="/css/home.css?v=20260720c">
-  <link rel="stylesheet" href="/css/servicios-spec.css?v=20260705a">
+  <link rel="stylesheet" href="/css/base.css?v=20260907a">
+  <link rel="stylesheet" href="/css/home.css?v=20260907c">
+  <link rel="stylesheet" href="/css/servicios-spec.css?v=20260907a">
   <script src="/components/cookie-consent.js" defer></script>
   <script src="/components/cursor.js" defer></script>
 
@@ -63,9 +63,9 @@
         "url": "https://cerostudio.ai/servicios/mantenimiento/",
         "offers": {
           "@type": "Offer",
-          "priceCurrency": "USD",
-          "price": "499",
-          "priceSpecification": { "@type": "PriceSpecification", "priceCurrency": "USD", "minPrice": "499" },
+          "priceCurrency": "MXN",
+          "price": "800",
+          "priceSpecification": { "@type": "UnitPriceSpecification", "priceCurrency": "MXN", "minPrice": "800", "unitText": "MONTH" },
           "availability": "https://schema.org/InStock"
         }
       },
@@ -119,7 +119,7 @@
 
 <body>
   <div class="site-wrapper">
-    <script src="/components/loader.js?v=20260706a" defer></script>
+    <script src="/components/loader.js?v=20260907a" defer></script>
     <svg class="noise" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
       style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;opacity:.05;z-index:1000;">
       <filter id="nf"><feTurbulence type="fractalNoise" baseFrequency=".68" numOctaves="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
@@ -137,6 +137,7 @@
 
         <!-- ── FICHA · portada ─────────────────────────────────────── -->
         <header class="sv-hero">
+          <span class="card-glyph sv-glyph" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><g stroke="currentColor" stroke-width="1.5"><polygon points="12,3 19.8,7.5 19.8,16.5 12,21 4.2,16.5 4.2,7.5" vector-effect="non-scaling-stroke"/><circle cx="12" cy="12" r="4.2" vector-effect="non-scaling-stroke"/></g></svg></span>
           <div>
             <p class="sv-code">SRV-05 · Mantenimiento Web</p>
             <h1 class="sv-h1">Soporte web <em>365 días al año.</em></h1>
@@ -149,6 +150,7 @@
               <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Agendar Llamada Gratis</a>
               <a href="https://wa.me/525531007101?text=Hola%2C%20vi%20su%20p%C3%A1gina%20de%20Mantenimiento%20Web%20y%20me%20interesa%20m%C3%A1s%20informaci%C3%B3n." target="_blank" rel="noopener" class="btn-ghost ht">Enviar WhatsApp</a>
             </div>
+          <p class="sv-cta-alt">¿Prefieres que te cotice por escrito? <a href="/?servicio=mantenimiento#contacto">Pedir cotización por formulario →</a></p>
           </div>
           <aside class="sv-specs" aria-label="Especificaciones del servicio">
             <p class="sv-specs-title">Especificaciones</p>
@@ -284,21 +286,41 @@
           </div>
         </section>
 
+        <!-- ── Prueba · resultados publicados (SV-01/PS-04) ─────────── -->
+        <section class="sv-proof" data-label="Sitios que seguimos cuidando" aria-label="Casos de éxito">
+          <div class="sv-proof-grid">
+            <a class="sv-proof-card ht" href="/casos-de-exito/seminuevos-coapa/">
+              <span class="sv-proof-num">Autogestión</span>
+              <span class="sv-proof-label">Independencia total</span>
+              <blockquote class="sv-proof-quote">“Excelente compromiso, profesionalismo y nivel de servicio de parte de Carlos. ¡Gracias por su valiosa colaboración!”</blockquote>
+              <span class="sv-proof-who">Ricardo Lora · Seminuevos Coapa</span>
+            </a>
+            <a class="sv-proof-card ht" href="/casos-de-exito/mainoflex/">
+              <span class="sv-proof-num">24/7</span>
+              <span class="sv-proof-label">Catálogo y contacto</span>
+              <p class="sv-proof-desc">Sus productos y sus vías de contacto —WhatsApp, formulario, mapas— disponibles a toda hora, listos para captar al prospecto en el momento en que decide.</p>
+              <span class="sv-proof-who">Mainoflex · Soluciones antivibratorias</span>
+            </a>
+          </div>
+          <a class="sv-proof-all" href="/casos-de-exito/">Ver todos los casos de éxito →</a>
+        </section>
+
         <!-- ── Orden de trabajo (CTA final) ────────────────────────── -->
         <section class="sv-order" data-label="Orden de trabajo">
           <h2>¿Tu sitio está protegido <span class="t-lime">y respaldado?</span></h2>
-          <p>Revisamos tu sitio gratis y te decimos exactamente en qué estado está. Sin compromiso.</p>
+          <p>Pide una revisión gratis: en 48 horas hábiles te decimos en qué estado está tu sitio — seguridad, velocidad y respaldos — y qué conviene arreglar primero. Sin compromiso.</p>
           <div class="sv-cta-row">
-            <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Agendar Revisión Gratis</a>
+            <a href="/auditoria-gratis/" class="btn-primary ht">Pedir revisión gratis de mi sitio</a>
             <a href="https://wa.me/525531007101?text=Hola%2C%20vi%20su%20p%C3%A1gina%20de%20Mantenimiento%20Web%20y%20me%20interesa%20m%C3%A1s%20informaci%C3%B3n." target="_blank" rel="noopener" class="btn-ghost ht">Enviar WhatsApp</a>
           </div>
+          <p class="sv-cta-alt">¿Prefieres que te cotice por escrito? <a href="/?servicio=mantenimiento#contacto">Pedir cotización por formulario →</a></p>
         </section>
 
         <!-- ── § 06 · Catálogo de servicios ────────────────────────── -->
         <section class="sv-section">
           <div class="sv-sec-head">
             <span class="sv-sec-num">06 — Catálogo</span>
-            <h2 class="sv-h2">Más servicios para tu presencia digital.</h2>
+            <h2 class="sv-h2">Otros servicios — y dos cosas gratis para empezar.</h2>
           </div>
           <div class="sv-catalog">
             <a href="/servicios/desarrollo-web/" class="sv-catalog-row"><span class="code">SRV-01</span><span class="name">Desarrollo Web</span><span class="arrow">→</span></a>
@@ -306,6 +328,8 @@
             <a href="/servicios/branding-digital/" class="sv-catalog-row"><span class="code">SRV-03</span><span class="name">Branding Digital</span><span class="arrow">→</span></a>
             <a href="/servicios/seo/" class="sv-catalog-row"><span class="code">SRV-04</span><span class="name">SEO + AI Search</span><span class="arrow">→</span></a>
             <a href="/servicios/consultoria-digital/" class="sv-catalog-row"><span class="code">SRV-06</span><span class="name">Consultoría Digital</span><span class="arrow">→</span></a>
+            <a href="/auditoria-gratis/" class="sv-catalog-row"><span class="code">AUD-00</span><span class="name">Auditoría exprés gratis · 5 hallazgos en 48 h</span><span class="arrow">→</span></a>
+            <a href="/recursos/5-errores-web/" class="sv-catalog-row"><span class="code">REC-01</span><span class="name">Guía gratis · 5 errores que le cuestan a tu web</span><span class="arrow">→</span></a>
           </div>
         </section>
 
@@ -314,8 +338,8 @@
 
     <div id="footer-placeholder"></div>
   </div>
-  <script src="/components/reveal-cards.js?v=20260705a" defer></script>
-  <script src="/components/lang-toggle.js?v=20260604c" defer></script>
+  <script src="/components/reveal-cards.js?v=20260907a" defer></script>
+  <script src="/components/lang-toggle.js?v=20260907a" defer></script>
 </body>
 
 </html>

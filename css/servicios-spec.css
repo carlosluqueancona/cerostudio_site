@@ -53,6 +53,24 @@
 .sv-hero::before { top: 10px; left: 12px; }
 .sv-hero::after { bottom: 10px; right: 12px; }
 
+/* Glifo fantasma por servicio (mismo SVG que su card del home).
+   No aplica en .sv-hero--pulse (SEO ya tiene su firma). */
+.sv-hero { overflow: hidden; }
+.sv-hero > div, .sv-hero > aside { position: relative; z-index: 1; }
+.sv-glyph {
+  position: absolute;
+  top: -56px;
+  right: -48px;
+  width: clamp(220px, 26vw, 360px);
+  height: clamp(220px, 26vw, 360px);
+  color: var(--surface-high);
+  z-index: 0;
+  pointer-events: none;
+  transition: color .9s ease .5s;
+}
+.sv-glyph svg { width: 100%; height: 100%; display: block; }
+.sv-hero:hover .sv-glyph { color: rgba(var(--lime-rgb), .35); }
+
 .sv-code {
   display: inline-flex;
   align-items: center;
@@ -297,8 +315,8 @@
   font-family: var(--fb);
   font-size: 14px;
   line-height: 1.65;
-  font-weight: 300;
-  color: rgba(255, 255, 255, .65);
+  font-weight: 400;
+  color: rgba(255, 255, 255, .72);
   margin: 0;
 }
 
@@ -333,8 +351,8 @@
   font-family: var(--fb);
   font-size: 14px;
   line-height: 1.6;
-  font-weight: 300;
-  color: rgba(255, 255, 255, .6);
+  font-weight: 400;
+  color: rgba(255, 255, 255, .72);
   margin: 0;
 }
 
@@ -380,10 +398,10 @@
 }
 .sv-step p {
   font-family: var(--fb);
-  font-size: 13.5px;
+  font-size: 14px;
   line-height: 1.6;
-  font-weight: 300;
-  color: rgba(255, 255, 255, .62);
+  font-weight: 400;
+  color: rgba(255, 255, 255, .72);
   margin: 0;
 }
 
@@ -427,6 +445,105 @@
 }
 .sv-faq .faq-item a { color: var(--lime); }
 .sv-faq .faq-item strong { color: #fff; font-weight: 500; }
+
+/* ── PRUEBA · resultados publicados (antes de la orden de trabajo) ──
+   Solo citas y métricas ya publicadas en el home y en /casos-de-exito/. */
+.sv-proof {
+  position: relative;
+  border-top: 1px solid rgba(255, 255, 255, .14);
+  padding: 48px 0 0;
+  margin: 0 0 72px;
+}
+.sv-proof::before {
+  content: attr(data-label);
+  display: block;
+  margin-bottom: 28px;
+  font-family: var(--fd);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  color: var(--lime);
+}
+.sv-proof-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(255, 255, 255, .1);
+  border: 1px solid rgba(255, 255, 255, .1);
+}
+/* sin huérfanos: 2 cards → 2 columnas · 1 card → ancho completo */
+.sv-proof-grid:has(.sv-proof-card:nth-child(2):last-child) { grid-template-columns: repeat(2, 1fr); }
+.sv-proof-grid:has(.sv-proof-card:only-child) { grid-template-columns: 1fr; }
+.sv-proof-card {
+  display: block;
+  background: var(--black);
+  padding: 32px 28px;
+  color: inherit;
+  text-decoration: none;
+  transition: background .25s ease;
+}
+.sv-proof-card:hover { background: #101010; }
+.sv-proof-num {
+  display: block;
+  font-family: var(--fd);
+  font-weight: 700;
+  font-size: clamp(36px, 4.5vw, 56px);
+  letter-spacing: -.04em;
+  line-height: .9;
+  color: var(--lime);
+  overflow-wrap: anywhere;
+}
+.sv-proof-label {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--fd);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.sv-proof-quote, .sv-proof-desc {
+  margin: 18px 0 14px;
+  font-family: var(--fb);
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, .72);
+}
+.sv-proof-who {
+  font-family: var(--fd);
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .5);
+}
+.sv-proof-all {
+  display: inline-block;
+  margin-top: 24px;
+  font-family: var(--fd);
+  font-size: 12px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--lime);
+  text-decoration: none;
+}
+.sv-proof-all:hover { text-decoration: underline; }
+
+/* Tercer camino (formulario / guía / llamada) bajo un .sv-cta-row */
+.sv-cta-alt {
+  margin: 16px 0 0;
+  font-family: var(--fb);
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, .55);
+}
+.sv-cta-alt a { color: var(--lime); }
+.sv-cta-alt + .sv-cta-alt { margin-top: 8px; }
+/* dentro de la orden de trabajo gana a `.sv-order > p` */
+.sv-order > .sv-cta-alt { margin: 20px 0 0; font-size: 13px; font-weight: 400; color: rgba(255, 255, 255, .55); }
+.sv-order > .sv-cta-alt + .sv-cta-alt { margin-top: 8px; }
 
 /* ── ORDEN DE TRABAJO (CTA final) ───────────────────────────────── */
 .sv-order {
@@ -514,6 +631,7 @@
   .sv-module.in-view h3 { color: var(--lime); transition: color .9s ease .5s; }
   .sv-step.in-view { border-top-color: rgba(178, 247, 0, .55); transition: border-color .9s ease .5s; }
   .sv-bom-row.in-view { background: rgba(178, 247, 0, .04); transition: background .9s ease .5s; }
+  .sv-hero.in-view .sv-glyph { color: rgba(var(--lime-rgb), .35); }
 }
 @keyframes svLine {
   from { transform: scaleX(0); }
@@ -523,6 +641,8 @@
 /* ── Responsive ─────────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .sv-hero { grid-template-columns: 1fr; }
+  .sv-proof-grid { grid-template-columns: 1fr; }
+  .sv-proof-grid:has(.sv-proof-card:nth-child(2):last-child) { grid-template-columns: repeat(2, 1fr); }
   .sv-line { grid-template-columns: repeat(2, 1fr); row-gap: 36px; }
   .sv-bom-row { grid-template-columns: 56px 1fr; }
   .sv-bom-row p { grid-column: 2; }
@@ -531,6 +651,8 @@
 @media (max-width: 640px) {
   .sv-sheet { padding-top: 80px; }
   .sv-hero { padding: 24px 20px; margin-bottom: 64px; }
+  .sv-glyph { top: auto; bottom: -40px; right: -40px; width: 200px; height: 200px; }
+  .sv-proof-grid, .sv-proof-grid:has(.sv-proof-card:nth-child(2):last-child) { grid-template-columns: 1fr; }
   .sv-section { padding-bottom: 64px; }
   .sv-sec-head { flex-direction: column; gap: 8px; }
   .sv-modules { grid-template-columns: 1fr; }
@@ -545,6 +667,9 @@
   .sv-modules { gap: 0; background: transparent; border-left: 0; border-right: 0; }
   .sv-module { border-bottom: 1px solid rgba(255, 255, 255, .12); padding: 26px 18px; }
   .sv-module:last-child { border-bottom: 0; }
+  .sv-proof-grid { gap: 0; background: transparent; border-left: 0; border-right: 0; }
+  .sv-proof-card { border-bottom: 1px solid rgba(255, 255, 255, .12); padding: 26px 18px; }
+  .sv-proof-card:last-child { border-bottom: 0; }
 }
 
 /* Portafolio SSR en móvil: 1 columna (el inline style de 2 cols aprieta las

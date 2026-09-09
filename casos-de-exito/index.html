@@ -42,8 +42,8 @@
   <noscript><link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
       rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="/css/base.css?v=20260705a">
-  <link rel="stylesheet" href="/css/home.css?v=20260720c">
+  <link rel="stylesheet" href="/css/base.css?v=20260907a">
+  <link rel="stylesheet" href="/css/home.css?v=20260907c">
 
   <style>
     /* ── Casos de éxito index (.csx-*) — kinetic brutalism CS ── */
@@ -86,6 +86,10 @@
     .csx-card-body{padding:48px 44px;display:flex;flex-direction:column;justify-content:center}
     .csx-card-cat{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--lime,#b2f700);margin:0 0 16px}
     .csx-card-name{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,3vw,38px);font-weight:700;letter-spacing:-.02em;line-height:1.05;color:#fff;margin:0 0 14px;transition:color .3s ease}
+    /* Pull-out de resultado por card (patrón .cs-hero-stats de los casos) */
+    .csx-card-result{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px;margin:0 0 18px;padding:12px 0 0;border-top:1px solid rgba(255,255,255,.08)}
+    .csx-card-result .num{font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,3vw,40px);font-weight:800;color:var(--lime,#b2f700);letter-spacing:-.03em;line-height:1}
+    .csx-card-result .lbl{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.55)}
     .csx-card-desc{font-family:Inter,sans-serif;font-size:15px;line-height:1.65;font-weight:300;color:rgba(255,255,255,.7);margin:0 0 24px;max-width:46ch}
     .csx-card-tags{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:0 0 28px;padding:0}
     .csx-card-tags li{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.65);padding:6px 11px;border:1px solid rgba(255,255,255,.12)}
@@ -154,20 +158,20 @@
           {
             "@type": "ListItem",
             "position": 1,
-            "url": "https://cerostudio.ai/casos-de-exito/sergio-luque/",
-            "name": "Sergio Luque — Compositor"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
             "url": "https://cerostudio.ai/casos-de-exito/imvec/",
             "name": "IMVEC — Metalmecánica de precisión"
           },
           {
             "@type": "ListItem",
-            "position": 3,
+            "position": 2,
             "url": "https://cerostudio.ai/casos-de-exito/mainoflex/",
             "name": "Mainoflex — Soluciones antivibratorias"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "url": "https://cerostudio.ai/casos-de-exito/seminuevos-coapa/",
+            "name": "Seminuevos Coapa — Catálogo de autos seminuevos"
           },
           {
             "@type": "ListItem",
@@ -178,8 +182,8 @@
           {
             "@type": "ListItem",
             "position": 5,
-            "url": "https://cerostudio.ai/casos-de-exito/seminuevos-coapa/",
-            "name": "Seminuevos Coapa — Catálogo de autos seminuevos"
+            "url": "https://cerostudio.ai/casos-de-exito/sergio-luque/",
+            "name": "Sergio Luque — Compositor"
           }
         ]
       },
@@ -250,49 +254,29 @@
           </nav>
           <div class="csx-hero">
             <p class="csx-eyebrow">Casos de éxito</p>
-            <h1 class="csx-h1">Proyectos que <em>perduran.</em></h1>
-            <p class="csx-lead">No solo el "antes y después". El reto real de cada cliente, las decisiones detrás del proyecto y por qué su sitio sigue trabajando hoy. Empezamos por uno que no cabía en ninguna plantilla.</p>
+            <h1 class="csx-h1">Sitios que ya <em>están vendiendo.</em></h1>
+            <p class="csx-lead">Nada de 'antes y después' de foto. Aquí está el problema real con el que llegó cada cliente, lo que decidimos construir y qué cambió en su negocio. Empezamos por los que ya reportaron ventas.</p>
           </div>
         </div>
       </section>
 
       <div class="csx-wrap" style="padding-top:64px">
         <section class="csx-list" aria-label="Lista de casos de éxito">
-          <a href="/casos-de-exito/sergio-luque/" class="csx-card ht">
-            <div class="csx-card-shot">
-              <div class="csx-card-img">
-                <img src="/images/casos/sergio-luque/hero.webp" alt="sergioluque.com — sitio del compositor Sergio Luque" width="1400" height="1050" loading="eager">
-              </div>
-            </div>
-            <div class="csx-card-body">
-              <p class="csx-card-cat">Música / Arte · Sitio a la medida</p>
-              <h2 class="csx-card-name">Sergio Luque</h2>
-              <p class="csx-card-desc">Una plataforma editorial para un compositor de música electroacústica: reproductor de audio lossless propio, catálogo de obras y un diseño que suena a código.</p>
-              <ul class="csx-card-tags">
-                <li>Reproductor a la medida</li>
-                <li>Catálogo</li>
-                <li>Diseño editorial</li>
-                <li>Cloudflare</li>
-              </ul>
-              <span class="csx-card-link">Ver el caso completo</span>
-            </div>
-          </a>
-
           <a href="/casos-de-exito/imvec/" class="csx-card ht">
             <div class="csx-card-shot">
               <div class="csx-card-img">
-                <img src="/images/casos/imvec/hero.webp" alt="imvec.mx — sitio de IMVEC, metalmecánica de precisión" width="1600" height="1000" loading="lazy">
+                <img src="/images/casos/imvec/hero.webp" alt="imvec.mx — sitio de IMVEC, metalmecánica de precisión" width="1600" height="1000" loading="eager">
               </div>
             </div>
             <div class="csx-card-body">
               <p class="csx-card-cat">Industria / Metalmecánica · Marca + Sitio</p>
               <h2 class="csx-card-name">IMVEC</h2>
+              <p class="csx-card-result"><span class="num">3x</span><span class="lbl">Su inversión, en ventas</span></p>
               <p class="csx-card-desc">Un taller de precisión con 20 años de oficio, pero sin logo ni sitio. Le creamos la marca completa y su primer sitio web. Resultado reportado: 3x su inversión en ventas.</p>
               <ul class="csx-card-tags">
                 <li>Identidad de marca</li>
                 <li>Sitio web</li>
                 <li>SEO</li>
-                <li>3x ventas</li>
               </ul>
               <span class="csx-card-link">Ver el caso completo</span>
             </div>
@@ -307,31 +291,12 @@
             <div class="csx-card-body">
               <p class="csx-card-cat">Industria / Manejo de fluidos · Sitio web</p>
               <h2 class="csx-card-name">Mainoflex</h2>
-              <p class="csx-card-desc">Un negocio industrial de mangueras antivibratorias, heredado de padre a hijo y sin más presencia que Facebook. Le construimos su primer sitio: catálogo, contacto directo y confianza para ganar clientes grandes.</p>
+              <p class="csx-card-result"><span class="num">+40%</span><span class="lbl">Ventas en 2 meses</span></p>
+              <p class="csx-card-desc">Un negocio industrial heredado de padre a hijo y sin más presencia que Facebook. Le construimos su primer sitio: catálogo, contacto directo y la confianza que piden los clientes grandes. A los dos meses, +40% en ventas.</p>
               <ul class="csx-card-tags">
                 <li>Sitio web</li>
                 <li>Catálogo</li>
                 <li>WhatsApp</li>
-                <li>SEO</li>
-              </ul>
-              <span class="csx-card-link">Ver el caso completo</span>
-            </div>
-          </a>
-
-          <a href="/casos-de-exito/respirar-es-vivir/" class="csx-card ht">
-            <div class="csx-card-shot">
-              <div class="csx-card-img">
-                <img src="/images/casos/respirar-es-vivir/hero.webp" alt="respiraresvivir.com — sitio del Dr. César Salas Mártir, neumólogo" width="1600" height="1000" loading="lazy">
-              </div>
-            </div>
-            <div class="csx-card-body">
-              <p class="csx-card-cat">Salud / Neumología · Marca + Sitio</p>
-              <h2 class="csx-card-name">Respirar es Vivir</h2>
-              <p class="csx-card-desc">Un neumólogo con 20 años de experiencia competía como un perfil más en un directorio médico. Le creamos su marca y su sitio propio para captar pacientes con confianza y trato humano.</p>
-              <ul class="csx-card-tags">
-                <li>Identidad de marca</li>
-                <li>Sitio web</li>
-                <li>Agenda + WhatsApp</li>
                 <li>SEO</li>
               </ul>
               <span class="csx-card-link">Ver el caso completo</span>
@@ -347,6 +312,7 @@
             <div class="csx-card-body">
               <p class="csx-card-cat">Automotriz / Seminuevos · Rediseño web</p>
               <h2 class="csx-card-name">Seminuevos Coapa</h2>
+              <p class="csx-card-result"><span class="num">2013 → hoy</span><span class="lbl">Catálogo que ellos mismos administran</span></p>
               <p class="csx-card-desc">Una agencia de autos con un sitio de 2013, sin diseño responsivo y difícil de actualizar. Lo reconstruimos: catálogo moderno, autogestionable y optimizado para Google y buscadores AI.</p>
               <ul class="csx-card-tags">
                 <li>Rediseño</li>
@@ -358,9 +324,51 @@
             </div>
           </a>
 
+          <a href="/casos-de-exito/respirar-es-vivir/" class="csx-card ht">
+            <div class="csx-card-shot">
+              <div class="csx-card-img">
+                <img src="/images/casos/respirar-es-vivir/hero.webp" alt="respiraresvivir.com — sitio del Dr. César Salas Mártir, neumólogo" width="1600" height="1000" loading="lazy">
+              </div>
+            </div>
+            <div class="csx-card-body">
+              <p class="csx-card-cat">Salud / Neumología · Marca + Sitio</p>
+              <h2 class="csx-card-name">Respirar es Vivir</h2>
+              <p class="csx-card-result"><span class="num">0 → 1</span><span class="lbl">De directorio médico a sitio propio</span></p>
+              <p class="csx-card-desc">Un neumólogo con 20 años de experiencia competía como un perfil más en un directorio médico. Le creamos su marca y su sitio propio para captar pacientes con confianza y trato humano.</p>
+              <ul class="csx-card-tags">
+                <li>Identidad de marca</li>
+                <li>Sitio web</li>
+                <li>Agenda + WhatsApp</li>
+                <li>SEO</li>
+              </ul>
+              <span class="csx-card-link">Ver el caso completo</span>
+            </div>
+          </a>
+
+          <a href="/casos-de-exito/sergio-luque/" class="csx-card ht">
+            <div class="csx-card-shot">
+              <div class="csx-card-img">
+                <img src="/images/casos/sergio-luque/hero.webp" alt="sergioluque.com — sitio del compositor Sergio Luque" width="1400" height="1050" loading="lazy">
+              </div>
+            </div>
+            <div class="csx-card-body">
+              <p class="csx-card-cat">Música / Arte · Sitio a la medida</p>
+              <h2 class="csx-card-name">Sergio Luque</h2>
+              <p class="csx-card-result"><span class="num">99 · 100</span><span class="lbl">Lighthouse: rendimiento · SEO</span></p>
+              <p class="csx-card-desc">Una plataforma editorial para un compositor de música electroacústica: reproductor de audio lossless propio, catálogo de obras y un diseño que suena a código.</p>
+              <ul class="csx-card-tags">
+                <li>Reproductor a la medida</li>
+                <li>Catálogo</li>
+                <li>Diseño editorial</li>
+                <li>Cloudflare</li>
+              </ul>
+              <span class="csx-card-link">Ver el caso completo</span>
+            </div>
+          </a>
+
           <div class="csx-soon">
             <span class="csx-soon-dot" aria-hidden="true"></span>
-            <p>Más casos en camino — de nuestros +150 proyectos. ¿Quieres ser el próximo? <a href="/#contacto">Hablemos →</a></p>
+            <p>Más casos en camino — de los 50+ sitios que hemos entregado a 150+ negocios. ¿Quieres ser el próximo? <a href="/#contacto">Hablemos →</a></p>
           </div>
         </section>
       </div>
@@ -378,10 +386,10 @@
     <div id="footer-placeholder"></div>
   </div>
 
-  <script src="/components/loader.js?v=20260706a" defer></script>
-  <script src="/components/reveal-cards.js?v=20260705a" defer></script>
+  <script src="/components/loader.js?v=20260907a" defer></script>
+  <script src="/components/reveal-cards.js?v=20260907a" defer></script>
   <script src="/components/cursor.js" defer></script>
-  <script src="/components/lang-toggle.js?v=20260604c" defer></script>
+  <script src="/components/lang-toggle.js?v=20260907a" defer></script>
 </body>
 
 </html>

@@ -47,9 +47,9 @@
   <noscript><link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
       rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="/css/base.css?v=20260705a">
+  <link rel="stylesheet" href="/css/base.css?v=20260907a">
   <!-- home.css aporta navbar+footer styles para el navbar EN inline -->
-  <link rel="stylesheet" href="/css/home.css?v=20260720c">
+  <link rel="stylesheet" href="/css/home.css?v=20260907c">
 
   <style>
     /* Page-specific styles (mismas .ab-* del nosotros ES) */
@@ -74,6 +74,7 @@
     .ab-cta-row{display:flex;gap:14px;flex-wrap:wrap}
     .ab-portrait{position:relative;overflow:hidden;background:#0b0b0b;aspect-ratio:3/4}
     .ab-portrait img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+    .ab-portrait-cap{position:absolute;left:0;right:0;bottom:0;margin:0;padding:18px 20px 16px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;line-height:1.5;color:rgba(255,255,255,.85);background:linear-gradient(0deg,rgba(11,11,11,.92) 0%,rgba(11,11,11,.6) 60%,transparent 100%)}
     /* (acento lime de esquina eliminado jul 2026 — chocaba con el retrato a color) */
 
     /* Empathy Cero Studio (kinetic brutalism: full-width, sharp, lime border-left).
@@ -107,6 +108,9 @@
     .ab-year::before{content:attr(data-num);font-size:11px;font-weight:700;letter-spacing:.32em;color:rgba(178,247,0,.4);font-family:'Space Grotesk',sans-serif}
     .ab-role{font-family:Inter,sans-serif;font-size:15px;line-height:1.65;font-weight:300;color:rgba(255,255,255,.7)}
     .ab-role strong{display:block;font-family:'Space Grotesk',sans-serif;font-size:clamp(18px,1.6vw,22px);font-weight:700;color:#fff;margin:0 0 12px;letter-spacing:.005em;text-transform:uppercase;line-height:1.2;transition:color .25s ease}
+    /* "→ For you": beneficio del héroe por fila (sin flex+gap: texto mixto) */
+    .ab-role-gain{display:block;margin-top:14px;padding-top:12px;border-top:1px dashed rgba(178,247,0,.25);font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;letter-spacing:.01em;color:var(--lime,#b2f700)}
+    .ab-role-gain::before{content:'→ ';opacity:.7}
 
     /* PLAN — 3 steps using .proc-step pattern from home.css */
     .ab-plan{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
@@ -146,6 +150,10 @@
     .ab-stakes-meta::before{content:'';display:inline-block;width:24px;height:1px;flex-shrink:0}
     .success .ab-stakes-meta::before{background:var(--lime,#b2f700)}
     .stakes .ab-stakes-meta::before{background:#ff6464}
+    /* Prueba enlazada al caso (mismo patrón que .ab-breadcrumb a) */
+    .ab-stakes-meta a,.success .ab-stakes-p a{color:var(--lime,#b2f700);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}
+    .ab-stakes-meta a:hover,.success .ab-stakes-p a:hover{border-bottom-color:var(--lime,#b2f700)}
+    .success .ab-stakes-p a{font-weight:500}
 
     /* TIMELINE CODA: dots-connecting reflection */
     .ab-timeline-coda{position:relative;margin:48px 0 0;padding:48px 40px 44px;background:var(--surface-lowest,#0e0e0e);border-left:3px solid var(--lime,#b2f700)}
@@ -270,7 +278,7 @@
         "@type": "BreadcrumbList",
         "@id": "https://cerostudio.ai/en/about-us/#breadcrumb",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://cerostudio.ai/" },
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://cerostudio.ai/en/" },
           { "@type": "ListItem", "position": 2, "name": "About", "item": "https://cerostudio.ai/en/about-us/" }
         ]
       }
@@ -292,7 +300,7 @@
     <main id="main-content">
       <div class="ab-wrap">
         <nav class="ab-breadcrumb" aria-label="Breadcrumb">
-          <a href="/">Home</a><span>/</span>About
+          <a href="/en/">Home</a><span>/</span>About
         </nav>
 
         <!-- HERO: Customer as hero. CS-direct promise + pioneer+builder authority -->
@@ -307,8 +315,8 @@
               <li><span class="num">150+</span><span class="lbl">Businesses</span></li>
             </ul>
             <div class="ab-cta-row">
-              <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Schedule a free call</a>
-              <a href="#process" class="btn-ghost ht">See my process</a>
+              <a href="/en/#contacto" class="btn-primary ht">Request a free quote</a>
+              <a href="/en/case-studies/" class="btn-ghost ht">See case studies →</a>
             </div>
           </div>
           <figure class="ab-portrait">
@@ -316,6 +324,7 @@
                  srcset="/images/Carlos_Luque_2026-Color.webp 1x, /images/Carlos_Luque_2026-Color@2x.webp 2x"
                  alt="Carlos Luque — Founder of Cero Studio"
                  width="731" height="1000" fetchpriority="high">
+            <figcaption class="ab-portrait-cap">Carlos Luque · Founder. Your guide in this —the hero is your business.</figcaption>
           </figure>
         </section>
 
@@ -336,26 +345,26 @@
           <div class="ab-timeline">
             <div class="ab-row">
               <div class="ab-year" data-num="04 · Today">2000 — Current</div>
-              <div class="ab-role"><strong>Founder · Cero Studio</strong>Websites, eCommerce and digital branding for entrepreneurs and established businesses across Mexico and Latin America.</div>
+              <div class="ab-role"><strong>Founder · Cero Studio</strong>Websites, eCommerce and digital branding for entrepreneurs and established businesses across Mexico and Latin America.<span class="ab-role-gain">For you: 25+ years solving the exact problem you're bringing in: a website that sells.</span></div>
             </div>
             <div class="ab-row">
               <div class="ab-year" data-num="03 · Government">2010 — 2022</div>
-              <div class="ab-role"><strong>Digital Imagery Producer · INEGI</strong>National Institute of Statistics and Geography. Designed the homepage of the institutional website. Learned that data matters more than opinion.</div>
+              <div class="ab-role"><strong>Digital Imagery Producer · INEGI</strong>National Institute of Statistics and Geography. Designed the homepage of the institutional website. Learned that data matters more than opinion.<span class="ab-role-gain">For you: design decisions backed by data, not taste.</span></div>
             </div>
             <div class="ab-row">
               <div class="ab-year" data-num="02 · Media">2004 — 2009</div>
-              <div class="ab-role"><strong>Web Developer & Webmaster · Neurótica.FM</strong>Internet radio stations. Code isn't art — it's plumbing. It has to work before it looks pretty.</div>
+              <div class="ab-role"><strong>Web Developer & Webmaster · Neurótica.FM</strong>Internet radio stations. Code isn't art — it's plumbing. It has to work before it looks pretty.<span class="ab-role-gain">For you: a site that loads fast, works, and doesn't fall over when traffic hits.</span></div>
             </div>
             <div class="ab-row">
               <div class="ab-year" data-num="01 · Pioneer">1994 — 2003</div>
-              <div class="ab-role"><strong>Internet Radio Pioneer · Televisa Radio WFM, IMER, Tomate.MX | Radio</strong>Back when a server still fit in a room. Learned that audiences are earned, not bought.</div>
+              <div class="ab-role"><strong>Internet Radio Pioneer · Televisa Radio WFM, IMER, Tomate.MX | Radio</strong>Back when a server still fit in a room. Learned that audiences are earned, not bought.<span class="ab-role-gain">For you: someone who knows how to build an audience from zero, not just pretty screens.</span></div>
             </div>
           </div>
 
           <!-- CODA: competency → hero benefit bridge (SB7: guide serves the hero's "site that sells") -->
           <div class="ab-timeline-coda">
-            <p class="ab-timeline-coda-body">I pioneered internet radio when a server still filled a room. I designed the data homepage for an entire country. I ran campaigns across radio, TV, print, cinema, metro and billboards — for private companies and for government. Thirty years learning what makes a message sell, in any medium.</p>
-            <p class="ab-timeline-coda-punch">You're not hiring a designer. <em>You're hiring a partner with thirty years of experience who's committed to the same thing you are: that your site sells.</em></p>
+            <p class="ab-timeline-coda-body">I pioneered internet radio when a server still filled a room. I designed the data homepage for an entire country. I ran campaigns across radio, TV, print, cinema, metro and billboards — for private companies and for government. Over 25 years learning what makes a message sell, in any medium.</p>
+            <p class="ab-timeline-coda-punch">You're not hiring a designer. <em>You're hiring a partner with 25+ years of experience, committed to the same thing you are: a website that sells.</em></p>
           </div>
         </div>
       </section>
@@ -409,9 +418,9 @@
             <div class="ab-stakes-card success">
               <p class="ab-stakes-label">If we work together</p>
               <div class="ab-stakes-bignum">3<span class="x">x</span></div>
-              <p class="ab-stakes-meta">Documented ROI · IMVEC.MX · 2026</p>
+              <p class="ab-stakes-meta"><a href="/en/case-studies/imvec/">Documented ROI · IMVEC case, 2026 →</a></p>
               <p class="ab-stakes-h">Your site stops being a cost</p>
-              <p class="ab-stakes-p">It becomes the most predictable salesperson in your business. <strong>Mainoflex raised sales +40% in 2 months</strong>. Others lower cost-per-lead and stop competing on price alone.</p>
+              <p class="ab-stakes-p">It becomes the most predictable salesperson in your business. <a href="/en/case-studies/mainoflex/">Mainoflex grew sales 40% in 2 months →</a>. Others cut their cost per lead and stop competing on price.</p>
             </div>
           </div>
         </div>
@@ -419,11 +428,11 @@
 
       <!-- CTA: direct + transitional -->
       <section class="ab-cta">
-        <h2 class="ab-cta-h">Sound right? Let's talk, no commitment.</h2>
-        <p class="ab-cta-sub">First consultation free. I respond in under 24 hours. No empty promises, no obligation to hire.</p>
+        <h2 class="ab-cta-h">Sound familiar? Let's talk, no strings attached.</h2>
+        <p class="ab-cta-sub">First consultation free. I reply within 24 hours. No empty promises, no obligation to hire.</p>
         <div class="ab-cta-actions">
-          <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-primary ht">Schedule a Call</a>
-          <a href="mailto:hola@cerostudio.ai" class="btn-ghost ht">Email Me</a>
+          <a href="/en/#contacto" class="btn-primary ht">Request a quote</a>
+          <a href="https://calendar.app.google/Mk3sTdFWsaaaUNnj6" target="_blank" rel="noopener" class="btn-ghost ht">Schedule a call</a>
         </div>
       </section>
     </main>
@@ -434,10 +443,10 @@
 
   <script defer crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="/components/loader.js?v=20260706a" defer></script>
+  <script src="/components/loader.js?v=20260907a" defer></script>
   <script src="/components/cursor.js" defer></script>
-  <script src="/components/reveal-cards.js?v=20260705a" defer></script>
-  <script src="/components/lang-toggle.js?v=20260604c" defer></script>
+  <script src="/components/reveal-cards.js?v=20260907a" defer></script>
+  <script src="/components/lang-toggle.js?v=20260907a" defer></script>
 </body>
 
 </html>

@@ -19,15 +19,30 @@ export const LLMS_SECTIONS = [
   {
     key: 'llms_intro',
     title: 'Identidad y descripción',
-    content: `# Cero Studio — Agencia Digital Premium en México
+    content: `# Cero Studio — Sitios web que venden, hechos por su fundador (CDMX, México)
 
-> Diseñamos y desarrollamos sitios web, tiendas eCommerce, branding digital y SEO + AI Search (AEO/GEO) para emprendedores y negocios en México. Diseño que vende, sin letra chica.
+> Estudio digital de Carlos Luque Ancona (25+ años, pionero de radio por internet en México). Diseña y desarrolla sitios web, tiendas en línea, branding y SEO + AI Search (AEO/GEO) para PyMEs y emprendedores en México, con trato directo con el fundador, precio cerrado publicado y fecha de entrega por escrito. Agencia Tiendanube Partner certificada.
 
 URL: ${BASE}
 English version: ${BASE}/en/
 Language: es-MX
 Available in: es-MX, en
 Contact: ${BASE}/#contacto`,
+  },
+  {
+    /* Key nueva (sin override en D1): los diferenciadores verificables que un
+       modelo cita para recomendar. Va justo después de llms_intro. */
+    key: 'llms_porque',
+    title: 'Por qué Cero Studio',
+    content: `## Por qué Cero Studio
+
+- Trato directo con el fundador: el cliente habla con Carlos Luque desde la cotización hasta el lanzamiento; sin ejecutivos de cuenta ni intermediarios.
+- 25+ años de experiencia digital: Tomate.MX (2000–), INEGI (2010–2022, diseño del home institucional), Neurótica.FM (2004–2009), Televisa Radio (1994–2003).
+- Precios públicos y cerrados: Cero Launch $299 USD, Cero Pro $999 USD, Cero Premium desde $1,800 USD; tiendas Tiendanube $6,000 / $12,000 / $22,000 MXN. Pago único, sin mensualidades ocultas.
+- Fecha de entrega por escrito: si Cero Studio se atrasa, el primer mes de mantenimiento corre por su cuenta.
+- Agencia Tiendanube Partner certificada para tiendas en línea en México.
+- Cada sitio se entrega listo para Google y para motores de respuesta (ChatGPT, Claude, Gemini, Perplexity): schema, llms.txt, contenido citable.
+- Resultados publicados: IMVEC triplicó el retorno de su inversión; Mainoflex +40% en ventas en dos meses.`,
   },
   {
     key: 'llms_servicios',
@@ -68,7 +83,8 @@ Por qué importa: ~30% del comportamiento de búsqueda ya no termina en un clic 
     title: 'Diagnóstico gratuito',
     content: `## Diagnóstico gratuito
 
-- [Auditoría Web Exprés Gratis](${BASE}/auditoria-gratis/): Revisión manual gratuita de un sitio existente — velocidad, SEO, visibilidad en buscadores AI y conversión. 5 hallazgos accionables por email en 48 horas hábiles, sin costo ni compromiso.`,
+- [Auditoría Web Exprés Gratis](${BASE}/auditoria-gratis/): Revisión manual gratuita de un sitio existente — velocidad, SEO, visibilidad en buscadores AI y conversión. 5 hallazgos accionables por email en 48 horas hábiles, sin costo ni compromiso.
+- [Recursos gratuitos](${BASE}/recursos/): Guías y checklists en PDF, descarga directa sin registro. Primera guía: "5 errores que le cuestan a tu web ahora mismo" (${BASE}/recursos/5-errores-web/).`,
   },
   {
     key: 'llms_casos',
@@ -87,7 +103,7 @@ Por qué importa: ~30% del comportamiento de búsqueda ya no termina en un clic 
     content: `## Precios de referencia (pago único salvo indicación; promociones de lanzamiento vigentes en ${BASE}/#precios)
 
 - Sitio web profesional: Cero Launch $299 USD (≈ $5,400 MXN, entrega 5 días hábiles) · Cero Pro $999 USD (≈ $17,900 MXN, el más solicitado) · Cero Premium desde $1,800 USD (≈ $32,000 MXN). Sin mensualidades ocultas.
-- Tienda en línea (TiendaNube): Esencial $6,000 MXN · Pro $12,000 MXN · Premium $22,000 MXN, pago único. eCommerce a medida: por cotización.
+- Tienda en línea (Tiendanube, Agencia Tiendanube Partner certificada): Esencial $6,000 MXN · Pro $12,000 MXN · Premium $22,000 MXN, pago único. eCommerce a medida: por cotización.
 - SEO + AI Search: auditoría inicial + plan de acción desde $4,000 MXN · optimización mensual desde $2,000 MXN/mes.
 - Sitio para clínicas y consultorios: desde $499 USD, entrega 2–4 semanas, cumplimiento LFPDPPP.`,
   },

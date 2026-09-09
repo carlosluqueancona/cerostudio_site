@@ -35,3 +35,138 @@ html, body {
   width: auto;
 }
 
+
+/* ── Focus visible de marca (teclado): anillo lime en todo el sitio;
+   blanco sobre superficies lime; inputs sin anillo (ya llevan línea lime). ── */
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 3px;
+}
+.btn-primary:focus-visible,
+.nav-cta:focus-visible,
+.plan-cta-primary:focus-visible,
+.btn-submit:focus-visible,
+.port-cta:focus-visible,
+.mnav-cta:focus-visible,
+.mob-bar-main:focus-visible {
+  outline-color: var(--white);
+}
+.dominate-btn:focus-visible { outline-color: var(--black); }
+.mob-bar-main:focus-visible,
+.mob-bar-wa:focus-visible { outline-offset: -4px; }
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible { outline: none; }
+
+/* ── Chrome site-wide (partials navbar/footer + loader.js) ──
+   Vive aquí y no en home.css porque el blog y /privacidad/ solo cargan base.css. */
+
+/* Filas CTA del menú móvil (#mobileNav a define 36-56px uppercase; aquí gana la especificidad) */
+#mobileNav .mnav-cta,
+#mobileNav .mnav-wa {
+  font-family: var(--fd);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 14px 36px;
+  min-width: min(280px, 80vw);
+}
+#mobileNav .mnav-cta {
+  background: var(--lime);
+  color: #131f00;
+  margin-top: 6px;
+}
+#mobileNav .mnav-cta:hover {
+  background: var(--lime-bright);
+  color: #131f00;
+}
+#mobileNav .mnav-wa {
+  border: 1px solid rgba(var(--lime-rgb), .5);
+  color: var(--lime);
+}
+
+/* WhatsApp flotante (desktop, todo el sitio; mismo look que home.css) */
+.float-wa {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--lime);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  box-shadow: 0 4px 16px rgba(var(--lime-rgb), .25);
+  transition: transform .3s cubic-bezier(.175, .885, .32, 1.275), box-shadow .3s;
+}
+.float-wa:hover {
+  transform: scale(1.1) translateY(-4px);
+  box-shadow: 0 6px 20px rgba(var(--lime-rgb), .45);
+}
+.float-wa svg {
+  width: 32px;
+  height: 32px;
+  fill: var(--black);
+  margin-bottom: 2px;
+}
+
+/* Barra de acción móvil: oculta en desktop; en ≤768px sustituye al flotante.
+   loader.js le pone .is-on tras 480px de scroll. z-index 9998: debajo del
+   banner de cookies (99999) para que el banner siga siendo clicable. */
+.mob-bar { display: none; }
+
+@media (max-width: 768px) {
+  .mob-bar {
+    display: grid;
+    grid-template-columns: 1fr 60px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9998;
+    transform: translateY(100%);
+    transition: transform .45s cubic-bezier(.16, 1, .3, 1);
+    padding-bottom: env(safe-area-inset-bottom);
+    background: var(--black);
+    border-top: 1px solid rgba(var(--lime-rgb), .35);
+  }
+  .mob-bar.is-on { transform: none; }
+  /* Con el menú móvil abierto la barra se retira (ya tiene sus propias filas CTA) */
+  body:has(#mobileNav.open) .mob-bar { transform: translateY(100%); }
+  .mob-bar-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 56px;
+    font-family: var(--fd);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: var(--lime);
+    color: #131f00;
+  }
+  .mob-bar-wa {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 56px;
+    background: var(--black);
+  }
+  .mob-bar-wa svg {
+    width: 26px;
+    height: 26px;
+    fill: var(--lime);
+  }
+  /* body .float-wa: gana a `.float-wa{display:flex}` de home.css (carga después) */
+  body .float-wa { display: none; }
+  body { padding-bottom: calc(56px + env(safe-area-inset-bottom)); }
+}

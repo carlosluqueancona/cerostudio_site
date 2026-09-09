@@ -32,6 +32,7 @@
     '.ab-empathy',
     '.ab-timeline-coda',
     // /servicios/* + /diseno-web-para-clinicas/ (ficha técnica .sv-*)
+    '.sv-hero',
     '.sv-module',
     '.sv-bom-row',
     '.sv-step',
@@ -41,6 +42,7 @@
     '.proc-step',
     '.plan-card',
     '.testi-card',
+    '.nos-img-wrap',   /* retrato del home: línea cinética en touch (plan 2026-09) */
     // /casos-de-exito/* (case studies)
     '.cs-feature',
     '.cs-step',

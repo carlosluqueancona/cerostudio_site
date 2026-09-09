@@ -46,9 +46,9 @@
   <noscript><link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
       rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="/css/base.css?v=20260705a">
+  <link rel="stylesheet" href="/css/base.css?v=20260907a">
   <!-- home.css aporta navbar+footer styles del middleware -->
-  <link rel="stylesheet" href="/css/home.css?v=20260720c">
+  <link rel="stylesheet" href="/css/home.css?v=20260907c">
 
   <style>
     /* ── Page-specific styles ── */
@@ -78,6 +78,7 @@
     .ab-cta-row{display:flex;gap:14px;flex-wrap:wrap}
     .ab-portrait{position:relative;overflow:hidden;background:#0b0b0b;aspect-ratio:3/4}
     .ab-portrait img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+    .ab-portrait-cap{position:absolute;left:0;right:0;bottom:0;margin:0;padding:18px 20px 16px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;line-height:1.5;color:rgba(255,255,255,.85);background:linear-gradient(0deg,rgba(11,11,11,.92) 0%,rgba(11,11,11,.6) 60%,transparent 100%)}
     /* (acento lime de esquina eliminado jul 2026 — chocaba con el retrato a color) */
 
     /* EMPATÍA — guía con voz humana (SB7 Element 3 + Cuddy empathy) */
@@ -113,6 +114,9 @@
     .ab-year::before{content:attr(data-num);font-size:11px;font-weight:700;letter-spacing:.32em;color:rgba(178,247,0,.4);font-family:'Space Grotesk',sans-serif;letter-spacing:.32em}
     .ab-role{font-family:Inter,sans-serif;font-size:15px;line-height:1.65;font-weight:300;color:rgba(255,255,255,.7)}
     .ab-role strong{display:block;font-family:'Space Grotesk',sans-serif;font-size:clamp(18px,1.6vw,22px);font-weight:700;color:#fff;margin:0 0 12px;letter-spacing:.005em;text-transform:uppercase;line-height:1.2;transition:color .25s ease}
+    /* "→ Para ti": beneficio del héroe por fila (sin flex+gap: texto mixto) */
+    .ab-role-gain{display:block;margin-top:14px;padding-top:12px;border-top:1px dashed rgba(178,247,0,.25);font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;letter-spacing:.01em;color:var(--lime,#b2f700)}
+    .ab-role-gain::before{content:'→ ';opacity:.7}
 
     /* PLAN — 3 pasos (SB7 Element 4: Process Plan).
        Estilo .proc-step del home.css: sharp corners + lime line slide
@@ -161,6 +165,10 @@
     .ab-stakes-meta::before{content:'';display:inline-block;width:24px;height:1px;flex-shrink:0}
     .success .ab-stakes-meta::before{background:var(--lime,#b2f700)}
     .stakes .ab-stakes-meta::before{background:#ff6464}
+    /* Prueba enlazada al caso (mismo patrón que .ab-breadcrumb a) */
+    .ab-stakes-meta a,.success .ab-stakes-p a{color:var(--lime,#b2f700);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}
+    .ab-stakes-meta a:hover,.success .ab-stakes-p a:hover{border-bottom-color:var(--lime,#b2f700)}
+    .success .ab-stakes-p a{font-weight:500}
 
     /* TIMELINE CODA: dots-connecting reflection AL FINAL del timeline.
        Estilo CS con eyebrow "REFLEXIÓN" notch + border-left lime */
@@ -320,7 +328,7 @@
             </ul>
             <div class="ab-cta-row">
               <a href="/#contacto" class="btn-primary ht">Agendar consulta gratis</a>
-              <a href="#proceso" class="btn-ghost ht">Ver mi proceso</a>
+              <a href="/casos-de-exito/" class="btn-ghost ht">Ver casos de éxito →</a>
             </div>
           </div>
           <figure class="ab-portrait">
@@ -328,6 +336,7 @@
                  srcset="/images/Carlos_Luque_2026-Color.webp 1x, /images/Carlos_Luque_2026-Color@2x.webp 2x"
                  alt="Carlos Luque — Fundador de Cero Studio"
                  width="731" height="1000" fetchpriority="high">
+            <figcaption class="ab-portrait-cap">Carlos Luque · Fundador. Tu guía en esto —el héroe es tu negocio.</figcaption>
           </figure>
         </section>
 
@@ -348,26 +357,26 @@
           <div class="ab-timeline">
             <div class="ab-row">
               <div class="ab-year" data-num="04 · Hoy">2000 — Actual</div>
-              <div class="ab-role"><strong>Fundador · Cero Studio</strong>Sitios web, eCommerce y branding digital para emprendedores y negocios establecidos en México y LATAM.</div>
+              <div class="ab-role"><strong>Fundador · Cero Studio</strong>Sitios web, eCommerce y branding digital para emprendedores y negocios establecidos en México y LATAM.<span class="ab-role-gain">Para ti: más de 25 años resolviendo exactamente el problema que traes: que tu sitio venda.</span></div>
             </div>
             <div class="ab-row">
               <div class="ab-year" data-num="03 · Gobierno">2010 — 2022</div>
-              <div class="ab-role"><strong>Productor de Imagen Digital · INEGI</strong>Instituto Nacional de Estadística y Geografía. Diseñé el home del sitio web institucional. Aprendí que los datos importan más que la opinión.</div>
+              <div class="ab-role"><strong>Productor de Imagen Digital · INEGI</strong>Instituto Nacional de Estadística y Geografía. Diseñé el home del sitio web institucional. Aprendí que los datos importan más que la opinión.<span class="ab-role-gain">Para ti: decisiones de diseño respaldadas por datos, no por gustos.</span></div>
             </div>
             <div class="ab-row">
               <div class="ab-year" data-num="02 · Medios">2004 — 2009</div>
-              <div class="ab-role"><strong>Desarrollador Web y Webmaster · Neurótica.FM</strong>Estaciones de radio por internet. El código no es arte, es plomería. Tiene que funcionar antes que verse bonito.</div>
+              <div class="ab-role"><strong>Desarrollador Web y Webmaster · Neurótica.FM</strong>Estaciones de radio por internet. El código no es arte, es plomería. Tiene que funcionar antes que verse bonito.<span class="ab-role-gain">Para ti: un sitio que carga rápido, funciona y no se cae cuando entra tráfico.</span></div>
             </div>
             <div class="ab-row">
               <div class="ab-year" data-num="01 · Pionero">1994 — 2003</div>
-              <div class="ab-role"><strong>Pionero en Radio por Internet · Televisa Radio WFM, IMER, Tomate.MX | Radio</strong>Cuando aún cabía un servidor en un cuarto. Aprendí que la audiencia se gana, no se compra.</div>
+              <div class="ab-role"><strong>Pionero en Radio por Internet · Televisa Radio WFM, IMER, Tomate.MX | Radio</strong>Cuando aún cabía un servidor en un cuarto. Aprendí que la audiencia se gana, no se compra.<span class="ab-role-gain">Para ti: alguien que sabe construir audiencia desde cero, no solo pantallas bonitas.</span></div>
             </div>
           </div>
 
           <!-- CODA: puente competencia → beneficio del héroe (SB7: el guía sirve al "sitio que vende") -->
           <div class="ab-timeline-coda">
-            <p class="ab-timeline-coda-body">Pioneé radio por internet cuando un servidor todavía cabía en un cuarto. Diseñé el home de datos de un país entero. Armé campañas en radio, TV, prensa, cine, metro y espectaculares — para empresas privadas y para gobierno. Treinta años entendiendo qué hace que un mensaje venda, en el medio que sea.</p>
-            <p class="ab-timeline-coda-punch">No contratas un diseñador. <em>Contratas un socio con treinta años de experiencia que se compromete con lo mismo que tú: que tu sitio venda.</em></p>
+            <p class="ab-timeline-coda-body">Pioneé radio por internet cuando un servidor todavía cabía en un cuarto. Diseñé el home de datos de un país entero. Armé campañas en radio, TV, prensa, cine, metro y espectaculares — para empresas privadas y para gobierno. Más de 25 años entendiendo qué hace que un mensaje venda, en el medio que sea.</p>
+            <p class="ab-timeline-coda-punch">No contratas un diseñador. <em>Contratas un socio con más de 25 años de experiencia que se compromete con lo mismo que tú: que tu sitio venda.</em></p>
           </div>
         </div>
       </section>
@@ -421,9 +430,9 @@
             <div class="ab-stakes-card success">
               <p class="ab-stakes-label">Si trabajamos juntos</p>
               <div class="ab-stakes-bignum">3<span class="x">x</span></div>
-              <p class="ab-stakes-meta">ROI documentado · IMVEC.MX · 2026</p>
+              <p class="ab-stakes-meta"><a href="/casos-de-exito/imvec/">ROI documentado · Caso IMVEC 2026 →</a></p>
               <p class="ab-stakes-h">Tu sitio deja de ser un costo</p>
-              <p class="ab-stakes-p">Se vuelve el vendedor más predecible de tu negocio. <strong>Mainoflex subió ventas +40% en 2 meses</strong>. Otros bajan costo por lead y dejan de pelear por precio.</p>
+              <p class="ab-stakes-p">Se vuelve el vendedor más predecible de tu negocio. <a href="/casos-de-exito/mainoflex/">Mainoflex subió ventas +40% en 2 meses →</a>. Otros bajan costo por lead y dejan de pelear por precio.</p>
             </div>
           </div>
         </div>
@@ -445,10 +454,10 @@
 
   <script defer crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="/components/loader.js?v=20260706a" defer></script>
+  <script src="/components/loader.js?v=20260907a" defer></script>
   <script src="/components/cursor.js" defer></script>
-  <script src="/components/reveal-cards.js?v=20260705a" defer></script>
-  <script src="/components/lang-toggle.js?v=20260604c" defer></script>
+  <script src="/components/reveal-cards.js?v=20260907a" defer></script>
+  <script src="/components/lang-toggle.js?v=20260907a" defer></script>
 </body>
 
 </html>

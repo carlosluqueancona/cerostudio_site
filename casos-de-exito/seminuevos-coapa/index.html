@@ -44,9 +44,9 @@
   <noscript><link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
       rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="/css/base.css?v=20260705a">
+  <link rel="stylesheet" href="/css/base.css?v=20260907a">
   <!-- home.css aporta navbar+footer styles del middleware -->
-  <link rel="stylesheet" href="/css/home.css?v=20260720c">
+  <link rel="stylesheet" href="/css/home.css?v=20260907c">
 
   <style>
     /* ── Case study page styles (.cs-*) — kinetic brutalism CS ──
@@ -152,6 +152,16 @@
     .cs-quote-t::after{content:"\201D";color:var(--lime,#b2f700);font-weight:800}
     .cs-quote-cite{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6);font-style:normal}
 
+    /* HAZLO TUYO — cross-link caso → servicios → precios */
+    .cs-next{margin:0 0 72px;padding:40px;background:var(--surface-lowest,#0e0e0e);border:1px solid rgba(255,255,255,.08);border-left:3px solid var(--lime,#b2f700)}
+    .cs-next-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.55);margin:0 0 18px}
+    .cs-next-eyebrow::before{content:'↳ ';color:var(--lime,#b2f700)}
+    .cs-next-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(24px,3vw,36px);font-weight:600;letter-spacing:-.02em;line-height:1.15;color:#fff;margin:0 0 14px;max-width:24ch}
+    .cs-next-p{font-family:Inter,sans-serif;font-size:15px;line-height:1.65;font-weight:300;color:rgba(255,255,255,.7);margin:0;max-width:56ch}
+    .cs-next-chips{list-style:none;display:flex;flex-wrap:wrap;gap:10px;margin:24px 0 0;padding:0}
+    .cs-next-chips a{display:inline-block;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff;padding:12px 18px;border:1px solid rgba(255,255,255,.14);text-decoration:none;transition:border-color .2s,color .2s}
+    .cs-next-chips a:hover{border-color:var(--lime,#b2f700);color:var(--lime,#b2f700)}
+
     /* CTA */
     .cs-cta{text-align:center;padding:64px 24px 120px}
     .cs-cta-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,4.4vw,52px);font-weight:600;letter-spacing:-.025em;line-height:1.1;margin:0 auto 18px;max-width:24ch}
@@ -186,11 +196,15 @@
       .cs-plan .cs-step{border-bottom:1px solid rgba(255,255,255,.08)}
       .cs-results{grid-template-columns:1fr;gap:0;background:transparent;border:0}
       .cs-results .cs-result{border-bottom:1px solid rgba(255,255,255,.08)}
+      .cs-next{padding:32px 24px}
     }
     @media (max-width:520px){
       .cs-wrap{padding-top:100px}
       .cs-cta{padding-bottom:80px}
       .cs-cta-actions .btn-primary,.cs-cta-actions .btn-ghost{width:100%;text-align:center}
+      .cs-next{padding:28px 20px}
+      .cs-next-chips li{width:100%}
+      .cs-next-chips a{display:block;text-align:center}
     }
   </style>
 
@@ -263,7 +277,7 @@
             </ul>
             <div class="cs-cta-row">
               <a href="https://seminuevoscoapa.com.mx/" target="_blank" rel="noopener" class="btn-primary ht">Visitar el sitio →</a>
-              <a href="/#contacto" class="btn-ghost ht">Quiero algo así</a>
+              <a href="/?ref=seminuevos-coapa&servicio=web#contacto" class="btn-ghost ht">Quiero algo así</a>
             </div>
           </div>
           <figure class="cs-shot">
@@ -438,13 +452,27 @@
         </div>
       </section>
 
+      <!-- HAZLO TUYO — cross-link caso → servicios → precios [NC-04] -->
+      <div class="cs-wrap" style="padding-top:0">
+        <aside class="cs-next">
+          <p class="cs-next-eyebrow">Hazlo tuyo</p>
+          <h2 class="cs-next-h">¿Quieres un resultado así en tu negocio?</h2>
+          <p class="cs-next-p">Esto es lo que contratarías para llegar ahí. Sin adivinar: aquí está el servicio y aquí está el precio.</p>
+          <ul class="cs-next-chips">
+            <li><a href="/servicios/desarrollo-web/" class="ht">Desarrollo web →</a></li>
+            <li><a href="/servicios/seo/" class="ht">SEO + AI Search →</a></li>
+            <li><a href="/#precios" class="ht">Ver planes y precios →</a></li>
+          </ul>
+        </aside>
+      </div>
+
       <!-- CTA FINAL -->
       <section class="cs-cta">
         <h2 class="cs-cta-h">¿Tu sitio se quedó en otra década?</h2>
         <p class="cs-cta-sub">Si tu web ya no vende como debería, la reconstruimos: moderna, tuya para administrar y lista para Google y la IA. Primera consulta gratis, respuesta en menos de 24 horas.</p>
         <div class="cs-cta-actions">
           <a href="https://seminuevoscoapa.com.mx/" target="_blank" rel="noopener" class="btn-ghost ht">Ver el sitio en vivo →</a>
-          <a href="/#contacto" class="btn-primary ht">Empecemos tu proyecto</a>
+          <a href="/?ref=seminuevos-coapa&servicio=web#contacto" class="btn-primary ht">Empecemos tu proyecto</a>
         </div>
       </section>
     </main>
@@ -452,10 +480,10 @@
     <div id="footer-placeholder"></div>
   </div>
 
-  <script src="/components/loader.js?v=20260706a" defer></script>
-  <script src="/components/reveal-cards.js?v=20260705a" defer></script>
+  <script src="/components/loader.js?v=20260907a" defer></script>
+  <script src="/components/reveal-cards.js?v=20260907a" defer></script>
   <script src="/components/cursor.js" defer></script>
-  <script src="/components/lang-toggle.js?v=20260604c" defer></script>
+  <script src="/components/lang-toggle.js?v=20260907a" defer></script>
 </body>
 
 </html>

@@ -42,8 +42,8 @@
   <noscript><link
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
       rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="/css/base.css?v=20260705a">
-  <link rel="stylesheet" href="/css/home.css?v=20260720c">
+  <link rel="stylesheet" href="/css/base.css?v=20260907a">
+  <link rel="stylesheet" href="/css/home.css?v=20260907c">
 
   <style>
     /* ── Case studies index (.csx-*) — kinetic brutalism CS ── */
@@ -86,6 +86,9 @@
     .csx-card-body{padding:48px 44px;display:flex;flex-direction:column;justify-content:center}
     .csx-card-cat{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--lime,#b2f700);margin:0 0 16px}
     .csx-card-name{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,3vw,38px);font-weight:700;letter-spacing:-.02em;line-height:1.05;color:#fff;margin:0 0 14px;transition:color .3s ease}
+    .csx-card-result{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px;margin:0 0 18px;padding:12px 0 0;border-top:1px solid rgba(255,255,255,.08)}
+    .csx-card-result .num{font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,3vw,40px);font-weight:800;color:var(--lime,#b2f700);letter-spacing:-.03em;line-height:1}
+    .csx-card-result .lbl{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.55)}
     .csx-card-desc{font-family:Inter,sans-serif;font-size:15px;line-height:1.65;font-weight:300;color:rgba(255,255,255,.7);margin:0 0 24px;max-width:46ch}
     .csx-card-tags{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:0 0 28px;padding:0}
     .csx-card-tags li{font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.65);padding:6px 11px;border:1px solid rgba(255,255,255,.12)}
@@ -154,20 +157,20 @@
           {
             "@type": "ListItem",
             "position": 1,
-            "url": "https://cerostudio.ai/en/case-studies/sergio-luque/",
-            "name": "Sergio Luque — Composer"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
             "url": "https://cerostudio.ai/en/case-studies/imvec/",
             "name": "IMVEC — Precision metalworking"
           },
           {
             "@type": "ListItem",
-            "position": 3,
+            "position": 2,
             "url": "https://cerostudio.ai/en/case-studies/mainoflex/",
             "name": "Mainoflex — Anti-vibration solutions"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "url": "https://cerostudio.ai/en/case-studies/seminuevos-coapa/",
+            "name": "Seminuevos Coapa — Pre-owned car catalogue"
           },
           {
             "@type": "ListItem",
@@ -178,8 +181,8 @@
           {
             "@type": "ListItem",
             "position": 5,
-            "url": "https://cerostudio.ai/en/case-studies/seminuevos-coapa/",
-            "name": "Seminuevos Coapa — Pre-owned car catalogue"
+            "url": "https://cerostudio.ai/en/case-studies/sergio-luque/",
+            "name": "Sergio Luque — Composer"
           }
         ]
       },
@@ -187,7 +190,7 @@
         "@type": "BreadcrumbList",
         "@id": "https://cerostudio.ai/en/case-studies/#breadcrumb",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://cerostudio.ai/" },
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://cerostudio.ai/en/" },
           { "@type": "ListItem", "position": 2, "name": "Case Studies", "item": "https://cerostudio.ai/en/case-studies/" }
         ]
       }
@@ -243,53 +246,33 @@
         </div>
         <div class="csx-hero-inner">
           <nav class="csx-breadcrumb" aria-label="Breadcrumb">
-            <a href="/">Home</a><span>/</span>Case Studies
+            <a href="/en/">Home</a><span>/</span>Case Studies
           </nav>
           <div class="csx-hero">
             <p class="csx-eyebrow">Case studies</p>
-            <h1 class="csx-h1">Projects that <em>last.</em></h1>
-            <p class="csx-lead">Not just the "before and after". The real challenge behind each client, the decisions behind the project, and why their site still works today. We start with one that didn't fit any template.</p>
+            <h1 class="csx-h1">Websites that are <em>already selling.</em></h1>
+            <p class="csx-lead">No before-and-after snapshots. The real problem each client came in with, what we decided to build, and what changed in their business. We start with the ones that already reported sales.</p>
           </div>
         </div>
       </section>
 
       <div class="csx-wrap" style="padding-top:64px">
         <section class="csx-list" aria-label="Case studies list">
-          <a href="/en/case-studies/sergio-luque/" class="csx-card ht">
-            <div class="csx-card-shot">
-              <div class="csx-card-img">
-                <img src="/images/casos/sergio-luque/hero.webp" alt="sergioluque.com — composer Sergio Luque's site" width="1400" height="1050" loading="eager">
-              </div>
-            </div>
-            <div class="csx-card-body">
-              <p class="csx-card-cat">Music / Art · Custom-built site</p>
-              <h2 class="csx-card-name">Sergio Luque</h2>
-              <p class="csx-card-desc">An editorial platform for a composer of electroacoustic music: a bespoke lossless audio player, a catalogue of works and a design that sounds like code.</p>
-              <ul class="csx-card-tags">
-                <li>Custom player</li>
-                <li>Catalogue</li>
-                <li>Editorial design</li>
-                <li>Cloudflare</li>
-              </ul>
-              <span class="csx-card-link">Read the full case</span>
-            </div>
-          </a>
-
           <a href="/en/case-studies/imvec/" class="csx-card ht">
             <div class="csx-card-shot">
               <div class="csx-card-img">
-                <img src="/images/casos/imvec/hero.webp" alt="imvec.mx — IMVEC's site, precision metalworking" width="1600" height="1000" loading="lazy">
+                <img src="/images/casos/imvec/hero.webp" alt="imvec.mx — IMVEC's site, precision metalworking" width="1600" height="1000" loading="eager">
               </div>
             </div>
             <div class="csx-card-body">
               <p class="csx-card-cat">Industry / Metalworking · Brand + Website</p>
               <h2 class="csx-card-name">IMVEC</h2>
+              <p class="csx-card-result"><span class="num">3x</span><span class="lbl">Return on investment, in sales</span></p>
               <p class="csx-card-desc">A precision machining shop with 20 years of craft — but no logo and no website. We built their full brand identity and their first website. Reported result: 3x their investment back in sales.</p>
               <ul class="csx-card-tags">
                 <li>Brand identity</li>
                 <li>Website</li>
                 <li>SEO</li>
-                <li>3x sales</li>
               </ul>
               <span class="csx-card-link">Read the full case</span>
             </div>
@@ -304,31 +287,12 @@
             <div class="csx-card-body">
               <p class="csx-card-cat">Industry / Fluid handling · Website</p>
               <h2 class="csx-card-name">Mainoflex</h2>
-              <p class="csx-card-desc">An industrial anti-vibration hose business, passed down from father to son, with no presence beyond Facebook. We built their first website: a product catalogue, direct contact and the credibility to win bigger clients.</p>
+              <p class="csx-card-result"><span class="num">+40%</span><span class="lbl">Sales in 2 months</span></p>
+              <p class="csx-card-desc">An industrial business passed from father to son, with nothing online but a Facebook page. We built their first website: catalog, direct contact and the credibility big clients expect. Two months in, sales were up 40%.</p>
               <ul class="csx-card-tags">
                 <li>Website</li>
                 <li>Catalogue</li>
                 <li>WhatsApp</li>
-                <li>SEO</li>
-              </ul>
-              <span class="csx-card-link">Read the full case</span>
-            </div>
-          </a>
-
-          <a href="/en/case-studies/respirar-es-vivir/" class="csx-card ht">
-            <div class="csx-card-shot">
-              <div class="csx-card-img">
-                <img src="/images/casos/respirar-es-vivir/hero.webp" alt="respiraresvivir.com — Dr. César Salas Mártir's site, pulmonologist" width="1600" height="1000" loading="lazy">
-              </div>
-            </div>
-            <div class="csx-card-body">
-              <p class="csx-card-cat">Healthcare / Pulmonology · Brand + Website</p>
-              <h2 class="csx-card-name">Respirar es Vivir</h2>
-              <p class="csx-card-desc">A pulmonologist with 20 years of experience was competing as just another profile in a medical directory. We created his brand and his own website to win patients through trust and a human touch.</p>
-              <ul class="csx-card-tags">
-                <li>Brand identity</li>
-                <li>Website</li>
-                <li>Booking + WhatsApp</li>
                 <li>SEO</li>
               </ul>
               <span class="csx-card-link">Read the full case</span>
@@ -344,6 +308,7 @@
             <div class="csx-card-body">
               <p class="csx-card-cat">Automotive / Pre-owned cars · Website redesign</p>
               <h2 class="csx-card-name">Seminuevos Coapa</h2>
+              <p class="csx-card-result"><span class="num">2013 → today</span><span class="lbl">A catalog they manage themselves</span></p>
               <p class="csx-card-desc">A car dealership stuck with a 2013 website — not responsive and hard to update. We rebuilt it from the ground up: a modern, self-managed catalogue optimized for Google and AI search engines.</p>
               <ul class="csx-card-tags">
                 <li>Redesign</li>
@@ -355,9 +320,51 @@
             </div>
           </a>
 
+          <a href="/en/case-studies/respirar-es-vivir/" class="csx-card ht">
+            <div class="csx-card-shot">
+              <div class="csx-card-img">
+                <img src="/images/casos/respirar-es-vivir/hero.webp" alt="respiraresvivir.com — Dr. César Salas Mártir's site, pulmonologist" width="1600" height="1000" loading="lazy">
+              </div>
+            </div>
+            <div class="csx-card-body">
+              <p class="csx-card-cat">Healthcare / Pulmonology · Brand + Website</p>
+              <h2 class="csx-card-name">Respirar es Vivir</h2>
+              <p class="csx-card-result"><span class="num">0 → 1</span><span class="lbl">From a medical directory to their own site</span></p>
+              <p class="csx-card-desc">A pulmonologist with 20 years of experience was competing as just another profile in a medical directory. We created his brand and his own website to win patients through trust and a human touch.</p>
+              <ul class="csx-card-tags">
+                <li>Brand identity</li>
+                <li>Website</li>
+                <li>Booking + WhatsApp</li>
+                <li>SEO</li>
+              </ul>
+              <span class="csx-card-link">Read the full case</span>
+            </div>
+          </a>
+
+          <a href="/en/case-studies/sergio-luque/" class="csx-card ht">
+            <div class="csx-card-shot">
+              <div class="csx-card-img">
+                <img src="/images/casos/sergio-luque/hero.webp" alt="sergioluque.com — composer Sergio Luque's site" width="1400" height="1050" loading="lazy">
+              </div>
+            </div>
+            <div class="csx-card-body">
+              <p class="csx-card-cat">Music / Art · Custom-built site</p>
+              <h2 class="csx-card-name">Sergio Luque</h2>
+              <p class="csx-card-result"><span class="num">99 · 100</span><span class="lbl">Lighthouse: performance · SEO</span></p>
+              <p class="csx-card-desc">An editorial platform for a composer of electroacoustic music: a bespoke lossless audio player, a catalogue of works and a design that sounds like code.</p>
+              <ul class="csx-card-tags">
+                <li>Custom player</li>
+                <li>Catalogue</li>
+                <li>Editorial design</li>
+                <li>Cloudflare</li>
+              </ul>
+              <span class="csx-card-link">Read the full case</span>
+            </div>
+          </a>
+
           <div class="csx-soon">
             <span class="csx-soon-dot" aria-hidden="true"></span>
-            <p>More cases on the way — from our 150+ projects. Want to be next? <a href="/#contacto">Let's talk →</a></p>
+            <p>More cases on the way — from the 50+ sites we've delivered to 150+ businesses. Want to be next? <a href="/en/#contacto">Let's talk →</a></p>
           </div>
         </section>
       </div>
@@ -366,8 +373,8 @@
         <h2 class="csx-cta-h">Ready for your own success story?</h2>
         <p class="csx-cta-sub">Tell us what you need. First consultation free, reply within 24 hours, no strings attached.</p>
         <div class="csx-cta-actions">
-          <a href="/#contacto" class="btn-primary ht">Let's start your project</a>
-          <a href="/#portafolio" class="btn-ghost ht">See the full portfolio</a>
+          <a href="/en/#contacto" class="btn-primary ht">Let's start your project</a>
+          <a href="/en/#portafolio" class="btn-ghost ht">See the full portfolio</a>
         </div>
       </section>
     </main>
@@ -375,10 +382,10 @@
     <div id="footer-placeholder"></div>
   </div>
 
-  <script src="/components/loader.js?v=20260706a" defer></script>
-  <script src="/components/reveal-cards.js?v=20260705a" defer></script>
+  <script src="/components/loader.js?v=20260907a" defer></script>
+  <script src="/components/reveal-cards.js?v=20260907a" defer></script>
   <script src="/components/cursor.js" defer></script>
-  <script src="/components/lang-toggle.js?v=20260604c" defer></script>
+  <script src="/components/lang-toggle.js?v=20260907a" defer></script>
 </body>
 
 </html>
