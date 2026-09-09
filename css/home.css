@@ -72,7 +72,10 @@
       color: var(--white);
       font-family: var(--fb);
       font-weight: 400;
+      /* clip (no hidden): hidden vuelve al body contenedor de scroll y mata
+         el position:sticky de las cabeceras de #stakes/#proceso */
       overflow-x: hidden;
+      overflow-x: clip;
       width: 100%;
       position: relative;
       cursor: none;
@@ -109,6 +112,7 @@
     /* ============================================================ NOISE */
     .site-wrapper {
       overflow-x: hidden;
+      overflow-x: clip;             /* ver body: hidden rompe el sticky de #stakes/#proceso */
       width: 100%;
       position: relative;
     }
@@ -344,7 +348,7 @@
       min-height: 100vh;
       display: flex;
       align-items: center;
-      padding: calc(var(--nh) + 60px) 48px 100px;
+      padding: calc(var(--nh) + 60px) 0 100px;
       overflow: hidden;
       background: #000;
     }
@@ -357,12 +361,14 @@
       z-index: 1;
     }
 
+    /* Muro tipográfico: sin tope de ancho, 4vw de canto a cada lado */
     .hero-inner {
       position: relative;
       z-index: 2;
-      max-width: 1200px;
+      max-width: none;
       width: 100%;
       margin: 0 auto;
+      padding: 0 4vw;
     }
 
     /* Fondo tipo HERO de consultoría: rejilla lime tenue con desvanecido radial.
@@ -418,10 +424,10 @@
 
     .hero-static-title {
       font-family: var(--fd);
-      font-size: clamp(68px, 10.5vw, 160px);
+      font-size: clamp(68px, 13.5vw, 230px);
       font-weight: 700;
-      line-height: .9;
-      letter-spacing: -.04em;
+      line-height: .86;
+      letter-spacing: -.045em;
       text-transform: uppercase;
       margin-bottom: 48px;
       /* Pintado desde el HTML (el #loader opaco lo cubre): así el LCP se registra
@@ -429,21 +435,40 @@
          NO volver a opacity:0 — retrasa el LCP ~1.6s en móvil. */
     }
 
+    /* Tipografía viva: cada palabra es inline-block para poder transformarla
+       (skewX) y variar 'wght' desde home.js (initHeroType). 3 renglones en
+       desktop: PRESENCIA / DIGITAL / QUE VENDE. */
+    .hero-static-title span[data-hero-line] {
+      display: inline-block;
+      transform-origin: 0 100%;
+    }
+    .hero-line:first-child .hero-sep { display: none; }
+    .hero-line:first-child span[data-hero-line] { display: block; }
+
     @media (max-width: 768px) {
       .hero-sep { display: none; }
       .hero-static-title span[data-hero-line] { display: block; }
       /* 2.º renglón entero ("QUE VENDE." / "THAT SELLS.") → 3 renglones en móvil */
-      .hero-line:nth-child(2) .hero-sep,
-      .hero-line:nth-child(2) span[data-hero-line] { display: inline; }
+      .hero-line:nth-child(2) .hero-sep { display: inline; }
+      .hero-line:nth-child(2) span[data-hero-line] { display: inline-block; }
     }
 
     .hero-static-sub {
       font-size: clamp(15px, 1.3vw, 18px);
       font-weight: 400;
       color: rgba(255, 255, 255, .85);
-      max-width: 500px;
+      max-width: 640px;             /* medida más ancha bajo el muro tipográfico: 4 renglones, no 5 */
       line-height: 1.6;
       margin-bottom: 52px;
+    }
+
+    /* Pantallas bajas (laptop 1440×900): el muro de 3 renglones empuja los
+       CTA bajo el pliegue; se aprieta el ritmo vertical para que sigan a la vista */
+    @media (min-width: 769px) and (max-height: 960px) {
+      #hero { padding-top: calc(var(--nh) + 32px); padding-bottom: 72px; }
+      .hero-static-eyebrow { margin-bottom: 24px; }
+      .hero-static-title { margin-bottom: 32px; }
+      .hero-static-sub { margin-bottom: 32px; }
     }
 
     .hero-static-actions {
@@ -744,16 +769,95 @@
 
     .section-title {
       font-family: var(--fd);
-      font-size: clamp(38px, 4.8vw, 68px);
+      font-size: clamp(44px, 7.5vw, 112px);
       font-weight: 700;
-      line-height: 1.1;
-      letter-spacing: -.01em;
+      line-height: .92;
+      letter-spacing: -.02em;
       text-transform: uppercase;
+      text-wrap: balance;
+    }
+
+    /* Columna estrecha (1fr de 2.25fr): "CUÉNTANOS" / "PROPUESTA" no caben a 7.5vw */
+    #contacto .section-title {
+      font-size: clamp(44px, 5.2vw, 80px);
     }
 
     .sr {
       opacity: 0;
       transform: translateY(44px);
+    }
+
+    /* ── CIFRAS FANTASMA DE SECCIÓN (01…09) ──────────────────────────
+       Numeral outline detrás de la cabecera; parallax + encendido lime
+       desde home.js (initSectionGhosts). z:-1 dentro del contexto aislado
+       de .section-inner → queda sobre el fondo de la sección y bajo el texto.
+       overflow: clip (no hidden) para no romper el sticky de #stakes/#proceso. */
+    #servicios, #stakes, #nosotros, #proceso, #testimonios,
+    #precios, #tiendas, #faq, #contacto {
+      position: relative;
+      overflow: hidden;
+      overflow: clip;
+    }
+    #servicios .section-inner, #stakes .section-inner, #nosotros .section-inner,
+    #proceso .section-inner, #testimonios .section-inner, #precios .section-inner,
+    #tiendas .section-inner, #faq .section-inner, #contacto .section-inner {
+      position: relative;
+      isolation: isolate;
+    }
+
+    .sec-ghost {
+      position: absolute;
+      top: -.12em;
+      right: -2vw;
+      z-index: -1;
+      font-family: var(--fd);
+      font-size: clamp(160px, 34vw, 520px);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -.06em;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255, 255, 255, .10);
+      pointer-events: none;
+      user-select: none;
+      transition: -webkit-text-stroke-color .9s ease;
+    }
+    /* pares a la izquierda; #contacto también (la palabra vertical ya ocupa el canto derecho).
+       Excepción: #precios va a la derecha — a la izquierda el 06 se enreda con el
+       título outline "SIN LETRA CHICA." y el flanco derecho de la cabecera está vacío. */
+    #stakes .sec-ghost, #proceso .sec-ghost,
+    #faq .sec-ghost, #contacto .sec-ghost {
+      right: auto;
+      left: -2vw;
+    }
+    .sec-ghost.is-lit { -webkit-text-stroke-color: rgba(var(--lime-rgb), .22); }
+
+    /* ── TITULARES FIJADOS (editorial, solo desktop ≥1101px) ───────────
+       #stakes y #proceso: cabecera sticky al 40 % / contenido al 60 %.
+       CSS sticky, sin pin de GSAP. En ≤1100 los wrappers no alteran el flujo. */
+    @media (min-width: 1101px) {
+      #stakes .section-inner,
+      #proceso .section-inner {
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+        column-gap: 64px;
+        align-items: start;
+      }
+      .sec-head {
+        position: sticky;
+        top: calc(var(--nh) + 48px);
+      }
+      /* 40 % de ancho: el H2 baja de escala para no rebasar la columna */
+      #stakes .sec-head .section-title,
+      #proceso .sec-head .proc-headline {
+        font-size: clamp(40px, 4.6vw, 68px);
+        margin-bottom: 0;
+      }
+      #stakes .stakes-grid { grid-template-columns: 1fr; }
+      #proceso .proc-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .sec-ghost { transition: none; }
     }
 
     /* ============================================================ SERVICIOS */
@@ -2854,6 +2958,8 @@
       .hero-static-eyebrow {
         margin-bottom: 22px;
       }
+
+      .hero-inner { padding: 0; }
 
       /* 15vw: PRESENCIA cabe a 360/375 con ≥28px de aire (sin tocar opacity) */
       .hero-static-title {

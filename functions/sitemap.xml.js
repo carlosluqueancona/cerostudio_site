@@ -35,6 +35,7 @@ const STATIC_PAGES = [
   { loc: '/auditoria-gratis/',                    priority: '0.8', changefreq: 'monthly' },
   { loc: '/recursos/',                            priority: '0.8', changefreq: 'weekly'  },
   { loc: '/recursos/5-errores-web/',              priority: '0.8', changefreq: 'monthly' },
+  { loc: '/ia/',                                  priority: '0.8', changefreq: 'monthly' },
   { loc: '/en/services/web-development/',         priority: '0.7', changefreq: 'monthly' },
   { loc: '/en/services/online-stores/',           priority: '0.7', changefreq: 'monthly' },
   { loc: '/en/services/digital-branding/',        priority: '0.7', changefreq: 'monthly' },
@@ -42,6 +43,7 @@ const STATIC_PAGES = [
   { loc: '/en/services/web-maintenance/',         priority: '0.7', changefreq: 'monthly' },
   { loc: '/en/services/digital-consulting/',      priority: '0.7', changefreq: 'monthly' },
   { loc: '/en/services/clinic-website-design/',   priority: '0.7', changefreq: 'monthly' },
+  { loc: '/en/ai/',                               priority: '0.7', changefreq: 'monthly' },
 ];
 
 function urlEntry({ loc, lastmod, priority = '0.6', changefreq = 'monthly' }) {

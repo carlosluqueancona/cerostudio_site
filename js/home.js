@@ -73,10 +73,13 @@
           { el: 'scrL2b', text: 'QUE',       delay: 520 },
           { el: 'scrL3',  text: 'VENDE.',    delay: 660 },
         ];
+        /* tipografía viva: arranca cuando TODOS los scrambles terminaron */
+        var _scrDone = [];
         _heroT.forEach(({ el, text, delay }) => {
           var node = typeof el === 'string' ? document.getElementById(el) : el;
-          if (node) setTimeout(() => new TextScramble(node).run(text), delay);
+          if (node) _scrDone.push(new Promise(res => setTimeout(() => new TextScramble(node).run(text).then(res), delay)));
         });
+        Promise.all(_scrDone).then(initHeroType);
 
         setTimeout(() => {
           gsap.to('#heroSub', { opacity: 1, duration: .85, ease: 'power3.out' });
@@ -86,6 +89,89 @@
       }
 
 
+
+      /* ── TIPOGRAFÍA VIVA (hero) ─────────────────────────────────
+         Space Grotesk variable: cada palabra baja de 'wght' 700 → 500 y se
+         inclina (skewX −2°) según la distancia del puntero (radio 320px);
+         en touch el peso "respira" con el scroll del primer viewport.
+         Solo transform + font-variation-settings, lerp en rAF. Se llama al
+         terminar el scramble (runHeroEntrance). Sin reacción con reduced-motion. */
+      function initHeroType() {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var hero = document.getElementById('hero');
+        var words = Array.prototype.slice.call(document.querySelectorAll('.hero-static-title span[data-hero-line]'));
+        if (!hero || !words.length) return;
+        var W_MAX = 700, W_MIN = 500, SKEW = -2, RADIUS = 320;
+        var st = words.map(function (el) { return { el: el, w: W_MAX, tw: W_MAX, r: null }; });
+        var raf = null;
+
+        /* caja real del texto (no del bloque) en coordenadas de documento */
+        function measure() {
+          var sy = window.scrollY;
+          st.forEach(function (s) {
+            var r = document.createRange(); r.selectNodeContents(s.el);
+            var b = r.getBoundingClientRect();
+            s.r = { l: b.left, t: b.top + sy, r: b.right, b: b.bottom + sy };
+          });
+        }
+        function tick() {
+          raf = null;
+          var busy = false;
+          st.forEach(function (s) {
+            var d = s.tw - s.w;
+            if (Math.abs(d) < .3) { if (s.w === s.tw) return; s.w = s.tw; }
+            else { s.w += d * .14; busy = true; }
+            var t = (W_MAX - s.w) / (W_MAX - W_MIN);   /* 0 reposo → 1 reacción plena */
+            s.el.style.fontVariationSettings = "'wght' " + s.w.toFixed(1);
+            s.el.style.transform = t < .002 ? '' : 'skewX(' + (SKEW * t).toFixed(2) + 'deg)';
+          });
+          if (busy) raf = requestAnimationFrame(tick);
+        }
+        function kick() { if (!raf) raf = requestAnimationFrame(tick); }
+        function rest() { st.forEach(function (s) { s.tw = W_MAX; }); kick(); }
+
+        if (window.matchMedia('(hover: none)').matches) {
+          /* touch: respira con el scroll; cada renglón entra un poco después */
+          var lastT = -1;
+          window.addEventListener('scroll', function () {
+            var sy = window.scrollY, vh = window.innerHeight;
+            var tt = Math.min(sy / (vh * .6), 1);
+            if (tt === lastT) return;
+            lastT = tt;
+            st.forEach(function (s, i) {
+              var t = Math.max(0, Math.min(1, tt * 1.3 - i * .1));
+              t = t * t * (3 - 2 * t);
+              s.tw = W_MAX - (W_MAX - W_MIN) * t;
+            });
+            kick();
+          }, { passive: true });
+          return;
+        }
+
+        var px = 0, py = 0, inside = false;
+        function aim() {
+          if (!st[0].r) measure();
+          var sy = window.scrollY, x = px, y = py + sy;
+          st.forEach(function (s) {
+            var dx = Math.max(s.r.l - x, 0, x - s.r.r);
+            var dy = Math.max(s.r.t - y, 0, y - s.r.b);
+            var d = Math.sqrt(dx * dx + dy * dy);
+            var t = d >= RADIUS ? 0 : 1 - d / RADIUS;
+            t = t * t * (3 - 2 * t);
+            s.tw = W_MAX - (W_MAX - W_MIN) * t;
+          });
+          kick();
+        }
+        hero.addEventListener('mousemove', function (e) { px = e.clientX; py = e.clientY; inside = true; aim(); }, { passive: true });
+        hero.addEventListener('mouseleave', function () { inside = false; rest(); });
+        window.addEventListener('scroll', function () { if (inside) aim(); }, { passive: true });
+        var rT = null;
+        window.addEventListener('resize', function () {
+          clearTimeout(rT);
+          rT = setTimeout(function () { rest(); st.forEach(function (s) { s.r = null; }); }, 150);
+        });
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { st.forEach(function (s) { s.r = null; }); });
+      }
 
       /* ── NAV ───────────────────────────────────────────────────── */
       window.addEventListener('scroll', () => {
@@ -188,6 +274,23 @@
             opacity: 1, y: 0, duration: .8, ease: 'power3.out',
             delay: (i % 4) * .07,
             scrollTrigger: { trigger: card, start: 'top 90%', toggleActions: 'play none none none' }
+          });
+        });
+
+        /* Cifras fantasma de sección: lime mientras la sección está activa
+           + parallax suave (−60 → 60px) con scrub. Sin parallax con reduced-motion. */
+        var _rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        document.querySelectorAll('.sec-ghost').forEach(g => {
+          var sec = g.closest('section');
+          if (!sec) return;
+          ScrollTrigger.create({
+            trigger: sec, start: 'top 60%', end: 'bottom 40%',
+            toggleClass: { targets: g, className: 'is-lit' }
+          });
+          if (_rm) return;
+          gsap.fromTo(g, { y: -60 }, {
+            y: 60, ease: 'none',
+            scrollTrigger: { trigger: sec, start: 'top bottom', end: 'bottom top', scrub: .6 }
           });
         });
 

@@ -42,6 +42,7 @@
   <link rel="stylesheet" href="/css/home.css?v=20260907c">
   <link rel="stylesheet" href="/css/servicios-spec.css?v=20260907a">
   <link rel="stylesheet" href="/css/hero-pulse.css?v=20260704a">
+  <link rel="stylesheet" href="/css/ia.css?v=20260908a">
   <script src="/components/cookie-consent.js" defer></script>
   <script src="/components/cursor.js" defer></script>
 
@@ -217,11 +218,75 @@
           </p>
         </section>
 
-        <!-- ── § 02 · In production (SSR from CMS, service_tags='seo') ── -->
+        <!-- ── § 02 · Simulation (static demo; the live simulator is at /en/ai/) ── -->
+        <section class="sv-section" id="simulation">
+          <div class="sv-sec-head">
+            <span class="sv-sec-num">02 — Simulation</span>
+            <h2 class="sv-h2">How the AI answers <span class="t-lime">before and after the work.</span></h2>
+          </div>
+          <p class="sv-body">
+            Same question, two moments. Without AEO/GEO the AI improvises with what it knows; with a clear
+            entity, citable content and schema, it names you — and explains why.
+          </p>
+          <div class="ia-demo">
+            <div class="ia-demo-col is-before">
+              <span class="tag">Before</span>
+              <div class="ia-chat" data-ia-demo>
+                <div class="ia-chat-head">
+                  <span><span class="dot" aria-hidden="true"></span>AI assistant · simulation</span>
+                  <span class="model">No AEO/GEO</span>
+                </div>
+                <div class="ia-chat-body">
+                  <div class="ia-msg is-user">
+                    <span class="who">You</span>
+                    <p class="txt">Recommend a dental clinic in Coyoacán.</p>
+                  </div>
+                  <div class="ia-msg is-ai">
+                    <span class="who">AI</span>
+                    <p class="txt">Sure, three options in Coyoacán:
+– Alpha Dental Clinic: general practice, near the center.
+– Beta Family Dentistry: family care and orthodontics.
+– Gamma Dental Office: extended hours.
+I'd suggest confirming hours and reviews before booking.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="ia-demo-col is-after">
+              <span class="tag">After</span>
+              <div class="ia-chat" data-ia-demo data-ia-name="Example Dental Clinic">
+                <div class="ia-chat-head">
+                  <span><span class="dot" aria-hidden="true"></span>AI assistant · simulation</span>
+                  <span class="model">With entity + content + schema</span>
+                </div>
+                <div class="ia-chat-body">
+                  <div class="ia-msg is-user">
+                    <span class="who">You</span>
+                    <p class="txt">Recommend a dental clinic in Coyoacán.</p>
+                  </div>
+                  <div class="ia-msg is-ai">
+                    <span class="who">AI</span>
+                    <p class="txt">Sure, three options in Coyoacán:
+– Example Dental Clinic: implants and clear aligners on Av. Universidad; publishes prices, process and written guarantees, with online booking.
+– Alpha Dental Clinic: general practice, near the center.
+– Beta Family Dentistry: family care.
+If you're after implants, Example Dental Clinic is the easiest to verify: its site answers what it does, for whom and where.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ia-demo-foot">
+            <p class="ia-note"><strong>Illustrative simulation — fictional businesses.</strong> The names don't correspond to real clinics.</p>
+            <a href="/en/ai/" class="btn-primary ht">Try it with your business →</a>
+          </div>
+        </section>
+
+        <!-- ── § 03 · In production (SSR from CMS, service_tags='seo') ── -->
         <section class="sv-section" id="casos">
           <div id="service-portfolio-wrapper">
             <div class="sv-sec-head">
-              <span class="sv-sec-num">02 — In production</span>
+              <span class="sv-sec-num">03 — In production</span>
               <h2 class="sv-h2">Rankings that <span class="t-lime">bring the lead.</span></h2>
             </div>
             <p class="sv-body">Projects where SEO moved the needle: organic traffic, qualified leads, measurable brand authority.</p>
@@ -231,10 +296,10 @@
           </div>
         </section>
 
-        <!-- ── § 03 · Bill of materials ────────────────────────────── -->
+        <!-- ── § 04 · Bill of materials ────────────────────────────── -->
         <section class="sv-section">
           <div class="sv-sec-head">
-            <span class="sv-sec-num">03 — Bill of materials</span>
+            <span class="sv-sec-num">04 — Bill of materials</span>
             <h2 class="sv-h2">Real technical work, no shortcuts.</h2>
           </div>
           <p class="sv-body">Serious SEO involves audit, strategy, implementation and monitoring. This is what we deliver on every project:</p>
@@ -252,10 +317,10 @@
           </div>
         </section>
 
-        <!-- ── § 04 · Assembly line ────────────────────────────────── -->
+        <!-- ── § 05 · Assembly line ────────────────────────────────── -->
         <section class="sv-section" id="proceso">
           <div class="sv-sec-head">
-            <span class="sv-sec-num">04 — Assembly line</span>
+            <span class="sv-sec-num">05 — Assembly line</span>
             <h2 class="sv-h2">Audit → Strategy → Implementation → Growth.</h2>
           </div>
           <div class="sv-line">
@@ -266,10 +331,10 @@
           </div>
         </section>
 
-        <!-- ── § 05 · FAQ ──────────────────────────────────────────── -->
+        <!-- ── § 06 · FAQ ──────────────────────────────────────────── -->
         <section class="sv-section">
           <div class="sv-sec-head">
-            <span class="sv-sec-num">05 — FAQ</span>
+            <span class="sv-sec-num">06 — FAQ</span>
             <h2 class="sv-h2">What people ask the most.</h2>
           </div>
           <div class="sv-faq">
@@ -378,10 +443,10 @@
           <p class="sv-cta-alt">Rather get a written quote? <a href="/en/?servicio=seo#contacto">Request a quote by form →</a></p>
         </section>
 
-        <!-- ── § 06 · Catalog ──────────────────────────────────────── -->
+        <!-- ── § 07 · Catalog ──────────────────────────────────────── -->
         <section class="sv-section">
           <div class="sv-sec-head">
-            <span class="sv-sec-num">06 — Catalog</span>
+            <span class="sv-sec-num">07 — Catalog</span>
             <h2 class="sv-h2">A good SEO needs these foundations.</h2>
           </div>
           <div class="sv-catalog">
@@ -401,6 +466,7 @@
   <script src="/js/hero-pulse.js?v=20260704a" defer></script>
   <script src="/components/reveal-cards.js?v=20260907a" defer></script>
   <script src="/components/lang-toggle.js?v=20260907a" defer></script>
+  <script src="/js/ia.js?v=20260908a" defer></script>
 </body>
 
 </html>

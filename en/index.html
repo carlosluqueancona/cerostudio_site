@@ -43,15 +43,15 @@
   <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" as="script" crossorigin>
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <link rel="preload"
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300;400;500&display=swap"
     as="style" data-async>
   <noscript>
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300;400;500&display=swap"
       rel="stylesheet">
   </noscript>
   <link rel="stylesheet" href="/css/base.css?v=20260907a">
-  <link rel="stylesheet" href="/css/home.css?v=20260907c">
+  <link rel="stylesheet" href="/css/home.css?v=20260908a">
 
   <!-- ── Structured Data: Organization + WebSite ── -->
   <script type="application/ld+json">
@@ -265,6 +265,7 @@
     <!-- ═══════════════════════════════ SERVICIOS ═══════════════════════════════ -->
     <section id="servicios">
       <div class="section-inner">
+        <span class="sec-ghost" aria-hidden="true">01</span>
         <div class="srv-header">
           <div>
             <p class="eyebrow sr" id="srv-eyebrow">01 — Services</p>
@@ -542,8 +543,12 @@
     <!-- ═══════════════════════════════ STAKES ═══════════════════════════════ -->
     <section id="stakes">
       <div class="section-inner">
+        <span class="sec-ghost" aria-hidden="true">02</span>
+        <div class="sec-head">
         <p class="eyebrow eyebrow-alert sr" id="stakes-eyebrow">What's at stake</p>
         <h2 class="section-title sr" id="stakes-title">What you lose every day<br>without a site <span class="t-lime">that sells</span></h2>
+        </div>
+        <div class="sec-body">
         <div class="stakes-grid">
           <div class="stakes-card sr" data-n="01">
             <h3 id="stakes-1t">The customer who searched for you last night</h3>
@@ -561,11 +566,13 @@
         <a href="#contacto" class="btn-primary ht sr" id="stakes-cta">Stop losing customers →</a>
         <!-- plan 2026-09: CTA transicional (auditoría gratis) -->
         <a href="#contacto" class="stakes-cta stakes-cta-alt sr" id="stakes-cta-audit" data-plan-service="auditoria-gratis" data-plan-name="Free express audit">Already have a site? Get a free audit: 5 findings in 48 hours →</a>
+        </div>
       </div>
     </section>
 
     <section id="nosotros">
       <div class="section-inner">
+        <span class="sec-ghost" aria-hidden="true">03</span>
         <div class="nos-grid">
           <div class="sr">
             <div class="nos-img-wrap">
@@ -610,8 +617,12 @@
     <!-- ═══════════════════════════════ PROCESO ═════════════════════════════════ -->
     <section id="proceso">
       <div class="section-inner">
+        <span class="sec-ghost" aria-hidden="true">04</span>
+        <div class="sec-head">
         <p class="eyebrow eyebrow-vert sr" id="proc-eyebrow">How We Work</p>
         <h2 class="proc-headline sr" id="proc-headline">No surprises,<br><span class="t-outline">no detours.</span></h2>
+        </div>
+        <div class="sec-body">
         <div class="proc-grid">
 
           <div class="proc-step sr ht">
@@ -655,6 +666,7 @@
           </div>
 
         </div>
+        </div>
       </div>
     </section>
 
@@ -666,6 +678,7 @@
          Paridad EN en js/home.js. -->
     <section id="testimonios">
       <div class="section-inner">
+        <span class="sec-ghost" aria-hidden="true">05</span>
         <p class="eyebrow sr" id="testi-eyebrow">Testimonials</p>
         <h2 class="section-title sr" id="testi-title">What businesses<br>already <span class="t-lime">selling</span> say</h2>
         <div class="testi-grid">
@@ -715,6 +728,7 @@
     <!-- ═══════════════════════════════ PRECIOS ═════════════════════════════════ -->
     <section id="precios">
       <div class="section-inner">
+        <span class="sec-ghost" aria-hidden="true">06</span>
 
         <div class="precios-top sr">
           <div>
@@ -800,6 +814,7 @@
     <!-- ═══════════════════════════════ TIENDAS EN LÍNEA ══════════════════════════════ -->
     <section id="tiendas">
       <div class="section-inner">
+        <span class="sec-ghost" aria-hidden="true">07</span>
 
         <div class="precios-top sr">
           <div>
@@ -878,6 +893,7 @@
     <!-- ═══════════════════════════════════ FAQ ═══════════════════════════════════ -->
     <section id="faq">
       <div class="section-inner">
+        <span class="sec-ghost" aria-hidden="true">08</span>
         <p class="eyebrow sr" id="faq-eyebrow">FAQ</p>
         <h2 class="section-title sr" id="faq-title">The questions everyone asks<br>before <span class="t-lime">getting started</span></h2>
         <div class="faq-list">
@@ -917,6 +933,7 @@
     <section id="contacto">
       <div class="contacto-ghost" aria-hidden="true">CERO</div>
       <div class="section-inner">
+        <span class="sec-ghost" aria-hidden="true">09</span>
         <div class="contacto-grid">
           <div>
             <p class="eyebrow sr" id="contact-eyebrow">Contact</p>
@@ -1043,7 +1060,7 @@
   <script defer crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
-  <script src="/js/home.js?v=20260907b" defer></script>
+  <script src="/js/home.js?v=20260908a" defer></script>
 
   <!-- plan 2026-09: .float-wa retirado del home; ahora vive en el partial del footer (D4). Copia en _archivo/float-wa-home-2026-09-07/ -->
   <script src="/components/reveal-cards.js?v=20260907a" defer></script>

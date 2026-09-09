@@ -1,0 +1,319 @@
+/* ── CERO STUDIO — Simulador de AI Search (/ia/, /en/ai/) + demo en ficha SEO ──
+   Ventana de chat brutalista: borde 1px, cabecera técnica, texto que se
+   "escribe" (js/ia.js). Reutiliza .sv-* de servicios-spec.css y los .form-*
+   de home.css; aquí solo vive lo nuevo. */
+
+/* ── Formulario del simulador ─────────────────────────────────────── */
+.ia-form { max-width: 880px; }
+.ia-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0 28px;
+}
+.ia-form .form-group { margin-bottom: 20px; }
+.ia-form .cf-turnstile { margin: 4px 0 18px; }
+.ia-form-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 28px;
+}
+.ia-form-foot .form-hint { margin: 0; }
+
+/* ── Ventana de chat ──────────────────────────────────────────────── */
+.ia-chat {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, .16);
+  background: #0e0e0e;
+  font-family: var(--fb);
+  overflow: hidden;
+}
+.ia-chat::before {
+  /* línea cinética superior: entra al montar / al entrar en viewport */
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--lime);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1s cubic-bezier(.16, 1, .3, 1);
+}
+.ia-chat.is-on::before { transform: scaleX(1); }
+
+.ia-chat-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+  font-family: var(--fd);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gray-light);
+}
+.ia-chat-head .dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  margin-right: 10px;
+  background: var(--lime);
+  vertical-align: middle;
+  box-shadow: 0 0 0 3px rgba(var(--lime-rgb), .18);
+}
+.ia-chat-head .model {
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: none;
+  color: var(--gray-text);
+  white-space: nowrap;
+}
+
+.ia-chat-body { padding: 22px 18px 24px; }
+
+.ia-msg { display: grid; grid-template-columns: 34px 1fr; gap: 14px; }
+.ia-msg + .ia-msg { margin-top: 22px; }
+.ia-msg .who {
+  font-family: var(--fd);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gray-text);
+  padding-top: 5px;
+}
+.ia-msg.is-ai .who { color: var(--lime); }
+.ia-msg .txt {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--white);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  min-height: 1.7em;
+}
+.ia-msg.is-user .txt {
+  color: var(--gray-light);
+  font-weight: 400;
+}
+.ia-msg .txt mark {
+  background: rgba(var(--lime-rgb), .18);
+  color: var(--lime);
+  padding: 0 3px;
+}
+
+/* Cursor de máquina de escribir */
+.ia-cursor {
+  display: inline-block;
+  width: 9px;
+  height: 1.1em;
+  margin-left: 2px;
+  background: var(--lime);
+  vertical-align: text-bottom;
+  animation: iaBlink 1s steps(2, start) infinite;
+}
+.ia-cursor.is-done { animation: none; opacity: 0; }
+@keyframes iaBlink { to { visibility: hidden; } }
+
+/* Estado "pensando": tres puntos */
+.ia-thinking { display: inline-flex; gap: 6px; align-items: center; height: 1.7em; }
+.ia-thinking i {
+  width: 6px; height: 6px;
+  background: var(--lime);
+  animation: iaDots 1.2s ease-in-out infinite;
+}
+.ia-thinking i:nth-child(2) { animation-delay: .2s; }
+.ia-thinking i:nth-child(3) { animation-delay: .4s; }
+@keyframes iaDots {
+  0%, 80%, 100% { opacity: .25; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-3px); }
+}
+
+/* ── Zona de resultado ────────────────────────────────────────────── */
+.ia-result { margin-top: 48px; }
+.ia-result[hidden] { display: none; }
+.ia-note {
+  margin: 14px 0 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--gray-text);
+}
+.ia-note strong { color: var(--gray-light); font-weight: 500; }
+
+.ia-verdict {
+  margin-top: 36px;
+  padding: 24px 26px;
+  border-left: 2px solid var(--lime);
+  background: rgba(var(--lime-rgb), .05);
+}
+.ia-verdict.is-miss {
+  border-left-color: #ff6464;
+  background: rgba(255, 70, 70, .06);
+}
+.ia-verdict h3 {
+  font-family: var(--fd);
+  font-size: clamp(20px, 2.4vw, 26px);
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.2;
+  margin: 0 0 10px;
+  color: var(--white);
+}
+.ia-verdict.is-hit h3 { color: var(--lime); }
+.ia-verdict.is-miss h3 { color: #ff6464; }
+.ia-verdict p {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--gray-light);
+}
+
+/* Hallazgos: lista numerada con numeral técnico */
+.ia-findings {
+  list-style: none;
+  margin: 22px 0 0;
+  padding: 0;
+  counter-reset: iaF;
+}
+.ia-findings li {
+  counter-increment: iaF;
+  position: relative;
+  padding: 14px 0 14px 52px;
+  border-top: 1px solid rgba(255, 255, 255, .1);
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--white);
+}
+.ia-findings li::before {
+  content: '0' counter(iaF);
+  position: absolute;
+  left: 0; top: 15px;
+  font-family: var(--fd);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--lime);
+}
+
+/* Error del simulador */
+.ia-error {
+  margin-top: 24px;
+  padding: 14px 20px;
+  border-left: 2px solid #ff6464;
+  background: rgba(255, 70, 70, .06);
+  color: #ff6464;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.ia-error[hidden] { display: none; }
+
+/* ── Captura del lead (reporte completo) ──────────────────────────── */
+.ia-capture {
+  margin-top: 56px;
+  padding: 36px 32px 28px;
+  border: 1px solid rgba(var(--lime-rgb), .35);
+  background: #0e0e0e;
+  position: relative;
+}
+.ia-capture::before {
+  content: attr(data-label);
+  position: absolute;
+  top: -8px; left: 24px;
+  padding: 0 10px;
+  background: var(--black);
+  font-family: var(--fd);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--lime);
+}
+.ia-capture h3 {
+  font-family: var(--fd);
+  font-size: clamp(22px, 2.8vw, 30px);
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.15;
+  margin: 0 0 12px;
+  color: var(--white);
+}
+.ia-capture h3 .t-lime { color: var(--lime); }
+.ia-capture > p {
+  margin: 0 0 28px;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--gray-light);
+  max-width: 640px;
+}
+.ia-capture form { max-width: 640px; }
+.ia-capture .form-feedback a { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ── Demo en la ficha SEO (antes / después) ───────────────────────── */
+.ia-demo {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 40px;
+}
+.ia-demo:has(.ia-demo-col:only-child) { grid-template-columns: 1fr; }
+.ia-demo-col > .tag {
+  display: block;
+  font-family: var(--fd);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--gray-text);
+  margin: 0 0 12px;
+}
+.ia-demo-col.is-after > .tag { color: var(--lime); }
+.ia-demo-col.is-after > .tag::after { content: ' · con AEO/GEO'; font-weight: 500; letter-spacing: .12em; color: var(--gray-light); text-transform: none; }
+.ia-demo-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 28px;
+  margin-top: 28px;
+}
+.ia-demo-foot .ia-note { margin: 0; }
+
+/* Touch: la línea superior entra al scroll (reveal-cards no cubre .ia-chat;
+   lo hace js/ia.js con IntersectionObserver) */
+@media (hover: none) {
+  .ia-chat.in-view::before { animation: iaLine 1s cubic-bezier(.16, 1, .3, 1) .5s forwards; }
+}
+@keyframes iaLine { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* ── Responsive ───────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .ia-form-grid { grid-template-columns: 1fr 1fr; }
+  .ia-demo { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .ia-form-grid { grid-template-columns: 1fr; }
+  .ia-capture { padding: 30px 20px 22px; }
+}
+@media (max-width: 520px) {
+  .ia-chat-head { flex-direction: column; align-items: flex-start; gap: 6px; padding: 12px 14px; }
+  .ia-chat-head .model { white-space: normal; }
+  .ia-chat-body { padding: 18px 14px 20px; }
+  .ia-msg { grid-template-columns: 1fr; gap: 6px; }
+  .ia-msg .txt { font-size: 14px; }
+  .ia-verdict { padding: 20px 18px; }
+  .ia-findings li { padding-left: 40px; }
+  .ia-demo { gap: 18px; }
+}
+
+/* ── Movimiento reducido: sin parpadeo, sin puntos, sin línea ─────── */
+@media (prefers-reduced-motion: reduce) {
+  .ia-cursor, .ia-thinking i { animation: none; }
+  .ia-chat::before { transition: none; transform: scaleX(1); }
+  .ia-chat.in-view::before { animation: none; }
+}

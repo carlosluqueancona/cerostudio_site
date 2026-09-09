@@ -19,5 +19,10 @@
 			"binding": "IMAGES",
 			"bucket_name": "cerostudio-blog-images"
 		}
-	]
+	],
+	// Workers AI: simulador de AI Search en /ia/ (functions/api/ia.js).
+	// Si el binding no aparece en Pages, activarlo en Settings → Bindings → Workers AI.
+	"ai": {
+		"binding": "AI"
+	}
 }

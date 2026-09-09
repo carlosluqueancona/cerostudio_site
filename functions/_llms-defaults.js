@@ -84,7 +84,8 @@ Por qué importa: ~30% del comportamiento de búsqueda ya no termina en un clic 
     content: `## Diagnóstico gratuito
 
 - [Auditoría Web Exprés Gratis](${BASE}/auditoria-gratis/): Revisión manual gratuita de un sitio existente — velocidad, SEO, visibilidad en buscadores AI y conversión. 5 hallazgos accionables por email en 48 horas hábiles, sin costo ni compromiso.
-- [Recursos gratuitos](${BASE}/recursos/): Guías y checklists en PDF, descarga directa sin registro. Primera guía: "5 errores que le cuestan a tu web ahora mismo" (${BASE}/recursos/5-errores-web/).`,
+- [Recursos gratuitos](${BASE}/recursos/): Guías y checklists en PDF, descarga directa sin registro. Primera guía: "5 errores que le cuestan a tu web ahora mismo" (${BASE}/recursos/5-errores-web/).
+- [¿Qué dice la IA de tu negocio?](${BASE}/ia/): herramienta gratuita que muestra en vivo cómo responde un asistente de IA sobre tu negocio y qué le falta para recomendarte. EN: ${BASE}/en/ai/`,
   },
   {
     key: 'llms_casos',

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <meta name="description"
+    content="Pregúntale a la IA por tu negocio: escribe tu giro y tu ciudad y mira en vivo qué responde un asistente de IA cuando alguien pide una recomendación — y qué le falta a tu sitio para que te nombre. Gratis, sin registro.">
+  <title>¿Qué dice la IA de tu negocio? · Simulador de AI Search gratis | Cero Studio</title>
+  <link rel="canonical" href="https://cerostudio.ai/ia/">
+  <link rel="alternate" hreflang="es-MX" href="https://cerostudio.ai/ia/">
+  <link rel="alternate" hreflang="en" href="https://cerostudio.ai/en/ai/">
+  <link rel="alternate" hreflang="x-default" href="https://cerostudio.ai/ia/">
+  <link rel="icon" type="image/png" href="/CS_Favicon_512x512.png">
+  <link rel="apple-touch-icon" href="/CS_Favicon_512x512.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cerostudio.ai/ia/">
+  <meta property="og:title" content="¿Qué dice la IA de tu negocio? · Simulador de AI Search gratis | Cero Studio">
+  <meta property="og:description" content="Escribe tu negocio y mira, en vivo, qué responde un asistente de IA cuando alguien pide una recomendación en tu ciudad — y qué le falta a tu sitio para que te nombre a ti.">
+  <meta property="og:image" content="https://cerostudio.ai/images/CERO_Studio_SocialShare.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Cero Studio · ¿Qué dice la IA de tu negocio?">
+  <meta property="og:locale" content="es_MX">
+  <meta property="og:site_name" content="Cero Studio">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="¿Qué dice la IA de tu negocio? · Simulador de AI Search gratis | Cero Studio">
+  <meta name="twitter:description" content="Escribe tu negocio y mira, en vivo, qué responde un asistente de IA cuando alguien pide una recomendación en tu ciudad — y qué le falta a tu sitio para que te nombre a ti.">
+  <meta name="twitter:image" content="https://cerostudio.ai/images/CERO_Studio_SocialShare.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
+    as="style" data-async>
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"></noscript>
+  <link rel="stylesheet" href="/css/base.css?v=20260907a">
+  <link rel="stylesheet" href="/css/home.css?v=20260907c">
+  <link rel="stylesheet" href="/css/servicios-spec.css?v=20260907a">
+  <link rel="stylesheet" href="/css/ia.css?v=20260908a">
+  <script src="/components/cookie-consent.js" defer></script>
+  <script src="/components/cursor.js" defer></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "@id": "https://cerostudio.ai/ia/#app",
+        "name": "¿Qué dice la IA de tu negocio?",
+        "alternateName": "Simulador de AI Search",
+        "url": "https://cerostudio.ai/ia/",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "browserRequirements": "Requiere JavaScript",
+        "inLanguage": "es-MX",
+        "description": "Herramienta gratuita que muestra en vivo cómo responde un asistente de IA (Llama 3.1 en Cloudflare Workers AI) cuando alguien pide una recomendación de tu giro en tu ciudad, y diagnostica qué le falta a tu sitio para que la IA lo entienda y lo recomiende.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "MXN" },
+        "provider": {
+          "@type": "Organization",
+          "name": "Cero Studio",
+          "url": "https://cerostudio.ai/",
+          "logo": "https://cerostudio.ai/images/svg/Cero_Studio_AI_Horizontal.svg"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://cerostudio.ai/" },
+          { "@type": "ListItem", "position": 2, "name": "¿Qué dice la IA de tu negocio?", "item": "https://cerostudio.ai/ia/" }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "¿Esto es ChatGPT?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No. La respuesta la genera Llama 3.1, un modelo de IA abierto que corre en Cloudflare Workers AI, sin acceso a internet. No es ChatGPT, Gemini ni Google, pero responde como ellos cuando no tienen datos claros de tu negocio: con lo que aprendieron al entrenarse. Por eso es una muestra honesta de qué pasa cuando la IA no te conoce." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Por qué la IA no menciona mi negocio?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Casi siempre por tres razones: la IA no puede confirmar que tu negocio existe como entidad (nombre, dirección y teléfono inconsistentes entre tu sitio, Google y directorios), no encuentra contenido que pueda citar (páginas que respondan qué haces, para quién y dónde) y tu sitio no le habla en su idioma (sin schema JSON-LD ni llms.txt). Nada de eso depende de ser el negocio más grande de tu ciudad." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Qué es AEO / GEO?",
+            "acceptedAnswer": { "@type": "Answer", "text": "AEO (Answer Engine Optimization) y GEO (Generative Engine Optimization) son la evolución del SEO: en vez de optimizar solo para que Google te muestre en una lista, optimizas para que ChatGPT, Claude, Gemini y Perplexity te entiendan, te citen y te recomienden en sus respuestas. En Cero Studio es parte del servicio de SEO + AI Search." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Qué pasa después de probar el simulador?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Si quieres, dejas tu nombre, email y WhatsApp y en máximo 48 horas hábiles recibes el reporte completo: 5 hallazgos de tu sitio revisados por una persona, no por un robot. Sin costo, sin compromiso y sin llamadas de venta. Tú decides si lo implementas por tu cuenta o con nosotros." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <div class="site-wrapper">
+    <script src="/components/loader.js?v=20260907a" defer></script>
+    <svg class="noise" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+      style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;opacity:.05;z-index:1000;">
+      <filter id="nf"><feTurbulence type="fractalNoise" baseFrequency=".68" numOctaves="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+      <rect width="100%" height="100%" filter="url(#nf)"/>
+    </svg>
+
+    <div id="navbar-placeholder"></div>
+
+    <main id="main-content">
+      <div class="sv-sheet">
+
+        <nav class="sv-crumbs" aria-label="Migas de pan">
+          <a href="/">Inicio</a><span>›</span><span aria-current="page">¿Qué dice la IA de tu negocio?</span>
+        </nav>
+
+        <!-- ── FICHA · portada ─────────────────────────────────────── -->
+        <header class="sv-hero">
+          <div>
+            <p class="sv-code">IA-00 · ¿Qué dice la IA de tu negocio?</p>
+            <h1 class="sv-h1">Pregúntale a la IA <em>por tu negocio.</em></h1>
+            <p class="sv-lead">
+              Cada vez más clientes ya no buscan en Google: le preguntan a ChatGPT, Gemini o Perplexity.
+              Escribe tu negocio y mira, en vivo, qué responde un asistente de IA cuando alguien pide
+              una recomendación en tu ciudad — y qué le falta a tu sitio para que te nombre a ti.
+            </p>
+            <div class="sv-cta-row">
+              <a href="#simulador" class="btn-primary ht">Preguntarle a la IA →</a>
+              <a href="/servicios/seo/" class="btn-ghost ht">Ver el servicio SEO + AI Search</a>
+            </div>
+          </div>
+          <aside class="sv-specs" aria-label="Especificaciones del simulador">
+            <p class="sv-specs-title">Especificaciones</p>
+            <dl>
+              <div class="row"><dt>Costo</dt><dd><strong>$0</strong> · sin letra chica</dd></div>
+              <div class="row"><dt>Resultado</dt><dd><strong>En segundos</strong> · respuesta real generada por IA</dd></div>
+              <div class="row"><dt>Modelo</dt><dd><strong>Llama 3.1</strong> en Cloudflare Workers AI</dd></div>
+              <div class="row"><dt>Registro</dt><dd><strong>Ninguno</strong> para probar · el reporte completo sí pide tus datos</dd></div>
+              <div class="row"><dt>Datos</dt><dd>Nombre, giro y ciudad · <strong>no se guardan</strong> al simular</dd></div>
+            </dl>
+            <p class="sv-stamp">Cero Studio · Simulador de AI Search · MX</p>
+          </aside>
+        </header>
+
+        <!-- ── § 01 · Simulador ────────────────────────────────────── -->
+        <section class="sv-section" id="simulador">
+          <div class="sv-sec-head">
+            <span class="sv-sec-num">01 — Simulador</span>
+            <h2 class="sv-h2">Tres datos. <span class="t-lime">Una respuesta que no te va a gustar.</span></h2>
+          </div>
+          <p class="sv-body">
+            Escribe el nombre de tu negocio, tu giro (taquería, clínica dental, despacho contable…) y tu ciudad.
+            Le preguntamos a la IA lo mismo que preguntaría tu próximo cliente y te enseñamos la respuesta tal cual.
+          </p>
+
+          <form id="iaForm" class="ia-form" novalidate>
+            <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+            <div class="ia-form-grid">
+              <div class="form-group">
+                <label class="form-label" for="ia-negocio">Nombre de tu negocio *</label>
+                <input type="text" name="negocio" id="ia-negocio" required maxlength="80" autocomplete="organization" placeholder="Tacos El Güero">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ia-giro">Giro *</label>
+                <input type="text" name="giro" id="ia-giro" required maxlength="80" autocomplete="off" placeholder="taquería">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ia-ciudad">Ciudad o zona *</label>
+                <input type="text" name="ciudad" id="ia-ciudad" required maxlength="80" autocomplete="address-level2" placeholder="Coyoacán, CDMX">
+              </div>
+            </div>
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAADvZCQhWb_BPr0et" data-theme="dark"></div>
+            <div class="ia-form-foot">
+              <button type="submit" class="btn-submit ht" id="iaBtn">
+                <span class="btn-submit-spinner"></span>
+                <span id="iaBtnLabel">Preguntarle a la IA →</span>
+              </button>
+              <p class="form-hint">Sin registro. Lo que escribas aquí no se guarda.</p>
+            </div>
+            <div class="ia-error" id="iaError" hidden></div>
+          </form>
+
+          <div class="ia-result" id="iaResult" hidden aria-live="polite">
+            <div class="ia-chat">
+              <div class="ia-chat-head">
+                <span><span class="dot" aria-hidden="true"></span>Asistente de IA · respuesta generada</span>
+                <span class="model" id="iaModel">Llama 3.1 8B · Cloudflare Workers AI</span>
+              </div>
+              <div class="ia-chat-body">
+                <div class="ia-msg is-user">
+                  <span class="who">Tú</span>
+                  <p class="txt" id="iaUserTxt"></p>
+                </div>
+                <div class="ia-msg is-ai">
+                  <span class="who">IA</span>
+                  <p class="txt" id="iaAnswer"></p>
+                </div>
+              </div>
+            </div>
+            <p class="ia-note">
+              <strong>Respuesta real generada por un modelo de IA (Llama 3.1).</strong> No es ChatGPT ni Google;
+              es una muestra de cómo responden los asistentes cuando no conocen tu negocio. Los nombres que
+              sugiera pueden no existir tal cual: así se ve una IA improvisando sin datos.
+            </p>
+
+            <div class="ia-verdict" id="iaVerdict" hidden>
+              <h3></h3>
+              <p></p>
+              <ol class="ia-findings" id="iaFindings" hidden></ol>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── § 02 · Reporte completo (captura) ───────────────────── -->
+        <section class="sv-section" id="reporte">
+          <div class="sv-sec-head">
+            <span class="sv-sec-num">02 — Reporte completo</span>
+            <h2 class="sv-h2">Lo que la IA no te dice, <span class="t-lime">te lo decimos nosotros.</span></h2>
+          </div>
+          <div class="ia-capture" data-label="Gratis · 48 horas hábiles">
+            <h3>Recibe el reporte completo gratis: <span class="t-lime">5 hallazgos de tu sitio en 48 h.</span></h3>
+            <p>
+              El simulador te enseña el síntoma. El reporte te dice la causa: una persona revisa tu sitio
+              (o tu presencia en Google y Maps si aún no tienes uno) y te manda los 5 hallazgos que más
+              te están costando clientes — en Google y en la IA. Sin costo, sin compromiso, sin llamadas de venta.
+            </p>
+            <form id="iaLeadForm" novalidate>
+              <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label class="form-label" for="ia-nombre">Nombre *</label>
+                  <input type="text" name="nombre" id="ia-nombre" required autocomplete="name">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="ia-email">Email *</label>
+                  <input type="email" name="email" id="ia-email" required autocomplete="email" inputmode="email">
+                </div>
+              </div>
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label class="form-label" for="ia-whatsapp">WhatsApp (10 dígitos) *</label>
+                  <input type="tel" name="whatsapp" id="ia-whatsapp" required autocomplete="tel" inputmode="tel" placeholder="55 1234 5678">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="ia-sitio">Tu sitio web (opcional)</label>
+                  <input type="text" name="sitio" id="ia-sitio" autocomplete="url" inputmode="url" placeholder="minegocio.mx">
+                </div>
+              </div>
+              <p class="form-hint">Solo para avisarte cuando tu reporte esté listo. Sin llamadas de venta — lo prometido.</p>
+              <div class="cf-turnstile" data-sitekey="0x4AAAAAADvZCQhWb_BPr0et" data-theme="dark" style="margin-bottom:16px;"></div>
+              <button type="submit" class="btn-submit ht" id="iaLeadBtn">
+                <span class="btn-submit-spinner"></span>
+                <span id="iaLeadBtnLabel">Quiero mi reporte gratis</span>
+              </button>
+              <div class="form-feedback" id="iaLeadFeedback"></div>
+            </form>
+          </div>
+        </section>
+
+        <!-- ── § 03 · Preguntas frecuentes ─────────────────────────── -->
+        <section class="sv-section">
+          <div class="sv-sec-head">
+            <span class="sv-sec-num">03 — Preguntas frecuentes</span>
+            <h2 class="sv-h2">Lo justo y necesario.</h2>
+          </div>
+          <div class="sv-faq">
+            <details class="faq-item">
+              <summary>¿Esto es ChatGPT?</summary>
+              <p>No. La respuesta la genera <strong>Llama 3.1</strong>, un modelo de IA abierto que corre en
+                Cloudflare Workers AI, sin acceso a internet. No es ChatGPT, Gemini ni Google — pero responde
+                como ellos cuando no tienen datos claros de tu negocio: con lo que aprendieron al entrenarse.
+                Por eso es una muestra honesta de qué pasa cuando la IA no te conoce.</p>
+            </details>
+            <details class="faq-item">
+              <summary>¿Por qué la IA no menciona mi negocio?</summary>
+              <p>Casi siempre por tres razones: la IA no puede confirmar que existes como <strong>entidad</strong>
+                (nombre, dirección y teléfono inconsistentes entre tu sitio, Google y directorios), no encuentra
+                <strong>contenido que pueda citar</strong> (páginas que respondan qué haces, para quién y dónde)
+                y tu sitio no le habla en su idioma (<strong>sin schema JSON-LD ni llms.txt</strong>). Nada de eso
+                depende de ser el negocio más grande de tu ciudad.</p>
+            </details>
+            <details class="faq-item">
+              <summary>¿Qué es AEO / GEO?</summary>
+              <p><strong>AEO</strong> (Answer Engine Optimization) y <strong>GEO</strong> (Generative Engine
+                Optimization) son la evolución del SEO: en vez de optimizar solo para que Google te muestre en una
+                lista, optimizas para que ChatGPT, Claude, Gemini y Perplexity te entiendan, te citen y te
+                recomienden en sus respuestas. En Cero Studio es parte del
+                <a href="/servicios/seo/">servicio de SEO + AI Search</a>.</p>
+            </details>
+            <details class="faq-item">
+              <summary>¿Qué pasa después?</summary>
+              <p>Si quieres, dejas tu nombre, email y WhatsApp y en máximo <strong>48 horas hábiles</strong>
+                recibes el reporte completo: 5 hallazgos de tu sitio revisados por una persona, no por un robot.
+                Sin costo, sin compromiso y sin llamadas de venta. Tú decides si lo implementas por tu cuenta o
+                con nosotros.</p>
+            </details>
+          </div>
+        </section>
+
+        <!-- ── Orden de trabajo (CTA final) ────────────────────────── -->
+        <section class="sv-order" data-label="Siguiente paso">
+          <h2>Que la IA te recomiende a ti <span class="t-lime">no es suerte. Es trabajo técnico.</span></h2>
+          <p>SEO + AI Search: que te encuentren en Google y que ChatGPT, Claude, Gemini y Perplexity te nombren cuando alguien pregunta por lo que tú vendes.</p>
+          <div class="sv-cta-row">
+            <a href="/servicios/seo/" class="btn-primary ht">Ver el servicio SEO + AI Search</a>
+            <a href="https://wa.me/525531007101?text=Hola%2C%20prob%C3%A9%20el%20simulador%20de%20IA%20en%20cerostudio.ai%20y%20quiero%20que%20la%20IA%20recomiende%20mi%20negocio." target="_blank" rel="noopener" class="btn-ghost ht">Enviar WhatsApp</a>
+          </div>
+          <p class="sv-cta-alt">¿Primero el reporte gratis? <a href="#reporte">Pedir mis 5 hallazgos →</a></p>
+        </section>
+
+      </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+  </div>
+  <script src="/components/reveal-cards.js?v=20260907a" defer></script>
+  <script src="/components/lang-toggle.js?v=20260907a" defer></script>
+  <script src="/js/ia.js?v=20260908a" defer></script>
+</body>
+
+</html>
