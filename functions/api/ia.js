@@ -23,8 +23,8 @@ function corsHeaders(origin) {
   };
 }
 
-const MODEL = '@cf/meta/llama-3.1-8b-instruct';
-const MODEL_LABEL = 'Llama 3.1 8B · Cloudflare Workers AI';
+const MODEL = '@cf/meta/llama-3.3-70b-instruct-fp8-fast';   /* llama-3.1-8b fue retirado el 2026-05-30 */
+const MODEL_LABEL = 'Llama 3.3 70B · Cloudflare Workers AI';
 const MAX_TOKENS = 350;
 const AI_TIMEOUT_MS = 30000; // dos llamadas en paralelo; Workers AI suele tardar 2–8 s
 
@@ -196,8 +196,8 @@ export async function onRequestPost(context) {
     // (b) Diagnóstico: consultor de SEO + AI Search de Cero Studio
     const sysFindings = `Eres consultor de SEO y AI Search (AEO/GEO) de Cero Studio; responde en ${idioma}, tuteo, sin promesas de posiciones.`;
     const userFindings = lang === 'en'
-      ? `The business '${negocio}' (${giro}, ${ciudad}) does not appear in AI assistant answers. Write exactly 3 concrete, actionable findings (max. 25 words each) about what it lacks for AI to understand and recommend it: entity/NAP, citable content, schema/llms.txt. Format: list with dashes.`
-      : `El negocio '${negocio}' (${giro}, ${ciudad}) no aparece en las respuestas de asistentes de IA. Escribe exactamente 3 hallazgos concretos y accionables (máx. 25 palabras cada uno) sobre qué le falta para que la IA lo entienda y lo recomiende: entidad/NAP, contenido citable, schema/llms.txt. Formato: lista con guiones.`;
+      ? `The business '${negocio}' (${giro}, ${ciudad}) does not appear in AI assistant answers. Write exactly 3 concrete, actionable findings, 18 to 28 words each, addressed to the owner and naming the business at least once: 1) consistent business identity and details across its site, Google and directories (name, address, phone, hours); 2) citable content on its site answering what people ask about a ${giro} in ${ciudad}; 3) structured data (schema.org) and an llms.txt file so assistants can read it. No five-word lines. Format: list with dashes, no headings.`
+      : `El negocio '${negocio}' (${giro}, ${ciudad}) no aparece en las respuestas de asistentes de IA. Escribe exactamente 3 hallazgos concretos y accionables, de 18 a 28 palabras cada uno, dirigidos al dueño (tuteo) y mencionando el nombre del negocio al menos una vez: 1) identidad y datos del negocio consistentes en su sitio, Google y directorios (nombre, dirección, teléfono, horario); 2) contenido citable en su sitio que responda lo que la gente pregunta sobre un ${giro} en ${ciudad}; 3) datos estructurados (schema.org) y un archivo llms.txt para que los asistentes lo lean. Nada de frases de 5 palabras. Formato: lista con guiones, sin títulos.`;
 
     let answer, findingsRaw;
     try {
