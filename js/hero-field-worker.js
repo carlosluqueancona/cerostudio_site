@@ -39,13 +39,14 @@ const poles = [
   { fx: .74, fy: .24, q: 1 },
   { fx: .26, fy: .76, q: -1 },
   { fx: .50, fy: .50, q: 1 },  // central attractor
-  { fx: .88, fy: .42, q: -1 },  // right-side extra
+  { fx: .88, fy: .42, q: -.7 },  // right-side extra (carga −30 %: menos 'cortina' en el borde)
 ];
 let currentPoles = [];
 /* Cajas de las palabras del H1 (coords CSS del viewport): las líneas las
    rodean y las semillas cercanas a la palabra lime se encienden en lime. */
 let words = [];
 let limeBox = null;
+let pulse = 0;      /* latido del lime al cambiar la palabra (decae por frame) */
 
 /* Cubetas de estilo: las polilíneas se acumulan en un Path2D por cubeta y se
    trazan en ≤6 stroke() por frame en vez de uno por línea. */
@@ -53,9 +54,9 @@ const BUCKETS = [
   { lime: true,  alpha: .32, lw: 1.1 },
   { lime: true,  alpha: .48, lw: 1.8 },
   { lime: true,  alpha: .62, lw: 2.4 },
-  { lime: false, alpha: .09, lw: .6 },
-  { lime: false, alpha: .14, lw: .9 },
-  { lime: false, alpha: .19, lw: 1.2 },
+  { lime: false, alpha: .13, lw: .6 },
+  { lime: false, alpha: .19, lw: .9 },
+  { lime: false, alpha: .25, lw: 1.2 },
 ];
 function bucketFor(seed) {
   let best = 0, bd = 1e9;
@@ -99,7 +100,7 @@ function buildSeeds() {
       drift: 30 + Math.random() * 55,         // drift amplitude 30–85px
       driftSpd: .3 + Math.random() * .5,     // drift speed per seed
       lw: lime ? .8 + Math.random() * 1.6 : .4 + Math.random() * .8,
-      alpha: lime ? .28 + Math.random() * .25 : .08 + Math.random() * .12,
+      alpha: lime ? .28 + Math.random() * .25 : .12 + Math.random() * .14,
     });
   }
 
@@ -143,8 +144,8 @@ function field(x, y) {
     let dx = x - cx, dy = y - cy;
     let d = Math.sqrt(dx * dx + dy * dy);
     if (d < 1) { dy = 1; d = 1; }          /* dentro de la letra: empuja hacia abajo */
-    if (d < 170) {
-      let f = 1 - d / 170; f *= f;
+    if (d < 110) {
+      let f = 1 - d / 110; f *= f;
       fx += dx / d * f * 3.4;
       fy += dy / d * f * 3.4;
     }
@@ -189,6 +190,7 @@ function computePolylines() {
 }
 
 function renderFrame() {
+  if (pulse > .01) pulse *= .94; else pulse = 0;
   const byBucket = computePolylines();
   ctx.clearRect(0, 0, W, H);
   ctx.globalCompositeOperation = 'lighter';
@@ -203,7 +205,7 @@ function renderFrame() {
     }
     const b = BUCKETS[i];
     ctx.strokeStyle = b.lime
-      ? `rgba(178,247,0,${b.alpha})`
+      ? `rgba(178,247,0,${Math.min(1, b.alpha * (1 + pulse * .9))})`
       : `rgba(255,255,255,${b.alpha})`;
     ctx.lineWidth = b.lw;
     ctx.stroke(p);
@@ -281,6 +283,8 @@ onmessage = function (e) {
     words = m.words || [];
     limeBox = words.find(w => w.lime) || null;
     for (const sd of seeds) { if (sd.lit) { sd.lit = false; sd.lime = sd.lime0; sd.alpha = sd.alpha0; sd.lw = sd.lw0; sd.bucket = bucketFor(sd); } }
+  } else if (m.type === 'pulse') {
+    pulse = 1;
   } else if (m.type === 'vis') {
     if (m.visible) start(); else stop();
   }

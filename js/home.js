@@ -139,6 +139,7 @@
           if (list.length < 2) return;
           if (document.hidden || window.scrollY > window.innerHeight * .8) return;
           i = (i + 1) % list.length;
+          if (window.__csHeroWorker) window.__csHeroWorker.postMessage({ type: 'pulse' });   /* el campo late con la palabra */
           scr.run(list[i]).then(sendHeroWords);
         }, 3400);
       }
@@ -432,7 +433,7 @@
         const isSafari = /apple/i.test(navigator.vendor || '');
         if (window.Worker && (canvas.transferControlToOffscreen || isSafari)) {
           const useOffscreen = !isSafari && !!canvas.transferControlToOffscreen;
-          const worker = new Worker('/js/hero-field-worker.js?v=20260908a');
+          const worker = new Worker('/js/hero-field-worker.js?v=20260908b');
           window.__csHeroWorker = worker;   /* el hero manda las cajas del H1 (campo que rodea al texto) */
 
           if (useOffscreen) {
