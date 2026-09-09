@@ -266,7 +266,10 @@
           var s2 = document.createElement('source'); s2.src = base + '.mp4'; s2.type = 'video/mp4';
           v.appendChild(s1); v.appendChild(s2);
           v.addEventListener('error', function () { card.dataset.video = 'none'; if (v.parentNode) v.parentNode.removeChild(v); }, true);
-          v.addEventListener('canplay', function () { card.dataset.video = 'ok'; if (card.matches(':hover')) v.classList.add('is-on'); });
+          var reveal = function () { card.dataset.video = 'ok'; if (card.dataset.hovering) v.classList.add('is-on'); };
+          v.addEventListener('canplay', reveal);
+          v.addEventListener('loadeddata', reveal);
+          v.addEventListener('playing', reveal);
           wrap.appendChild(v);
           return v;
         }
@@ -278,6 +281,8 @@
           if (!v) return;
           if (playing && playing !== v) { playing.pause(); playing.classList.remove('is-on'); }
           playing = v;
+          card.dataset.hovering = '1';
+          if (v.readyState >= 2) v.classList.add('is-on');   /* ya cargado: aparece de inmediato */
           var pr = v.play();   /* preload='none': play() dispara la descarga */
           if (pr && pr.catch) pr.catch(function () {});
         }, { passive: true });
@@ -285,6 +290,7 @@
         document.addEventListener('mouseout', function (e) {
           var card = e.target.closest && e.target.closest('.port-card');
           if (!card || (e.relatedTarget && card.contains(e.relatedTarget))) return;
+          delete card.dataset.hovering;
           var v = card.querySelector('.port-card-video');
           if (!v) return;
           v.classList.remove('is-on');
