@@ -49,7 +49,7 @@ Contact: ${BASE}/#contacto`,
     title: 'Servicios principales',
     content: `## Servicios principales
 
-- [Desarrollo Web Premium](${BASE}/servicios/desarrollo-web/): Sitios profesionales que convierten visitas en clientes. Entrega 5–21 días hábiles. EN: ${BASE}/en/services/web-development/
+- [Desarrollo Web](${BASE}/servicios/desarrollo-web/): Sitios profesionales que convierten visitas en clientes. Entrega 5–21 días hábiles. EN: ${BASE}/en/services/web-development/
 - [Tiendas eCommerce](${BASE}/servicios/tiendas-ecommerce/): Tiendas online de alto impacto con pagos locales (OXXO, Mercado Pago, Stripe, SPEI). EN: ${BASE}/en/services/online-stores/
 - [Branding Digital](${BASE}/servicios/branding-digital/): Identidad visual, paleta, tipografía y guidelines. EN: ${BASE}/en/services/digital-branding/
 - [SEO + AI Search (AEO/GEO)](${BASE}/servicios/seo/): Posicionamiento en Google + visibilidad en respuestas de ChatGPT (GPTBot), Claude (ClaudeBot), Gemini (Google-Extended) y Perplexity (PerplexityBot). Incluye auditoría técnica, schema rich snippets, llms.txt, AEO/GEO content strategy y monitoreo de citations. EN: ${BASE}/en/services/seo/

@@ -868,7 +868,9 @@
     .srv-header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-end;
+      /* plan 2026-09: sin ceja el título creció; el párrafo se alinea arriba
+         para que no quede flotando en el fondo del bloque. */
+      align-items: flex-start;
       gap: 48px;
       margin-bottom: 72px;
     }
@@ -3601,3 +3603,10 @@
       .nav-links li:has(> #nav-casos),
       .nav-links li:has(> #nav-blog) { display: none; }
     }
+
+    /* ── Cejas de sección retiradas (2026-09-09) ─────────────────
+       Los numerales fantasma de sección ya marcan el número, así que la
+       ceja lo repetía y aportaba un patrón visual genérico. Se conserva
+       la roja de #stakes, que marca tono y no numeración.
+       NO reintroducir cejas numeradas en el home. */
+    .eyebrow:not(.eyebrow-alert) { display: none; }
