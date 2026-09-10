@@ -368,6 +368,10 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   box-shadow: 0px 0px 16px rgba(178, 247, 0, 0.25);
   padding: 10px 26px;
   display: inline-block;
+  /* Hijo directo del flex #navbar: sin esto se encogia por debajo de su
+     contenido y el boton se partia y se salia de la pantalla. */
+  white-space: nowrap;
+  flex-shrink: 0;
   transition: background .15s ease-out, color .15s ease-out, box-shadow .15s ease-out;
 }
 
@@ -530,6 +534,22 @@ footer {
   .footer-top {
     grid-template-columns: 1fr 1fr;
     gap: 40px;
+  }
+}
+
+/* ── Navbar 769–979px: hamburguesa (mismo criterio que css/home.css) ──
+   Abajo de ~980px no caben logo + enlaces + EN + CTA. El blog no carga
+   home.css, asi que la regla se repite aqui. */
+@media (min-width: 769px) and (max-width: 979px) {
+  .nav-links,
+  .nav-cta {
+    display: none;
+  }
+
+  .nav-ham {
+    display: flex;
+    padding: 14px 10px;
+    margin-right: -10px;
   }
 }
 
