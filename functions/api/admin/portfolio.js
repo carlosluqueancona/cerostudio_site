@@ -98,7 +98,8 @@ function esc(str) {
 function buildPortfolioHTML(items, lang = 'es') {
   const catKey = lang === 'en' ? 'cat_en' : 'cat_es';
   const descKey = lang === 'en' ? 'desc_en' : 'desc_es';
-  const badgeLabel = lang === 'en' ? 'View Project →' : 'Ver Proyecto →';
+  // &nbsp; para que la flecha no se quede sola en su renglon en pantallas angostas
+  const badgeLabel = lang === 'en' ? 'View Project&nbsp;→' : 'Ver Proyecto&nbsp;→';
   return items.map((item, i) => {
     const n = i + 1;
     /* Coerción robusta: show_link puede venir como número (0/1) o string
