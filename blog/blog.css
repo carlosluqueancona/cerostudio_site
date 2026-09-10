@@ -332,6 +332,13 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   transition: background .4s;
 }
 
+/* El logo nunca se comprime: es un flex item y sin esto el navegador lo
+   encogia antes que cualquier otra cosa. Medido en el blog: a 1024px quedaba
+   en 35px de ancho, un borron ilegible pegado a SERVICIOS. */
+#navbar > a:first-child {
+  flex-shrink: 0;
+}
+
 #navbar.scrolled {
   background: rgba(19, 19, 19, .88);
   backdrop-filter: blur(40px);
@@ -550,6 +557,22 @@ footer {
   }
 }
 
+/* ── Navbar 980–1259px: sin colisiones (mismo criterio que css/home.css) ──
+   El blog no carga home.css, asi que la banda se repite aqui: aqui nunca
+   existio y el navbar se encimaba desde 1250px para abajo. */
+@media (min-width: 980px) and (max-width: 1259px) {
+  #navbar { padding: 0 28px; }
+  #navbar > a:first-child { margin-right: 20px; }
+  .nav-logo { height: 54px; }
+  .nav-links { gap: 20px; }
+  .nav-cta { font-size: 12px; letter-spacing: .05em; padding: 10px 16px; }
+}
+
+@media (min-width: 980px) and (max-width: 1100px) {
+  .nav-links li:has(> #nav-casos),
+  .nav-links li:has(> #nav-blog) { display: none; }
+}
+
 /* ── Navbar 769–979px: hamburguesa (mismo criterio que css/home.css) ──
    Abajo de ~980px no caben logo + enlaces + EN + CTA. El blog no carga
    home.css, asi que la regla se repite aqui. */
@@ -651,28 +674,43 @@ footer {
 }
 
 /* ── Lang toggle ── */
+/* Contorno, no bloque gris: el chip relleno de --surface-high se leia como
+   control sin terminar al lado de la placa lime del CTA. El estado
+   .active-en conserva la placa porque ahi si comunica (estas en ingles). */
 .lang-btn {
   font-size: 10px;
   font-weight: 700;
   letter-spacing: .18em;
   text-transform: uppercase;
   color: var(--gt);
-  border: none;
+  border: 1px solid rgba(255, 255, 255, .22);
   padding: 7px 14px;
-  background: var(--surface-high);
-  transition: background .15s ease-out;
+  background: transparent;
+  transition: color .15s ease-out, border-color .15s ease-out, background .15s ease-out;
   cursor: pointer;
   font-family: var(--fb);
 }
 
 .lang-btn:hover {
-  color: var(--white);
-  background: var(--surface-highest);
+  color: var(--lime);
+  border-color: var(--lime);
+  background: transparent;
 }
 
 .lang-btn.active-en {
   color: var(--on-lime);
   background: var(--lime);
+  border-color: var(--lime);
+}
+
+/* En modo hamburguesa solo quedan tres hijos visibles en el navbar, y
+   space-between dejaba el boton colgado a dos tercios del ancho, sin relacion
+   con nada. margin-left:auto lo pega a la hamburguesa, que es su pareja. */
+@media (max-width: 979px) {
+  .lang-btn {
+    margin-left: auto;
+    margin-right: 18px;
+  }
 }
 
 .lang-btn-mobile {
