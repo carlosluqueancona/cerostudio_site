@@ -227,7 +227,8 @@ export async function onRequest(context) {
       rewriter.on('body', {
         element(el) {
           // Escapar '<' impide que un '</script>' dentro del JSON rompa/inyecte HTML
-          el.append(`<script>window.CS_PORTFOLIO_I18N=${i18n.replace(/</g, '\\u003c')};</script>`, { html: true });
+          /* Bloque de datos, no script ejecutable: la CSP no admite scripts en línea. */
+          el.append(`<script type="application/json" id="cs-portfolio-i18n">${i18n.replace(/</g, '\\u003c')}</script>`, { html: true });
         },
       });
     }

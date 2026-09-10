@@ -853,34 +853,6 @@
           'plan-more': { t: 'Ver todo lo que incluye' }, /* plan 2026-09: pricing móvil; JS concatena (+N) */
           'plan-less': { t: 'Ver menos' },
           'port-badge': { t: 'Ver Proyecto →' },
-          'port-c1': { t: 'Agencia · Modelos & Producción BTL' },
-          'port-d1': { t: 'Plataforma digital para agencia de modelos, edecanes y producción de eventos corporativos.' },
-          'port-c2': { t: 'Imprenta · Cotizaciones en línea' },
-          'port-d2': { t: 'Sitio corporativo para imprenta offset con cotizador de productos integrado.' },
-          'port-c3': { t: 'Automotriz · Inventario en línea' },
-          'port-d3': { t: 'Catálogo digital de vehículos con buscador avanzado y fichas técnicas detalladas.' },
-          'port-c4': { t: 'Agencia · Talento & Activaciones BTL' },
-          'port-d4': { t: 'Sitio para agencia de talento profesional con activaciones BTL e infraestructura para eventos.' },
-          'port-c5': { t: 'Industrial · Soluciones antivibratorias' },
-          'port-d5': { t: 'Catálogo y tienda online para distribuidora de productos de mantenimiento industrial.' },
-          'port-c6': { t: 'Manufactura · Estanterías y exhibidores' },
-          'port-d6': { t: 'Tienda multimarca con sistema de inventario en tiempo real y catálogo dinámico.' },
-          'port-c7': { t: 'Tienda online · Mascotas' },
-          'port-d7': { t: 'Tienda online de alta calidad para el cuidado y bienestar de mascotas.' },
-          'port-c8': { t: 'Educación · Inscripciones digitales' },
-          'port-d8': { t: 'Portal institucional para centro de investigación con gestión editorial avanzada.' },
-          'port-c9': { t: 'Industrial · Fabricación metálica' },
-          'port-d9': { t: 'Portal empresarial con presentación institucional y gestión de proyectos activos.' },
-          'port-c10': { t: 'Tienda online · Gatos' },
-          'port-d10': { t: 'E-commerce especializado en productos y accesorios premium para gatos.' },
-          'port-c11': { t: 'Salud · Neumología' },
-          'port-d11': { t: 'Plataforma de salud respiratoria con recursos educativos y consultas en línea.' },
-          'port-c12': { t: 'Bienestar · Sanación Holística' },
-          'port-d12': { t: 'Sitio para practicante holística con terapia de duelo, ceremonias sagradas y retiros del alma.' },
-          'port-c13': { t: 'Salud Mental · Psicoterapia Online' },
-          'port-d13': { t: 'Plataforma de psicoterapia en línea especializada en recuperación de adicciones y sanación emocional.' },
-          'port-c14': { t: 'Agropecuario · Consultoría Avícola' },
-          'port-d14': { t: 'Asesoría especializada en bioseguridad, sanidad animal y optimización de producción avícola.' },
 
           /* ── NOSOTROS */
           'nos-eyebrow': { t: 'Por qué Cero' },
@@ -1094,34 +1066,6 @@
           'plan-more': { t: 'See everything included' }, /* plan 2026-09: pricing móvil; JS concatena (+N) */
           'plan-less': { t: 'Show less' },
           'port-badge': { t: 'View Project →' },
-          'port-c1': { t: 'Agency · Models & BTL Production' },
-          'port-d1': { t: 'Digital platform for modeling agency, promotional staff and corporate event production.' },
-          'port-c2': { t: 'Print Shop · Online Quoting' },
-          'port-d2': { t: 'Corporate site for offset printing with integrated product quoter.' },
-          'port-c3': { t: 'Automotive · Online Inventory' },
-          'port-d3': { t: 'Digital vehicle catalog with advanced search and detailed technical specs.' },
-          'port-c4': { t: 'Agency · Talent & BTL Activations' },
-          'port-d4': { t: 'Site for professional talent agency with BTL activations and event infrastructure.' },
-          'port-c5': { t: 'Industrial · Anti-vibration Solutions' },
-          'port-d5': { t: 'Catalog and online store for industrial maintenance products distributor.' },
-          'port-c6': { t: 'Manufacturing · Racks & Displays' },
-          'port-d6': { t: 'Multi-brand store with real-time inventory system and dynamic catalog.' },
-          'port-c7': { t: 'Online Store · Pets' },
-          'port-d7': { t: 'High-quality online store for pet care and well-being.' },
-          'port-c8': { t: 'Education · Digital Enrollment' },
-          'port-d8': { t: 'Institutional portal for research center with advanced editorial management.' },
-          'port-c9': { t: 'Industrial · Metal Fabrication' },
-          'port-d9': { t: 'Business portal with institutional presentation and active project management.' },
-          'port-c10': { t: 'Online Store · Cats' },
-          'port-d10': { t: 'Specialized e-commerce for premium cat products and accessories.' },
-          'port-c11': { t: 'Health · Pulmonology' },
-          'port-d11': { t: 'Respiratory health platform with educational resources and online consultations.' },
-          'port-c12': { t: 'Wellness · Holistic Healing' },
-          'port-d12': { t: 'Website for a holistic practitioner offering grief therapy, sacred ceremonies, and soul retreats.' },
-          'port-c13': { t: 'Mental Health · Online Psychotherapy' },
-          'port-d13': { t: 'Online psychotherapy platform specialized in addiction recovery and emotional healing.' },
-          'port-c14': { t: 'Agriculture · Poultry Consulting' },
-          'port-d14': { t: 'Specialized advisory in biosecurity, animal health, and poultry production optimization.' },
 
           /* ── NOSOTROS */
           'nos-eyebrow': { t: 'Why Cero' },
@@ -1411,9 +1355,17 @@
         if (btn) { btn.textContent = lang === 'es' ? 'EN' : 'ES'; btn.classList.toggle('active-en', lang === 'en'); }
         if (mbtn) { mbtn.textContent = lang === 'es' ? 'EN' : 'ES'; }
 
-        /* Portfolio i18n (injected server-side via SSR) */
-        if (window.CS_PORTFOLIO_I18N && window.CS_PORTFOLIO_I18N[lang]) {
-          var portDict = window.CS_PORTFOLIO_I18N[lang];
+        /* Portafolio i18n: lo inyecta el SSR como bloque de datos JSON
+           (<script type="application/json" id="cs-portfolio-i18n">). No puede ser
+           un script en línea porque la CSP del sitio no los permite. Es la ÚNICA
+           fuente de los textos del portafolio: el CMS manda. */
+        var portData = window.CS_PORTFOLIO_I18N || null;   /* compat con el formato viejo */
+        if (!portData) {
+          var portTag = document.getElementById('cs-portfolio-i18n');
+          if (portTag) { try { portData = JSON.parse(portTag.textContent); } catch (e) { portData = null; } }
+        }
+        if (portData && portData[lang]) {
+          var portDict = portData[lang];
           Object.keys(portDict).forEach(function (id) {
             var el = document.getElementById(id);
             if (el) el.textContent = portDict[id].t;

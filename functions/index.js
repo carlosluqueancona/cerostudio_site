@@ -32,9 +32,12 @@ export async function onRequest(context) {
     if (!htmlCache?.value) return response;
 
     const portfolioHTML = htmlCache.value;
-    // Escapar '<' impide que un '</script>' dentro del JSON rompa/inyecte HTML
+    // Bloque de DATOS (type="application/json"), no un script ejecutable: la CSP
+    // del sitio no permite scripts en línea ('script-src' sin unsafe-inline) y
+    // bloqueaba silenciosamente la versión anterior. Escapar '<' impide que un
+    // '</script>' dentro del JSON rompa/inyecte HTML.
     const i18nScript = i18nCache?.value
-      ? `<script>window.CS_PORTFOLIO_I18N=${i18nCache.value.replace(/</g, '\\u003c')};</script>`
+      ? `<script type="application/json" id="cs-portfolio-i18n">${i18nCache.value.replace(/</g, '\\u003c')}</script>`
       : '';
 
     return new HTMLRewriter()
