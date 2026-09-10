@@ -401,13 +401,16 @@
       color: var(--lime);
     }
 
+    /* Es la mejor línea de copy del hero, no textura decorativa: a 10px con
+       .4em de tracking se leía como adorno. Sube a 13px/.18em para que se lea
+       como frase, sin competir con el subtítulo (15-18px). */
     .hero-static-eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 12px;
-      font-size: 10px;
-      font-weight: 400;
-      letter-spacing: .4em;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: .18em;
       text-transform: uppercase;
       color: var(--lime);
       margin-bottom: 36px;
@@ -416,7 +419,7 @@
     .hero-static-eyebrow::before {
       content: '';
       display: block;
-      width: 36px;
+      width: 48px;
       height: 1px;
       background: var(--lime);
       flex-shrink: 0;
@@ -475,32 +478,6 @@
       display: flex;
       gap: 14px;
       flex-wrap: wrap;
-    }
-
-    /* Línea de prueba bajo los botones (mismo registro que el eyebrow, sin
-       línea ::before). Arranca en opacity:0 y la revela runHeroEntrance junto
-       con #heroActions — NO aplica a .hero-static-title (LCP). */
-    .hero-proof {
-      opacity: 0;
-      margin-top: 22px;
-      max-width: 620px;
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: .14em;
-      line-height: 1.9;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, .55);
-    }
-
-    .hero-proof a {
-      color: var(--lime);
-      white-space: nowrap;
-      border-bottom: 1px solid transparent;
-      transition: border-color .2s;
-    }
-
-    .hero-proof a:hover {
-      border-bottom-color: var(--lime);
     }
 
     /* ============================================================ BUTTONS */
@@ -2987,10 +2964,6 @@
 
       .hero-static-sub {
         margin-bottom: 32px;
-      }
-
-      .hero-proof {
-        margin-top: 20px;
       }
 
       #orb-a {

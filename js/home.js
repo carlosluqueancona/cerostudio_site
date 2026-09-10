@@ -79,12 +79,11 @@
           var node = typeof el === 'string' ? document.getElementById(el) : el;
           if (node) _scrDone.push(new Promise(res => setTimeout(() => new TextScramble(node).run(text).then(res), delay)));
         });
-        Promise.all(_scrDone).then(function () { initHeroType(); sendHeroWords(); setTimeout(startHeroWordCycle, 2200); });
+        Promise.all(_scrDone).then(function () { initHeroType(); sendHeroWords(); setTimeout(startHeroWordCycle, 1200); });
 
         setTimeout(() => {
           gsap.to('#heroSub', { opacity: 1, duration: .85, ease: 'power3.out' });
-          /* plan 2026-09: #heroProof (línea de prueba) entra con los botones */
-          gsap.to('#heroActions, #heroProof', { opacity: 1, duration: .75, ease: 'power3.out', delay: .18 });
+          gsap.to('#heroActions', { opacity: 1, duration: .75, ease: 'power3.out', delay: .18 });
         }, 1600);
       }
 
@@ -112,10 +111,17 @@
       var _hwT = null;
       window.addEventListener('resize', function () { clearTimeout(_hwT); _hwT = setTimeout(sendHeroWords, 200); });
 
-      /* ── HERO: la última palabra cuenta el sistema completo ───────
-         VENDE. → AGENDA. → COBRA. → RESPONDE. con el mismo scramble; el primer
-         render y el texto estático siguen siendo VENDE./SELLS. (LCP y SEO). */
-      var HERO_WORDS = { es: ['VENDE.', 'AGENDA.', 'COBRA.', 'RESPONDE.'], en: ['SELLS.', 'BOOKS.', 'CHARGES.', 'REPLIES.'] };
+      /* ── HERO: la última palabra recorre el embudo ────────────────
+         ES atrae → cierra → cobra · EN books → wins → earns. El primer render y
+         el texto estático siguen siendo VENDE./SELLS. (LCP y SEO).
+         Dos reglas al proponer palabras nuevas:
+         1. Cada una se sostiene sola. Casi nadie ve el ciclo completo, así que
+            ninguna puede depender de la anterior para leerse.
+         2. Máximo 7 caracteres en ES y 6 en EN. fit() descarta la que no cabe en
+            el renglón, y el caso más apretado es DESKTOP (la tipografía llega a
+            230px), no el celular. Medido en 6 viewports: CONVENCE., ATTRACTS.,
+            CONVINCES., CLOSES., WORKS. y AGENDA. se caían. */
+      var HERO_WORDS = { es: ['VENDE.', 'ATRAE.', 'CIERRA.', 'COBRA.'], en: ['SELLS.', 'BOOKS.', 'WINS.', 'EARNS.'] };
       function startHeroWordCycle() {
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         var el = document.getElementById('scrL3'); if (!el) return;
@@ -141,7 +147,7 @@
           i = (i + 1) % list.length;
           if (window.__csHeroWorker) window.__csHeroWorker.postMessage({ type: 'pulse' });   /* el campo late con la palabra */
           scr.run(list[i]).then(sendHeroWords);
-        }, 3400);
+        }, 2500);
       }
 
       function initHeroType() {
@@ -819,10 +825,9 @@
           'mob-bar-main': { t: 'Cotizar mi proyecto' },
           /* ── HERO */
           'heroEyebrow': { t: 'Clientes, no solo visitas.' },
-          'heroSub': { t: 'Tu negocio ya es bueno. Te falta el sitio que lo demuestre y convierta a quien te busca en cliente — hecho a tu medida, desde $299 USD (≈ $5,400 MXN) y listo en 5 días hábiles.' },
+          'heroSub': { t: 'Ahora mismo alguien busca lo que tú vendes. Construimos el sitio que hace que te elija a ti.' },
           'hero-btn-audit': { t: 'Auditoría gratis de mi sitio →' },
           'hero-btn-quote': { t: 'Iniciar Proyecto' },
-          'heroProof': { h: '25+ años de oficio · Hablas directo con Carlos · Fecha de entrega por escrito · Agencia Tiendanube Partner certificada — <a href="/casos-de-exito/" data-href-es="/casos-de-exito/" data-href-en="/en/case-studies/">Ver casos de éxito →</a>' },
           /* ── MARQUEE */
           'marquee-1': { h: 'Diseño Web <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Desarrollo <em>·</em> Consultoría <em>·</em> Mantenimiento <em>·</em> Identidad Visual <em>·</em>' },
           'marquee-2': { h: 'Diseño Web <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Desarrollo <em>·</em> Consultoría <em>·</em> Mantenimiento <em>·</em> Identidad Visual <em>·</em>' },
@@ -1026,10 +1031,9 @@
           'mob-bar-main': { t: 'Get a quote' },
           /* ── HERO */
           'heroEyebrow': { t: 'Customers, not just clicks.' },
-          'heroSub': { t: 'Your business is already good. What\'s missing is a website that proves it and turns the people looking for you into customers — built for you, from $299 USD, live in 5 business days.' },
+          'heroSub': { t: 'Right now someone is searching for what you sell. We build the site that makes them choose you.' },
           'hero-btn-audit': { t: 'Free audit of my site →' },
           'hero-btn-quote': { t: 'Start Your Project' },
-          'heroProof': { h: '25+ years of craft · You talk directly with Carlos · Delivery date in writing · Certified Tiendanube Partner Agency — <a href="/en/case-studies/" data-href-es="/casos-de-exito/" data-href-en="/en/case-studies/">See case studies →</a>' },
           /* ── MARQUEE */
           'marquee-1': { h: 'Web Design <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Development <em>·</em> Consulting <em>·</em> Maintenance <em>·</em> Visual Identity <em>·</em>' },
           'marquee-2': { h: 'Web Design <em>·</em> eCommerce <em>·</em> Branding <em>·</em> SEO <em>·</em> Development <em>·</em> Consulting <em>·</em> Maintenance <em>·</em> Visual Identity <em>·</em>' },
