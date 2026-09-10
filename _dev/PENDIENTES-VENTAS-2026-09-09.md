@@ -85,6 +85,14 @@
 
 ---
 
+## 🐞 Corregido después de publicar
+
+- **Textos del portafolio intercambiados entre cards** (9 sep). Al reordenar en el admin, la categoría
+  y la descripción quedaban en la card equivocada. Causa: el SSR mandaba los textos del CMS en un
+  script en línea y la CSP del sitio los bloqueaba desde julio; sin ellos, `home.js` aplicaba un
+  diccionario viejo con el orden anterior. Ahora los textos viajan en un bloque de datos JSON y se
+  retiraron las 56 claves obsoletas. Verificado en español, inglés y fichas de servicio.
+
 ## ✅ Cerrado en esta ronda (para referencia)
 
 - Plan de mejora de ventas completo aplicado en producción: embudo con CTA transicional, prueba social
