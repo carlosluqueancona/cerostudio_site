@@ -105,6 +105,13 @@
   function save(v)  { try { localStorage.setItem(KEY, v); } catch (e) {} }
   function lang() {
     try {
+      // El idioma del sitio lo define la RUTA (/ vs /en/) y cada pagina lo
+      // declara en <html lang>. Antes solo se miraba localStorage y el
+      // navegador, asi que un visitante con el navegador en espanol veia el
+      // aviso en espanol sobre cualquier pagina en ingles. La pagina manda;
+      // el resto queda como respaldo.
+      var docLang = (document.documentElement.getAttribute('lang') || '').toLowerCase();
+      if (docLang) return docLang.indexOf('en') === 0 ? 'en' : 'es';
       var stored = localStorage.getItem('cs-lang');
       if (stored) return stored;
       var nav = (navigator.language || navigator.userLanguage || 'es').toLowerCase();

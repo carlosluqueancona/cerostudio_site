@@ -74,15 +74,15 @@ const CTA_DEFAULT = { t: '¿Tu sitio se ve bien <em>pero no vende?</em>', p: 'Di
 
 function ctaEndFor(cat) {
   const c = CTA_BY_CAT[cat] || CTA_DEFAULT;
-  return `<aside class="article-cta" data-label="Siguiente paso"><h2 class="article-cta-title">${c.t}</h2><p class="article-cta-text">${c.p}</p><div class="article-cta-row"><a href="${c.b1[1]}" class="article-cta-btn">${c.b1[0]} →</a><a href="${c.b2[1]}" class="article-cta-wa">${c.b2[0]}</a><a href="https://wa.me/525531007101?text=Hola%2C%20le%C3%AD%20un%20art%C3%ADculo%20de%20su%20blog%20y%20quiero%20cotizar%20mi%20proyecto." class="article-cta-wa" target="_blank" rel="noopener">WhatsApp directo</a></div></aside>`;
+  return `<aside class="article-cta" data-label="Siguiente paso"><h2 class="article-cta-title">${c.t}</h2><p class="article-cta-text">${c.p}</p><div class="article-cta-row"><a href="${c.b1[1]}" class="article-cta-btn">${c.b1[0]}&nbsp;→</a><a href="${c.b2[1]}" class="article-cta-wa">${c.b2[0]}</a><a href="https://wa.me/525531007101?text=Hola%2C%20le%C3%AD%20un%20art%C3%ADculo%20de%20su%20blog%20y%20quiero%20cotizar%20mi%20proyecto." class="article-cta-wa" target="_blank" rel="noopener">WhatsApp directo</a></div></aside>`;
 }
 
 // CTA inline: transicional (auditoría gratis), nunca cotización a media lectura
-const ARTICLE_CTA_MID = '<div class="article-cta-inline"><span>¿No sabes si esto le pasa a tu sitio?</span> <a href="/auditoria-gratis/">Pídenos la auditoría exprés gratis — 5 hallazgos en 48 horas →</a></div>';
+const ARTICLE_CTA_MID = '<div class="article-cta-inline"><span>¿No sabes si esto le pasa a tu sitio?</span> <a href="/auditoria-gratis/">Pídenos la auditoría exprés gratis — 5 hallazgos en 48 horas&nbsp;→</a></div>';
 
 // Caja de autor (BLOG-03) — mismo markup que blog/blog.js.
 // Retrato Color; el B/N lo pone blog.css (filter: grayscale) — sin acento de esquina.
-const ARTICLE_AUTHOR = '<aside class="article-author"><img src="/images/Carlos_Luque_2026-Color.webp" alt="Carlos Luque — Fundador, Cero Studio" width="88" height="120" loading="lazy"><div><p class="article-author-name">Carlos Luque</p><p class="article-author-bio">Fundador de Cero Studio. Más de 25 años construyendo presencia digital para negocios en México. Escribe esto para que decidas con datos, no con vendedores.</p><a href="/nosotros/" class="article-author-more">Conoce a Carlos →</a></div></aside>';
+const ARTICLE_AUTHOR = '<aside class="article-author"><img src="/images/Carlos_Luque_2026-Color.webp" alt="Carlos Luque — Fundador, Cero Studio" width="88" height="120" loading="lazy"><div><p class="article-author-name">Carlos Luque</p><p class="article-author-bio">Fundador de Cero Studio. Más de 25 años construyendo presencia digital para negocios en México. Escribe esto para que decidas con datos, no con vendedores.</p><a href="/nosotros/" class="article-author-more">Conoce a Carlos&nbsp;→</a></div></aside>';
 
 // Inserta el CTA inline a la mitad del artículo (solo si hay ≥8 párrafos)
 function withMidCta(content) {
