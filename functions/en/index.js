@@ -23,9 +23,11 @@ export async function onRequest(context) {
     const portfolioHTML = enHtml?.value || esHtml?.value || '';
     if (!portfolioHTML) return response;
 
-    // Escapar '<' impide que un '</script>' dentro del JSON rompa/inyecte HTML
+    // Bloque de DATOS (type="application/json"), no un script ejecutable: la CSP
+    // del sitio no permite scripts en línea. Escapar '<' impide que un
+    // '</script>' dentro del JSON rompa/inyecte HTML.
     const i18nScript = i18nRow?.value
-      ? `<script>window.CS_PORTFOLIO_I18N=${i18nRow.value.replace(/</g, '\\u003c')};</script>`
+      ? `<script type="application/json" id="cs-portfolio-i18n">${i18nRow.value.replace(/</g, '\\u003c')}</script>`
       : '';
 
     return new HTMLRewriter()
