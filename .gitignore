@@ -31,8 +31,6 @@ backup-*.sql
 !_dev/formulario/cero-intake-worker/schema.sql
 # Added by code-review-graph
 .code-review-graph/
-AGENTS.md
-CLAUDE.md
 GEMINI.md
 .gitignore
 .cursorrules
